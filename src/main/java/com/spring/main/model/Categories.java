@@ -20,8 +20,6 @@ public class Categories {
     @Column(name = "categoriesName", nullable = false)
     private String categoriesName;
 
-    @OneToMany(mappedBy = "categories")
-    private List<Product> products;
 
 	public int getCategoriesID() {
 		return categoriesID;
@@ -38,15 +36,5 @@ public class Categories {
 	public void setCategoriesName(String categoriesName) {
 		this.categoriesName = categoriesName;
 	}
-
-	public List<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
-
-    // Getter và setter
     
 }

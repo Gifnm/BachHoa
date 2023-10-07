@@ -1,5 +1,6 @@
 package com.spring.main.model;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -28,7 +29,7 @@ public class Bill {
     private float totalAmount;
 
     @Column(name = "timeCreate")
-    private Date timeCreate;
+    private Timestamp timeCreate;
 
 	public String getBillID() {
 		return billID;
@@ -62,11 +63,11 @@ public class Bill {
 		this.totalAmount = totalAmount;
 	}
 
-	public Date getTimeCreate() {
+	public Timestamp getTimeCreate() {
 		return timeCreate;
 	}
 
-	public void setTimeCreate(Date timeCreate) {
+	public void setTimeCreate(Timestamp timeCreate) {
 		this.timeCreate = timeCreate;
 	}
 

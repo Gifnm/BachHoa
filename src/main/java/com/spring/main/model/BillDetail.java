@@ -71,5 +71,4 @@ public class BillDetail {
 	public void setTotalAmount(float totalAmount) {
 		this.totalAmount = totalAmount;
 	}
-
 }
