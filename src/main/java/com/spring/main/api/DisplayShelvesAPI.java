@@ -24,7 +24,7 @@ public class DisplayShelvesAPI {
 
 	@GetMapping("findAllShelf/{id}")
 	public List<DisplayShelves> getAllShelfs(@PathVariable int id) {
-
+System.out.println("getShelf");
 		List<DisplayShelves> list = diService.findAll(id);
 		System.out.println(list.size());
 		return list;

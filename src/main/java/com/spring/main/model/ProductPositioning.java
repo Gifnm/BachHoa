@@ -16,11 +16,11 @@ public class ProductPositioning {
 	@Column(name = "proPosID")
 	private Integer id;
 
-	@ManyToOne(fetch  = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "disPlaID")
 	private DisplayPlatter displayPlatter;
 
-	@ManyToOne(fetch  = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "disSheID")
 	private DisplayShelves displayShelves;
 
@@ -30,9 +30,13 @@ public class ProductPositioning {
 
 	@Column(name = "displayQuantity")
 	private int displayQuantity;
-	@ManyToOne(fetch  = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "storeID")
+
 	private Store store;
+	@Column(name = "form")
+	private int form;
+
 	public Integer getId() {
 		return id;
 	}
@@ -79,6 +83,14 @@ public class ProductPositioning {
 
 	public void setStore(Store store) {
 		this.store = store;
+	}
+
+	public int getForm() {
+		return form;
+	}
+
+	public void setForm(int form) {
+		this.form = form;
 	}
 
 }

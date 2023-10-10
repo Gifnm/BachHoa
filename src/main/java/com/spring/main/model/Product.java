@@ -40,11 +40,38 @@ public class Product {
 	private String image;
 	@Column(name = "importPrice")
 	private float importPrice;
-	@ManyToOne(fetch  = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "storeID")
 	private Store store;
 	 @Column(name ="inventory")
 	 private Integer inventory;
+	 
+	 
+	public Product(String productID) {
+	
+		this.productID = productID;
+	}
+
+	public Product() {
+	
+	}
+
+	public Product(String productID, Categories categories, float price, int vat, Date nearestExpDate,
+			String productName, Boolean status, String image, float importPrice, Store store, Integer inventory) {
+
+		this.productID = productID;
+		this.categories = categories;
+		this.price = price;
+		this.vat = vat;
+		this.nearestExpDate = nearestExpDate;
+		this.productName = productName;
+		this.status = status;
+		this.image = image;
+		this.importPrice = importPrice;
+		this.store = store;
+		this.inventory = inventory;
+	}
+
 	public String getProductID() {
 		return productID;
 	}

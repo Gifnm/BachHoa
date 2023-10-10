@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.main.jpa.ProductPositionJPA;
+import com.spring.main.model.Product;
 import com.spring.main.model.ProductPositioning;
+import com.spring.main.model.Store;
 
 @Service
 public class ProductPosionService {
@@ -25,7 +27,7 @@ public class ProductPosionService {
 	}
 
 	public ProductPositioning getByIDAndStoreID(String productID, int storeID) {
-		ProductPositioning proPositioning = productPositionJPA.findByIDAndStoreID(productID, storeID);
+		ProductPositioning proPositioning = productPositionJPA.findByProductAndStore(new Product(productID), new Store(storeID));
 		return proPositioning;
 	}
 }

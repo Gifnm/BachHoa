@@ -13,32 +13,34 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "shipmentBatchDetail")
 public class ShipmentBatchDetail {
-    @Id
-    @Column(name = "shiBatID")
-    private String shiBatID;
+	@Id
+	@Column(name = "shiBatID")
+	private String shiBatID;
 
-    @ManyToOne
-    @MapsId("shiBatID")
-    @JoinColumn(name = "shiBatID")
-    private ShipmentBatch shipmentBatch;
+	@ManyToOne
+	@MapsId("shiBatID")
+	@JoinColumn(name = "shiBatID")
+	private ShipmentBatch shipmentBatch;
 
-    @ManyToOne
-    @MapsId("productID")
-    @JoinColumn(name = "productID")
-    private Product product;
+	@ManyToOne
+	@MapsId("productID")
+	@JoinColumn(name = "productID")
+	private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "employeeID")
-    private Employee employee;
+	@ManyToOne
+	@JoinColumn(name = "employeeID")
+	private Employee employee;
 
-    @Column(name = "completionTime")
-    private Timestamp completionTime;
+	@Column(name = "completionTime")
+	private Timestamp completionTime;
 
-    @Column(name = "situation")
-    private boolean situation;
+	@Column(name = "situation")
+	private boolean situation;
 
-    @Column(name = "pictureURL")
-    private String pictureURL;
+	@Column(name = "pictureURL")
+	private String pictureURL;
+	@Column(name = "quantity")
+	private int quantity;
 
 	public String getShiBatID() {
 		return shiBatID;
@@ -96,6 +98,11 @@ public class ShipmentBatchDetail {
 		this.pictureURL = pictureURL;
 	}
 
-    // Getter và setter
-    
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 }
