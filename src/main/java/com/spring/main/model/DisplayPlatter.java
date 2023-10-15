@@ -4,15 +4,18 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "displayPlatter")
+@Table(name = "display_platters")
 public class DisplayPlatter {
+//
 	@Id
 	@Column(name = "disPlaID")
 	private int disPlaID;
+
 
 	@Column(name = "rowName")
 	private String rowName;
@@ -57,5 +60,6 @@ public class DisplayPlatter {
 	public void setStore(Store store) {
 		this.store = store;
 	}
+
 
 }

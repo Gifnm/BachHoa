@@ -1,4 +1,5 @@
 package com.spring.main.model;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
@@ -11,25 +12,25 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "bill")
+@Table(name = "bills")
 public class Bill {
-    @Id
-    @Column(name = "billID")
-    private String billID;
+	@Id
+	@Column(name = "billID")
+	private String billID;
 
-    @ManyToOne
-    @JoinColumn(name = "storeID")
-    private Store store;
+	@ManyToOne
+	@JoinColumn(name = "storeID")
+	private Store store;
 
-    @ManyToOne
-    @JoinColumn(name = "employeeID")
-    private Employee employee;
+	@ManyToOne
+	@JoinColumn(name = "employeeID")
+	private Employee employee;
 
-    @Column(name = "totalAmount")
-    private float totalAmount;
+	@Column(name = "totalAmount")
+	private float totalAmount;
 
-    @Column(name = "timeCreate")
-    private Timestamp timeCreate;
+	@Column(name = "timeCreate")
+	private Timestamp timeCreate;
 
 	public String getBillID() {
 		return billID;
@@ -71,6 +72,4 @@ public class Bill {
 		this.timeCreate = timeCreate;
 	}
 
-    // Getter và setter
-    
 }

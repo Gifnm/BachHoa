@@ -11,7 +11,7 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "shipmentBatchDetail")
+@Table(name = "shipment_batch_details")
 public class ShipmentBatchDetail {
 	@Id
 	@Column(name = "shiBatID")

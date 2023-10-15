@@ -12,7 +12,7 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "discountDetails")
+@Table(name = "discount_details")
 public class DiscountDetails {
 	@Id
 	@Column(name = "disID")

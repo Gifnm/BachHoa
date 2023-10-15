@@ -10,15 +10,14 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "productPositioning")
+@Table(name = "product_positionings")
 public class ProductPositioning {
 	@Id
 	@Column(name = "proPosID")
 	private Integer id;
 
-	@ManyToOne()
-	@JoinColumn(name = "disPlaID")
-	private DisplayPlatter displayPlatter;
+//	@JoinColumn(name = "disPlaID")
+//	private DisplayPlatter displayPlatter;
 
 	@ManyToOne()
 	@JoinColumn(name = "disSheID")
@@ -45,13 +44,13 @@ public class ProductPositioning {
 		this.id = id;
 	}
 
-	public DisplayPlatter getDisplayPlatter() {
-		return displayPlatter;
-	}
-
-	public void setDisplayPlatter(DisplayPlatter displayPlatter) {
-		this.displayPlatter = displayPlatter;
-	}
+//	public DisplayPlatter getDisplayPlatter() {
+//		return displayPlatter;
+//	}
+//
+//	public void setDisplayPlatter(DisplayPlatter displayPlatter) {
+//		this.displayPlatter = displayPlatter;
+//	}
 
 	public DisplayShelves getDisplayShelves() {
 		return displayShelves;

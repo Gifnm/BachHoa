@@ -11,7 +11,6 @@ public class BachHoaPApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BachHoaPApplication.class, args);
-		
 	}
 	@Bean
 	public WebMvcConfigurer webMvcConfigurer() {

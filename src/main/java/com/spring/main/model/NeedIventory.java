@@ -3,19 +3,22 @@ package com.spring.main.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "needInventory")
+@Table(name = "need_inventories")
 public class NeedIventory {
 	@Id
-	@OneToMany()
-	@JoinColumn(name = "productID")
-	private Product product;
-	@OneToMany()
-	@JoinColumn(name = "storeID")
-	private Store store;
+    @ManyToOne
+    @JoinColumn(name = "productID")
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "storeID")
+    private Store store;
+
 
 	public NeedIventory(Product product, Store store) {
 		this.product = product;

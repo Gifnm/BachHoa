@@ -11,7 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "inventoryHistory")
+@Table(name = "inventory_histories")
 public class InventoryHistory {
 	@Id
 	@Column(name = "inHisID")
