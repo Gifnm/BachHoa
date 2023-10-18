@@ -31,8 +31,9 @@ EmployeeService emService;
 		return emService.findAll();
 		
 	}
-	@GetMapping("employee/{id}")
+	@GetMapping("findById/{id}")
 	public Employee getByID(@PathVariable Integer id) {
+		System.out.println(id+"hm");
 		return emService.findByID(id);
 		
 	}
@@ -52,11 +53,14 @@ EmployeeService emService;
 	
 	@GetMapping("login/{passW}/{user}")
 	public Employee login(@PathVariable("passW") String pass, @PathVariable("user") int user) {
-		Employee employee = emService.findByID(user);
-		if(employee != null) {
+		System.out.println("Login: " +user +" - "+ pass);
+		Employee employee = emService.findByID(12);
+		if(employee == null) {
+		
 			return null;
 		}
 		else {
+			System.out.println("j");
 			if(employee.getPasswork().equals(pass)) {
 				return employee;
 			}

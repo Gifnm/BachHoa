@@ -31,6 +31,11 @@ public class Bill {
 
 	@Column(name = "timeCreate")
 	private Timestamp timeCreate;
+	
+	@Column(name = "cash")
+	private float cash;
+	 @Column(name =  "reduced")
+	 private float reduced;
 
 	public String getBillID() {
 		return billID;
@@ -70,6 +75,22 @@ public class Bill {
 
 	public void setTimeCreate(Timestamp timeCreate) {
 		this.timeCreate = timeCreate;
+	}
+
+	public float getCash() {
+		return cash;
+	}
+
+	public void setCash(float cash) {
+		this.cash = cash;
+	}
+
+	public float getReduced() {
+		return reduced;
+	}
+
+	public void setReduced(float reduced) {
+		this.reduced = reduced;
 	}
 
 }

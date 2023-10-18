@@ -31,9 +31,6 @@ public class ShipmentBatchDetail {
 	@JoinColumn(name = "employeeID")
 	private Employee employee;
 
-	@Column(name = "completionTime")
-	private Timestamp completionTime;
-
 	@Column(name = "situation")
 	private boolean situation;
 
@@ -72,14 +69,6 @@ public class ShipmentBatchDetail {
 
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
-	}
-
-	public Timestamp getCompletionTime() {
-		return completionTime;
-	}
-
-	public void setCompletionTime(Timestamp completionTime) {
-		this.completionTime = completionTime;
 	}
 
 	public boolean isSituation() {

@@ -12,7 +12,7 @@ import com.spring.main.model.DisplayShelves;
 
 
 public interface DisplayShelvesJPA extends JpaRepository<DisplayShelves, Integer> {
-	@Query(value = "SELECT * FROM displayshelves WHERE storeID = ?1", nativeQuery = true)
+	@Query(value = "SELECT * FROM display_shelves WHERE storeID = ?1", nativeQuery = true)
 	List<DisplayShelves> getByStoreID(int storeID);
 
 }
