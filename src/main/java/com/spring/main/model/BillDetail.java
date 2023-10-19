@@ -10,7 +10,7 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "billDetail")
+@Table(name = "bill_details")
 public class BillDetail {
 	@Id
 	@Column(name = "billID")
@@ -71,5 +71,4 @@ public class BillDetail {
 	public void setTotalAmount(float totalAmount) {
 		this.totalAmount = totalAmount;
 	}
-
 }

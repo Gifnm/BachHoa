@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "store")
+@Table(name = "stores")
 public class Store {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +22,22 @@ public class Store {
 
 	@Column(name = "size")
 	private String size;
+
+	public Store(int storeID) {
+	
+		this.storeID = storeID;
+	}
+
+	public Store() {
+	
+	}
+
+	public Store(int storeID, String address, String size) {
+		
+		this.storeID = storeID;
+		this.address = address;
+		this.size = size;
+	}
 
 	public int getStoreID() {
 		return storeID;

@@ -1,5 +1,7 @@
 package com.spring.main.model;
+
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -10,25 +12,30 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "bill")
+@Table(name = "bills")
 public class Bill {
-    @Id
-    @Column(name = "billID")
-    private String billID;
+	@Id
+	@Column(name = "billID")
+	private String billID;
 
-    @ManyToOne
-    @JoinColumn(name = "storeID")
-    private Store store;
+	@ManyToOne
+	@JoinColumn(name = "storeID")
+	private Store store;
 
-    @ManyToOne
-    @JoinColumn(name = "employeeID")
-    private Employee employee;
+	@ManyToOne
+	@JoinColumn(name = "employeeID")
+	private Employee employee;
 
-    @Column(name = "totalAmount")
-    private float totalAmount;
+	@Column(name = "totalAmount")
+	private float totalAmount;
 
-    @Column(name = "timeCreate")
-    private Date timeCreate;
+	@Column(name = "timeCreate")
+	private Timestamp timeCreate;
+	
+	@Column(name = "cash")
+	private float cash;
+	 @Column(name =  "reduced")
+	 private float reduced;
 
 	public String getBillID() {
 		return billID;
@@ -62,14 +69,28 @@ public class Bill {
 		this.totalAmount = totalAmount;
 	}
 
-	public Date getTimeCreate() {
+	public Timestamp getTimeCreate() {
 		return timeCreate;
 	}
 
-	public void setTimeCreate(Date timeCreate) {
+	public void setTimeCreate(Timestamp timeCreate) {
 		this.timeCreate = timeCreate;
 	}
 
-    // Getter và setter
-    
+	public float getCash() {
+		return cash;
+	}
+
+	public void setCash(float cash) {
+		this.cash = cash;
+	}
+
+	public float getReduced() {
+		return reduced;
+	}
+
+	public void setReduced(float reduced) {
+		this.reduced = reduced;
+	}
+
 }

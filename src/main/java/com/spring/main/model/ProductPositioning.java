@@ -2,6 +2,7 @@ package com.spring.main.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -9,29 +10,31 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "productPositioning")
+@Table(name = "product_positionings")
 public class ProductPositioning {
 	@Id
 	@Column(name = "proPosID")
 	private Integer id;
 
-	@ManyToOne
-	@MapsId("disPlaID")
-	@JoinColumn(name = "disPlaID")
-	private DisplayPlatter displayPlatter;
+//	@JoinColumn(name = "disPlaID")
+//	private DisplayPlatter displayPlatter;
 
-	@ManyToOne
-	@MapsId("disSheID")
+	@ManyToOne()
 	@JoinColumn(name = "disSheID")
 	private DisplayShelves displayShelves;
 
 	@ManyToOne
-	@MapsId("productID")
 	@JoinColumn(name = "productID")
 	private Product product;
 
 	@Column(name = "displayQuantity")
 	private int displayQuantity;
+	@ManyToOne()
+	@JoinColumn(name = "storeID")
+
+	private Store store;
+	@Column(name = "form")
+	private int form;
 
 	public Integer getId() {
 		return id;
@@ -41,13 +44,13 @@ public class ProductPositioning {
 		this.id = id;
 	}
 
-	public DisplayPlatter getDisplayPlatter() {
-		return displayPlatter;
-	}
-
-	public void setDisplayPlatter(DisplayPlatter displayPlatter) {
-		this.displayPlatter = displayPlatter;
-	}
+//	public DisplayPlatter getDisplayPlatter() {
+//		return displayPlatter;
+//	}
+//
+//	public void setDisplayPlatter(DisplayPlatter displayPlatter) {
+//		this.displayPlatter = displayPlatter;
+//	}
 
 	public DisplayShelves getDisplayShelves() {
 		return displayShelves;
@@ -71,6 +74,22 @@ public class ProductPositioning {
 
 	public void setDisplayQuantity(int displayQuantity) {
 		this.displayQuantity = displayQuantity;
+	}
+
+	public Store getStore() {
+		return store;
+	}
+
+	public void setStore(Store store) {
+		this.store = store;
+	}
+
+	public int getForm() {
+		return form;
+	}
+
+	public void setForm(int form) {
+		this.form = form;
 	}
 
 }
