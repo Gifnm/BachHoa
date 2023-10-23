@@ -2,43 +2,50 @@ package com.spring.main.model;
 
 import java.sql.Timestamp;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
+//import jakarta.persistence.Column;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.Id;
+//import jakarta.persistence.JoinColumn;
+//import jakarta.persistence.ManyToOne;
+//import jakarta.persistence.MapsId;
+//import jakarta.persistence.Table;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "shipmentBatchDetail")
+@Table(name = "shipment_batch_details")
 public class ShipmentBatchDetail {
-    @Id
-    @Column(name = "shiBatID")
-    private String shiBatID;
+	@Id
+	@Column(name = "shiBatID")
+	private String shiBatID;
 
-    @ManyToOne
-    @MapsId("shiBatID")
-    @JoinColumn(name = "shiBatID")
-    private ShipmentBatch shipmentBatch;
+	@ManyToOne
+	@MapsId("shiBatID")
+	@JoinColumn(name = "shiBatID")
+	private ShipmentBatch shipmentBatch;
 
-    @ManyToOne
-    @MapsId("productID")
-    @JoinColumn(name = "productID")
-    private Product product;
+	@ManyToOne
+	@MapsId("productID")
+	@JoinColumn(name = "productID")
+	private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "employeeID")
-    private Employee employee;
+	@ManyToOne
+	@JoinColumn(name = "employeeID")
+	private Employee employee;
 
-    @Column(name = "completionTime")
-    private Timestamp completionTime;
+	@Column(name = "situation")
+	private boolean situation;
 
-    @Column(name = "situation")
-    private boolean situation;
-
-    @Column(name = "pictureURL")
-    private String pictureURL;
+	@Column(name = "pictureURL")
+	private String pictureURL;
+	@Column(name = "quantity")
+	private int quantity;
 
 	public String getShiBatID() {
 		return shiBatID;
@@ -72,14 +79,6 @@ public class ShipmentBatchDetail {
 		this.employee = employee;
 	}
 
-	public Timestamp getCompletionTime() {
-		return completionTime;
-	}
-
-	public void setCompletionTime(Timestamp completionTime) {
-		this.completionTime = completionTime;
-	}
-
 	public boolean isSituation() {
 		return situation;
 	}
@@ -96,6 +95,11 @@ public class ShipmentBatchDetail {
 		this.pictureURL = pictureURL;
 	}
 
-    // Getter và setter
-    
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 }

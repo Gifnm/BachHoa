@@ -3,12 +3,21 @@ package com.spring.main.model;
 import java.sql.Date;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+//import jakarta.persistence.Column;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.FetchType;
+//import jakarta.persistence.Id;
+//import jakarta.persistence.JoinColumn;
+//import jakarta.persistence.ManyToOne;
+//import jakarta.persistence.OneToOne;
+//import jakarta.persistence.Table;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "products")
@@ -32,6 +41,47 @@ public class Product {
 
 	@Column(name = "productName")
 	private String productName;
+	
+	@Column(name = "status")
+	private Boolean status;
+	
+	@Column(name = "image")
+	private String image;
+	
+	@Column(name = "importPrice")
+	private float importPrice;
+	
+	@ManyToOne()
+	@JoinColumn(name = "storeID")
+	private Store store;
+	
+	@Column(name = "inventory")
+	private Integer inventory;
+
+	public Product(String productID) {
+
+		this.productID = productID;
+	}
+
+	public Product() {
+
+	}
+
+	public Product(String productID, Categories categories, float price, int vat, Date nearestExpDate,
+			String productName, Boolean status, String image, float importPrice, Store store, Integer inventory) {
+
+		this.productID = productID;
+		this.categories = categories;
+		this.price = price;
+		this.vat = vat;
+		this.nearestExpDate = nearestExpDate;
+		this.productName = productName;
+		this.status = status;
+		this.image = image;
+		this.importPrice = importPrice;
+		this.store = store;
+		this.inventory = inventory;
+	}
 
 	public String getProductID() {
 		return productID;
@@ -79,6 +129,46 @@ public class Product {
 
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public float getImportPrice() {
+		return importPrice;
+	}
+
+	public void setImportPrice(float importPrice) {
+		this.importPrice = importPrice;
+	}
+
+	public Store getStore() {
+		return store;
+	}
+
+	public void setStore(Store store) {
+		this.store = store;
+	}
+
+	public Integer getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(Integer inventory) {
+		this.inventory = inventory;
 	}
 
 //    @OneToMany(mappedBy = "product")

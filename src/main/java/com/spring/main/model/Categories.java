@@ -1,13 +1,20 @@
 package com.spring.main.model;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+//import jakarta.persistence.Column;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.GeneratedValue;
+//import jakarta.persistence.GenerationType;
+//import jakarta.persistence.Id;
+//import jakarta.persistence.OneToMany;
+//import jakarta.persistence.Table;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "categories")
@@ -20,8 +27,6 @@ public class Categories {
     @Column(name = "categoriesName", nullable = false)
     private String categoriesName;
 
-    @OneToMany(mappedBy = "categories")
-    private List<Product> products;
 
 	public int getCategoriesID() {
 		return categoriesID;
@@ -38,15 +43,5 @@ public class Categories {
 	public void setCategoriesName(String categoriesName) {
 		this.categoriesName = categoriesName;
 	}
-
-	public List<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
-
-    // Getter và setter
     
 }

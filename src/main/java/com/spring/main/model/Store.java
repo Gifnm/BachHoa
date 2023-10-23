@@ -2,15 +2,22 @@ package com.spring.main.model;
 
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+//import jakarta.persistence.Column;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.GeneratedValue;
+//import jakarta.persistence.GenerationType;
+//import jakarta.persistence.Id;
+//import jakarta.persistence.Table;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "store")
+@Table(name = "stores")
 public class Store {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +29,22 @@ public class Store {
 
 	@Column(name = "size")
 	private String size;
+
+	public Store(int storeID) {
+	
+		this.storeID = storeID;
+	}
+
+	public Store() {
+	
+	}
+
+	public Store(int storeID, String address, String size) {
+		
+		this.storeID = storeID;
+		this.address = address;
+		this.size = size;
+	}
 
 	public int getStoreID() {
 		return storeID;
