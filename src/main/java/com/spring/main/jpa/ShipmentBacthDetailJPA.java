@@ -11,7 +11,7 @@ import com.spring.main.model.Store;
 
 import jakarta.transaction.Transactional;
 
-public interface ShipmentBacthDetailJPA  extends JpaRepository<ShipmentBatchDetail, String>{
-// Lay danh sach dot cham hang chi tiet theo ma cua hang
-	
+public interface ShipmentBacthDetailJPA extends JpaRepository<ShipmentBatchDetail, String> {
+
+
 }

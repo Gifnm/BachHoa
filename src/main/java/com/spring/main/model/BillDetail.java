@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
@@ -11,20 +12,15 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "bill_details")
+@IdClass(BillDetailId.class)
 public class BillDetail {
 	@Id
 	@Column(name = "billID")
 	private String billID;
 
-	@ManyToOne
-	@MapsId("billID")
-	@JoinColumn(name = "billID")
-	private Bill bill;
-
-	@ManyToOne
-	@MapsId("productID")
-	@JoinColumn(name = "productID")
-	private Product product;
+	@Id
+	@Column(name = "productID")
+	private String productID;
 
 	@Column(name = "quantity")
 	private int quantity;
@@ -40,20 +36,20 @@ public class BillDetail {
 		this.billID = id;
 	}
 
-	public Bill getBill() {
-		return bill;
+	public String getBillID() {
+		return billID;
 	}
 
-	public void setBill(Bill bill) {
-		this.bill = bill;
+	public void setBillID(String billID) {
+		this.billID = billID;
 	}
 
-	public Product getProduct() {
-		return product;
+	public String getProductID() {
+		return productID;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductID(String productID) {
+		this.productID = productID;
 	}
 
 	public int getQuantity() {

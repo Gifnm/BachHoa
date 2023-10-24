@@ -27,12 +27,11 @@ BillDetaileService billDetaileService;
 ProductService productService;
 @GetMapping("billDetail/getproduct/{productID}")
 private BillDetail getProduct(@PathVariable String productID) {
-	System.out.println("Alo kia kia");
-	Product product = productService.getByID(productID);
+	// product = productService.getByID(productID);
 	BillDetail billDetail= new BillDetail();
 	billDetail.setQuantity(1);
-	billDetail.setTotalAmount(product.getPrice());
-	billDetail.setProduct(product);
+//	billDetail.setTotalAmount(product.getPrice());
+//	billDetail.setProduct(product);
 	System.out.println(billDetail.toString());
 	return billDetail;
 }
@@ -41,9 +40,16 @@ private void createBillDetail(@PathVariable("listDetail") List<BillDetail> list 
 	Bill bill = new Bill();
 	bill.setBillID(billID);
 	for (BillDetail billDetail : list) {
-		billDetail.setBill(bill);
+		//billDetail.setBill(bill);
 		billDetaileService.createBillDetail(billDetail);
 	}
+	
+}
+@GetMapping("hihi")
+private void save() {
+	BillDetail billDetail = new BillDetail();
+	billDetail.setBillID("111");
+	billDetail.setProductID("");
 	
 }
 

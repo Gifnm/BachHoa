@@ -11,23 +11,22 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "display_platters")
 public class DisplayPlatter {
-//
 	@Id
 	@Column(name = "disPlaID")
 	private int disPlaID;
 
-
 	@Column(name = "rowName")
 	private String rowName;
- @OneToOne
- @JoinColumn(name = "StoreID")
- private Store store;
+	@OneToOne
+	@JoinColumn(name = "storeID")
+	private Store store;
+
 	public int getDisPlaID() {
 		return disPlaID;
 	}
 
 	public DisplayPlatter() {
-	
+
 	}
 
 	public DisplayPlatter(int disPlaID) {
@@ -35,7 +34,7 @@ public class DisplayPlatter {
 	}
 
 	public DisplayPlatter(int disPlaID, String rowName, Store store) {
-	
+
 		this.disPlaID = disPlaID;
 		this.rowName = rowName;
 		this.store = store;
@@ -60,6 +59,5 @@ public class DisplayPlatter {
 	public void setStore(Store store) {
 		this.store = store;
 	}
-
 
 }
