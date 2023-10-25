@@ -1,0 +1,178 @@
+$button-width: 25px;
+$header-height: 42px;
+
+.ui-tabs-scrollable {
+  position: relative;
+
+  >.spacer {
+    &:not(.hidden-buttons) {
+      margin-left: $button-width;
+      margin-right: $button-width;
+
+      >div:first-child {
+        >.nav-tabs {
+          >li {
+
+            &:first-child.active a,
+            &:first-child a:hover {
+              border-top-left-radius: 0;
+              border-left: 1px solid transparent;
+            }
+
+            &:last-child.active a,
+            &:last-child a,
+            &:last-child a:hover {
+              border-top-right-radius: 0;
+              border-right: 1px solid transparent;
+              margin-right: -1px;
+            }
+          }
+        }
+
+        >.tab-content {
+          margin-left: -$button-width;
+          margin-right: -$button-width;
+        }
+      }
+    }
+
+    >div:first-child {
+      >.nav-tabs {
+        white-space: nowrap;
+        overflow: hidden;
+        border-bottom: 0;
+
+        >li {
+          float: none;
+          display: table-cell;
+
+          >a {
+            height: $header-height;
+          }
+        }
+      }
+
+      >.tab-content {
+        margin-top: -1px;
+        border-top: 1px solid #ddd;
+      }
+    }
+  }
+
+  >.nav-button {
+    position: absolute;
+    width: $button-width;
+    height: $header-height;
+    line-height: $header-height;
+    top: 0;
+    color: #428bca;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 0;
+    padding: 0;
+    background-color: #fff;
+    z-index: 10;
+
+    &:hover {
+      background-color: #eee;
+    }
+
+    &.left-nav-button {
+      left: 0;
+      border-top-left-radius: 4px;
+
+      &:before {
+        font-family: 'Glyphicons Halflings';
+        content: '\e079';
+      }
+    }
+
+    &.right-nav-button {
+      right: 0;
+      border-top-right-radius: 4px;
+
+      &:before {
+        font-family: 'Glyphicons Halflings';
+        content: '\e080';
+      }
+    }
+  }
+
+  >.dropdown {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    >.dropdown-toggle {
+      width: $button-width;
+      height: $header-height;
+      line-height: $header-height;
+      color: #428bca;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-left-width: 0;
+      padding: 0;
+      background-color: #fff;
+      z-index: 10;
+      border-radius: 0 4px 0 0;
+
+      &:before {
+        font-family: 'Glyphicons Halflings';
+        content: '\e114';
+      }
+    }
+  }
+
+  &.show-drop-down {
+    >.spacer {
+      &:not(.hidden-buttons) {
+        margin-right: calc(#{$button-width} + #{$button-width});
+
+        >div:first-child {
+          >.tab-content {
+            margin-right: calc(-#{$button-width} - #{$button-width});
+          }
+        }
+      }
+    }
+
+    >.nav-button {
+      &.right-nav-button {
+        right: $button-width;
+        border-radius: 0;
+      }
+    }
+  }
+}
+
+.dropdown-menu {
+  >li {
+    >a {
+      .dropDownTabActiveMark:before {
+        font-family: 'Glyphicons Halflings';
+        content: '\e013';
+        padding-right: 10px;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+/*make the tabs content be height 100%*/
+.ui-tabs-scrollable>.spacer {
+  height: 100%;
+
+  >div:first-child {
+    height: 100%;
+
+    >.tab-content {
+      height: 100%;
+
+      >.active {
+        height: 100%;
+        overflow: auto;
+      }
+    }
+  }
+}
