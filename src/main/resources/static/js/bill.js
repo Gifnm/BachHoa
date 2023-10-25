@@ -1,16 +1,16 @@
 
 
-var app = angular.module("app", ["ui.bootstrap", "ui.tab.scroll"]);
+const app = angular.module("app", ["ui.bootstrap", "ui.tab.scroll"]);
 app.controller("bill-ctrl", function ($scope, $http) {
     // gợi ý sản phẩm
     $scope.autocompleteInput = {
         autocomplete(inp, arr) {
             /*the autocomplete function takes two arguments,
             the text field element and an array of possible autocompleted values:*/
-            var currentFocus;
+            let currentFocus;
             /*execute a function when someone writes in the text field:*/
             inp.addEventListener("input", function (e) {
-                var a, b, i, val = this.value;
+                let a, b, i, val = this.value;
                 /*close any already open lists of autocompleted values*/
                 closeAllLists();
                 if (!val) { return false; }
@@ -48,7 +48,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
             });
             /*execute a function presses a key on the keyboard:*/
             inp.addEventListener("keydown", function (e) {
-                var x = document.getElementById(this.id + "autocomplete-list");
+                let x = document.getElementById(this.id + "autocomplete-list");
                 if (x) x = x.getElementsByTagName("div");
                 if (e.keyCode == 40) {
                     /*If the arrow DOWN key is pressed,
@@ -83,7 +83,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
             }
             function removeActive(x) {
                 /*a function to remove the "active" class from all autocomplete items:*/
-                for (var i = 0; i < x.length; i++) {
+                for (let i = 0; i < x.length; i++) {
                     x[i].classList.remove("autocomplete-active");
                 }
             }
@@ -91,7 +91,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
                 /*close all autocomplete lists in the document,
                 except the one passed as an argument:*/
                 var x = document.getElementsByClassName("autocomplete-items");
-                for (var i = 0; i < x.length; i++) {
+                for (let i = 0; i < x.length; i++) {
                     if (elmnt != x[i] && elmnt != inp) {
                         x[i].parentNode.removeChild(x[i]);
                     }
@@ -123,6 +123,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
     $scope.listProduct = [];
     $scope.totalAmount = 0;
     $scope.amountReceivable = 0;
+    $scope.roundAmountReceivable = 0;
     $scope.change = 0;
     $scope.discount = 0;
     $scope.invoiceID = "";
@@ -131,7 +132,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
     $scope.discountDetail = {};
 
     // Khởi tạo 1 bill tạm đầu tiên
-    var init = function () {
+    let init = function () {
         $scope.bills.push({
             stt: 1,
             bill: createBill(),
@@ -142,14 +143,14 @@ app.controller("bill-ctrl", function ($scope, $http) {
     }
 
     // tạo bill mới
-    var createBill = function () {
-        var storeID = parseInt(document.getElementById('storeID').innerText);
-        var employeeID = parseInt(document.getElementById('employeeID').innerText);
-        var bill = {};
+    let createBill = function () {
+        let storeID = parseInt(document.getElementById('storeID').innerText);
+        let employeeID = parseInt(document.getElementById('employeeID').innerText);
+        let bill = {};
         $http.get(`/bachhoa/api/store/findByID/${storeID}`).then(resp => {
             bill.billID = new Date().getTime().toString();
             bill.totalAmount = 0;
-            bill.createDate = new Date();
+            bill.timeCreate = new Date().getTime();
             bill.cash = 0;
             bill.reduce = 0;
             bill.store = resp.data;
@@ -165,18 +166,12 @@ app.controller("bill-ctrl", function ($scope, $http) {
     $scope.selectBill = function (billID) {
         loadToBillDetail(billID);
         $scope.invoiceID = billID;
-        // $scope.productCode = "";
-        // $scope.totalMoney = 0;
-        // $scope.cash = "";
-        // $scope.change = 0;
-        // $scope.discount = 0;
-        //alert(billID)
     };
 
 
     // lưu bill vào database
-    var saveBillToDatabase = function (dataBill) {
-        var url = `/bachhoa/api/bill/save`;
+    let saveBillToDatabase = function (dataBill) {
+        let url = `/bachhoa/api/bill/save`;
         $http.post(url, dataBill).then(resp => {
             console.log("Thêm thành công", resp);
             // lưu billDetail
@@ -188,10 +183,10 @@ app.controller("bill-ctrl", function ($scope, $http) {
     };
 
 
-    var stt = 1;
+    let stt = 1;
 
     // thêm bill tạm vào mảng bills[]
-    var addNewBill = function () {
+    let addNewBill = function () {
         let bill = createBill();
         if ($scope.bills.length == 0) {
             $scope.bills.push({
@@ -213,7 +208,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
     };
 
     // chọn tab hoạt động
-    var setAllInactive = function () {
+    let setAllInactive = function () {
         angular.forEach($scope.bills, function (bill) {
             bill.active = false;
         });
@@ -227,12 +222,12 @@ app.controller("bill-ctrl", function ($scope, $http) {
     };
     // xóa bill tạm
     $scope.removeTab = function (index) {
-        var item = $scope.bills[index];
+        let item = $scope.bills[index];
         if ($scope.bills.length != 1 && index == $scope.bills.length - 1) {
-            var item = $scope.bills[index - 1];
+            let item = $scope.bills[index - 1];
             $scope.invoiceID = item.bill.billID;
         } else if ($scope.bills.length != 1 && item.bill.billID == $scope.invoiceID) {
-            var item = $scope.bills[index + 1];
+            let item = $scope.bills[index + 1];
             $scope.invoiceID = item.bill.billID;
         }
         $scope.bills.splice(index, 1);
@@ -246,13 +241,14 @@ app.controller("bill-ctrl", function ($scope, $http) {
 
     // Xử lý billDetail
     // tải lại dự liệu trên bảng hóa đơn chi tiết
-    var loadToBillDetail = function (billID) {
+    let loadToBillDetail = function (billID) {
         if ($scope.billDetails.length == 0) {
             document.getElementById('print').disabled = true;
         }
         $scope.listProduct = [];
         angular.forEach($scope.billDetails, function (item) {
             if (item.billDetail.billID == billID) {
+                item.billDetail.totalAmount = Math.round(item.billDetail.totalAmount);
                 $scope.listProduct.push(item);
             }
         });
@@ -262,7 +258,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
 
     // Thêm sản phẩm vào billDetail
     $scope.addProductToBillDetail = function (productID) {
-        var item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == $scope.invoiceID);
+        let item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == $scope.invoiceID);
         //var billID = $scope.invoiceID;
 
         if (item) {
@@ -271,15 +267,15 @@ app.controller("bill-ctrl", function ($scope, $http) {
             //$scope.productCode = '';
         } else {
             $http.get(`/product/getProductID`).then(resp => {
-                var products = resp.data;
-                var item = products.find(item => item == productID);
+                let products = resp.data;
+                let item = products.find(item => item == productID);
                 if (item) {
                     $http.get(`/product/findByID/${productID}`).then(resp => {
-                        var product = resp.data;
-                        var temp = $scope.bills.find(item => item.bill.billID == $scope.invoiceID);
-                        var bill = temp.bill;
-                        var quantity = 1;
-                        var storeID = 1;
+                        let product = resp.data;
+                        let temp = $scope.bills.find(item => item.bill.billID == $scope.invoiceID);
+                        let bill = temp.bill;
+                        let quantity = 1;
+                        let storeID = 1;
                         $http.get(`/discount/findByProductIDAndStoreID/${productID}/${storeID}`).then(resp => {
                             //alert("run")
                             $scope.discountDetail = resp.data;
@@ -293,19 +289,19 @@ app.controller("bill-ctrl", function ($scope, $http) {
                                 $scope.sale = 0.5;
                                 $scope.discountName = "50%";
                                 //alert("s50")
-                            }else{
+                            } else {
                                 $scope.sale = 0;
                                 $scope.discountName = "Không";
                             }
-                            
-                            var totalMoney = product.price + (product.price * (product.vat / 100));
-                            var discount = (product.price + (product.price * (product.vat / 100))) * $scope.sale;
-                            var priceSale = totalMoney -  discount;
-                            var data = {
+
+                            let totalMoney = Math.round(product.price + (product.price * (product.vat / 100)));
+                            let discount = Math.round((product.price + (product.price * (product.vat / 100))) * $scope.sale);
+                            let priceSale = totalMoney - discount;
+                            let data = {
                                 discountName: $scope.discountName,
                                 sale: $scope.sale,
-                                discount: (product.price + (product.price * (product.vat / 100))) * $scope.sale,
-                                totalMoney: product.price + (product.price * (product.vat / 100)),
+                                discount: Math.round((product.price + (product.price * (product.vat / 100))) * $scope.sale),
+                                totalMoney: Math.round(product.price + (product.price * (product.vat / 100))),
                                 billDetail: {
                                     billID: $scope.invoiceID,
                                     productID: productID,
@@ -333,11 +329,11 @@ app.controller("bill-ctrl", function ($scope, $http) {
     };
 
     //cập nhật billDetail khi tăng số lượng
-    var updateBillDetail = function (productID, billID) {
-        var item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
-        var index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
+    let updateBillDetail = function (productID, billID) {
+        let item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
+        let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         item.billDetail.quantity = item.billDetail.quantity + 1;
-        var quantity = item.billDetail.quantity;
+        let quantity = item.billDetail.quantity;
         item.discount = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity * item.sale;
         item.totalMoney = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity;
         item.billDetail.totalAmount = item.totalMoney - item.discount;
@@ -346,12 +342,12 @@ app.controller("bill-ctrl", function ($scope, $http) {
 
     // Cập nhật billDetail khi tăng số lượng tại ô input số lượng
     $scope.updateBillDetailFromInput = function (productID, quantity, billID) {
-        var item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
-        var index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
+        let item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
+        let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         item.billDetail.quantity = quantity;
         item.discount = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity * item.sale;
         item.totalMoney = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity;
-        item.billDetail.totalAmount = item.totalMoney - item.discount;     
+        item.billDetail.totalAmount = item.totalMoney - item.discount;
         $scope.billDetails.splice(index, 1, item);
         loadToBillDetail(billID);
     };
@@ -359,13 +355,13 @@ app.controller("bill-ctrl", function ($scope, $http) {
 
     // Xóa sản phẩm trong billDetail
     $scope.deleteItem = function (productID, billID) {
-        var index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
+        let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         $scope.billDetails.splice(index, 1);
         loadToBillDetail(billID);
     };
 
     //Tính tổng tiền của bill
-    var total = function (billID) {
+    let total = function (billID) {
         $scope.totalAmount = 0;
         $scope.discount = 0;
         if ($scope.billDetails.length == 0) {
@@ -379,26 +375,32 @@ app.controller("bill-ctrl", function ($scope, $http) {
                     $scope.discount += item.discount;
                 }
             });
+            $scope.totalAmount = Math.round($scope.totalAmount);
+            $scope.discount = Math.round($scope.discount);
             $scope.amountReceivable = $scope.totalAmount - $scope.discount;
+            $scope.roundAmountReceivable = Math.round($scope.amountReceivable / 1000) * 1000;
         }
         $scope.productCode = "";
         $scope.money = "";
         $scope.change = 0;
+        document.getElementById("productCode").focus()
     };
 
     // Tính tiền thối lại
     $scope.cash = function (cash) {
-        $scope.change = cash - $scope.totalAmount;
+        $scope.change = cash - $scope.roundAmountReceivable;
         document.getElementById('print').disabled = false;
     };
 
     // lưu billDetail vào database
-    var saveBillDetailToDatabse = function (billID) {
-        var url = `/bachhoa/api/billDetail/save/`;
-        angular.forEach($scope.billDetails, function (billDetail) {
-            if (billDetail.billID == billID) {
-                $http.post(url, billDetail).then(resp => {
+    let saveBillDetailToDatabse = function (billID) {
+        let url = `/bachhoa/api/billDetail/save/`;
+        angular.forEach($scope.billDetails, function (item) {
+            if (item.billDetail.billID == billID) {
+                $http.post(url, item.billDetail).then(resp => {
                     console.log("Thêm thành công", resp);
+                    var billDetail = resp.data;
+                    window.location = "/print/" + billDetail.billID;
                 }).catch(error => {
                     console.log("Có lỗi xảy ra", error);
                 });
@@ -409,15 +411,15 @@ app.controller("bill-ctrl", function ($scope, $http) {
     //------------------------------------------------//
 
     $scope.print = function () {
-        //var billID = document.getElementById('billID').innerText;
-        var billID = $scope.invoiceID;
-        var data = $scope.bills.find(item => item.bill.billID == billID);
-        var item = data.bill;
-        item.totalAmount = parseInt(document.getElementById('totalAmount').innerText.replace(',', ''));
+        let billID = $scope.invoiceID;
+        let data = $scope.bills.find(item => item.bill.billID == billID);
+        let item = data.bill;
+        item.totalAmount = parseInt(document.getElementById('amountReceivable').innerText.replace(',', ''));
         item.cash = parseInt(document.getElementById('cash').value);
         item.reduce = parseInt(document.getElementById('discount').innerText.replace(',', ''));
         saveBillToDatabase(item);
         console.log(item)
+        $scope.money = "";
     }
 
 

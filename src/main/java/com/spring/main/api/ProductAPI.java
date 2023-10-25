@@ -81,9 +81,19 @@ ProductService productService;
         return productService.getProductID();
     }
     
+    @GetMapping("product/getProductName")
+    public List<String> getProductName() {    
+        return productService.getProductName();
+    }
+    
     @GetMapping("product/findByID/{productID}")
     public Product findByID(@PathVariable("productID") String productID) {    
         return productService.getByID(productID);
+    }
+    
+    @GetMapping("product/findByIDOrName/{value}")
+    public Product findByIDOrName(@PathVariable("value") String value) {    
+        return productService.getByIDOrName(value);
     }
 }
 		

@@ -14,4 +14,8 @@ public void save(Bill bill) {
 	billJPA.save(bill);	
 }
 
+public Bill findByID(String billID) {
+	return billJPA.findById(billID).get();
+}
+
 }

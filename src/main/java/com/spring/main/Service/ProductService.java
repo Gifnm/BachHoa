@@ -38,8 +38,18 @@ public Product getByIDAndStoreID(String ProductID, int storeID) {
 	
 }
 
+public Product getByIDOrName(String value) {
+	Product product = productJPA.getByIDOrName(value);
+	return product;
+	
+}
+
 public List<String> getProductID() {
 	return productJPA.getProductID();
+	
+}
+public List<String> getProductName() {
+	return productJPA.getProductName();
 	
 }
 }

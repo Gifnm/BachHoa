@@ -37,15 +37,16 @@ public class Bill {
 	private Employee employee;
 
 	@Column(name = "totalAmount")
-	private float totalMoney;
+	private float totalAmount;
 
 	@Column(name = "timeCreate")
 	private Timestamp timeCreate;
-	
+
 	@Column(name = "cash")
 	private float cash;
-	 @Column(name =  "reduced")
-	 private float reduced;
+	
+	@Column(name = "reduced")
+	private float reduced;
 //
 //	public String getBillID() {
 //		return billID;

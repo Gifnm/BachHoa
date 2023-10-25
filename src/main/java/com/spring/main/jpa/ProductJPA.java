@@ -14,4 +14,10 @@ public interface ProductJPA extends JpaRepository<Product, String> {
 
 	@Query("SELECT o.productID FROM Product o")
 	List<String> getProductID();
+	
+	@Query("SELECT o.productName FROM Product o")
+	List<String> getProductName();
+	
+	@Query("Select o from Product o where o.productID LIKE ?1 OR o.productName LIKE ?1")
+	Product getByIDOrName(String value);
 }

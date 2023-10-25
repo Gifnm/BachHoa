@@ -11,7 +11,7 @@ import com.spring.main.jpa.BillDetailJPA;
 import com.spring.main.model.BillDetail;
 
 @Service
-public class BillDetaileService {
+public class BillDetailService {
 	@Autowired
 	BillDetailJPA billDetailJPA;
 

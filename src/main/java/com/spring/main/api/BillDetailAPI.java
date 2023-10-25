@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.spring.main.Service.BillDetaileService;
+import com.spring.main.Service.BillDetailService;
 import com.spring.main.Service.ProductService;
 import com.spring.main.model.Bill;
 import com.spring.main.model.BillDetail;
@@ -25,7 +25,7 @@ import com.spring.main.model.Product;
 @RequestMapping("/bachhoa/api")
 public class BillDetailAPI {
 @Autowired 
-BillDetaileService billDetaileService;
+BillDetailService billDetailService;
 @Autowired
 ProductService productService;
 //@GetMapping("billDetail/getproduct/{productID}")
@@ -52,30 +52,31 @@ ProductService productService;
 
 @GetMapping("billDetail/findByBillID/{billID}")
 private List<BillDetail> findByBillID(@PathVariable("billID") String billID) {
-	return billDetaileService.findByBillID(billID);
+	return billDetailService.findByBillID(billID);
 }
 
 @PostMapping("billDetail/save")
-	private void saveBillDetail(@RequestBody BillDetail billDetail) {
-	System.out.println(billDetail);
-	billDetaileService.save(billDetail);
+	private BillDetail saveBillDetail(@RequestBody BillDetail billDetail) {
+	//System.out.println(billDetail);
+	billDetailService.save(billDetail);
+	return billDetail;
 }
 
 @PostMapping("billDetail/save/{listBillDetail}")
 private void saveBillDetail(@PathVariable List<BillDetail> listBillDetail) {
 	for(BillDetail billDetail : listBillDetail) {
-		billDetaileService.save(billDetail);
+		billDetailService.save(billDetail);
 	}
 }
 
 @PutMapping("billDetail/update/{billDetailID}")
 private void updateBillDetail(@PathVariable("billDetailID") String billDetailID, @RequestBody BillDetail billDetail) {
-	billDetaileService.save(billDetail);
+	billDetailService.save(billDetail);
 }
 
 @DeleteMapping("billDetail/delete/{billDetailID}")
 public void delete(@PathVariable("billDetailID") String billDetailID) {
-	billDetaileService.delete(billDetailID);
+	billDetailService.delete(billDetailID);
 }
 
 
