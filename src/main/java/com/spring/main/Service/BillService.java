@@ -10,8 +10,8 @@ import com.spring.main.model.Bill;
 public class BillService {
 @Autowired
 BillJPA billJPA;
-public void createBill(Bill bill) {
-	billJPA.save(bill);
-	
+public void save(Bill bill) {
+	billJPA.save(bill);	
 }
+
 }
