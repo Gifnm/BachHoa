@@ -66,13 +66,13 @@
           </li>
           <li class="nav-item">
             <form class="search-form" action="#">
-              <i class="icon-search"></i>
-              <input type="search" class="form-control" placeholder="Search Here" title="Search here">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" ng-model="query" ng-change="search()" class="form-control" placeholder="Search Here" title="Search here">
             </form>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
-              <i class="icon-mail icon-lg"></i>
+              <i class="fa-solid fa-envelope"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="notificationDropdown">
               <a class="dropdown-item py-3 border-bottom">
@@ -110,7 +110,7 @@
           </li>
           <li class="nav-item dropdown"> 
             <a class="nav-link count-indicator" id="countDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="icon-bell"></i>
+              <i class="fa-solid fa-bell"></i>
               <span class="count"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="countDropdown">
@@ -150,10 +150,10 @@
           </li>
           <li class="nav-item dropdown d-none d-lg-block user-dropdown">
             <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-              <img class="img-xs rounded-circle" src="images/faces/face8.jpg" alt="Profile image"> </a>
+              <img class="img-xs rounded-circle" src="../images/faces/face1.jpg" alt="Profile image"> </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <div class="dropdown-header text-center">
-                <img class="img-md rounded-circle" src="images/faces/face8.jpg" alt="Profile image">
+                <img class="img-md rounded-circle" src="../images/faces/face1.jpg" alt="Profile image">
                 <p class="mb-1 mt-3 font-weight-semibold">Allen Moreno</p>
                 <p class="fw-light text-muted mb-0">allenmoreno@gmail.com</p>
               </div>

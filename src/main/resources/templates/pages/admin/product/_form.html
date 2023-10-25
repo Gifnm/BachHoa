@@ -1,0 +1,76 @@
+<form class="col-lg-4 pl-4">
+    <div class="mt-3">
+        <div class="mb-3">
+            <input ng-model="form.productID" class="form-control">
+        </div>
+        <div class="mb-3">
+            <input ng-model="form.productName" class="form-control"
+                   placeholder="Name">
+        </div>
+        <div class="mb-3">
+            <select ng-model="form.categories.categoriesID"
+                    class="form-select">
+                <option ng-repeat="c in categories" ng-value="c.categoriesID">{{c.categoriesName}}</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <input ng-model="form.price" type="number" min="0"
+                   class="form-control" placeholder="Price">
+        </div>
+        <div class="mb-3">
+            <input ng-model="form.importPrice" type="number" min="0"
+                   class="form-control" placeholder="Import price">
+        </div>
+        <div class="mb-3">
+            <input ng-model="form.inventory" type="number" min="0"
+                   class="form-control" placeholder="inventory">
+        </div>
+        <div class="mb-3">
+            <input ng-model="form.vat" type="number" min="0"
+                   class="form-control" placeholder="VAT">
+        </div>
+        <div class="mb-3">
+            <input ng-model="form.nearestExpDate" class="form-control" type="date"
+        </div>
+        <div class="form-group col-sm-6">
+            <div>Status</div>
+            <div class="form-control">
+                <label class="radio-inline">
+                    <input ng-model="form.status" ng-value="true" name="status" type="radio"> Yes
+                </label>
+                <label class="radio-inline">
+                    <input ng-model="form.status" ng-value="false" name="status" type="radio"> No
+                </label>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <div>Image</div>
+            <input type="file" class="form-control" onchange="angular.element(this).scope().imageChanged(this.files)">
+        </div>
+    </div>
+
+    <div class="bg-white border w-50 mb-3 rounded">
+        <img ng-src="/images/{{form.image}}" class="object-fit-contain h-100 w-100" alt="{{form.image}}">
+    </div>
+</form>
+<nav class="navbar bg-white border-top border-bottom">
+    <div class="">
+        <button ng-click="create()" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Create
+        </button>
+        <button ng-click="update()" class="btn btn-primary">
+            <i class="fas fa-rotate"></i> Update
+        </button>
+        <button ng-click="delete(form.productID)" class="btn btn-primary">
+            <i class="fas fa-solid fa-ban"></i> Delete
+        </button>
+        <button ng-click="reset()" class="btn btn-primary">
+            <i class="fas fa-regular fa-window-restore"></i> Reset
+        </button>
+    </div>
+    <!-- <div class="input-append">
+        <input type="text" ng-model="query" ng-change="search()" class="input-large search-query"
+               placeholder="Search">
+        <span class="add-on"><i class="icon-search"></i></span>
+    </div> -->
+</nav>
