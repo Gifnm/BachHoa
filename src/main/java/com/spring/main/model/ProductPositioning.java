@@ -2,11 +2,9 @@ package com.spring.main.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,8 +14,8 @@ public class ProductPositioning {
 	@Column(name = "proPosID")
 	private Integer id;
 
-//	@JoinColumn(name = "disPlaID")
-//	private DisplayPlatter displayPlatter;
+	// @JoinColumn(name = "disPlaID")
+	// private DisplayPlatter displayPlatter;
 
 	@ManyToOne()
 	@JoinColumn(name = "disSheID")
@@ -44,13 +42,13 @@ public class ProductPositioning {
 		this.id = id;
 	}
 
-//	public DisplayPlatter getDisplayPlatter() {
-//		return displayPlatter;
-//	}
-//
-//	public void setDisplayPlatter(DisplayPlatter displayPlatter) {
-//		this.displayPlatter = displayPlatter;
-//	}
+	// public DisplayPlatter getDisplayPlatter() {
+	// return displayPlatter;
+	// }
+	//
+	// public void setDisplayPlatter(DisplayPlatter displayPlatter) {
+	// this.displayPlatter = displayPlatter;
+	// }
 
 	public DisplayShelves getDisplayShelves() {
 		return displayShelves;

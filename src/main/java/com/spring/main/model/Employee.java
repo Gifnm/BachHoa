@@ -1,7 +1,6 @@
 package com.spring.main.model;
 
 import java.sql.Date;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -138,19 +137,19 @@ public class Employee {
 		this.passwork = passwork;
 	}
 
-//    @OneToMany(mappedBy = "employee")
-//    private List<Bill> bills;
-//
-//    @OneToMany(mappedBy = "employee")
-//    private List<DetailWorkSchedule> detailWorkSchedules;
-//
-//    @OneToMany(mappedBy = "employee")
-//    private List<InventoryHistory> inventoryHistories;
-//
-//    @OneToMany(mappedBy = "employee")
-//    private List<ShipmentBatch> shipmentBatches;
-//
-//    @OneToMany(mappedBy = "employee")
-//    private List<ShipmentBatchDetail> shipmentBatchDetails;
+	// @OneToMany(mappedBy = "employee")
+	// private List<Bill> bills;
+	//
+	// @OneToMany(mappedBy = "employee")
+	// private List<DetailWorkSchedule> detailWorkSchedules;
+	//
+	// @OneToMany(mappedBy = "employee")
+	// private List<InventoryHistory> inventoryHistories;
+	//
+	// @OneToMany(mappedBy = "employee")
+	// private List<ShipmentBatch> shipmentBatches;
+	//
+	// @OneToMany(mappedBy = "employee")
+	// private List<ShipmentBatchDetail> shipmentBatchDetails;
 
 }

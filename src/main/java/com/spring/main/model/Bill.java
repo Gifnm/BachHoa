@@ -1,8 +1,6 @@
 package com.spring.main.model;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,11 +29,11 @@ public class Bill {
 
 	@Column(name = "timeCreate")
 	private Timestamp timeCreate;
-	
+
 	@Column(name = "cash")
 	private float cash;
-	 @Column(name =  "reduced")
-	 private float reduced;
+	@Column(name = "reduced")
+	private float reduced;
 
 	public String getBillID() {
 		return billID;

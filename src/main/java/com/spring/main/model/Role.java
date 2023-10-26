@@ -1,11 +1,8 @@
 package com.spring.main.model;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -34,10 +31,10 @@ public class Role {
 		this.workRole = workRole;
 	}
 
-//    @OneToMany(mappedBy = "role")
-//    private List<Employee> employees;
-//
-//    @OneToMany(mappedBy = "role")
-//    private List<RoleBasedSalary> roleBasedSalaries;
+	// @OneToMany(mappedBy = "role")
+	// private List<Employee> employees;
+	//
+	// @OneToMany(mappedBy = "role")
+	// private List<RoleBasedSalary> roleBasedSalaries;
 
 }

@@ -2,8 +2,6 @@ package com.spring.main.api;
 
 import java.util.List;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,25 +16,26 @@ import com.spring.main.model.Employee;
 import com.spring.main.model.Role;
 import com.spring.main.model.Store;
 
-import jakarta.websocket.server.PathParam;
-
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/bachhoa/api/")
 public class EmployeeAPI {
-@Autowired
-EmployeeService emService;
+	@Autowired
+	EmployeeService emService;
+
 	@GetMapping("/bachhoa/api/employees")
-	public List<Employee> getAll(){
+	public List<Employee> getAll() {
 		return emService.findAll();
-		
+
 	}
+
 	@GetMapping("findById/{id}")
 	public Employee getByID(@PathVariable Integer id) {
-		System.out.println(id+"hm");
+		System.out.println(id + "hm");
 		return emService.findByID(id);
-		
+
 	}
+
 	@PostMapping("insert")
 	public Employee insert(@RequestBody Employee employee) {
 		System.out.println("Insert");
@@ -50,23 +49,22 @@ EmployeeService emService;
 		emService.insert(employee);
 		return employee;
 	}
-	
+
 	@GetMapping("login/{passW}/{user}")
 	public Employee login(@PathVariable("passW") String pass, @PathVariable("user") int user) {
-		System.out.println("Login: " +user +" - "+ pass);
+		System.out.println("Login: " + user + " - " + pass);
 		Employee employee = emService.findByID(12);
-		if(employee == null) {
-		
+		if (employee == null) {
+
 			return null;
-		}
-		else {
+		} else {
 			System.out.println("j");
-			if(employee.getPasswork().equals(pass)) {
+			if (employee.getPasswork().equals(pass)) {
 				return employee;
 			}
 			return null;
-			
+
 		}
-		
+
 	}
 }

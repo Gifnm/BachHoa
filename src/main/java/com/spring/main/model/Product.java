@@ -1,15 +1,12 @@
 package com.spring.main.model;
 
 import java.sql.Date;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -43,17 +40,16 @@ public class Product {
 	@ManyToOne()
 	@JoinColumn(name = "storeID")
 	private Store store;
-	 @Column(name ="inventory")
-	 private Integer inventory;
-	 
-	 
+	@Column(name = "inventory")
+	private Integer inventory;
+
 	public Product(String productID) {
-	
+
 		this.productID = productID;
 	}
 
 	public Product() {
-	
+
 	}
 
 	public Product(String productID, Categories categories, float price, int vat, Date nearestExpDate,
@@ -160,17 +156,16 @@ public class Product {
 		this.inventory = inventory;
 	}
 
-
-//    @OneToMany(mappedBy = "product")
-//    private List<Warehouse> warehouses;
-//
-//    @OneToMany(mappedBy = "product")
-//    private List<BillDetail> billDetails;
-//
-//    @OneToMany(mappedBy = "product")
-//    private List<ProductPositioning> productPositionings;
-//
-//    @OneToMany(mappedBy = "product")
-//    private List<DiscountDetails> discountDetails;
+	// @OneToMany(mappedBy = "product")
+	// private List<Warehouse> warehouses;
+	//
+	// @OneToMany(mappedBy = "product")
+	// private List<BillDetail> billDetails;
+	//
+	// @OneToMany(mappedBy = "product")
+	// private List<ProductPositioning> productPositionings;
+	//
+	// @OneToMany(mappedBy = "product")
+	// private List<DiscountDetails> discountDetails;
 
 }
