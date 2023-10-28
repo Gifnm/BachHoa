@@ -4,6 +4,7 @@ app.controller("ctrl", function($scope, $http, $filter){
     $scope.items = [];
     $scope.form = {};
     $scope.categories = []
+    $scope.account = {}
     //Mock store
     $scope.store = {
         storeID : 1,
@@ -50,6 +51,7 @@ app.controller("ctrl", function($scope, $http, $filter){
         $http.put(url, item).then(resp => {
             var index = $scope.items.findIndex(p => p.productID == item.productID);
             $scope.items[index] = item;
+            $scope.initialize();
             alert("Cap nhat thanh cong!");
         }).catch(error => {
             alert("Loi cap nhat san pham!");
@@ -64,6 +66,7 @@ app.controller("ctrl", function($scope, $http, $filter){
                 var index = $scope.items.findIndex(item => item.productID == $scope.form.productID);
                 $scope.items.splice(index, 1);
                 $scope.reset();
+                $scope.initialize();
                 alert("Delete successfully!");
             }).catch(error => {
                 console.log("Error", error)
@@ -104,7 +107,7 @@ app.controller("ctrl", function($scope, $http, $filter){
     }
     
     $scope.currentPage = 0;
-    $scope.pageSize = 10;
+    $scope.pageSize = 20;
     $scope.sortingOrder = sortingOrder;
     $scope.reverse = false;
 
@@ -137,8 +140,8 @@ app.controller("ctrl", function($scope, $http, $filter){
     };
 
     // init the filtered items
-    $scope.search = function () {
-        var keyword = encodeURI($scope.query)
+    $scope.search = function (query) {
+        var keyword = encodeURI(query)
         console.log(keyword)
         var url = `${host}/products/search?q=${keyword}`;
         console.log(url)
@@ -157,7 +160,7 @@ app.controller("ctrl", function($scope, $http, $filter){
     }
 
     $scope.initialize()
-    $scope.search();
+    $scope.search("");
 });
 // ctrl.$inject = ['$scope', '$filter'];
 //We already have a limitTo filter built-in to angular,

@@ -1,6 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-th:fragment="dynamic(view)">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="dynamic(view)">
 
 <head>
     <meta charset="utf-8">
@@ -22,53 +21,50 @@ th:fragment="dynamic(view)">
     <link rel="stylesheet" href="../css/style-sell.css">
     <link rel="stylesheet" href="../css/angular-ui-tab-scroll.css" />
     <link rel="stylesheet" href="../css/autoComplete.css">
+    <link rel="stylesheet" href="../css/templateStyle.css">
     <link rel="stylesheet" href="../css/adminStyle.css">
     <!-- <link rel="stylesheet" href="/static/css/vertical-layout-light/style.css"> -->
-    
-  <!-- plugins:css -->
-  <!-- <link rel="stylesheet" href="../vendors/feather/feather.css">
+
+    <!-- plugins:css -->
+    <!-- <link rel="stylesheet" href="../vendors/feather/feather.css">
   <link rel="stylesheet" href="../vendors/css/vendor.bundle.base.css"> -->
     <link rel="stylesheet" href="../vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="../vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="../vendors/typicons/typicons.css">
     <link rel="stylesheet" href="../vendors/simple-line-icons/css/simple-line-icons.css">
 </head>
+
 <body>
-    <div class="container-scroller">
-        <!-- nav bar -->
+    <div class="overflow-hidden">
+        <div class="row vh-100 overflow-auto">
+            <!-- sidebar -->
+            <div th:replace="~{/partials/_sidebar}"></div>
+            <!-- end sidebar -->
+            <div th:replace="${view}"></div>
+        </div>
+    </div>
+    <!-- <div class="container-scroller">
         <nav th:replace="~{/partials/_navbar}"></nav>
-        <!-- end navbar -->
-        <!-- sidebar -->
         <div th:replace="~{/partials/_sidebar}"></div>
-        <!-- end sidebar -->
-        <!-- partial -->
         <div class="container-fluid page-body-wrapper">
             <nav class="sidebar" style="z-index: -3;"></nav>
-            <!-- main-panel -->
             <div class="main-panel">
-                <!-- content-wrapper -->
                 <div class="content-wrapper">
                     <div class="row">
                         <div class="col-sm-12">
-                            <!-- view -->
                             <div th:replace="${view}"></div>
-                            <!-- end view -->
                         </div>
                     </div>
                 </div>
-                <!-- content-wrapper ends -->
-                <!-- footer -->
                 <div th:replace="~{/partials/_footer}"></div>
-                <!-- end footer -->
             </div>
-            <!-- main-panel ends -->
         </div>
-        
-    </div>
+
+    </div> -->
 
     <!-- inject:js -->
-  <script src="../js/off-canvas.js"></script>
-  
+    <script src="../js/off-canvas.js"></script>
+
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
@@ -78,4 +74,5 @@ th:fragment="dynamic(view)">
         integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
         </script>
 </body>
+
 </html>
