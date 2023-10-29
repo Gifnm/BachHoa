@@ -33,10 +33,10 @@ public class ProductPositionAPI {
 	@Autowired
 	ProductService productService;
 
-/*
- *  Lay danh sach vi tri phan pham theo mam
- *  Tham so: ma cua hang, ma so ke, ma so mam
- * */
+	/*
+	 * Lay danh sach vi tri phan pham theo mam Tham so: ma cua hang, ma so ke, ma so
+	 * mam
+	 */
 	@GetMapping("productPositioning/{shelfID}/{platterNb}/{storeID}")
 	private List<ProductPositioning> getALL(@PathVariable("shelfID") int shelfID,
 			@PathVariable("platterNb") int platterNb, @PathVariable("storeID") int storeID) {
@@ -46,16 +46,15 @@ public class ProductPositionAPI {
 		return list;
 	}
 
-/*
- * Them vi tri san pham vao cua hang
- * Tham so truyen vao Object (productPositioning)
- * */
+	/*
+	 * Them vi tri san pham vao cua hang Tham so truyen vao Object
+	 * (productPositioning)
+	 */
 	@PostMapping("productPositioning/insert")
 	private ResponseEntity<ProductPositioning> insert(@RequestBody ProductPositioning productPositioning) {
 		ProductPositioning productPos = productPosionService.getByIDAndStoreID(
 				productPositioning.getProduct().getProductID(), productPositioning.getStore().getStoreID());
 		ProductPositioning productPositioning2 = productPositioning;
-		System.out.println(productPositioning2.getProduct().getProductID() + "bar");
 		Product product = productService.getByIDAndStoreID(productPositioning.getProduct().getProductID(), productPositioning.getStore().getStoreID());
 		productPositioning2.setProduct(product);
 		productPosionService.insert(productPositioning);
@@ -63,10 +62,9 @@ public class ProductPositionAPI {
 	}
 
 	/*
-	 * Xem vi tri san pham
-	 * Tra ve Vi tri cua san pham tai cua hang (ProductPositioning)
-	 * Tham so: Ma san pham, ma cua hang
-	 * */
+	 * Xem vi tri san pham Tra ve Vi tri cua san pham tai cua hang
+	 * (ProductPositioning) Tham so: Ma san pham, ma cua hang
+	 */
 	@GetMapping("productPosition/findByID/{id}/{storeID}")
 	private ResponseEntity<ProductPositioning> getByIdAndStoreID(@PathVariable("id") String productID,
 			@PathVariable("storeID") int storeID) {
@@ -80,26 +78,26 @@ public class ProductPositionAPI {
 		}
 	}
 
-/*
- * Kiem tra san pham da co vi tri chua, va san pham co ton tai khong
- * */
+	/*
+	 * Kiem tra san pham da co vi tri chua, va san pham co ton tai khong
+	 */
 	@GetMapping("productPosition/checkProduct/{id}/{storeID}")
 	private ResponseEntity<Boolean> checkProductID(@PathVariable("id") String productID,
 			@PathVariable("storeID") int storeID) {
 		// Kiem tra san pham co ton tai khong
-		Product productEs= productService.getByIDAndStoreID(productID,storeID);
-		if(productEs == null) {
+		Product productEs = productService.getByIDAndStoreID(productID, storeID);
+		if (productEs == null) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(false);
-		}
-		else {
-		// Kiem tra san pham co vi tri khong
-		ProductPositioning product = productPosionService.getByIDAndStoreID(productID, storeID);
-		if (product == null) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
-
 		} else {
-			return ResponseEntity.ok(true);
-		}}
+			// Kiem tra san pham co vi tri khong
+			ProductPositioning product = productPosionService.getByIDAndStoreID(productID, storeID);
+			if (product == null) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+
+			} else {
+				return ResponseEntity.ok(true);
+			}
+		}
 	}
 
 	// Xoa vi tri san pham

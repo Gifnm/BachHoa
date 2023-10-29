@@ -91,5 +91,9 @@ public class ProductPositioning {
 	public void setForm(int form) {
 		this.form = form;
 	}
-
+@Override
+public String toString() {
+	// TODO Auto-generated method stub
+	return super.toString();
+}
 }

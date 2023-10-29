@@ -45,5 +45,7 @@ public class ShipmentBatchDetail {
 	private String pictureURL;
 	@Column(name = "quantity")
 	private int quantity;
+	@Column(name = "storeID")
+	private int storeID;
 
 }

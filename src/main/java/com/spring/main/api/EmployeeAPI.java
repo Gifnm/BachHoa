@@ -54,13 +54,13 @@ EmployeeService emService;
 	@GetMapping("login/{passW}/{user}")
 	public Employee login(@PathVariable("passW") String pass, @PathVariable("user") int user) {
 		System.out.println("Login: " +user +" - "+ pass);
-		Employee employee = emService.findByID(12);
+		Employee employee = emService.findByID(user);
 		if(employee == null) {
 		
 			return null;
 		}
 		else {
-			System.out.println("j");
+			System.out.println(employee.getEmployeeID() +" - " +employee.getPasswork());
 			if(employee.getPasswork().equals(pass)) {
 				return employee;
 			}

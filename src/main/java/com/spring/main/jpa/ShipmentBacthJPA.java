@@ -20,5 +20,6 @@ public interface ShipmentBacthJPA extends JpaRepository<ShipmentBatch, String> {
   *  - Tham so: Store
   *  - Dung khi: 
   * */
-	List<ShipmentBatch> findByStore(Store store);
+	@Query("SELECT o FROM ShipmentBatch o WHERE o.store.storeID = :storeID AND o.situation = false" )
+	List<ShipmentBatch> findByStore(@Param("storeID") int storeID);
 }

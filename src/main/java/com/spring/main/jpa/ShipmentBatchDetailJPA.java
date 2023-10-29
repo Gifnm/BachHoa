@@ -16,5 +16,7 @@ public interface ShipmentBatchDetailJPA extends JpaRepository<ShipmentBatchDetai
 /*1. Lay danh sach ShipmentBatchDetail theo shiBatID
  * 
  * */
-	  List<ShipmentBatchDetail> getAllByShiBatID(String shiBatID);
+	  List<ShipmentBatchDetail> getByshiBatID(String shiBatID);
+	  
+	  ShipmentBatchDetail getByProductID(String productID);
 }

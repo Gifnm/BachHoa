@@ -27,7 +27,7 @@ public class ShipmentBacthDetailService {
 	 * 
 	 */
 	public List<ShipmentBatchDetail> getALl(String shipmentBatchID) {
-		List<ShipmentBatchDetail> list = shipmentBacthDetailJPA.getAllByShiBatID(shipmentBatchID);
+		List<ShipmentBatchDetail> list = shipmentBacthDetailJPA.getByshiBatID(shipmentBatchID);
 		return list;
 
 	}
@@ -65,6 +65,11 @@ public class ShipmentBacthDetailService {
 	// 5. Them hoac cap nhat 1 ShipmentBatchDetail
 	public void insert(ShipmentBatchDetail shipmentBatchDetail) {
 		shipmentBacthDetailJPA.save(shipmentBatchDetail);
+	}
+	// 6. Lay ShipmentBatchDetail
+	public ShipmentBatchDetail getByProductID(String productID) {
+		ShipmentBatchDetail shipmentBatchDetail = shipmentBacthDetailJPA.getByProductID(productID);
+		return shipmentBatchDetail;
 	}
 
 }
