@@ -31,6 +31,12 @@ public class EmployeeAPI {
 
 	}
 
+	@GetMapping("employee/findByEmail/{email}")
+	public Employee findByEmail(@PathVariable("email") String email) {
+		return emService.findByEmail(email);
+
+	}
+	
 	@GetMapping("employee/findByID/{employeeID}")
 	public Employee getByID(@PathVariable("employeeID") Integer employeeID) {
 		//System.out.println(employeeID + "hm");
@@ -55,7 +61,7 @@ public class EmployeeAPI {
 	@GetMapping("login/{passW}/{user}")
 	public Employee login(@PathVariable("passW") String pass, @PathVariable("user") int user) {
 		System.out.println("Login: " + user + " - " + pass);
-		Employee employee = emService.findByID(12);
+		Employee employee = emService.findByID(user);
 		if (employee == null) {
 
 			return null;
@@ -69,4 +75,6 @@ public class EmployeeAPI {
 		}
 
 	}
+	
+	
 }

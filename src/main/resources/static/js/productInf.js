@@ -5,6 +5,8 @@ app.controller("productInf-ctrl", function ($scope, $http) {
     $scope.product = {};
     $scope.discount = {};
     $scope.discountName = "Không";
+    $scope.employee = {};
+
     // gợi ý sản phẩm
     $scope.autocompleteInput = {
         autocomplete(inp, arr) {
@@ -146,6 +148,23 @@ app.controller("productInf-ctrl", function ($scope, $http) {
         const year = date.getFullYear();
         return formattedDate = `${day}/${month}/${year}`;
     }
+
+    //-----------------------------------------------//
+    //  Tìm Nhân viên
+
+    $scope.findEmployee = function (email) {
+        $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
+            $scope.employee = resp.data;
+            console.log($scope.employee);
+        });
+    }
+
+
+    //------------------------------------------------//
+     // Tìm thông tin nhân viên
+     let email = document.getElementById('email').innerText;
+     //alert(email);
+     $scope.findEmployee(email);
 
     //------------------------------------------------//
 

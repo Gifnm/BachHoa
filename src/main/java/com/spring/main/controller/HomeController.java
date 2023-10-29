@@ -1,24 +1,27 @@
 package com.spring.main.controller;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.spring.main.Service.SessionService;
+import com.spring.main.util.SessionAttr;
+
 
 @Controller
 public class HomeController {
-@Autowired
-SessionService sessionService;
 	@RequestMapping("/sell")
-	public String sell() {
-		
+	public String home(Model model) {
+		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
 		return "pages/sell/sell";
 	}
-	
-	@RequestMapping("/productInfomation")
-	public String productInf() {
+
+	@RequestMapping("/sell/billsHistory")
+	public String bills() {
+		return "pages/sell/bills_History";
+	}
+
+	@RequestMapping("/sell/productInfomation")
+	public String ktGia() {
 		return "pages/sell/productDetail";
 	}
 }

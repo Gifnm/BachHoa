@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập | BachHoa</title>
+    <title>Xác minh OTP | BachHoa</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -22,61 +22,45 @@
     <script src="../js/angular-ui-tab-scroll.js"></script>
     <!-- CSS -->
     <link rel="stylesheet" href="../css/login.css">
-    <!-- JS -->
-    <script src="../js/login.js"></script>
 </head>
 
 <body class="background-img">
-    <div class="alert bg-info bg-gradient bg-opacity-75 fw-bold in show d-flex row alert-close flash" role="alert"
+    <div class="alert bg-info bg-gradient bg-opacity-75 fw-bold fade show d-flex row alert-close flash" role="alert"
         id="alert" style="position: fixed; right: 1%; top: 1%; width: 25%; display: none; z-index: 999;">
-        <span class="col" th:text="${message}">Chào</span>
+        <span class="col">[[${message}]]</span>
         <button type="button" id="alertClose" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-
+    <div class="back_home" style="position: fixed; left: 1%; top: 1%; width: 22%; z-index: 999;">
+        <a th:href="@{/login}" class="text-decoration-none">
+            <button>
+                <div class="icon-wrapper-1">
+                    <div class="icon-wrapper">
+                        <i class='bx bx-arrow-back'></i>
+                    </div>
+                </div>
+                <span>Trở về trang trước</span>
+            </button>
+        </a>
+    </div>
     <div class="container-fluid d-flex flex-column min-vh-100 justify-content-center align-items-center">
-
-        <!-- <h3 class="d-flex justify-content-center text-bg-success w-25 rounded-pill p-2">BachHoa - Đăng nhập</h3> -->
         <div class="d-flex justify-content-center ">
             <div>
                 <div class="logo img-fluid card-img">
-                    <img src="../images/favicon.png" alt="" width="360.5" height="auto" class="rounded-start">
+                    <img src="../images/favicon.png" alt="" width="275" height="auto" class="rounded-start">
                 </div>
             </div>
             <div class="d-block">
-                <form action="/login" method="post" class="form">
-                    <p class="form-title">Chào mừng trở lại</p>
-                    <div class="input-container">
-                        <input type="email" placeholder="Thư điện tử (Email) ..." class="shadow" name="email" required>
+                <form action="/verify-account" class="form" method="post">
+                    <div>
+                        <p>Nhập mã OTP để xác minh</p>
                     </div>
-                    <div class="input-container">
-                        <input type="password" placeholder="Mật khẩu ..." class="shadow" name="password">
-                    </div>
-                    <button type="submit" class="submit mt-5 button ju">
-                        Đăng nhập
-                    </button>
-
-                    <p class="signup-link mt-2 message">
-                        <a href="#" class="text-decoration-none"> Quên mật khẩu?</a>
-                    </p>
-                </form>
-
-                <form action="/regenerate-otp" class="registration-form" method="post">
-                    <h3 class="d-flex justify-content-center text-info">
-                        <p>Quên mật khẩu</p>
-                    </h3>
                     <div class="input-container mt-5">
-                        <input type="email" name="R_Email" placeholder="Thư điện tử (Email) ..." class="shadow"
-                            autofocus required>
+                        <input type="text" name="OTP" placeholder="Mã xác nhận (OTP) ..." class="shadow" autofocus
+                            required>
                     </div>
                     <button type="submit" class="submit mt-5 button" value="Send">
-                        Tiếp tục
+                        Tìm lại mật khẩu
                     </button>
-
-                    <!-- button for toggle -->
-                    <p class="signup-link mt-2 message">
-                        Đã có tài khoản?
-                        <a href="#" class="text-decoration-none">Quay về đăng nhập</a>
-                    </p>
                 </form>
             </div>
 

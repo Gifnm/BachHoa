@@ -14,4 +14,8 @@ public class StoreService {
 	public Store findByID(Integer storeID) {
 		return storeJPA.findById(storeID).get();
 	}
+	
+	public Store findByAddress(String address) {
+		return storeJPA.findByAddress(address);
+	}
 }

@@ -1,5 +1,3 @@
-
-
 const app = angular.module("app", ["ui.bootstrap", "ui.tab.scroll"]);
 app.controller("bill-ctrl", function ($scope, $http) {
     // gợi ý sản phẩm
@@ -130,28 +128,33 @@ app.controller("bill-ctrl", function ($scope, $http) {
     $scope.sale = 0;
     $scope.discountName = "";
     $scope.discountDetail = {};
+    $scope.employee = {};
 
     var stt = 1;
     // Khởi tạo 1 bill tạm đầu tiên
     let init = function () {
-        //alert('hello')
-        let test = sessionStorage.getItem("bills");
-        console.log(test);
-        if (test === null) {
-            //alert('tao bill');
-            addNewBill();
-        } else {
+        // Tìm thông tin nhân viên
+        let email = document.getElementById('email').innerText;
+        $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
+            $scope.employee = resp.data;             
+            console.log($scope.employee);
+            let test = sessionStorage.getItem("bills");
             loadBillFromSessionStorage();
-            setAllInactive();
-            $scope.invoiceID = $scope.bills[0].bill.billID;
-            stt = $scope.bills[0].stt;
-            $scope.bills[0].active = true;
-            loadBillDetailFromSessionStorage();
-            //alert($scope.bills[0].bill.billID)
-            loadToBillDetail($scope.bills[0].bill.billID);
-        }
-
-
+            console.log(test)
+            //alert($scope.bills.length);
+            if (test == null || $scope.bills.length == 0) {
+                $scope.bills = [];
+                addNewBill();
+            } else {
+                loadBillFromSessionStorage();
+                setAllInactive();
+                $scope.invoiceID = $scope.bills[0].bill.billID;
+                stt = $scope.bills[0].stt;
+                $scope.bills[0].active = true;
+                loadBillDetailFromSessionStorage();
+                loadToBillDetail($scope.bills[0].bill.billID);
+            }
+        });
         document.getElementById('print').disabled = true;
     };
 
@@ -191,16 +194,13 @@ app.controller("bill-ctrl", function ($scope, $http) {
 
     // thêm bill tạm vào mảng bills[]
     let addNewBill = function () {
-        //alert($scope.bills.length)
         let listBill = $scope.bills;
-        //alert(listBill.length)
-        let storeID = parseInt(document.getElementById('storeID').innerText);
         let employeeID = parseInt(document.getElementById('employeeID').innerText);
-        $http.get(`/bachhoa/api/store/findByID/${storeID}`).then(resp => {
+        $http.get(`/bachhoa/api/store/findByID/${$scope.employee.store.storeID}`).then(resp => {
             let bill = createBill();
             bill.store = resp.data;
             $scope.invoiceID = bill.billID;
-            //alert($scope.invoiceID)
+            console.log(resp.data)
             $http.get(`/bachhoa/api/employee/findByID/${employeeID}`).then(resp => {
                 bill.employee = resp.data;
                 //alert(listBill.length)
@@ -493,7 +493,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
         //var billDetail = resp.data;
         let index = $scope.bills.findIndex(item => item.bill.billID == billID);
         $scope.removeTab(index);
-        
+
     };
 
     //------------------------------------------------//
@@ -513,21 +513,12 @@ app.controller("bill-ctrl", function ($scope, $http) {
     }
 
 
-
-
     //------------------------------------------------//
     //KHỞI CHẠY
     // Khởi chạy tạo bill đầu tiên
     init();
-    //init = null;
-    //$scope.loadBillFromLocalStorage();
-    //$scope.loadBillDetailFromLocalStorage();
-    //window.open().init();
-
     // Khởi chạy lấy mảng gợi ý sản phẩm
     $scope.autocompleteInput.initAutoComplete();
-
-    //------------------------------------------------//
 
 });
 

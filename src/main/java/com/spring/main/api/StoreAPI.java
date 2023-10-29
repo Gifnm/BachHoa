@@ -21,4 +21,14 @@ public class StoreAPI {
 	public Store findByID(@PathVariable("storeID") Integer storeID) {
 		return storeService.findByID(storeID);
 	}
+	
+	@GetMapping("store/findByAddress/{address}")
+	public Store findByAddress(@PathVariable("address") String address) {
+		return storeService.findByAddress(address);
+	}
+	
+	@GetMapping("store/findByAddress/{storeID}")
+	public Store findByStoreID(@PathVariable("storeID") Integer storeID) {
+		return storeService.findByID(storeID);
+	}
 }
