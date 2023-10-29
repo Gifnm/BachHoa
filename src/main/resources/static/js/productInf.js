@@ -3,6 +3,8 @@ const app = angular.module("app-product", []);
 app.controller("productInf-ctrl", function ($scope, $http) {
 
     $scope.product = {};
+    $scope.discount = {};
+    $scope.discountName = "Không";
     // gợi ý sản phẩm
     $scope.autocompleteInput = {
         autocomplete(inp, arr) {
@@ -119,12 +121,25 @@ app.controller("productInf-ctrl", function ($scope, $http) {
         $http.get(`/product/findByIDOrName/${value}`).then(resp => {
             $scope.product = resp.data;
             $scope.product.nearestExpDate = dateFormat($scope.product.nearestExpDate);
+            $http.get(`/discount/findByProductIDAndStoreID/${$scope.product.productID}/${$scope.product.store.storeID}`).then(resp => {
+                $scope.discount = resp.data;
+                if($scope.discount.disID == "S25"){
+                    $scope.discountName = "Giảm giá 25%";
+                }else if($scope.discount.disID == "S25"){
+                    $scope.discountName = "Giảm giá 50%";
+                }else{
+                    $scope.discountName = "Không";
+                }
+            }).catch(error => {
+                console.log('Error', error)
+            });
         }).catch(error => {
             console.log('Error', error)
         });
+
     }
 
-    let dateFormat = function(value){
+    let dateFormat = function (value) {
         date = new Date(value);
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months start at 0!

@@ -28,15 +28,15 @@
         <div class="row align-items-center">
             <div class="welcome col">
                 <button class="btn bg-info bg-gradient menu" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" title="Menu">
+                    data-bs-target="#menuHidden" aria-controls="menuHidden" title="Menu">
                     <i class="bi bi-list"></i>
                 </button>
-                <a class="menuHiden" data-bs-toggle="offcanvas" href="/sell" role="button"
-                    aria-controls="offcanvasExample">
+                <a class="menuHidden" data-bs-toggle="offcanvas" href="#menuHidden" role="button"
+                    aria-controls="menuHidden">
                     <img src="../images/logo/logo3-removebg.png" alt="logo" style="width: 100px;">
                 </a>
 
-                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="menuHidden"
                     aria-labelledby="offcanvasExampleLabel">
                     <div class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Chức năng</h5>
@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="col logo text-center">
-                <a href="/" class="text-decoration-none">
+                <a href="/sell" class="text-decoration-none">
                     <img src="../images/logo/logo3-removebg.png" alt="logo" style="width: 100px;">
                 </a>
             </div>
@@ -99,7 +99,7 @@
         <div class="row p-0 m-0" style="min-height: 600px;">
             <div class="col-9 p-4">
                 <tabset>
-                    <tab ng-repeat="invoice in bills" active=invoice.active heading="Hóa đơn {{invoice.stt}}" class="nav-item">
+                    <tab ng-repeat="invoice in bills track by $index" active=invoice.active heading="Hóa đơn {{invoice.stt}}" class="nav-item">
                         <tab-heading ng-click="selectBill(invoice.bill.billID)" class="tab nav-link {{invoice.active === true ? 'active' : ''}}">
                             Hóa đơn {{invoice.stt}}
                             <a ng-click="removeTab($index)" href='' class="ms-2 btn btn-outline-danger" style="outline: none !important;
@@ -112,7 +112,7 @@
                             <!-- Content start -->
                             <div class="tab-content" id="myTabContent" style="border: none !important; outline: none;">
                                 <div>
-                                    <!-- <p ng-bind="invoiceID"></p> -->
+                                    <p ng-bind="invoiceID"></p>
                                     <div class="tab-pane fade show table-responsive table border border-info rounded-2 mt-1"
                                         id="home" role="tabpanel" aria-labelledby="home-tab">
                                         <table class="table table-responsive text-center">
@@ -128,7 +128,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="item in listProduct">
+                                                <tr ng-repeat="item in listProduct track by $index">
                                                     <td style="width: 15%;">{{item.billDetail.product.productID}}</td>
                                                     <td style="width: 30%; word-wrap: break-word;">
                                                         {{item.billDetail.product.productName}}</td>
@@ -175,7 +175,7 @@
                 <div class="p-3 border-bottom border-3">                   
                     <label class="mb-3">Tổng tiền: <strong id="totalAmount">{{totalAmount | number}}</strong> VND</label><br>
                     <label class="mb-3">Đã giảm: <strong id="discount">{{discount | number}}</strong> VND</label><br>
-                    <label>Phải thu: <strong id="amountReceivable">{{amountReceivable | number}}</strong> VND</label><br>
+                    <label class="mb-3">Phải thu: <strong id="amountReceivable">{{amountReceivable | number}}</strong> VND</label><br>
                     <label>Phải thu (đã làm tròn): <strong>{{roundAmountReceivable | number}}</strong> VND</label>
                 </div>
 

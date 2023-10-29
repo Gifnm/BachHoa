@@ -3,7 +3,7 @@ header {
   padding: 0 2%;
 }
 
-.menuHiden{
+.menuHidden{
   display: none;
 }
 
@@ -55,7 +55,7 @@ a {
     justify-content: end;
   }
 
-  .menuHiden {
+  .menuHidden {
     display: block;
   }
 }
