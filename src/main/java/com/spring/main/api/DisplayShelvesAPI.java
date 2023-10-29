@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.main.Service.DisplayShelvesService;
-import com.spring.main.model.DisplayPlatter;
 import com.spring.main.model.DisplayShelves;
 
 @CrossOrigin("*")

@@ -4,10 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import com.spring.main.model.DisplayPlatter;
-import com.spring.main.model.DisplayShelves;
 import com.spring.main.model.Product;
 import com.spring.main.model.ProductPositioning;
 import com.spring.main.model.Store;

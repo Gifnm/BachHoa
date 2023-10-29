@@ -31,9 +31,15 @@ public class EmployeeAPI {
 
 	}
 
+	@GetMapping("employee/findByEmail/{email}")
+	public Employee findByEmail(@PathVariable("email") String email) {
+		return emService.findByEmail(email);
+
+	}
+	
 	@GetMapping("employee/findByID/{employeeID}")
 	public Employee getByID(@PathVariable("employeeID") Integer employeeID) {
-		System.out.println(employeeID + "hm");
+		//System.out.println(employeeID + "hm");
 		return emService.findByID(employeeID);
 
 	}

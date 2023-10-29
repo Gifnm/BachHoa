@@ -27,9 +27,9 @@
 </head>
 
 <body class="background-img">
-    <div class="alert alert-[[${color}]] text-dark fw-bold fade show d-flex justify-content-between alert-close" role="alert"
-        id="alert" style="position: fixed; right: 1%; top: 1%; width: 22%; display: none; z-index: 999;">
-        [[${message}]]
+    <div class="alert bg-info bg-gradient bg-opacity-75 fw-bold in show d-flex row alert-close flash" role="alert"
+        id="alert" style="position: fixed; right: 1%; top: 1%; width: 25%; display: none; z-index: 999;">
+        <span class="col" th:text="${message}">Chào</span>
         <button type="button" id="alertClose" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
@@ -85,6 +85,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
         integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
         </script>
+    <script>
+        window.setTimeout(function () {
+            $(".flash").animate({
+                top: "0",
+                opacity: "0",
+            }, 300, 0).fadeOut(500, function () {
+                $(this).remove();
+            });
+        }, 5000);
+    </script>
 </body>
 
 </html>

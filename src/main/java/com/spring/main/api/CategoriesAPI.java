@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.main.Service.CategoriesSevice;
-import com.spring.main.Service.EmployeeService;
 import com.spring.main.model.Categories;
-import com.spring.main.model.Employee;
 @RestController
 @RequestMapping("/bachhoa/api/")
 public class CategoriesAPI {

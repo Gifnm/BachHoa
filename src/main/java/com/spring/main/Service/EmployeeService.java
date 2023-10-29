@@ -49,6 +49,11 @@ public class EmployeeService implements UserDetailsService {
 		return employee;
 	}
 
+	public Employee findByEmail(String email) {
+		Employee employee = employeeJPA.findbyEmail(email);
+		return employee;
+	}
+	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Employee employee = employeeJPA.findbyEmail(email);
