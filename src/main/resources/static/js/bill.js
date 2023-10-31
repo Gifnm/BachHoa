@@ -136,7 +136,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
         // Tìm thông tin nhân viên
         let email = document.getElementById('email').innerText;
         $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
-            $scope.employee = resp.data;             
+            $scope.employee = resp.data;
             console.log($scope.employee);
             let test = sessionStorage.getItem("bills");
             loadBillFromSessionStorage();
@@ -497,6 +497,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
     };
 
     //------------------------------------------------//
+    $scope.errorAlert = "true";
 
     $scope.print = function () {
         let billID = $scope.invoiceID;
@@ -506,10 +507,26 @@ app.controller("bill-ctrl", function ($scope, $http) {
         item.totalAmount = parseInt(document.getElementById('amountReceivable').innerText.replace(',', ''));
         item.cash = parseInt(document.getElementById('cash').value);
         item.reduce = parseInt(document.getElementById('discount').innerText.replace(',', ''));
-        saveBillToDatabase(item);
-        //console.log(item)
-        $scope.money = "";
+        item.timeCreate = new Date().getTime();
+        if (item.cash < $scope.roundAmountReceivable) {
+            //alert('loi')
+            document.getElementById('errorAlert').setAttribute("style", "display: block;");
+            document.getElementById('errorAlert').setAttribute("aria-modal", true);
+            document.getElementById('errorAlert').setAttribute("role", "dialog");
+            $scope.dialog = "show";
+        } else {
+            saveBillToDatabase(item);
+            //console.log(item)
+            $scope.money = "";
+        }
 
+    }
+
+    $scope.closeModal = function () {
+        document.getElementById('errorAlert').setAttribute("style", "display: none;");
+        document.getElementById('errorAlert').setAttribute("aria-modal", false);
+        $scope.dialog = "";
+        document.getElementById("cash").focus()
     }
 
 

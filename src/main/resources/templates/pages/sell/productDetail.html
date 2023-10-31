@@ -118,7 +118,7 @@
                             <label class="mb-2"><strong>Mã sản phẩm:</strong> {{product.productID}}</label><br>
                             <label class="mb-2"><strong>Tên sản phẩm:</strong> {{product.productName}}</label><br>
                             <label class="mb-2"><strong>Loại:</strong> {{product.categories.categoriesName}}</label><br>
-                            <label class="mb-2"><strong>Hạn sử dụng:</strong> {{product.nearestExpDate}}</label><br>
+                            <label class="mb-2"><strong>Hạn sử dụng:</strong> {{product.nearestExpDate | date: 'dd/MM/yyyy '}}</label><br>
                             <label class="mb-2"><strong>Trạng thái:</strong> {{product.status?'Đang kinh doanh':'Ngừng kinh doanh'}}</label><br>
                             <label class="mb-2"><strong>Khuyến mãi:</strong> {{discountName}}</label><br>
                             <label class="mb-2"><strong>Giá nhập:</strong> {{product.importPrice | number}}</label><br>
@@ -128,7 +128,7 @@
                             <label class="mb-2"><strong>Cửa hàng:</strong> {{product.store.address}}</label><br>
                         </div>
                         <div class="col-3 text-end">
-                            <img src="../images/logo/logo3.jpg" alt="" height="200px">
+                            <img src="{{product.image}}" alt="" height="200px">
                         </div>
                     </div>
                 </div>

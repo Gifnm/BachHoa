@@ -105,11 +105,11 @@
                             <label for="" style="width: 40%;">Nhập hóa đơn: </label><br>
                             <div class="autocomplete d-flex text-dark">
                                 <input id="bill_ID" type="text" class="form-control" ng-model="bill_ID"
-                                    ng-change="find(bill_ID)" >
-                                    <button class="btn btn-info ms-2 shadow-lg">
-                                        <i class="bi bi-search" ng-click="find(bill_ID)"></i>
-                                    </button>
-                                    
+                                    ng-change="find(bill_ID)">
+                                <button class="btn btn-info ms-2 shadow-lg">
+                                    <i class="bi bi-search" ng-click="find(bill_ID)"></i>
+                                </button>
+
                             </div>
                         </div>
                     </div>
@@ -119,14 +119,14 @@
                             <label for="" class="w-100">Từ ngày: </label><br>
                             <div class="ms-2">
                                 <input id="from_Date" type="date" class="form-control" ng-model="fromDate"
-                                ng-change="findByDate(fromDate, toDate)" >
+                                    ng-change="findByDate(fromDate, toDate, 0)">
                             </div>
                         </li>
                         <li class="d-flex align-items-center p-3">
                             <label for="" class="w-100">Đến ngày: </label><br>
                             <div class="ms-2">
                                 <input id="to_Date" type="date" class="form-control" ng-model="toDate"
-                                ng-change="findByDate(fromDate, toDate)" >
+                                    ng-change="findByDate(fromDate, toDate, 0)">
                             </div>
                         </li>
                     </ul>
@@ -138,7 +138,7 @@
             <div class="col-12 p-4">
                 <div class="tab-pane fade show table-responsive table border border-info rounded-2 mt-1" id="home"
                     role="tabpanel" aria-labelledby="home-tab" style="height: fit-content;">
-                    <table class="table table-responsive text-center table-hover" id="body_bills">
+                    <table class="table table-responsive text-center table-hover mb-0" id="body_bills">
                         <thead class="bg-info text-white">
                             <tr>
                                 <th scope="col">Mã hóa đơn</th>
@@ -152,21 +152,36 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in items" id="modal-show" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop" ng-click="showDetail(item.billID)" style="cursor: pointer;">
-                                <td style="width: 10%;">{{item.billID}}</td>
+                                data-bs-target="#staticBackdrop" ng-click="showDetail(item.bill.billID)"
+                                style="cursor: pointer;">
+                                <td style="width: 10%;">{{item.bill.billID}}</td>
                                 <td style="width: 15%; word-wrap: break-word;">
-                                    {{item.timeCreate | date: 'dd-MM-yyyy'}}</td>
-                                <td style="width: 10%;">{{item.totalAmount | number}}</td>
+                                    {{item.bill.timeCreate}}</td>
+                                <td style="width: 10%;">{{item.bill.totalAmount | number}}</td>
                                 <!-- Phải thu -->
-                                <td style="width: 10%;">{{item.totalAmount - item.reduced | number}} VNĐ</td>
-                                <td style="width: 15%;">{{item.cash | number}} VNĐ</td>
-                                <td style="width: 15%;">{{item.reduced | number}} VNĐ</td>
+                                <td style="width: 10%;">{{item.amountReceivable | number}} VNĐ</td>
+                                <td style="width: 15%;">{{item.bill.cash | number}} VNĐ</td>
+                                <td style="width: 15%;">{{item.bill.reduced | number}} VNĐ</td>
                                 <!-- Tiền thối lại -->
-                                <td style="width: 15%;">{{item.cash - (item.totalAmount - item.reduced) | number}} VNĐ
+                                <td style="width: 15%;">{{item.bill.cash - item.amountReceivable | number}} VNĐ
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <b class="count">{{totalBill}} Hóa đơn</b>
+                    </div>
+                    <div class="col-10 text-end">
+                        <button ng-click="findByDate(fromDate,toDate,index - 1)"
+                            class="btn btn-outline-primary {{index == 0 ? 'disabled':''}}">Trước</button>
+                        <button ng-repeat="item in pages" ng-click="findByDate(fromDate,toDate,item - 1)"
+                            class="btn btn-outline-primary {{index == item - 1? 'active':''}} m-1 mb-0 mt-0"><b>
+                                {{item}}</b> </button>
+                        <button ng-click="findByDate(fromDate,toDate,index + 1)"
+                            class="btn btn-outline-primary {{index == maxPage - 1 ? 'disabled':''}}">Sau</button>
+                    </div>
                 </div>
                 <!-- Modal -->
                 <div class="modal fade modal-xl" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -189,7 +204,7 @@
                                     <div class="d-flex align-items-center p-3">
                                         <label for="storeID" class="me-2">Ngày xuất: </label><br>
                                         <span id="storeID" name="bill.timeCreate" class="fw-bold">
-                                            {{bill.timeCreate | date: 'dd-MM-yyyy'}}
+                                            {{bill.timeCreate}}
                                         </span>
                                     </div>
                                     <div class="d-flex align-items-center p-3">

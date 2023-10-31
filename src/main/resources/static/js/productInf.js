@@ -122,8 +122,8 @@ app.controller("productInf-ctrl", function ($scope, $http) {
     $scope.find = function (value) {
         $http.get(`/product/findByIDOrName/${value}`).then(resp => {
             $scope.product = resp.data;
-            $scope.product.nearestExpDate = dateFormat($scope.product.nearestExpDate);
-            $http.get(`/discount/findByProductIDAndStoreID/${$scope.product.productID}/${$scope.product.store.storeID}`).then(resp => {
+            //$scope.product.nearestExpDate = dateFormat($scope.product.nearestExpDate);
+            $http.get(`/discount/findByProductIDAndStoreID/${$scope.product.productID}/${$scope.employee.store.storeID}`).then(resp => {
                 $scope.discount = resp.data;
                 if($scope.discount.disID == "S25"){
                     $scope.discountName = "Giảm giá 25%";

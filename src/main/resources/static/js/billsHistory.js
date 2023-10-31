@@ -1,5 +1,5 @@
 const app = angular.module("app", []);
-app.controller("billsHistory-ctrl", function($scope, $http) {
+app.controller("billsHistory-ctrl", function ($scope, $http) {
 	$scope.items = [];
 	$scope.form = {};
 	$scope.billDetail = [];
@@ -7,22 +7,22 @@ app.controller("billsHistory-ctrl", function($scope, $http) {
 	$scope.totalAmountOfAllBills = 0;
 	$scope.employee = {};
 
-	$scope.initialize = function() {
+	$scope.initialize = function () {
 		// load hóa đơn
 		$http.get("/bachhoa/api/bill/all").then(resp => {
 			$scope.items = resp.data;
 			Calc();
 		});
-		
+
 	}
 
 	// Hiển thị lên form
-	$scope.edit = function(item) {
+	$scope.edit = function (item) {
 		$scope.form = angular.copy(item);
 	}
 
 	// Cập nhật sản phẩm
-	$scope.update = function() {
+	$scope.update = function () {
 		var item = angular.copy($scope.form);
 		$http.put(`/bachhoa/api/bill/update/${item.billID}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.billID == item.billID);
@@ -36,7 +36,7 @@ app.controller("billsHistory-ctrl", function($scope, $http) {
 	}
 
 	// Xóa hóa đơn
-	$scope.delete = function(item) {
+	$scope.delete = function (item) {
 		item = $scope.items.find(p => p.billID == item.billID);
 		$http.put(`/bachhoa/api/bill/delete/${item.billID}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.billID == item.id);
@@ -52,14 +52,14 @@ app.controller("billsHistory-ctrl", function($scope, $http) {
 	}
 
 	// Xóa sản phẩm trong billDetail
-	$scope.deleteItem = function(productID, billID) {
+	$scope.deleteItem = function (productID, billID) {
 		let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
 		$scope.billDetails.splice(index, 1);
 		loadToBillDetail(billID);
 	};
 
 	// Hiển chi tiết
-	$scope.showDetail = function(billID) {
+	$scope.showDetail = function (billID) {
 		$http.get(`/bachhoa/api/bill/findBill/${billID}`).then(resp => {
 			$scope.bill = resp.data;
 		}
@@ -74,13 +74,13 @@ app.controller("billsHistory-ctrl", function($scope, $http) {
 	/* Tính tổng thu */
 	function Calc() {
 		$scope.totalAmountOfAllBills = 0;
-		angular.forEach($scope.items, function(item) {
-			$scope.totalAmountOfAllBills += item.totalAmount;
+		angular.forEach($scope.items, function (item) {
+			$scope.totalAmountOfAllBills += item.bill.totalAmount;
 		})
 	}
 
 	// xuất hóa đơn
-	$scope.print = function() {
+	$scope.print = function () {
 		let billID = $scope.invoiceID;
 		let data = $scope.bills.find(item => item.bill.billID == billID);
 		let item = data.bill;
@@ -93,7 +93,7 @@ app.controller("billsHistory-ctrl", function($scope, $http) {
 	}
 
 	//Tìm hóa đơn
-	$scope.find = function(billID) {
+	$scope.find = function (billID) {
 		if (billID == null || billID == undefined || billID == '') {
 			$scope.initialize();
 		} else {
@@ -109,7 +109,7 @@ app.controller("billsHistory-ctrl", function($scope, $http) {
 	}
 
 	// Set thời gian mặc định
-	$scope.SetDefaultDate = function() {
+	$scope.SetDefaultDate = function () {
 		var date = new Date();
 
 		$scope.fromDate = date;
@@ -117,38 +117,67 @@ app.controller("billsHistory-ctrl", function($scope, $http) {
 	}
 
 	// tìm kiếm theo ngày
-	$scope.findByDate = function(fromDate, toDate) {
+	$scope.index = 0;
+	$scope.maxPage = 0;
+	$scope.findByDate = function (fromDate, toDate, index) {
 		let fromD = startDateFormat(fromDate);
 		let toD = endtDateFormat(toDate);
-		$http.get(`/bachhoa/api/bill/searchBetween/${fromD}/${toD}`).then(resp => {
-			$scope.items = resp.data;
+		$http.get(`/bachhoa/api/bill/searchBetween/${fromD}/${toD}?index=${index}`).then(resp => {
+			$scope.items = [];
+			$scope.bills = resp.data.content;
+			angular.forEach($scope.bills, function (item) {
+				item.timeCreate = dateFormat(item.timeCreate);			
+				let data = {
+					bill: item,
+					amountReceivable: Math.round((item.totalAmount - item.reduced) / 1000) * 1000
+				}
+				$scope.items.push(data);
+
+			})
+			console.log($scope.items);
+			$scope.totalBill = resp.data.totalElements;
+			if ($scope.totalBill <= 8) {
+				$scope.maxPage = 1;
+			} else {
+				$scope.maxPage = Math.ceil($scope.totalBill / 8);
+			}
+			console.log($scope.maxPage)
+			$scope.index = index;
+			$scope.pages = [];
+			for (let i = 1; i <= $scope.maxPage; i++) {
+				$scope.pages.push(i);
+			}
 			Calc();
 		}).catch(error => {
 			console.log('Error', error)
 		});
 	}
 
-	let startDateFormat = function(value) {
+	let dateFormat = function (value) {
 		date = new Date(value);
 		const day = date.getDate().toString().padStart(2, '0');
 		const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months start at 0!
 		const year = date.getFullYear();
-		// var hours = String(date.getHours()).padStart(2, '0');
-		// var minutes = String(date.getMinutes()).padStart(2, '0');
-		// var seconds = String(date.getSeconds()).padStart(2, '0');
-	   
+		var hours = String(date.getHours()).padStart(2, '0');
+		var minutes = String(date.getMinutes()).padStart(2, '0');
+		var seconds = String(date.getSeconds()).padStart(2, '0');
+
+		return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+	}
+
+	let startDateFormat = function (value) {
+		date = new Date(value);
+		const day = date.getDate().toString().padStart(2, '0');
+		const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months start at 0!
+		const year = date.getFullYear();
 		return `${year}-${month}-${day} ${0}:${0}:${1}`;
 	}
 
-	let endtDateFormat = function(value) {
+	let endtDateFormat = function (value) {
 		date = new Date(value);
 		const day = date.getDate().toString().padStart(2, '0');
 		const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months start at 0!
 		const year = date.getFullYear();
-		// var hours = String(date.getHours()).padStart(2, '0');
-		// var minutes = String(date.getMinutes()).padStart(2, '0');
-		// var seconds = String(date.getSeconds()).padStart(2, '0');
-	   
 		return `${year}-${month}-${day} ${23}:${59}:${59}`;
 	}
 
@@ -156,7 +185,7 @@ app.controller("billsHistory-ctrl", function($scope, $http) {
 	$scope.autocompleteInput = {
 		autocomplete(inp, arr) {
 			let currentFocus;
-			inp.addEventListener("input", function(e) {
+			inp.addEventListener("input", function (e) {
 				let a, b, i, val = this.value;
 				closeAllLists();
 				if (!val) { return false; }
@@ -171,7 +200,7 @@ app.controller("billsHistory-ctrl", function($scope, $http) {
 						b.innerHTML = "<strong class='text-dark' >" + arr[i].substr(0, val.length) + "</strong>";
 						b.innerHTML += arr[i].substr(val.length);
 						b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-						b.addEventListener("click", function(e) {
+						b.addEventListener("click", function (e) {
 							inp.value = this.getElementsByTagName("input")[0].value;
 							$scope.find(inp.value);
 							closeAllLists();
@@ -180,7 +209,7 @@ app.controller("billsHistory-ctrl", function($scope, $http) {
 					}
 				}
 			});
-			inp.addEventListener("keydown", function(e) {
+			inp.addEventListener("keydown", function (e) {
 				let x = document.getElementById(this.id + "autocomplete-list");
 				if (x) x = x.getElementsByTagName("div");
 				if (e.keyCode == 40) {
@@ -216,7 +245,7 @@ app.controller("billsHistory-ctrl", function($scope, $http) {
 					}
 				}
 			}
-			document.addEventListener("click", function(e) {
+			document.addEventListener("click", function (e) {
 				closeAllLists(e.target);
 			});
 		},
@@ -233,7 +262,7 @@ app.controller("billsHistory-ctrl", function($scope, $http) {
 	//-----------------------------------------------//
 	//	Tìm Nhân viên
 
-	$scope.findEmployee = function(email) {
+	$scope.findEmployee = function (email) {
 		$http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
 			$scope.employee = resp.data;
 			console.log($scope.employee);
@@ -250,7 +279,7 @@ app.controller("billsHistory-ctrl", function($scope, $http) {
 	/* Tìm kiếm theo ngày */
 	let startDate = startDateFormat(new Date());
 	let endDate = endtDateFormat(new Date());
-	$scope.findByDate(startDate, endDate);
+	$scope.findByDate(startDate, endDate, 0);
 
 	// Tìm nhân viên theo email
 	let email = document.getElementById('email').innerText;

@@ -182,7 +182,7 @@
 
                 <div class="p-3 border-bottom border-3">
                     <label class="mb-3">Tiền mặt</label>
-                    <input  id="cash" ng-model="money" ng-change="cash(money)" type="text" class="form-control"> <br>
+                    <input  id="cash" ng-model="money" ng-change="cash(money)" type="number" class="form-control" min="0" > <br>
                     <button type="button" class="btn btn-outline-primary">VN PAY</button>
                 </div>
 
@@ -195,6 +195,22 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade {{dialog}} bg-opacity-75 bg-gradient bg-dark" id="errorAlert" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header bg-opacity-75 bg-warning mb-0">
+                  <h5 class="modal-title" id="errorModalLabel">Thông báo lỗi!</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ng-click="closeModal()"></button>
+                </div>
+                <div class="text-center p-3">
+                  Số tiền khách đưa phải lớn hơn hoặc bằng số tiền phải thu!
+                </div>
+                <!-- <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" ng-click="closeModal()">Đóng</button>
+                </div> -->
+              </div>
+            </div>
+          </div>
     </main>
     <!-- js -->
     <script src="../js/angular-ui-tab-scroll.js"></script>
