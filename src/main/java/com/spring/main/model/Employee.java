@@ -46,8 +46,8 @@ public class Employee {
 	private boolean activity;
 	@Column(name = "email")
 	private String email;
-	@Column(name = "passwork")
-	private String passwork;
+	@Column(name = "password")
+	private String password;
 
 	public int getEmployeeID() {
 		return employeeID;
@@ -129,12 +129,12 @@ public class Employee {
 		this.email = email;
 	}
 
-	public String getPasswork() {
-		return passwork;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setPasswork(String passwork) {
-		this.passwork = passwork;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	// @OneToMany(mappedBy = "employee")

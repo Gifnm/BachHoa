@@ -59,7 +59,7 @@ public class EmployeeAPI {
 			return null;
 		} else {
 			System.out.println("j");
-			if (employee.getPasswork().equals(pass)) {
+			if (employee.getPassword().equals(pass)) {
 				return employee;
 			}
 			return null;

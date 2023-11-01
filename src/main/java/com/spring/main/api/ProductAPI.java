@@ -22,9 +22,7 @@ public class ProductAPI {
     ProductService productService;
 
     @PostMapping("/bachhoa/api/upload")
-    public ResponseEntity<String> uploadSanPhamWithImage(
-
-            @RequestPart("product") Product product,
+    public ResponseEntity<String> uploadSanPhamWithImage(@RequestPart("product") Product product,
             @RequestPart("image") MultipartFile hinhAnh) throws IOException {
         System.out.println("Hello Post");
         try {
@@ -65,27 +63,40 @@ public class ProductAPI {
     }
 
     // Start API thanhdq
+    // Return all product in database
     @GetMapping("/bachhoa/api/products")
     public List<Product> getAll() {
         return productService.getAll();
     }
 
-    @GetMapping("/bachhoa/api/products/search")
-    public List<Product> searchByKeyword(@RequestParam(name = "q") String keyWord) {
-        System.out.println("calling service...");
-        return productService.getByKeyword(keyWord);
+    // Return all product which have specific store-id
+    @GetMapping("/bachhoa/api/products/{store-id}")
+    public List<Product> getAllByStoreId(@PathVariable("store-id") int storeId) {
+        return productService.getAllByStoreId(storeId);
     }
 
+    // Return all product which map with keyword
+    @GetMapping("/bachhoa/api/products/search")
+    public List<Product> searchByKeyword(@RequestParam(name = "q") String keyWord,
+            @RequestParam(name = "storeid") int storeId) {
+        System.out.println("[ProductAPI:searchByKeyword():84]\n" + //
+                "> calling service...");
+        return productService.getByKeyword(keyWord, storeId);
+    }
+
+    // Save new product
     @PostMapping("/bachhoa/api/products")
     public Product create(@RequestBody Product product) {
         return productService.create(product);
     }
 
+    // Update product
     @PutMapping("/bachhoa/api/products/{id}")
     public Product update(@PathVariable("id") String id, @RequestBody Product product) {
         return productService.update(product);
     }
 
+    // Delete product
     @DeleteMapping("/bachhoa/api/products/{id}")
     public void delete(@PathVariable("id") String id) {
         productService.delete(id);

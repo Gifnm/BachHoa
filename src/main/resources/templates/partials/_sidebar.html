@@ -1,130 +1,50 @@
-<!-- <nav class="sidebar sidebar-offcanvas col-12 p-0 fixed-top d-flex mt-5" id="sidebar">
-  <ul class="nav">
-    <li class="nav-item">
-      <a class="nav-link" href="">
-        <span class="menu-title"></span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/admin/dashboard">
-        <div class="row">
-          <div class="col-md-4 border">
-            <i class="fa-solid fa-chart-line fa-xl"></i>
-          </div>
-          <div class="col-md-8 border">
-            <span class="menu-title">Thống kê</span>
-          </div>
-        </div>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/admin/product">
-        <div class="row">
-          <div class="col-md-4 border">
-            <i class="fa-solid fa-cart-flatbed fa-xl"></i>
-          </div>
-          <div class="col-md-8 border">
-            <span class="menu-title">Quản lý hàng hóa</span>
-          </div>
-        </div>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/admin/employee">
-        <div class="row">
-          <div class="col-4 border">
-            <i class="fa-solid fa-users fa-xl"></i>
-          </div>
-          <div class="col-8 border">
-            <span class="menu-title">Quản lý nhân sự</span>
-          </div>
-        </div>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/admin/bill">
-        <div class="col-4 border">
-          <i class="fa-solid fa-file-invoice-dollar fa-xl"></i>
-        </div>
-        <div class="col-8 border">
-          <span class="menu-title">Danh sách hóa đơn</span>
-        </div>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/admin/inventory">
-        <div class="col-4 border">
-          <i class="fa-solid fa-boxes-stacked fa-xl"></i>
-        </div>
-        <div class="col-8 border">
-          <span class="menu-title">Lịch sử kiểm kho</span>
-        </div>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/admin/lost">
-        </div>
-        <div class="col-4 border float-start">
-          <i class="fa-regular fa-file-lines fa-xl"></i>
-        </div>
-        </div>
-        <div class="col-8 border float-start">
-          <span class="menu-title">Thống kê mất mát</span>
-        </div>
-      </a>
-    </li>
-  </ul>
-</nav> -->
-<div class="col-12 col-xl-2 px-lg-2 px-0 bg-dark d-flex sticky-top">
-  <div class="d-flex flex-sm-column flex-row flex-grow-1 align-items-center align-items-xl-start px-3 pt-2 text-white">
-    <a href="/" class="d-flex align-items-center pb-sm-3 mb-md-0 me-xl-auto text-white text-decoration-none">
-      <span class="fs-5">B<span class="d-none d-sm-inline">rand</span></span>
+<div class="col-md-12 col-xl-2 bg-dark p-0 m-0 d-flex sticky-top">
+  <div class="ps-3 d-flex flex-sm-column flex-row flex-grow-1 align-items-center align-items-xl-start text-white">
+    <a href="/admin/dashboard"
+      class="logo w-100 bg-primary d-flex align-items-center mb-md-0 mx-xl-auto text-white text-decoration-none">
+
+      <img class="h-100 mx-auto" src="/images/logo3-removebg.png" alt="">
     </a>
     <ul
-      class="nav nav-pills flex-xl-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-xl-start"
+      class="nav flex-xl-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-xl-start"
       id="menu">
-      <li class="nav-item" id="bor">
-        <a href="#" class="nav-link px-sm-0 px-2">
-          <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-xl-inline">Home</span>
+      <li class="nav-item">
+        <a href="/admin/dashboard" class="px-sm-3 px-2">
+          <i class="fa-solid fa-chart-line fa-xl"></i><span class="ms-1 d-none d-xl-inline">Trang chủ</span> </a>
+      </li>
+      <li class="nav-item">
+        <a href="/admin/product" class="px-sm-3 px-2">
+          <i class="fa-solid fa-cart-flatbed fa-xl"></i><span class="ms-1 d-none d-xl-inline">Hàng hóa</span></a>
+      </li>
+      <li class="nav-item">
+        <a href="/admin/product" class="px-sm-3 px-2">
+          <i class="fa-solid fa-cart-flatbed fa-xl"></i><span class="ms-1 d-none d-xl-inline">Khuyễn mãi</span></a>
+      </li>
+      <li class="nav-item">
+        <a href="/admin/employee" class="px-sm-3 px-1">
+          <i class="fa-solid fa-users fa-xl"></i><span class="ms-1 d-none d-xl-inline">Nhân sự</span>
         </a>
       </li>
-      <li>
-        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-sm-3 px-2">
-          <i class="fa-solid fa-chart-line fa-xl"></i><span class="ms-1 d-none d-xl-inline">Dashboard</span> </a>
+      <li class="nav-item">
+        <a href="/admin/bill" class="px-sm-3 px-2">
+          <i class="fa-solid fa-file-invoice-dollar fa-xl"></i><span class="ms-1 d-none d-xl-inline">Hóa đơn</span></a>
       </li>
-      <li>
-        <a href="#" class="nav-link px-sm-3 px-2">
-          <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-xl-inline">Orders</span></a>
-      </li>
-      <li class="dropdown">
-        <a href="#" class="nav-link dropdown-toggle px-sm-3 px-1" id="dropdown" data-bs-toggle="dropdown"
-          aria-expanded="false">
-          <i class="fs-5 bi-bootstrap"></i><span class="ms-1 d-none d-xl-inline">Bootstrap</span>
+      <li class="nav-item">
+        <a href="/admin/inventory" class="px-sm-3 px-2">
+          <i class="fa-solid fa-boxes-stacked fa-xl"></i><span class="ms-1 d-none d-xl-inline">Lịch sử kiểm kho</span>
         </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdown">
-          <li><a class="dropdown-item" href="#">New project...</a></li>
-          <li><a class="dropdown-item" href="#">Settings</a></li>
-          <li><a class="dropdown-item" href="#">Profile</a></li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-          <li><a class="dropdown-item" href="#">Sign out</a></li>
-        </ul>
       </li>
-      <li>
-        <a href="#" class="nav-link px-sm-3 px-2">
-          <i class="fs-5 bi-grid"></i><span class="ms-1 d-none d-xl-inline">Products</span></a>
-      </li>
-      <li>
-        <a href="#" class="nav-link px-sm-3 px-2">
-          <i class="fs-5 bi-people"></i><span class="ms-1 d-none d-xl-inline">Customers</span> </a>
+      <li class="nav-item">
+        <a href="/admin/lost" class="px-sm-3 px-2">
+          <i class="fa-regular fa-file-lines fa-xl"></i><span class="ms-1 d-none d-xl-inline">Thống kê mất mát</span>
+        </a>
       </li>
     </ul>
-    <div class="dropdown py-sm-4 mt-sm-auto ms-auto ms-sm-0 flex-shrink-1">
+    <div class="dropdown w-100 py-sm-4 ps-3 mt-sm-auto ms-sm-0 flex-shrink-1">
       <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1"
         data-bs-toggle="dropdown" aria-expanded="false">
         <img src="https://github.com/mdo.png" alt="hugenerd" width="28" height="28" class="rounded-circle">
-        <span class="d-none d-sm-inline mx-1">Joe</span>
+        <span class="d-none d-sm-inline mx-1">{{account.employeeName}}</span>
       </a>
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
         <li><a class="dropdown-item" href="#">New project...</a></li>
