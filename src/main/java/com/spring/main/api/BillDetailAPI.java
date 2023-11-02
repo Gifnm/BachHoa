@@ -24,10 +24,10 @@ import com.spring.main.model.Product;
 @RestController()
 @RequestMapping("/bachhoa/api")
 public class BillDetailAPI {
-@Autowired 
-BillDetailService billDetailService;
-@Autowired
-ProductService productService;
+	@Autowired
+	BillDetailService billDetailService;
+	@Autowired
+	ProductService productService;
 //@GetMapping("billDetail/getproduct/{productID}")
 //private BillDetail getProduct(@PathVariable String productID) {
 //	System.out.println("Alo kia kia");
@@ -50,34 +50,33 @@ ProductService productService;
 //	
 //}
 
-@GetMapping("billDetail/findByBillID/{billID}")
-private List<BillDetail> findByBillID(@PathVariable("billID") String billID) {
-	return billDetailService.findByBillID(billID);
-}
+	@GetMapping("billDetail/findByBillID/{billID}")
+	private List<BillDetail> findByBillID(@PathVariable("billID") String billID) {
+		return billDetailService.findByBillID(billID);
+	}
 
-@PostMapping("billDetail/save")
+	@PostMapping("billDetail/save")
 	private BillDetail saveBillDetail(@RequestBody BillDetail billDetail) {
-	//System.out.println(billDetail);
-	billDetailService.save(billDetail);
-	return billDetail;
-}
+		// System.out.println(billDetail);
+		billDetailService.save(billDetail);
+		return billDetail;
+	}
 
-@PostMapping("billDetail/save/{listBillDetail}")
-private void saveBillDetail(@PathVariable List<BillDetail> listBillDetail) {
-	for(BillDetail billDetail : listBillDetail) {
+//@PostMapping("billDetail/save/{listBillDetail}")
+//private void saveBillDetail(@PathVariable List<BillDetail> listBillDetail) {
+//	for(BillDetail billDetail : listBillDetail) {
+//		billDetailService.save(billDetail);
+//	}
+//}
+
+	@PutMapping("billDetail/update")
+	private void updateBillDetail(@RequestBody BillDetail billDetail) {
 		billDetailService.save(billDetail);
 	}
-}
 
-@PutMapping("billDetail/update/{billDetailID}")
-private void updateBillDetail(@PathVariable("billDetailID") String billDetailID, @RequestBody BillDetail billDetail) {
-	billDetailService.save(billDetail);
-}
-
-@DeleteMapping("billDetail/delete/{billDetailID}")
-public void delete(@PathVariable("billDetailID") String billDetailID) {
-	billDetailService.delete(billDetailID);
-}
-
+	@DeleteMapping("billDetail/delete/{billID}/{productID}")
+	public void delete(@PathVariable("billID") String billID, @PathVariable("productID") String productID) {
+		billDetailService.delete(billID, productID);
+	}
 
 }

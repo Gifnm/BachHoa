@@ -16,17 +16,15 @@ public class BillDetailService {
 	BillDetailJPA billDetailJPA;
 
 	public BillDetail save(BillDetail billDetail) {
-//		ObjectMapper mapper = new ObjectMapper();
-//		BillDetail billDetail = mapper.convertValue(data,  BillDetail.class);
 		billDetailJPA.save(billDetail);
 		return billDetail;
 
 	}
-	
-	public void delete(String billDetailID) {
-		billDetailJPA.deleteById(billDetailID);
+
+	public void delete(String billID, String productID) {
+		billDetailJPA.deleteByBillIDAndProductID(billID, productID);
 	}
-	
+
 	public List<BillDetail> findByBillID(String billID) {
 		return billDetailJPA.findByBillID(billID);
 	}

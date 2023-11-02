@@ -61,13 +61,13 @@ public class BillAPI {
 		return billService.searchBetween(fromDate, toDate, page);
 	}
 	 
-	@PutMapping("bill/update/{BillID}")
-	public void update(@PathVariable("BillID") String id, @RequestBody Bill bill) {
+	@PutMapping("bill/update")
+	public void update(@RequestBody Bill bill) {
 		billService.save(bill);
 	}
 	
-	@DeleteMapping("bill/delete/{BillID}")
-	public void delete(@PathVariable("BillID") String id) {
+	@DeleteMapping("bill/delete/{billID}")
+	public void delete(@PathVariable("billID") String id) {
 		billService.delete(id);
 	}
 }
