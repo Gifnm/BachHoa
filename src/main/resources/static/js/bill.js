@@ -506,7 +506,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
         let item = data.bill;
         item.totalAmount = parseInt(document.getElementById('amountReceivable').innerText.replace(',', ''));
         item.cash = parseInt(document.getElementById('cash').value);
-        item.reduce = parseInt(document.getElementById('discount').innerText.replace(',', ''));
+        item.reduced = parseInt(document.getElementById('discount').innerText.replace(',', ''));
         item.timeCreate = new Date().getTime();
         if (item.cash < $scope.roundAmountReceivable) {
             //alert('loi')

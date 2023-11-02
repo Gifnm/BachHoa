@@ -2,10 +2,11 @@ const app = angular.module("app", []);
 app.controller("billsHistory-ctrl", function ($scope, $http) {
 	$scope.items = [];
 	$scope.form = {};
-	$scope.billDetail = [];
+	$scope.billDetails = [];
 	$scope.bill = {};
 	$scope.totalAmountOfAllBills = 0;
 	$scope.employee = {};
+	$scope.discountDetail = {};
 
 	$scope.initialize = function () {
 		// load hóa đơn
@@ -23,19 +24,19 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 
 	//Cập nhật sản phẩm
 	$scope.update = function (productID, quantity) {
-		let item = $scope.billDetail.find(item => item.productID == productID);
-		let index = $scope.billDetail.findIndex(item => item.productID == productID);
+		let item = $scope.billDetails.find(item => item.productID == productID);
+		let index = $scope.billDetails.findIndex(item => item.productID == productID);
 		item.quantity = quantity;
 		item.totalAmount = (item.product.price + item.product.price * (item.product.vat / 100)) * item.quantity
-		$scope.billDetail.splice(index, 1, item);
+		$scope.billDetails.splice(index, 1, item);
 		$http.put(`/bachhoa/api/billDetail/update`, item).then(() => {
 			//alert("Update thành công!");
 			$http.get(`/bachhoa/api/bill/findBill/${item.billID}`).then(resp => {
 				$scope.bill = resp.data;
 				$scope.bill.timeCreate = new Date().getTime();
 				$scope.bill.totalAmount = 0;
-				angular.forEach($scope.billDetail, function (billDetail) {
-					$scope.bill.totalAmount += billDetail.totalAmount;
+				angular.forEach($scope.billDetails, function (item) {
+					$scope.bill.totalAmount += item.totalAmount;
 				})
 				$http.put(`/bachhoa/api/bill/update`, $scope.bill).then(() => {
 					//alert("Update bill thành công!");
@@ -45,7 +46,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 					alert("Lỗi update hóa đơn!");
 					console.log("Error", error);
 				});
-				
+
 			}).catch(error => {
 				console.log('Error', error)
 			});
@@ -76,8 +77,8 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		if (!confirm('Bạn sẽ xóa sản phẩm này?')) return;
 		$http.delete(`/bachhoa/api/billDetail/delete/${billID}/${productID}`).then(() => {
 			console.log("Xóa thành công");
-			let index = $scope.billDetail.findIndex(item => item.productID == productID);
-			$scope.billDetail.splice(index, 1);
+			let index = $scope.billDetails.findIndex(item => item.productID == productID);
+			$scope.billDetails.splice(index, 1);
 		}).catch(error => {
 			console.log("Có lỗi xảy ra", error);
 		});
@@ -92,8 +93,20 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		}
 		)
 		$http.get(`/bachhoa/api/billDetail/findByBillID/${billID}`).then(resp => {
-			$scope.billDetail = resp.data
-			console.log($scope.billDetail);
+			$scope.billDetails = resp.data;
+			angular.forEach($scope.billDetails, function (item) {
+				$http.get(`/discount/findByProductIDAndStoreID/${item.product.productID}/${$scope.employee.store.storeID}`).then(resp => {
+					$scope.discountDetail = resp.data;
+					if ($scope.discountDetail.disID === "S25") {
+						item.discountName = "25%";
+					} else if ($scope.discountDetail.disID === "S50") {
+						item.discountName = "50%";
+					} else {
+						item.discountName = "Không";
+					}
+				})
+			})
+
 		}
 		)
 	}

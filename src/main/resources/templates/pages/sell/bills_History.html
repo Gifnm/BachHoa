@@ -228,14 +228,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="item in billDetail">
+                                            <tr ng-repeat="item in billDetails">
                                                 <td style="width: 13%;">{{item.product.productID}}</td>
                                                 <td style="word-wrap: break-word; width: 25%;">
                                                     {{item.product.productName}}</td>
                                                 <td style="width: 8%;"><input type="number" ng-model="item.quantity" min="1" ng-change="update(item.product.productID, item.quantity)"></td>
                                                 <td style="width: 15%;">{{item.product.price + item.product.price *
                                                     (item.product.vat/100)}}</td>
-                                                <td style="width: 15%;">20%</td>
+                                                <td style="width: 15%;">{{item.discountName}}</td>
                                                 <td style="width: 15%;">{{item.totalAmount}}</td>
                                                 <td style="width: 1%;"><button
                                                         ng-click="deleteItem(item.billID, item.productID)"
@@ -249,25 +249,25 @@
                                 <div class="d-flex">
                                     <div class="d-flex align-items-center p-3">
                                         <label for="storeID" class="me-2">Phải thu: </label><br>
-                                        <span id="storeID" name="item.storeID" class="fw-bold">
+                                        <span class="fw-bold">
                                             {{bill.amountReceivable | number}} VNĐ
                                         </span>
                                     </div>
                                     <div class="d-flex align-items-center p-3">
                                         <label for="storeID" class="me-2">Tổng tiền: </label><br>
-                                        <span id="storeID" name="item.storeID" class="fw-bold">
+                                        <span class="fw-bold">
                                             {{bill.totalAmount | number}} VNĐ
                                         </span>
                                     </div>
                                     <div class="d-flex align-items-center p-3">
                                         <label for="storeID" class="me-2">Đã giảm: </label><br>
-                                        <span id="storeID" name="item.storeID" class="fw-bold">
+                                        <span class="fw-bold">
                                             {{bill.reduced | number}} VNĐ
                                         </span>
                                     </div>
                                     <div class="d-flex align-items-center p-3">
                                         <label for="storeID" class="me-2">Tiền mặt: </label><br>
-                                        <span id="storeID" name="item.storeID" class="fw-bold">
+                                        <span class="fw-bold">
                                             {{bill.cash | number}} VNĐ
                                         </span>
                                     </div>
