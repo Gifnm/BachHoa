@@ -1,8 +1,6 @@
 package com.spring.main.model;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

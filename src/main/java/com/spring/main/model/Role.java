@@ -37,10 +37,10 @@ public class Role {
 		this.workRole = workRole;
 	}
 
-//    @OneToMany(mappedBy = "role")
-//    private List<Employee> employees;
-//
-//    @OneToMany(mappedBy = "role")
-//    private List<RoleBasedSalary> roleBasedSalaries;
+	// @OneToMany(mappedBy = "role")
+	// private List<Employee> employees;
+	//
+	// @OneToMany(mappedBy = "role")
+	// private List<RoleBasedSalary> roleBasedSalaries;
 
 }

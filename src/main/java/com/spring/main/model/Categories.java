@@ -1,5 +1,4 @@
 package com.spring.main.model;
-import java.util.List;
 
 //import jakarta.persistence.Column;
 //import jakarta.persistence.Entity;
@@ -19,14 +18,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "categories")
 public class Categories {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "categoriesID")
-    private int categoriesID;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "categoriesID")
+	private int categoriesID;
 
-    @Column(name = "categoriesName", nullable = false)
-    private String categoriesName;
-
+	@Column(name = "categoriesName", nullable = false)
+	private String categoriesName;
 
 	public int getCategoriesID() {
 		return categoriesID;
@@ -43,5 +41,5 @@ public class Categories {
 	public void setCategoriesName(String categoriesName) {
 		this.categoriesName = categoriesName;
 	}
-    
+
 }
