@@ -1,47 +1,33 @@
-<div class="col-md-12 col-xl-2 bg-dark p-0 m-0 d-flex sticky-top">
-  <div class="ps-3 d-flex flex-sm-column flex-row flex-grow-1 align-items-center align-items-xl-start text-white">
+<div class="col-md-12 col-xl-2 p-0 m-0 d-flex">
+  <div
+    class="border-end bg-light ps-3 d-flex flex-sm-column flex-row flex-grow-1 align-items-center align-items-xl-start text-white">
     <a href="/admin/dashboard"
-      class="logo w-100 bg-primary d-flex align-items-center mb-md-0 mx-xl-auto text-white text-decoration-none">
+      class="logo w-100 bg-light d-flex align-items-center mb-md-0 mx-xl-auto text-white text-decoration-none">
 
       <img class="h-100 mx-auto" src="/images/logo3-removebg.png" alt="">
     </a>
-    <ul
-      class="nav flex-xl-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-xl-start"
-      id="menu">
-      <li class="nav-item">
-        <a href="/admin/dashboard" class="px-sm-3 px-2">
-          <i class="fa-solid fa-chart-line fa-xl"></i><span class="ms-1 d-none d-xl-inline">Trang chủ</span> </a>
-      </li>
-      <li class="nav-item">
-        <a href="/admin/product" class="px-sm-3 px-2">
-          <i class="fa-solid fa-cart-flatbed fa-xl"></i><span class="ms-1 d-none d-xl-inline">Hàng hóa</span></a>
-      </li>
-      <li class="nav-item">
-        <a href="/admin/product" class="px-sm-3 px-2">
-          <i class="fa-solid fa-cart-flatbed fa-xl"></i><span class="ms-1 d-none d-xl-inline">Khuyễn mãi</span></a>
-      </li>
-      <li class="nav-item">
-        <a href="/admin/employee" class="px-sm-3 px-1">
-          <i class="fa-solid fa-users fa-xl"></i><span class="ms-1 d-none d-xl-inline">Nhân sự</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="/admin/bill" class="px-sm-3 px-2">
-          <i class="fa-solid fa-file-invoice-dollar fa-xl"></i><span class="ms-1 d-none d-xl-inline">Hóa đơn</span></a>
-      </li>
-      <li class="nav-item">
-        <a href="/admin/inventory" class="px-sm-3 px-2">
-          <i class="fa-solid fa-boxes-stacked fa-xl"></i><span class="ms-1 d-none d-xl-inline">Lịch sử kiểm kho</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="/admin/lost" class="px-sm-3 px-2">
-          <i class="fa-regular fa-file-lines fa-xl"></i><span class="ms-1 d-none d-xl-inline">Thống kê mất mát</span>
-        </a>
-      </li>
+    <ul id="itemsSideBar"
+      class="w-100 fs-6 list-group list-group-flush flex-xl-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto">
+      <a href="/admin/dashboard" class="list-group-item list-group-item-action list-group-item-light py-3 ps-4">
+        <i class="fa-solid fa-chart-line fa-xl"></i><span class="ms-3 d-none d-xl-inline">Trang chủ</span> </a>
+      <a href="/admin/product" class="list-group-item list-group-item-action list-group-item-light py-3 ps-4">
+        <i class="fa-solid fa-cart-flatbed fa-xl"></i><span class="ms-3 d-none d-xl-inline">Hàng hóa</span></a>
+      <a href="/admin/product" class="list-group-item list-group-item-action list-group-item-light py-3 ps-4">
+        <i class="fa-solid fa-cart-flatbed fa-xl"></i><span class="ms-3 d-none d-xl-inline">Khuyễn mãi</span></a>
+      <a href="/admin/employee" class="list-group-item list-group-item-action list-group-item-light py-3 ps-4">
+        <i class="fa-solid fa-users fa-xl"></i><span class="ms-3 d-none d-xl-inline">Nhân sự</span>
+      </a>
+      <a href="/admin/bill" class="list-group-item list-group-item-action list-group-item-light py-3 ps-4">
+        <i class="fa-solid fa-file-invoice-dollar fa-xl"></i><span class="ms-3 d-none d-xl-inline">Hóa đơn</span></a>
+      <a href="/admin/inventory" class="w-100 list-group-item list-group-item-action list-group-item-light py-3 ps-4">
+        <i class="fa-solid fa-boxes-stacked fa-xl"></i><span class="ms-3 d-none d-xl-inline">Lịch sử kiểm kho</span>
+      </a>
+      <a href="/admin/lost" class="list-group-item list-group-item-action list-group-item-light py-3 ps-4">
+        <i class="fa-regular fa-file-lines fa-xl"></i><span class="ms-3 d-none d-xl-inline">Mất mát </span>
+      </a>
     </ul>
     <div class="dropdown w-100 py-sm-4 ps-3 mt-sm-auto ms-sm-0 flex-shrink-1">
-      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1"
+      <a href="#" class="d-flex align-items-center text-black text-decoration-none dropdown-toggle" id="dropdownUser1"
         data-bs-toggle="dropdown" aria-expanded="false">
         <img src="https://github.com/mdo.png" alt="hugenerd" width="28" height="28" class="rounded-circle">
         <span class="d-none d-sm-inline mx-1">{{account.employeeName}}</span>
