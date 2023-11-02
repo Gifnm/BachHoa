@@ -1,12 +1,13 @@
 package com.spring.main.model;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class CustomEmployeeDetail implements UserDetails {
 
@@ -14,9 +15,6 @@ public class CustomEmployeeDetail implements UserDetails {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	/* Mã hóa password */
-	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
 	private Employee employee;
 
@@ -26,14 +24,25 @@ public class CustomEmployeeDetail implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(employee.getRole().toString());
-		return Arrays.asList(simpleGrantedAuthority); 
+//		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(employee.getRole().toString());
+//		return Arrays.asList(simpleGrantedAuthority); 
+		Set<Role> roles = employee.getRoles();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+         
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getRoleID()));
+        }
+        return authorities;
 	}
+	
+	public boolean hasRole(String roleName) {
+        return this.employee.hasRole(roleName);
+    }
 
-	// Gắn mã hóa vào chi tiết của 1 nhân viên (dùng tạm cho những user đã tạo sẳn)
 	@Override
 	public String getPassword() {
-		return passwordEncoder.encode(employee.getPassword());
+		// return passwordEncoder.encode(employee.getPassword());
+		return employee.getPassword();
 	}
 
 	@Override
@@ -61,7 +70,20 @@ public class CustomEmployeeDetail implements UserDetails {
 		return true;
 	}
 
-	public String getFullName() {
+	public String getFullname() {
 		return employee.getEmployeeName();
 	}
+	
+//	public Store getStoreWork() {
+//		return employee.getStore();
+//	}
+//	
+//	public String getPictureURL() {
+//		return employee.getPictureURL();
+//	}
+//	
+//	public int getID() {
+//		return employee.getEmployeeID();
+//	}
+	
 }

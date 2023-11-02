@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
 
 import com.spring.main.Service.EmployeeService;
+import com.spring.main.util.LoginSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -63,10 +64,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 
-		http.authorizeRequests().antMatchers("/sell/**").authenticated().antMatchers("/admin/**").hasAnyRole("qlch")
+		http.authorizeRequests().antMatchers("/sell/**").authenticated()
+			.antMatchers("/admin/**").hasAnyRole("qlch")
 			.anyRequest().permitAll();
 
-		http.formLogin().loginPage("/login").loginProcessingUrl("/login").defaultSuccessUrl("/login/success", false)
+		http.formLogin().loginPage("/login").loginProcessingUrl("/login")
+			.successHandler(loginSuccessHandler)
 			.failureUrl("/login/error").usernameParameter("email").permitAll();
 
 		http.exceptionHandling().accessDeniedPage("/auth/access/denied");
@@ -81,7 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		web.httpFirewall(new DefaultHttpFirewall());
 	}
 
-//	@Autowired
-//	private LoginSuccessHandler customAuthenticationSuccessHandler;
+	@Autowired
+	private LoginSuccessHandler loginSuccessHandler;
 
 }
