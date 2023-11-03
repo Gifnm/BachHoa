@@ -57,9 +57,10 @@ public class EmployeeService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Employee employee = employeeJPA.findbyEmail(email);
+		
 		if (employee == null) {
 			throw new UsernameNotFoundException("Không tìm thấy nhân viên.");
-		}
+		} 
 		return new CustomEmployeeDetail(employee);
 	}
 

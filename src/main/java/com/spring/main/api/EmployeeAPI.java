@@ -51,7 +51,7 @@ public class EmployeeAPI {
 		store.setStoreID(1);
 		Role role = new Role();
 		role.setRoleID("bhoa");
-		employee.setRole(role);
+		//employee.setRole(role);
 		employee.setStore(store);
 		employee.setActivity(true);
 		emService.insert(employee);

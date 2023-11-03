@@ -129,6 +129,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
     $scope.discountName = "";
     $scope.discountDetail = {};
     $scope.employee = {};
+    $scope.admin =  false;
 
     var stt = 1;
     // Khởi tạo 1 bill tạm đầu tiên
@@ -138,6 +139,15 @@ app.controller("bill-ctrl", function ($scope, $http) {
         $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
             $scope.employee = resp.data;
             console.log($scope.employee);
+            angular.forEach($scope.employee.roles, function(item){
+                if(item.roleID == "qlch"){
+                    $scope.admin =  true;
+                }
+            })
+            if($scope.employee.roles[0].roleID == "qlch"){
+                $scope.admin =  true;
+            }
+            
             let test = sessionStorage.getItem("bills");
             loadBillFromSessionStorage();
             console.log(test)

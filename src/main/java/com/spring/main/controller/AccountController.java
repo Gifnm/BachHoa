@@ -1,6 +1,9 @@
 package com.spring.main.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,9 +36,15 @@ public class AccountController {
 	
 	@RequestMapping("/login")
 	public String showlogin(Model model) {
-		// SessionAttr.CURRENT_MESSAGE = "Chào mừng quay lại !";
-		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
-		return "pages/account/login";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		
+		if(authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+			model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
+			return "pages/account/login";
+		} else {
+			SessionAttr.CURRENT_MESSAGE = "Chào mừng quay lại !";
+			return "redirect:/sell";
+		}
 	}
 
 	@RequestMapping("/login/success")
@@ -56,12 +65,12 @@ public class AccountController {
 		return "redirect:/login";
 	}
 
-//	@RequestMapping("/auth/access/denied")
-//	public String denied(Model model) {
-//		SessionAttr.CURRENT_MESSAGE = "Bạn không có quyền truy xuất!";
-//		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
-//		return "errorPage";
-//	}
+	@RequestMapping("/auth/access/denied")
+	public String denied(Model model) {
+		SessionAttr.CURRENT_MESSAGE = "Bạn không có quyền truy xuất!";
+		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
+		return "redirect:/sell";
+	}
 
 	@RequestMapping("/regenerate-otp")
 	public String regenerateOTP(@RequestParam("R_Email") String email, Model model) {
