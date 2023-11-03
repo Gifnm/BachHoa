@@ -94,6 +94,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<dependency>
+    		<groupId>org.thymeleaf</groupId>
+    		<artifactId>thymeleaf-spring5</artifactId>
+		</dependency>
+		<dependency>
+    		<groupId>org.thymeleaf.extras</groupId>
+    		<artifactId>thymeleaf-extras-springsecurity5</artifactId>
+		</dependency>
 		<!-- Forget Pass - Email -->
 		<!--JAVAX-->
 		<dependency>

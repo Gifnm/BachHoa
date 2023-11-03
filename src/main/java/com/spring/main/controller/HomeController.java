@@ -6,11 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.spring.main.util.SessionAttr;
 
+
 @Controller
 public class HomeController {
-	
-	String messages;
-	
 	@RequestMapping("/sell")
 	public String home(Model model) {
 		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);

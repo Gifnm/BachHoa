@@ -13,31 +13,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.main.Service.BillDetaileService;
+import com.spring.main.Service.BillDetailService;
 import com.spring.main.Service.ProductService;
 import com.spring.main.model.BillDetail;
-import com.spring.main.model.Product;
 
 @CrossOrigin("*")
 @RestController()
 @RequestMapping("/bachhoa/api")
 public class BillDetailAPI {
 	@Autowired
-	BillDetaileService billDetaileService;
+	BillDetailService billDetailService;
 	@Autowired
 	ProductService productService;
-
-	@GetMapping("billDetail/getproduct/{productID}")
-	private BillDetail getProduct(@PathVariable String productID) {
-		System.out.println("Alo kia kia");
-		Product product = productService.getByID(productID);
-		BillDetail billDetail = new BillDetail();
-		billDetail.setQuantity(1);
-		billDetail.setTotalAmount(product.getPrice());
-		billDetail.setProduct(product);
-		System.out.println(billDetail.toString());
-		return billDetail;
-	}
+//@GetMapping("billDetail/getproduct/{productID}")
+//private BillDetail getProduct(@PathVariable String productID) {
+//	System.out.println("Alo kia kia");
+//	Product product = productService.getByID(productID);
+//	BillDetail billDetail= new BillDetail();
+//	billDetail.setQuantity(1);
+//	billDetail.setTotalAmount(product.getPrice());
+//	billDetail.setProduct(product);
+//	System.out.println(billDetail.toString());
+//	return billDetail;
+//}
 //@PostMapping("billDetail/create/{listDetail}/{billID}")
 //private void createBillDetail(@PathVariable("listDetail") List<BillDetail> list , @PathVariable("billID") String billID) {
 //	Bill bill = new Bill();
@@ -51,23 +49,31 @@ public class BillDetailAPI {
 
 	@GetMapping("billDetail/findByBillID/{billID}")
 	private List<BillDetail> findByBillID(@PathVariable("billID") String billID) {
-		return billDetaileService.findByBillID(billID);
+		return billDetailService.findByBillID(billID);
 	}
 
 	@PostMapping("billDetail/save")
-	private void saveBillDetail(@RequestBody BillDetail billDetail) {
-		billDetaileService.save(billDetail);
+	private BillDetail saveBillDetail(@RequestBody BillDetail billDetail) {
+		// System.out.println(billDetail);
+		billDetailService.save(billDetail);
+		return billDetail;
 	}
 
-	@PutMapping("billDetail/update/{billDetailID}")
-	private void updateBillDetail(@PathVariable("billDetailID") String billDetailID,
-		@RequestBody BillDetail billDetail) {
-		billDetaileService.save(billDetail);
+//@PostMapping("billDetail/save/{listBillDetail}")
+//private void saveBillDetail(@PathVariable List<BillDetail> listBillDetail) {
+//	for(BillDetail billDetail : listBillDetail) {
+//		billDetailService.save(billDetail);
+//	}
+//}
+
+	@PutMapping("billDetail/update")
+	private void updateBillDetail(@RequestBody BillDetail billDetail) {
+		billDetailService.save(billDetail);
 	}
 
-	@DeleteMapping("billDetail/delete/{billDetailID}")
-	public void delete(@PathVariable("billDetailID") String billDetailID) {
-		billDetaileService.delete(billDetailID);
+	@DeleteMapping("billDetail/delete/{billID}/{productID}")
+	public void delete(@PathVariable("billID") String billID, @PathVariable("productID") String productID) {
+		billDetailService.delete(billID, productID);
 	}
 
 }

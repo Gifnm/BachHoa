@@ -102,7 +102,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
         },
 
         // Lấy danh dách các sản phẩm
-        init() {
+        initAutoComplete() {
             $http.get(`/product/getProductID`).then(resp => {
                 products = resp.data;
                 $scope.autocompleteInput.autocomplete(document.getElementById("productCode"), products);
@@ -128,42 +128,54 @@ app.controller("bill-ctrl", function ($scope, $http) {
     $scope.sale = 0;
     $scope.discountName = "";
     $scope.discountDetail = {};
+    $scope.employee = {};
 
+    var stt = 1;
     // Khởi tạo 1 bill tạm đầu tiên
     let init = function () {
-        $scope.bills.push({
-            stt: 1,
-            bill: createBill(),
-            active: true
+        // Tìm thông tin nhân viên
+        let email = document.getElementById('email').innerText;
+        $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
+            $scope.employee = resp.data;
+            console.log($scope.employee);
+            let test = sessionStorage.getItem("bills");
+            loadBillFromSessionStorage();
+            console.log(test)
+            //alert($scope.bills.length);
+            if (test == null || $scope.bills.length == 0) {
+                $scope.bills = [];
+                addNewBill();
+            } else {
+                loadBillFromSessionStorage();
+                setAllInactive();
+                $scope.invoiceID = $scope.bills[0].bill.billID;
+                stt = $scope.bills[0].stt;
+                $scope.bills[0].active = true;
+                loadBillDetailFromSessionStorage();
+                loadToBillDetail($scope.bills[0].bill.billID);
+            }
         });
         document.getElementById('print').disabled = true;
-        console.log($scope.bills)
-    }
+    };
 
     // tạo bill mới
     let createBill = function () {
-        let storeID = parseInt(document.getElementById('storeID').innerText);
-        let employeeID = parseInt(document.getElementById('employeeID').innerText);
         let bill = {};
-        $http.get(`/bachhoa/api/store/findByID/${storeID}`).then(resp => {
-            bill.billID = new Date().getTime().toString();
-            bill.totalAmount = 0;
-            bill.timeCreate = new Date().getTime();
-            bill.cash = 0;
-            bill.reduce = 0;
-            bill.store = resp.data;
-            $scope.invoiceID = bill.billID;
-            $http.get(`/bachhoa/api/employee/findByID/${employeeID}`).then(resp => {
-                bill.employee = resp.data;
-            });
-        });
+        bill.billID = new Date().getTime().toString();
+        bill.totalAmount = 0;
+        bill.timeCreate = new Date().getTime();
+        bill.cash = 0;
+        bill.reduce = 0;
         return bill;
     };
 
     // Tải lại dữ liệu bill
     $scope.selectBill = function (billID) {
+        //alert(billID)
+        loadBillDetailFromSessionStorage();
         loadToBillDetail(billID);
         $scope.invoiceID = billID;
+        //alert($scope.invoiceID)
     };
 
 
@@ -180,33 +192,62 @@ app.controller("bill-ctrl", function ($scope, $http) {
 
     };
 
-
-    let stt = 1;
-
     // thêm bill tạm vào mảng bills[]
     let addNewBill = function () {
-        let bill = createBill();
-        if ($scope.bills.length == 0) {
-            $scope.bills.push({
-                stt: 1,
-                bill: bill,
-                active: true
+        let listBill = $scope.bills;
+        let employeeID = parseInt(document.getElementById('employeeID').innerText);
+        $http.get(`/bachhoa/api/store/findByID/${$scope.employee.store.storeID}`).then(resp => {
+            let bill = createBill();
+            bill.store = resp.data;
+            $scope.invoiceID = bill.billID;
+            console.log(resp.data)
+            $http.get(`/bachhoa/api/employee/findByID/${employeeID}`).then(resp => {
+                bill.employee = resp.data;
+                //alert(listBill.length)
+                if (listBill.length == 0) {
+                    listBill.push({
+                        stt: 1,
+                        bill: bill,
+                        active: true
+                    });
+                    //console.log(listBill)
+                    saveBillToSessionStorage(listBill);
+                } else {
+                    stt = stt + 1;
+                    var stt_next = stt;
+                    listBill.unshift({
+                        stt: stt_next,
+                        bill: bill,
+                        active: true
+                    });
+                    //console.log(listBill)
+                    saveBillToSessionStorage(listBill);
+                }
+                loadBillFromSessionStorage();
+                //$scope.invoiceID = bill.billID;
+                loadToBillDetail(bill.billID);
             });
-        } else {
-            stt = stt + 1;
-            var stt_next = stt;
-            $scope.bills.unshift({
-                stt: stt_next,
-                bill: bill,
-                active: true
-            });
-        }
-        loadToBillDetail(bill.billID)
-        //$scope.invoiceID = bill.billID;
+        });
+
+    };
+
+    let saveBillToSessionStorage = function (data) {
+        const text = JSON.stringify(data);
+        sessionStorage.setItem("bills", text);
+    };
+
+    let loadBillFromSessionStorage = function () {
+        const obj = sessionStorage.getItem("bills");
+        const list = JSON.parse(obj);
+        //console.log(list);
+        $scope.bills = list;
+
+        //console.log($scope.bills);
     };
 
     // chọn tab hoạt động
     let setAllInactive = function () {
+        //console.log($scope.bills);
         angular.forEach($scope.bills, function (bill) {
             bill.active = false;
         });
@@ -216,28 +257,62 @@ app.controller("bill-ctrl", function ($scope, $http) {
     $scope.addBill = function () {
         setAllInactive();
         addNewBill();
-        console.log($scope.bills)
     };
     // xóa bill tạm
     $scope.removeTab = function (index) {
-        let item = $scope.bills[index];
-        if ($scope.bills.length != 1 && index == $scope.bills.length - 1) {
-            let item = $scope.bills[index - 1];
-            $scope.invoiceID = item.bill.billID;
-        } else if ($scope.bills.length != 1 && item.bill.billID == $scope.invoiceID) {
-            let item = $scope.bills[index + 1];
-            $scope.invoiceID = item.bill.billID;
+        var item = $scope.bills[index];
+        //alert(item.bill.billID)
+        //alert(index)
+        if ($scope.bills.length != 1 && (item.bill.billID == $scope.invoiceID && index == $scope.bills.length - 1)) {
+            let bill = $scope.bills[index - 1];
+            $scope.invoiceID = bill.bill.billID;
+        } else if ($scope.bills.length != 1 && index != $scope.bills.length - 1) {
+            let bill = $scope.bills[index + 1];
+            $scope.invoiceID = bill.bill.billID;
+        }
+
+        //alert($scope.invoiceID)
+        let wide = $scope.billDetails.length;
+        for (let i = 0; i < wide; i++) {
+            let index = $scope.billDetails.findIndex(a => a.billDetail.billID == item.bill.billID);
+            //alert(index)
+            if (index >= 0) {
+                $scope.billDetails.splice(index, 1);
+                saveBillDetailToSessionStorage($scope.billDetails);
+                loadBillDetailFromSessionStorage();
+            }
         }
         $scope.bills.splice(index, 1);
+        saveBillToSessionStorage($scope.bills);
+        loadBillFromSessionStorage();
         if ($scope.bills.length == 0) {
             addNewBill();
         }
         loadToBillDetail($scope.invoiceID);
     };
 
+
     //------------------------------------------------//
 
     // Xử lý billDetail
+
+
+    let saveBillDetailToSessionStorage = function (data) {
+        const text = JSON.stringify(data);
+        sessionStorage.setItem("billDetails", text);
+    };
+
+    let loadBillDetailFromSessionStorage = function () {
+        const obj = sessionStorage.getItem("billDetails");
+        const list = JSON.parse(obj);
+        if (list == null) {
+            $scope.billDetails = [];
+        } else {
+            $scope.billDetails = list;
+        }
+
+    };
+
     // tải lại dự liệu trên bảng hóa đơn chi tiết
     let loadToBillDetail = function (billID) {
         if ($scope.billDetails.length == 0) {
@@ -251,7 +326,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
             }
         });
         total(billID);
-        console.log($scope.listProduct)
+        //onsole.log($scope.listProduct)
     };
 
     // Thêm sản phẩm vào billDetail
@@ -261,6 +336,8 @@ app.controller("bill-ctrl", function ($scope, $http) {
 
         if (item) {
             updateBillDetail(productID, $scope.invoiceID);
+            saveBillDetailToSessionStorage($scope.billDetails);
+            loadBillDetailFromSessionStorage();
             loadToBillDetail($scope.invoiceID);
             //$scope.productCode = '';
         } else {
@@ -277,7 +354,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
                         $http.get(`/discount/findByProductIDAndStoreID/${productID}/${storeID}`).then(resp => {
                             //alert("run")
                             $scope.discountDetail = resp.data;
-                            console.log($scope.discountDetail)
+                            //console.log($scope.discountDetail)
                             if ($scope.discountDetail.disID === "S25") {
                                 //alert("s25")
                                 $scope.sale = 0.25;
@@ -310,6 +387,10 @@ app.controller("bill-ctrl", function ($scope, $http) {
                                 }
                             };
                             $scope.billDetails.push(data);
+                            console.log($scope.billDetails);
+                            saveBillDetailToSessionStorage($scope.billDetails);
+                            loadBillDetailFromSessionStorage();
+                            console.log($scope.billDetails);
                             loadToBillDetail($scope.invoiceID);
                             //$scope.productCode = '';
                         }).catch(error => {
@@ -347,6 +428,8 @@ app.controller("bill-ctrl", function ($scope, $http) {
         item.totalMoney = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity;
         item.billDetail.totalAmount = item.totalMoney - item.discount;
         $scope.billDetails.splice(index, 1, item);
+        saveBillDetailToSessionStorage($scope.billDetails);
+        loadBillDetailFromSessionStorage();
         loadToBillDetail(billID);
     };
 
@@ -355,6 +438,8 @@ app.controller("bill-ctrl", function ($scope, $http) {
     $scope.deleteItem = function (productID, billID) {
         let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         $scope.billDetails.splice(index, 1);
+        saveBillDetailToSessionStorage($scope.billDetails);
+        loadBillDetailFromSessionStorage();
         loadToBillDetail(billID);
     };
 
@@ -366,6 +451,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
             $scope.totalAmount = 0;
             $scope.discount = 0;
             $scope.amountReceivable = 0;
+            $scope.roundAmountReceivable = 0;
         } else {
             angular.forEach($scope.billDetails, function (item) {
                 if (item.billDetail.billID == billID) {
@@ -397,41 +483,59 @@ app.controller("bill-ctrl", function ($scope, $http) {
             if (item.billDetail.billID == billID) {
                 $http.post(url, item.billDetail).then(resp => {
                     console.log("Thêm thành công", resp);
-                    var billDetail = resp.data;
-                    window.location = "/print/" + billDetail.billID;
+                    window.location = "/print/" + billID;
                 }).catch(error => {
                     console.log("Có lỗi xảy ra", error);
                 });
             }
         });
+        //alert('gio moi duoc chay')
+        //var billDetail = resp.data;
+        let index = $scope.bills.findIndex(item => item.bill.billID == billID);
+        $scope.removeTab(index);
+
     };
 
     //------------------------------------------------//
+    $scope.errorAlert = "true";
 
     $scope.print = function () {
         let billID = $scope.invoiceID;
+        //alert('thong bao tai in' + billID)
         let data = $scope.bills.find(item => item.bill.billID == billID);
         let item = data.bill;
         item.totalAmount = parseInt(document.getElementById('amountReceivable').innerText.replace(',', ''));
         item.cash = parseInt(document.getElementById('cash').value);
-        item.reduce = parseInt(document.getElementById('discount').innerText.replace(',', ''));
-        saveBillToDatabase(item);
-        console.log(item)
-        $scope.money = "";
+        item.reduced = parseInt(document.getElementById('discount').innerText.replace(',', ''));
+        item.timeCreate = new Date().getTime();
+        if (item.cash < $scope.roundAmountReceivable) {
+            //alert('loi')
+            document.getElementById('errorAlert').setAttribute("style", "display: block;");
+            document.getElementById('errorAlert').setAttribute("aria-modal", true);
+            document.getElementById('errorAlert').setAttribute("role", "dialog");
+            $scope.dialog = "show";
+        } else {
+            saveBillToDatabase(item);
+            //console.log(item)
+            $scope.money = "";
+        }
+
     }
 
-
+    $scope.closeModal = function () {
+        document.getElementById('errorAlert').setAttribute("style", "display: none;");
+        document.getElementById('errorAlert').setAttribute("aria-modal", false);
+        $scope.dialog = "";
+        document.getElementById("cash").focus()
+    }
 
 
     //------------------------------------------------//
     //KHỞI CHẠY
     // Khởi chạy tạo bill đầu tiên
     init();
-
     // Khởi chạy lấy mảng gợi ý sản phẩm
-    $scope.autocompleteInput.init();
-
-    //------------------------------------------------//
+    $scope.autocompleteInput.initAutoComplete();
 
 });
 

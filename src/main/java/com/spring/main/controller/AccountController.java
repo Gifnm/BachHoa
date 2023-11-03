@@ -65,12 +65,12 @@ public class AccountController {
 		return "redirect:/login";
 	}
 
-//	@RequestMapping("/auth/access/denied")
-//	public String denied(Model model) {
-//		SessionAttr.CURRENT_MESSAGE = "Bạn không có quyền truy xuất!";
-//		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
-//		return "errorPage";
-//	}
+	@RequestMapping("/auth/access/denied")
+	public String denied(Model model) {
+		SessionAttr.CURRENT_MESSAGE = "Bạn không có quyền truy xuất!";
+		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
+		return "redirect:/sell";
+	}
 
 	@RequestMapping("/regenerate-otp")
 	public String regenerateOTP(@RequestParam("R_Email") String email, Model model) {

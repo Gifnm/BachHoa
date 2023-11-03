@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +25,7 @@ public class CustomEmployeeDetail implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-//		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(employee.getRole().toString());
+//		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(employee.getRole().getRoleID().toString());
 //		return Arrays.asList(simpleGrantedAuthority); 
 		Set<Role> roles = employee.getRoles();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -74,16 +75,22 @@ public class CustomEmployeeDetail implements UserDetails {
 		return employee.getEmployeeName();
 	}
 	
-//	public Store getStoreWork() {
-//		return employee.getStore();
-//	}
-//	
-//	public String getPictureURL() {
-//		return employee.getPictureURL();
-//	}
-//	
-//	public int getID() {
-//		return employee.getEmployeeID();
-//	}
+	public Store getStoreWork() {
+		return employee.getStore();
+	}
+	
+	public String getPictureURL() {
+		return employee.getPictureURL();
+	}
+	
+	public int getID() {
+		return employee.getEmployeeID();
+	}
+	
+	public String[] getRoles() {
+		return employee.getAuthorities().stream()
+			.map(au -> au.getRole().getRoleID())
+			.collect(Collectors.toList()).toArray(new String[0]);
+	}
 	
 }

@@ -1,7 +1,5 @@
 package com.spring.main;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,8 +24,8 @@ import com.spring.main.util.LoginSuccessHandler;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private DataSource dataSource;
+//	@Autowired
+//	private DataSource dataSource;
 
 	@Bean
 	public UserDetailsService userDetailsService() {
@@ -54,10 +52,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider());
 
-		auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(getPasswordEncoder())
-			.usersByUsernameQuery(
-				"SELECT email, password, activity FROM employees WHERE email = ?")
-			.authoritiesByUsernameQuery("SELECT email, roleID FROM employees WHERE email = ?");
+//		auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(getPasswordEncoder())
+//			.usersByUsernameQuery(
+//				"SELECT email, password, activity FROM employees WHERE email = ?")
+//			.authoritiesByUsernameQuery("SELECT email, roles FROM employees WHERE email = ?");
 	}
 
 	@Override
@@ -65,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 
 		http.authorizeRequests().antMatchers("/sell/**").authenticated()
-			.antMatchers("/admin/**").hasAnyRole("qlch")
+			.antMatchers("/admin/**").hasAuthority("qlch")
 			.anyRequest().permitAll();
 
 		http.formLogin().loginPage("/login").loginProcessingUrl("/login")

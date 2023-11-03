@@ -1,9 +1,13 @@
 package com.spring.main.api;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.main.Service.BillService;
@@ -45,21 +50,22 @@ public class BillAPI {
 
 	@GetMapping("bill/findBill/{BillID}")
 	public Bill getOne(@PathVariable("BillID") String id) {
-		return billService.findOneBill(id);
+		return billService.findByID(id);
 	}
 	
 	@GetMapping("bill/searchBetween/{fromDate}/{toDate}")
-	public List<Bill> searchTimeCreate(@PathVariable("fromDate") Date fromDate, @PathVariable("toDate") Date toDate) {
-		return billService.searchBetween(fromDate, toDate);
+	public Page<Bill> searchTimeCreate(@PathVariable("fromDate") Timestamp fromDate, @PathVariable("toDate") Timestamp toDate, @RequestParam Optional<Integer> index) {
+		Pageable page = PageRequest.of(index.orElse(0), 8);
+		return billService.searchBetween(fromDate, toDate, page);
 	}
 	 
-	@PutMapping("bill/update/{BillID}")
-	public Bill update(@PathVariable("BillID") String id, @RequestBody Bill bill) {
-		return billService.save(bill);
+	@PutMapping("bill/update")
+	public void update(@RequestBody Bill bill) {
+		billService.save(bill);
 	}
 	
-	@DeleteMapping("bill/delete/{BillID}")
-	public void delete(@PathVariable("BillID") String id) {
+	@DeleteMapping("bill/delete/{billID}")
+	public void delete(@PathVariable("billID") String id) {
 		billService.delete(id);
 	}
 }

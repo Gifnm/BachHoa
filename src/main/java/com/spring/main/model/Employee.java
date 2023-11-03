@@ -3,6 +3,7 @@ package com.spring.main.model;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,8 +14,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -47,9 +50,9 @@ public class Employee {
 	@JoinColumn(name = "storeID")
 	private Store store;
 
-	@ManyToOne
-	@JoinColumn(name = "roleID")
-	private Role role;
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "Id")
+	private List<Authority> authorities;
 	
 	@Column(name = "activity")
 	private boolean activity;
@@ -60,14 +63,14 @@ public class Employee {
 	@Column(name = "password")
 	private String password;
 	
-	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy="workRole")
-//    @JoinTable(
-//            name = "roles",
-//            joinColumns = @JoinColumn(name = "employeeID"),
-//            inverseJoinColumns = @JoinColumn(name = "roleID")
-//            )
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JoinTable(
+        name = "authorities",
+        joinColumns = @JoinColumn(name = "employeeID"),
+        inverseJoinColumns = @JoinColumn(name = "roleID")
+        )
 	private Set<Role> roles = new HashSet<>();
-    
+
     public boolean hasRole(String roleName) {
         Iterator<Role> iterator = this.roles.iterator();
         while (iterator.hasNext()) {

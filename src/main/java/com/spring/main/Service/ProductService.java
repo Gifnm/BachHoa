@@ -16,12 +16,19 @@ public class ProductService {
 	@Autowired
 	ProductJPA productJPA;
 	private final String FOLDER_PATH = "C:\\bachhoaimg\\";
+	private final String FOLDER_PATH_LINUX = "/home/thanhdq/bachhoaimg/";
 
 	public String uploadProduct(MultipartFile file, Product product) throws IllegalStateException, IOException {
 		String filePath = FOLDER_PATH + file.getOriginalFilename();
 		file.transferTo(new File(filePath));
 		product.setImage("http://192.168.1.5:8083/bachhoaimg//" + file.getOriginalFilename());
 		productJPA.save(product);
+		return "Succes";
+	}
+
+	public String uploadProduct(MultipartFile file) throws IllegalStateException, IOException {
+		String filePath = FOLDER_PATH_LINUX + file.getOriginalFilename();
+		file.transferTo(new File(filePath));
 		return "Succes";
 
 	}
@@ -43,8 +50,61 @@ public class ProductService {
 
 	}
 
+	// Start service thanhdq
+	// Get all product in database
+	public List<Product> getAll() {
+		return productJPA.findAll();
+	}
+
+	// Get all product in a specific store
+	public List<Product> getAllByStoreId(int storeId) {
+		return productJPA.getByStoreId(storeId);
+	}
+
+	// Get all product which map with keyword
+	public List<Product> getByKeyword(String keyword, int storeId) {
+		System.out.println("[ProductService:getByKeyWord():59]\n> calling repo with keyword '" + keyword + "'...");
+		try {
+			Integer.parseInt(keyword);
+			System.out.println("[ProductService:getByKeyWord():62]\n> keyword after parse int: " + keyword);
+			return productJPA.findByKeyword(keyword, storeId);
+		} catch (Exception e) {
+			keyword = "%" + keyword + "%";
+			System.out.println("[ProductService:getByKeyWord():66]\n> keyword after makeup: " + keyword);
+			return productJPA.findByKeyword(keyword, storeId);
+		}
+	}
+
+	// Save new product
+	public Product create(Product product) {
+		return productJPA.save(product);
+	}
+
+	// Update product
+	public Product update(Product product) {
+		return productJPA.save(product);
+	}
+
+	// Delete product
+	public void delete(String id) {
+		productJPA.deleteById(id);
+	}
+	// End service thanhdq
+	
+	// DVNghiep
+	public Product getByIDOrName(String value) {
+		Product product = productJPA.getByIDOrName(value);
+		return product;
+		
+	}
+	
+	public List<String> getProductName() {
+		return productJPA.getProductName();
+		
+	}
+	
 	public List<String> getProductID() {
 		return productJPA.getProductID();
-
+		
 	}
 }

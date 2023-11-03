@@ -23,16 +23,16 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		Authentication authentication) throws IOException, ServletException {
 		System.out.println("chào mừng quay lại, " + authentication.getName());
 		CustomEmployeeDetail userDetails = (CustomEmployeeDetail) authentication.getPrincipal();
+		System.out.println("Bạn là: " + userDetails.getAuthorities());
+		System.out.println("Nhân viên?: " + userDetails.hasRole("bhoa"));
 
 		String redirectURL = request.getContextPath();
 
 		if (userDetails.hasRole("qlch")) {
-			redirectURL = "/admin";
+			redirectURL = "/admin/product";
 		} else {
 			redirectURL = "/login/success";
 		}
-
-		response.sendRedirect(redirectURL);
 
 		// Manual with AuthenticationSuccessHandler //
 		/*
@@ -43,6 +43,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		// Auto with SimpleUrlAuthenticationSuccessHandler //
 		// super.onAuthenticationSuccess(request, response, authentication);
 
+		response.sendRedirect(redirectURL);
 	}
 
 }

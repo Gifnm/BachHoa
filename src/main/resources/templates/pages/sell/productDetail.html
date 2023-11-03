@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app="app-product" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Kiểm tra giá | BachHoa</title>
+    <title>Kiểm tra giá</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="shortcut icon" href="../images/favicon.png" />
     <!-- Bootstrap CSS v5.2.1 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="../css/autoComplete.css">
 </head>
 
-<body ng-app="app-product">
+<body ng-controller="productInf-ctrl" >
     <header class="border-bottom">
         <div class="row align-items-center">
             <div class="welcome col">
@@ -33,8 +33,8 @@
                     data-bs-target="#menuHidden" aria-controls="menuHidden" title="Menu">
                     <i class="bi bi-list"></i>
                 </button>
-                <a class="menuHiden" data-bs-toggle="offcanvas" href="#menuHidden" role="button"
-                    aria-controls="offcanvasExample">
+                <a class="menuHidden" data-bs-toggle="offcanvas" href="#menuHidden" role="button"
+                    aria-controls="menuHidden">
                     <img src="../images/logo/logo3-removebg.png" alt="logo" style="width: 100px;">
                 </a>
 
@@ -51,15 +51,17 @@
                             <a href="/sell" class="list-group-item list-group-item-action" aria-current="true">
                                 Thanh toán
                             </a>
-                            <a href="/sell/billsHistory" class="list-group-item list-group-item-action">Nhập trả hóa đơn</a>
-                            <a href="/sell/productInfomation" class="list-group-item list-group-item-action  active">Kiểm tra giá</a>
+                            <a href="/sell/billsHistory" class="list-group-item list-group-item-action">Nhập trả
+                                hóa đơn</a>
+                            <a href="/sell/productInfomation" class="list-group-item list-group-item-action active">Kiểm tra
+                                giá</a>
                         </div>
 
                     </div>
                     <div class="offcanvas-footer text-center" style="padding: 1rem;">
                         <p>Cửa hàng:</p>
-                        <p></p>
-                        <p id="storeID" class="d-none">1</p>
+                        <p id="address">{{employee.store.address}}</p>
+                        <p id="storeID" class="d-none">ID</p>
                     </div>
                 </div>
             </div>
@@ -72,17 +74,15 @@
                 <div class="dropdown d-flex justify-content-end">
                     <a href="#" class="d-block link-dark text-decoration-none" id="acount" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                        <span class="px-2 username">Đồng Võ Nghiệp</span>
-                        <img src="../images/faces/face1.jpg" alt="mdo" width="32" height="32"
-                            class="rounded-circle">
+                        <span class="px-2 username">{{employee.employeeName}}</span>
+                        <img src="../images/faces/face3.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="acount">
                         <div class="dropdown-header text-center">
-                            <img class="img-md rounded-circle" src="../images/faces/face1.jpg"
-                                alt="Profile image">
-                            <p class="mt-3 mb-1"><strong class="mb-1 mt-3">Đồng Võ Nghiệp</strong></p>
-                            <p class="fw-light text-muted mb-0">[[${#httpServletRequest.remoteUser}]]</p>
-                            <p class="d-none" id="employeeID">1</p>
+                            <img class="img-md rounded-circle" src="../images/faces/face3.jpg" alt="Profile image">
+                            <p class="mt-3 mb-1"><strong class="mb-1 mt-3">{{employee.employeeName}}</strong></p>
+                            <p class="fw-light text-muted mb-0" id="email">[[${#httpServletRequest.remoteUser}]]</p>
+                            <p class="d-none" id="employeeID">3</p>
                         </div>
 
                         <li><a class="dropdown-item" href="#">Hồ sơ cá nhân</a></li>
@@ -98,7 +98,7 @@
 
     </header>
 
-    <main ng-controller="productInf-ctrl">
+    <main>
         <div class="row p-0 m-0" style="min-height: 600px;">
             <div class="col-3 border" style="background-color: #F4F5F7; padding: 0px; height: 635px;">
                 <div class="p-3">
@@ -118,8 +118,9 @@
                             <label class="mb-2"><strong>Mã sản phẩm:</strong> {{product.productID}}</label><br>
                             <label class="mb-2"><strong>Tên sản phẩm:</strong> {{product.productName}}</label><br>
                             <label class="mb-2"><strong>Loại:</strong> {{product.categories.categoriesName}}</label><br>
-                            <label class="mb-2"><strong>Hạn sử dụng:</strong> {{product.nearestExpDate}}</label><br>
+                            <label class="mb-2"><strong>Hạn sử dụng:</strong> {{product.nearestExpDate | date: 'dd/MM/yyyy '}}</label><br>
                             <label class="mb-2"><strong>Trạng thái:</strong> {{product.status?'Đang kinh doanh':'Ngừng kinh doanh'}}</label><br>
+                            <label class="mb-2"><strong>Khuyến mãi:</strong> {{discountName}}</label><br>
                             <label class="mb-2"><strong>Giá nhập:</strong> {{product.importPrice | number}}</label><br>
                             <label class="mb-2"><strong>Giá bán:</strong> {{product.price | number}}</label><br>
                             <label class="mb-2"><strong>VAT:</strong> {{product.vat}} %</label><br>
@@ -127,7 +128,7 @@
                             <label class="mb-2"><strong>Cửa hàng:</strong> {{product.store.address}}</label><br>
                         </div>
                         <div class="col-3 text-end">
-                            <img src="../images/logo/logo3.jpg" alt="" height="200px">
+                            <img src="{{product.image}}" alt="" height="200px">
                         </div>
                     </div>
                 </div>
