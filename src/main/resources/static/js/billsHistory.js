@@ -146,6 +146,13 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 	$scope.index = 1;
 	$scope.maxPage = 0;
 	$scope.findByDate = function (fromDate, toDate, index) {
+		if (fromDate > toDate) {
+			alert('Ngày bắt đầu phải nhỏ hơn ngày kết thúc!');
+			let date = new Date();
+			$scope.fromDate = date;
+			$scope.toDate = date;
+			return;
+		}
 		let fromD = startDateFormat(fromDate);
 		let toD = endtDateFormat(toDate);
 		$http.get(`/bachhoa/api/bill/searchBetween/${fromD}/${toD}?index=${index}`).then(resp => {
@@ -292,9 +299,9 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 	$scope.findEmployee = function (email) {
 		$http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
 			$scope.employee = resp.data;
-			if($scope.employee.role.roleID == "qlch"){
-                $scope.admin =  true;
-            }
+			if ($scope.employee.role.roleID == "qlch") {
+				$scope.admin = true;
+			}
 			console.log($scope.employee);
 		});
 	}
