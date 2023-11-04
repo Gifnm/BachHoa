@@ -55,7 +55,8 @@ public class ProductPositionAPI {
 		ProductPositioning productPos = productPosionService.getByIDAndStoreID(
 				productPositioning.getProduct().getProductID(), productPositioning.getStore().getStoreID());
 		ProductPositioning productPositioning2 = productPositioning;
-		Product product = productService.getByIDAndStoreID(productPositioning.getProduct().getProductID(), productPositioning.getStore().getStoreID());
+		Product product = productService.getByIDAndStoreID(productPositioning.getProduct().getProductID(),
+				productPositioning.getStore().getStoreID());
 		productPositioning2.setProduct(product);
 		productPosionService.insert(productPositioning);
 		return ResponseEntity.ok(productPositioning2);
@@ -105,5 +106,23 @@ public class ProductPositionAPI {
 	@DeleteMapping("productPosition/delete")
 	private void deleteProductPosition(@RequestPart("productPos") ProductPositioning productPos) {
 		productPosionService.deleteByProductID_StoreID(productPos);
+	}
+
+	/**
+	 * Lay danh vi tri theo cua hang va ke Phuong thuc @Get Bao gom cac tham so
+	 * 
+	 * @param storeID  Ma cua hang
+	 * @param disSheID Ma ke
+	 */
+	@GetMapping("getPosByStoreAndShelf/{storeID}/{disSheID}")
+	private ResponseEntity<List<ProductPositioning>> getByStoreIDAnddisSheID(@PathVariable("storeID") int storeID,
+			@PathVariable("disSheID") int disSheID) {
+		System.out.println("getPosByStoreAndShelf/{storeID}/disSheID");
+		List<ProductPositioning> list = productPosionService.getPosByShlef(storeID, disSheID);
+		if (list.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		} else
+			return ResponseEntity.ok(list);
+
 	}
 }

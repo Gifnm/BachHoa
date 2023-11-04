@@ -49,7 +49,7 @@ public class ShipmentBatchAPI {
 		shipmentBacthService.insert(shipmentBatch);
 		shipmentBacthDetailService.insert(list);
 	}
-
+	
 	/*
 	 * 2. Lay danh sach ban giao ca - Tham so: ma cua hang - Dung khi: Can lay danh
 	 * sach ban giao ca

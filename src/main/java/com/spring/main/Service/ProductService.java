@@ -38,7 +38,7 @@ public class ProductService {
 		file.transferTo(new File(filePath));
 		// Dia chi IP: Dia chi ip cuc bo may chu server
 		// Cai dat ip tinh : 192.168.1.5
-		product.setImage("http://192.168.1.5:8083/bachhoaimg//" + file.getOriginalFilename());
+		product.setImage("http://192.168.1.6:8083/bachhoaimg//" + file.getOriginalFilename());
 		productJPA.save(product);
 		return "Succes";
 
