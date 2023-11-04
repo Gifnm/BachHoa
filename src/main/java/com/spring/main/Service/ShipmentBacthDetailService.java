@@ -15,16 +15,10 @@ public class ShipmentBacthDetailService {
 	@Autowired
 	ShipmentBatchDetailJPA shipmentBacthDetailJPA;
 
-	// Cac phuong thuc
-	// 1. Lay danh sach cham hang chi tiet theo shiBatID
-	// 2. Tao ShipmentBatchDetail
-	// 3. Xoa ShipmentBatchDetaile
-	// 4. Xoa danh sach ShipmentBatchDetail theo shiBatID
-	// 5. Them hoac cap nhat 1 ShipmentBatchDetail
-
-	/*
-	 * 1. Lay danh sach cham hang chi tiet theo shiBatID
+	/**
+	 * Lay danh sach dot cham hang chi tiet
 	 * 
+	 * @param shipmentBatchID Ma dot cham hang
 	 */
 	public List<ShipmentBatchDetail> getALl(String shipmentBatchID) {
 		List<ShipmentBatchDetail> list = shipmentBacthDetailJPA.getByshiBatID(shipmentBatchID);
@@ -32,9 +26,10 @@ public class ShipmentBacthDetailService {
 
 	}
 
-	/*
-	 * 2. Tao ShipmentBatchDetail
+	/**
+	 * Luu danh sach cham hang chi tiet
 	 * 
+	 * @param shipBatchDetails Danh sach cham hang chi tiet
 	 */
 	public void insert(List<ShipmentBatchDetail> shipBatchDetails) {
 		for (ShipmentBatchDetail shipmentBatchDetail : shipBatchDetails) {
@@ -43,16 +38,20 @@ public class ShipmentBacthDetailService {
 
 	}
 
-	/*
-	 * 3. Xoa ShipmentBatchDetail
+	/**
+	 * Xoa cham hang chi tiet khoi co so du lieu Dung khi bao het hang
 	 * 
+	 * @param shipmentBatchDetail Object Cham hang chi tiet
 	 */
 	public void delete(ShipmentBatchDetail shipmentBatchDetail) {
 		shipmentBacthDetailJPA.delete(shipmentBatchDetail);
 	}
 
-	/*
-	 * 4. Xoa mot danh sach ShipmentBacthDetail theo shiBatID
+	/**
+	 * Xoa mot danh sach cham hang chi tiet Dung khi hoan tat cham hang cua mot ke
+	 * trung bay
+	 * 
+	 * @param list Danh sach cham hang chi tiet
 	 * 
 	 */
 	public void deleteWithShelfs(List<ShipmentBatchDetail> list) {
@@ -62,14 +61,13 @@ public class ShipmentBacthDetailService {
 
 	}
 
-	// 5. Them hoac cap nhat 1 ShipmentBatchDetail
+	/**
+	 * Tao mot Cham hang chi tiet
+	 * 
+	 * @param shipmentBatchDetail Cham hang chi tiet
+	 */
 	public void insert(ShipmentBatchDetail shipmentBatchDetail) {
 		shipmentBacthDetailJPA.save(shipmentBatchDetail);
-	}
-	// 6. Lay ShipmentBatchDetail
-	public ShipmentBatchDetail getByProductID(String productID) {
-		ShipmentBatchDetail shipmentBatchDetail = shipmentBacthDetailJPA.getByProductID(productID);
-		return shipmentBatchDetail;
 	}
 
 }

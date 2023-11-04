@@ -16,22 +16,17 @@ import com.spring.main.model.Store;
 public class ProductService {
 	@Autowired
 	ProductJPA productJPA;
-	/*
-	 * Muc luc 
-	 * 1. Tao san pham moi - (Hinh anh) 
-	 * 2. Cap nhat - Tao moi san pham - khong kem hinh anh 
-	 * 3. Tim kiem 1 san pham
-	 * 4. Xoa san pham 
-	 * 5. Thay doi trang thai kinh doanh (status)
+	/**
+	 * Duong dan thu muc chua anh
 	 */
-
-// Duong dan thu muc dung de luu hinh anh tren may chu web
-// Tao va thay doi duong dan
 	private final String FOLDER_PATH = "C:\\bachhoaimg\\";
 
-	/*
-	 * 1. Tao san pham moi 
-	 * - Tham so: File hinh anh, Product (object)
+	/**
+	 * Tao moi, cap nhat san pham kem hinh anh Tham so bao gom Object Product va
+	 * File hinh anh
+	 * 
+	 * @param product Object San pham
+	 * @param file    File hinh Anh
 	 */
 	public String uploadProduct(MultipartFile file, Product product) throws IllegalStateException, IOException {
 		String filePath = FOLDER_PATH + file.getOriginalFilename();
@@ -44,47 +39,56 @@ public class ProductService {
 
 	}
 
-	/*
-	 * 2. Luu san pham - Tao moi san pham 
-	 * - Tham so: Product - Dung khi, can tao moi  san pham, cap nhat thong tin cua san pham
+	/**
+	 * Cap nhat hoac luu mot san pham khong kem hinh anh
+	 * 
+	 * @param product Object San pham
 	 */
 	private void save(Product product) {
 		productJPA.save(product);
 
 	}
 
-	/*
-	 * 3. Tim kiem 1 san pham 
-	 * - Tham so: productID, storeID
+	/**
+	 * Tim kiem san pham
+	 * 
+	 * @param productID Ma san pham
+	 * @param storeID   Ma so cua hang
 	 */
-	public Product getByIDAndStoreID(String ProductID, int storeID) {
-		Product product = productJPA.getByIDAndStoreID(ProductID, storeID);
+	public Product getByIDAndStoreID(String productID, int storeID) {
+		Product product = productJPA.getByIDAndStoreID(productID, storeID);
 		return product;
 
 	}
 
-	/*
-	 * 4. Xoa san pham 
-	 * - Tham so: Product 
-	 * - Dung khi: Can xoa san pham cua cua hang,
-	 * can kiem tra san pham da ton tai trong cac bang khac trong co so du lieu hay
-	 * chua neu san pham da ton tai, chi duoc chuyen trang thai san pham thanh false
+	/**
+	 * Xoa mot san pham
+	 * 
+	 * @param product Object San pham
 	 */
 	public void delete(Product product) {
 		productJPA.delete(product);
 
 	}
 
-	/*
-	 * 5. Thay doi trang thai kinh doanh (status) - Tham so: status (true/ false), storeID, productID - Dung khi:
+	/**
+	 * Chuyen doi trang thai san pham Su dung khi co so du lieu da phat sinh du lieu
+	 * lien quan den san pham
+	 * 
+	 * @param status    Trang thai ma true hoac false
+	 * @param storeID   Ma cua hang
+	 * @param productID Ma san pham
 	 */
 	public void setStatus(boolean status, int storeID, String productID) {
 		productJPA.setStatus(status, storeID, productID);
 	}
-	/*6. Lay danh sach san pham
-	 * - Tham so: storeID
-	 * */
-	public List<Product> findByStore(Store store){
-		return productJPA.findByStore(store);	
+
+	/**
+	 * Lay danh sach san pham tai cua hang
+	 * 
+	 * @param store Object Cua hang
+	 */
+	public List<Product> findByStore(Store store) {
+		return productJPA.findByStore(store);
 	}
 }

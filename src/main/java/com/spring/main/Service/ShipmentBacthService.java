@@ -22,23 +22,33 @@ public class ShipmentBacthService {
 	@Autowired
 	ProductPosionService productPosionService;
 
-	// 1. Lay danh sach ShipmentBatch theo cua hang
+	/**
+	 * Lay danh sach dot cham hang
+	 * 
+	 * @param storeID ma cua hang
+	 */
 	public List<ShipmentBatch> findByStoreID(int storeID) {
 		List<ShipmentBatch> list = shipmentBacthJPA.findByStore(storeID);
-		System.out.println("li" + storeID);
-		System.out.println("li2 " + list.size());
 		return list;
 	}
 
-	// 2. Tao ShipmentBatch
+	/**
+	 * Luu dot cham hang
+	 * 
+	 * @param object Dot cham hang
+	 */
 	public void insert(ShipmentBatch shipmentBatch) {
 		shipmentBacthJPA.save(shipmentBatch);
 	}
 
-	// 3. Chuyen trang thai hoan thanh cho ShipmentBatch
+	/**
+	 * Chuyen doi trang thai dot cham hang sau khi hoan tat
+	 * 
+	 * @param Ma dot cham hang
+	 */
 	public boolean setFinish(String shiBatID) {
 		return shipmentBacthJPA.setFinish(shiBatID);
 	}
-	//4. Kiem tra san pham
+	// 4. Kiem tra san pham
 
 }

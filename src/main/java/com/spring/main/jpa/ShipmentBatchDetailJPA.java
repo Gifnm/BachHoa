@@ -18,5 +18,4 @@ public interface ShipmentBatchDetailJPA extends JpaRepository<ShipmentBatchDetai
  * */
 	  List<ShipmentBatchDetail> getByshiBatID(String shiBatID);
 	  
-	  ShipmentBatchDetail getByProductID(String productID);
 }
