@@ -1,18 +1,32 @@
 package com.spring.main.model;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Data;
 
 @Entity
 @Table(name = "employees")
+@Data
 public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,118 +52,31 @@ public class Employee {
 	@JoinColumn(name = "storeID")
 	private Store store;
 
-	@ManyToOne
-	@JoinColumn(name = "roleID")
-	private Role role;
+	@JsonIgnore
+	@OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
+	private List<Authority> authorities;
 
 	@Column(name = "activity")
 	private boolean activity;
+
 	@Column(name = "email")
 	private String email;
+
 	@Column(name = "password")
 	private String password;
 
-	public int getEmployeeID() {
-		return employeeID;
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JoinTable(name = "authorities", joinColumns = @JoinColumn(name = "employeeID"), inverseJoinColumns = @JoinColumn(name = "roleID"))
+	private Set<Role> roles = new HashSet<>();
+
+	public boolean hasRole(String roleName) {
+		Iterator<Role> iterator = this.roles.iterator();
+		while (iterator.hasNext()) {
+			Role role = iterator.next();
+			if (role.getRoleID().equals(roleName)) {
+				return true;
+			}
+		}
+		return false;
 	}
-
-	public void setEmployeeID(int employeeID) {
-		this.employeeID = employeeID;
-	}
-
-	public String getEmployeeName() {
-		return employeeName;
-	}
-
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
-	}
-
-	public Date getAge() {
-		return age;
-	}
-
-	public void setAge(Date age) {
-		this.age = age;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getPictureURL() {
-		return pictureURL;
-	}
-
-	public void setPictureURL(String pictureURL) {
-		this.pictureURL = pictureURL;
-	}
-
-	public Date getFirstWork() {
-		return firstWork;
-	}
-
-	public void setFirstWork(Date firstWork) {
-		this.firstWork = firstWork;
-	}
-
-	public Store getStore() {
-		return store;
-	}
-
-	public void setStore(Store store) {
-		this.store = store;
-	}
-
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
-	public boolean isActivity() {
-		return activity;
-	}
-
-	public void setActivity(boolean activity) {
-		this.activity = activity;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	// @OneToMany(mappedBy = "employee")
-	// private List<Bill> bills;
-	//
-	// @OneToMany(mappedBy = "employee")
-	// private List<DetailWorkSchedule> detailWorkSchedules;
-	//
-	// @OneToMany(mappedBy = "employee")
-	// private List<InventoryHistory> inventoryHistories;
-	//
-	// @OneToMany(mappedBy = "employee")
-	// private List<ShipmentBatch> shipmentBatches;
-	//
-	// @OneToMany(mappedBy = "employee")
-	// private List<ShipmentBatchDetail> shipmentBatchDetails;
-
 }

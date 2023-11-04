@@ -2,12 +2,21 @@ package com.spring.main.model;
 
 import java.sql.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+//import jakarta.persistence.Column;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.FetchType;
+//import jakarta.persistence.Id;
+//import jakarta.persistence.JoinColumn;
+//import jakarta.persistence.ManyToOne;
+//import jakarta.persistence.OneToOne;
+//import jakarta.persistence.Table;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "products")
@@ -31,15 +40,20 @@ public class Product {
 
 	@Column(name = "productName")
 	private String productName;
+
 	@Column(name = "status")
 	private Boolean status;
+
 	@Column(name = "image")
 	private String image;
+
 	@Column(name = "importPrice")
 	private float importPrice;
+
 	@ManyToOne()
 	@JoinColumn(name = "storeID")
 	private Store store;
+
 	@Column(name = "inventory")
 	private Integer inventory;
 

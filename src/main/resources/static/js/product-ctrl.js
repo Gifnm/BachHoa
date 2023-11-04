@@ -16,7 +16,7 @@ app.controller("ctrl", function ($scope, $http) {
 
     $scope.getAccount = function () {
         // Fake auth account
-        return $http.get(`${host}/findById/2`).then(resp => {
+        return $http.get(`${host}/employee/findByID/3`).then(resp => {
             $scope.account = resp.data;
         }).catch(error => {
             alert("[ProductCtrl:initialize():19]\n> Loi lay account");

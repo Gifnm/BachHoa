@@ -29,10 +29,16 @@ public class EmployeeAPI {
 
 	}
 
-	@GetMapping("findById/{id}")
-	public Employee getByID(@PathVariable Integer id) {
-		System.out.println(id + "hm");
-		return emService.findByID(id);
+	@GetMapping("employee/findByEmail/{email}")
+	public Employee findByEmail(@PathVariable("email") String email) {
+		return emService.findByEmail(email);
+
+	}
+
+	@GetMapping("employee/findByID/{employeeID}")
+	public Employee getByID(@PathVariable("employeeID") Integer employeeID) {
+		// System.out.println(employeeID + "hm");
+		return emService.findByID(employeeID);
 
 	}
 
@@ -43,7 +49,7 @@ public class EmployeeAPI {
 		store.setStoreID(1);
 		Role role = new Role();
 		role.setRoleID("bhoa");
-		employee.setRole(role);
+		// employee.setRole(role);
 		employee.setStore(store);
 		employee.setActivity(true);
 		emService.insert(employee);
@@ -53,7 +59,7 @@ public class EmployeeAPI {
 	@GetMapping("login/{passW}/{user}")
 	public Employee login(@PathVariable("passW") String pass, @PathVariable("user") int user) {
 		System.out.println("Login: " + user + " - " + pass);
-		Employee employee = emService.findByID(12);
+		Employee employee = emService.findByID(user);
 		if (employee == null) {
 
 			return null;
@@ -67,4 +73,5 @@ public class EmployeeAPI {
 		}
 
 	}
+
 }

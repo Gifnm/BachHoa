@@ -1,6 +1,10 @@
 header {
   background-color: #F4F5F7;
-  padding: 0.5% 2%;
+  padding: 0 2%;
+}
+
+.menuHidden {
+  display: none;
 }
 
 .logo a {
@@ -12,10 +16,11 @@ header {
   border-top: 0;
   padding: 0.75rem 1rem;
   text-align: justify;
+  min-height: 550px;
 }
 
-.tab {
-  background-color: #c9e4ff;
+.tab-pane {
+  height: 456px;
 }
 
 a {
@@ -39,7 +44,18 @@ a {
 /* @media (max-width: 700px) {
 
   .username,
-  .welcome {
+  .logo,
+  .storeAddress,
+  .menu {
     display: none;
   }
-} */
+
+  .account {
+    display: flex;
+    justify-content: end;
+  }
+
+  .menuHidden {
+    display: block;
+  }
+}
