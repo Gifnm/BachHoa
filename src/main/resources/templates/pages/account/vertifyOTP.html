@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác minh OTP | BachHoa</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../images/favicon.png" />
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Angular-UI -->
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.0.js"></script>
+    <!-- links to files of angular-ui-tab-scroll  -->
+    <link rel="stylesheet" href="../css/angular-ui-tab-scroll.css" />
+    <script src="../js/angular-ui-tab-scroll.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+
+<body class="background-img">
+    <div class="alert bg-info bg-gradient bg-opacity-75 fw-bold fade show d-flex row alert-close flash" role="alert"
+        id="alert" style="position: fixed; right: 1%; top: 1%; width: 25%; display: none; z-index: 999;">
+        <span class="col">[[${message}]]</span>
+        <button type="button" id="alertClose" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div class="back_home" style="position: fixed; left: 1%; top: 1%; width: 22%; z-index: 999;">
+        <a th:href="@{/login}" class="text-decoration-none">
+            <button>
+                <div class="icon-wrapper-1">
+                    <div class="icon-wrapper">
+                        <i class='bx bx-arrow-back'></i>
+                    </div>
+                </div>
+                <span>Trở về trang trước</span>
+            </button>
+        </a>
+    </div>
+    <div class="container-fluid d-flex flex-column min-vh-100 justify-content-center align-items-center">
+        <div class="d-flex justify-content-center ">
+            <div>
+                <div class="logo img-fluid card-img">
+                    <img src="../images/favicon.png" alt="" width="275" height="auto" class="rounded-start">
+                </div>
+            </div>
+            <div class="d-block">
+                <form action="/verify-account" class="form" method="post">
+                    <div>
+                        <p>Nhập mã OTP để xác minh</p>
+                    </div>
+                    <div class="input-container mt-5">
+                        <input type="text" name="OTP" placeholder="Mã xác nhận (OTP) ..." class="shadow" autofocus
+                            required>
+                    </div>
+                    <button type="submit" class="submit mt-5 button" value="Send">
+                        Tìm lại mật khẩu
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+        </script>
+    <script>
+        window.setTimeout(function () {
+            $(".flash").animate({
+                top: "0",
+                opacity: "0",
+            }, 300, 0).fadeOut(500, function () {
+                $(this).remove();
+            });
+        }, 5000);
+    </script>
+</body>
+
+</html>

@@ -10,85 +10,101 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.main.jpa.ProductJPA;
 import com.spring.main.model.Product;
-import com.spring.main.model.Store;
 
 @Service
 public class ProductService {
 	@Autowired
 	ProductJPA productJPA;
-	/**
-	 * Duong dan thu muc chua anh
-	 */
 	private final String FOLDER_PATH = "C:\\bachhoaimg\\";
+	private final String FOLDER_PATH_LINUX = "/home/thanhdq/bachhoaimg/";
 
-	/**
-	 * Tao moi, cap nhat san pham kem hinh anh Tham so bao gom Object Product va
-	 * File hinh anh
-	 * 
-	 * @param product Object San pham
-	 * @param file    File hinh Anh
-	 */
 	public String uploadProduct(MultipartFile file, Product product) throws IllegalStateException, IOException {
 		String filePath = FOLDER_PATH + file.getOriginalFilename();
 		file.transferTo(new File(filePath));
-		// Dia chi IP: Dia chi ip cuc bo may chu server
-		// Cai dat ip tinh : 192.168.1.5
-		product.setImage("http://192.168.1.6:8083/bachhoaimg//" + file.getOriginalFilename());
+		product.setImage("http://192.168.1.5:8083/bachhoaimg//" + file.getOriginalFilename());
 		productJPA.save(product);
+		return "Succes";
+	}
+
+	public String uploadProduct(MultipartFile file) throws IllegalStateException, IOException {
+		String filePath = FOLDER_PATH_LINUX + file.getOriginalFilename();
+		file.transferTo(new File(filePath));
 		return "Succes";
 
 	}
 
-	/**
-	 * Cap nhat hoac luu mot san pham khong kem hinh anh
-	 * 
-	 * @param product Object San pham
-	 */
 	private void save(Product product) {
 		productJPA.save(product);
 
 	}
 
-	/**
-	 * Tim kiem san pham
-	 * 
-	 * @param productID Ma san pham
-	 * @param storeID   Ma so cua hang
-	 */
-	public Product getByIDAndStoreID(String productID, int storeID) {
-		Product product = productJPA.getByIDAndStoreID(productID, storeID);
+	public Product getByID(String productID) {
+		Product product = productJPA.findById(productID).get();
 		return product;
 
 	}
 
-	/**
-	 * Xoa mot san pham
-	 * 
-	 * @param product Object San pham
-	 */
-	public void delete(Product product) {
-		productJPA.delete(product);
+	public Product getByIDAndStoreID(String ProductID, int storeID) {
+		Product product = productJPA.getByIDAndStoreID(ProductID, storeID);
+		return product;
 
 	}
 
-	/**
-	 * Chuyen doi trang thai san pham Su dung khi co so du lieu da phat sinh du lieu
-	 * lien quan den san pham
-	 * 
-	 * @param status    Trang thai ma true hoac false
-	 * @param storeID   Ma cua hang
-	 * @param productID Ma san pham
-	 */
-	public void setStatus(boolean status, int storeID, String productID) {
-		productJPA.setStatus(status, storeID, productID);
+	// Start service thanhdq
+	// Get all product in database
+	public List<Product> getAll() {
+		return productJPA.findAll();
 	}
 
-	/**
-	 * Lay danh sach san pham tai cua hang
-	 * 
-	 * @param store Object Cua hang
-	 */
-	public List<Product> findByStore(Store store) {
-		return productJPA.findByStore(store);
+	// Get all product in a specific store
+	public List<Product> getAllByStoreId(int storeId) {
+		return productJPA.getByStoreId(storeId);
+	}
+
+	// Get all product which map with keyword
+	public List<Product> getByKeyword(String keyword, int storeId) {
+		System.out.println("[ProductService:getByKeyWord():59]\n> calling repo with keyword '" + keyword + "'...");
+		try {
+			Integer.parseInt(keyword);
+			System.out.println("[ProductService:getByKeyWord():62]\n> keyword after parse int: " + keyword);
+			return productJPA.findByKeyword(keyword, storeId);
+		} catch (Exception e) {
+			keyword = "%" + keyword + "%";
+			System.out.println("[ProductService:getByKeyWord():66]\n> keyword after makeup: " + keyword);
+			return productJPA.findByKeyword(keyword, storeId);
+		}
+	}
+
+	// Save new product
+	public Product create(Product product) {
+		return productJPA.save(product);
+	}
+
+	// Update product
+	public Product update(Product product) {
+		return productJPA.save(product);
+	}
+
+	// Delete product
+	public void delete(String id) {
+		productJPA.deleteById(id);
+	}
+	// End service thanhdq
+	
+	// DVNghiep
+	public Product getByIDOrName(String value) {
+		Product product = productJPA.getByIDOrName(value);
+		return product;
+		
+	}
+	
+	public List<String> getProductName() {
+		return productJPA.getProductName();
+		
+	}
+	
+	public List<String> getProductID() {
+		return productJPA.getProductID();
+		
 	}
 }
