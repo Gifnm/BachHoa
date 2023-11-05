@@ -22,13 +22,13 @@ public class DetailedDeliveryNoteAPI {
 	@Autowired
 	DetailedDeliveryNoteService deliveryNoteService;
 	
-	@GetMapping("getall")
-	private ResponseEntity<List<DetailedDeliveryNote>> getAll(@RequestPart("deliverNote") DeliveryNote deliveryNote) {
-		List<DetailedDeliveryNote> list = deliveryNoteService.getall(deliveryNote);
-		if (list.isEmpty())
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-		else
-			return ResponseEntity.status(HttpStatus.OK).body(list);
-
-	}
+//	@GetMapping("getall")
+//	private ResponseEntity<List<DetailedDeliveryNote>> getAll(@RequestPart("deliverNote") DeliveryNote deliveryNote) {
+//		List<DetailedDeliveryNote> list = deliveryNoteService.getall(deliveryNote);
+//		if (list.isEmpty())
+//			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+//		else
+//			return ResponseEntity.status(HttpStatus.OK).body(list);
+//
+//	}
 }

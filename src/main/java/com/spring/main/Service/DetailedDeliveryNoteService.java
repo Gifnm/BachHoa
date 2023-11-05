@@ -28,10 +28,10 @@ public class DetailedDeliveryNoteService {
 	 * 
 	 * @param
 	 */
-	public List<DetailedDeliveryNote> getall(DeliveryNote deliveryNote) {
-		List<DetailedDeliveryNote> list = deliveryNoteJPA.getByDeliverNoteID(deliveryNote);
-		return list;
-	}
+//	public List<DetailedDeliveryNote> getall(DeliveryNote deliveryNote) {
+//		List<DetailedDeliveryNote> list = deliveryNoteJPA.getByDeliverNoteID(deliveryNote.getId());
+//		return list;
+//	}
 
 	public void delete(DetailedDeliveryNote deliveryNote) {
 		deliveryNoteJPA.delete(deliveryNote);

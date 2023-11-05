@@ -9,5 +9,6 @@ import com.spring.main.model.DetailedDeliveryNote;
 import com.spring.main.model.DetailedDeliveryNoteID;
 
 public interface DetailedDeliveryNoteJPA extends JpaRepository<DetailedDeliveryNote, DetailedDeliveryNoteID>{
-	List<DetailedDeliveryNote> getByDeliverNoteID(DeliveryNote deliveryNote);
+//	List<DetailedDeliveryNote> getByDeliverNoteID(String deliveryNoteId);
+
 }
