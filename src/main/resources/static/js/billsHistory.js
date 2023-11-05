@@ -115,7 +115,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 	function Calc() {
 		$scope.totalAmountOfAllBills = 0;
 		angular.forEach($scope.items, function (item) {
-			$scope.totalAmountOfAllBills += item.bill.totalAmount;
+			$scope.totalAmountOfAllBills += item.amountReceivable;
 		})
 	}
 
@@ -124,14 +124,25 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		if (billID == null || billID == undefined || billID == '') {
 			$scope.initialize();
 		} else {
-			$scope.items = [];
-			$http.get(`/bachhoa/api/bill/findBill/${billID}`).then(resp => {
-				let bill = resp.data
-				$scope.items.push(bill);
-				Calc();
-			}).catch(error => {
-				console.log('Error', error)
-			});
+			$http.get(`/bachhoa/api/bill/getBillID`).then((response) => {
+				let item = response.data.find(item => item == billID);
+				if (item) {
+					$scope.items = [];
+					$http.get(`/bachhoa/api/bill/findBill/${billID}`).then(resp => {
+						let bill = resp.data;
+						bill.timeCreate = dateFormat(bill.timeCreate);
+						let data = {
+							bill: bill,
+							amountReceivable: Math.round((bill.totalAmount - bill.reduced) / 1000) * 1000
+						}
+						$scope.items.push(data);
+						Calc();
+					}).catch(error => {
+						console.log('Error', error)
+					});
+				}
+			})
+
 		}
 	}
 
@@ -299,7 +310,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 	$scope.findEmployee = function (email) {
 		$http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
 			$scope.employee = resp.data;
-			if ($scope.employee.role.roleID == "qlch") {
+			if ($scope.employee.roles[0].roleID == "qlch") {
 				$scope.admin = true;
 			}
 			console.log($scope.employee);

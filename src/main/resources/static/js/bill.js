@@ -129,7 +129,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
     $scope.discountName = "";
     $scope.discountDetail = {};
     $scope.employee = {};
-    $scope.admin =  false;
+    $scope.admin = false;
 
     var stt = 1;
     // Khởi tạo 1 bill tạm đầu tiên
@@ -139,15 +139,15 @@ app.controller("bill-ctrl", function ($scope, $http) {
         $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
             $scope.employee = resp.data;
             console.log($scope.employee);
-            angular.forEach($scope.employee.roles, function(item){
-                if(item.roleID == "qlch"){
-                    $scope.admin =  true;
+            angular.forEach($scope.employee.roles, function (item) {
+                if (item.roleID == "qlch") {
+                    $scope.admin = true;
                 }
             })
-            if($scope.employee.roles[0].roleID == "qlch"){
-                $scope.admin =  true;
+            if ($scope.employee.roles[0].roleID == "qlch") {
+                $scope.admin = true;
             }
-            
+
             let test = sessionStorage.getItem("bills");
             loadBillFromSessionStorage();
             console.log(test)
@@ -426,9 +426,9 @@ app.controller("bill-ctrl", function ($scope, $http) {
         let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         item.billDetail.quantity = item.billDetail.quantity + 1;
         let quantity = item.billDetail.quantity;
-        if($scope.discountDetail.disID == "2T1" && (quantity % 3) === 0){
+        if ($scope.discountDetail.disID == "2T1" && (quantity % 3) === 0) {
             item.discount += item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100));
-        }else if($scope.discountDetail.disID == "S25" || $scope.discountDetail.disID == "S50"){
+        } else if ($scope.discountDetail.disID == "S25" || $scope.discountDetail.disID == "S50") {
             item.discount = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity * item.sale;
         }
         item.totalMoney = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity;
@@ -441,9 +441,9 @@ app.controller("bill-ctrl", function ($scope, $http) {
         let item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         item.billDetail.quantity = quantity;
-        if($scope.discountDetail.disID == "2T1" && (quantity % 3) === 0){
+        if ($scope.discountDetail.disID == "2T1" && (quantity % 3) === 0) {
             item.discount += item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100));
-        }else if($scope.discountDetail.disID == "S25" || $scope.discountDetail.disID == "S50"){
+        } else if ($scope.discountDetail.disID == "S25" || $scope.discountDetail.disID == "S50") {
             item.discount = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity * item.sale;
         }
         item.totalMoney = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity;
@@ -504,7 +504,15 @@ app.controller("bill-ctrl", function ($scope, $http) {
             if (item.billDetail.billID == billID) {
                 $http.post(url, item.billDetail).then(resp => {
                     console.log("Thêm thành công", resp);
-                    window.location = "/print/" + billID;
+                    $http.get(`/product/findByID/${item.billDetail.productID}`).then(resp => {
+                        let product = resp.data;
+                        console.log(product);
+                        product.inventory = product.inventory - item.billDetail.quantity;
+                        console.log(product);
+                        $http.put(`/bachhoa/api/products/update`, product)
+                        window.location = "/print/" + billID;
+                    })                 
+                    
                 }).catch(error => {
                     console.log("Có lỗi xảy ra", error);
                 });

@@ -24,10 +24,9 @@
 </head>
 
 <body ng-controller="bill-ctrl">
-    <div class="alert bg-info bg-gradient fw-bold fade show d-flex row alert-close flash" role="alert"
-        id="alert" style="position: fixed; right: 5%; top: 1%; width: 25%; display: none; z-index: 999;">
-        <span class="col" th:text="${message}"></span>
-        <button type="button" id="alertClose" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert shadow bg-info bg-gradient fw-bold fade show d-flex row alert-close flash m-auto fixed-top" role="alert"
+        id="alert" style="top: 12%; width: 25%; display: none; z-index: 999;">
+        <span class="col text-center" th:text="${message}"></span>
     </div>
     <header class="border-bottom">
         <div class="row align-items-center">
@@ -197,7 +196,7 @@
                     <label class="mb-3">Tiền mặt</label>
                     <input id="cash" ng-model="money" ng-change="cash(money)" type="number" class="form-control"
                         min="0"> <br>
-                    <button type="button" class="btn btn-outline-primary">VN PAY</button>
+                    <button type="button" class="btn btn-outline-primary">MoMo</button>
                 </div>
 
                 <div class="border-bottom border-3 p-3">
@@ -239,7 +238,7 @@
             }, 300, 0).fadeOut(400, function () {
                 $(this).remove();
             });
-        }, 2000);
+        }, 3000);
     </script>
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
