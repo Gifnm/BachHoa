@@ -1,16 +1,24 @@
 package com.spring.main.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+//import jakarta.persistence.Column;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.Id;
+//import jakarta.persistence.JoinColumn;
+//import jakarta.persistence.ManyToOne;
+//import jakarta.persistence.OneToOne;
+//import jakarta.persistence.Table;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "display_platters")
 public class DisplayPlatter {
+	//
 	@Id
 	@Column(name = "disPlaID")
 	private int disPlaID;
@@ -18,7 +26,7 @@ public class DisplayPlatter {
 	@Column(name = "rowName")
 	private String rowName;
 	@OneToOne
-	@JoinColumn(name = "storeID")
+	@JoinColumn(name = "StoreID")
 	private Store store;
 
 	public int getDisPlaID() {

@@ -1,11 +1,16 @@
 package com.spring.main.model;
 
-import java.util.List;
+//import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+//import jakarta.persistence.Column;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.Id;
+//import jakarta.persistence.Table;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "discounts")
@@ -16,9 +21,9 @@ public class Discount {
 
 	@Column(name = "discountType")
 	private String discountType;
-//
-//    @OneToMany(mappedBy = "discount")
-//    private List<DiscountDetails> discountDetails;
+	//
+	// @OneToMany(mappedBy = "discount")
+	// private List<DiscountDetails> discountDetails;
 
 	public String getDisID() {
 		return disID;

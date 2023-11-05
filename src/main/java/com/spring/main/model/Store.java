@@ -2,12 +2,19 @@ package com.spring.main.model;
 
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+//import jakarta.persistence.Column;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.GeneratedValue;
+//import jakarta.persistence.GenerationType;
+//import jakarta.persistence.Id;
+//import jakarta.persistence.Table;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "stores")
@@ -24,16 +31,16 @@ public class Store {
 	private String size;
 
 	public Store(int storeID) {
-	
+
 		this.storeID = storeID;
 	}
 
 	public Store() {
-	
+
 	}
 
 	public Store(int storeID, String address, String size) {
-		
+
 		this.storeID = storeID;
 		this.address = address;
 		this.size = size;
@@ -63,16 +70,16 @@ public class Store {
 		this.size = size;
 	}
 
-//    @OneToMany(mappedBy = "store")
-//    private List<Warehouse> warehouses;
-//
-//    @OneToMany(mappedBy = "store")
-//    private List<Bill> bills;
-//
-//    @OneToMany(mappedBy = "store")
-//    private List<InventoryHistory> inventoryHistories;
-//
-//    @OneToMany(mappedBy = "store")
-//    private List<DisplayShelves> displayShelves;
+	// @OneToMany(mappedBy = "store")
+	// private List<Warehouse> warehouses;
+	//
+	// @OneToMany(mappedBy = "store")
+	// private List<Bill> bills;
+	//
+	// @OneToMany(mappedBy = "store")
+	// private List<InventoryHistory> inventoryHistories;
+	//
+	// @OneToMany(mappedBy = "store")
+	// private List<DisplayShelves> displayShelves;
 
 }
