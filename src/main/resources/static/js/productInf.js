@@ -155,6 +155,9 @@ app.controller("productInf-ctrl", function ($scope, $http) {
     $scope.findEmployee = function (email) {
         $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
             $scope.employee = resp.data;
+            if($scope.employee.role.roleID == "qlch"){
+                $scope.admin =  true;
+            }
             console.log($scope.employee);
         });
     }
