@@ -177,7 +177,7 @@ app.controller("ctrl", function ($scope, $http) {
 
     $scope.currentPage = 0;
     $scope.pageSize = 20;
-    $scope.sortingOrder = sortingOrder;
+    // $scope.sortingOrder = sortingOrder;
     $scope.reverse = false;
 
     $scope.numberOfPages = function () {

@@ -15,11 +15,12 @@
     <!-- Angular-UI -->
     <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.0.js"></script>
     <script src="https://kit.fontawesome.com/0932428ed2.js" crossorigin="anonymous"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- css -->
     <link rel="stylesheet" href="../css/templateStyle.css">
-    <link rel="stylesheet" href="../css/adminStyle.css">
     <link rel="stylesheet" href="../css/layoutAdminStyle.css">
-
+    <link rel="stylesheet" href="../css/productAdminStyle.css">
     <!-- plugins:css -->
     <link rel="stylesheet" href="../vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="../vendors/ti-icons/css/themify-icons.css">
@@ -33,7 +34,10 @@
             <!-- sidebar -->
             <div th:replace="~{/partials/_sidebar}"></div>
             <!-- end sidebar -->
-            <div th:replace="${view}"></div>
+            <div class="col d-flex flex-column h-sm-100">
+                <div th:replace="~{/partials/_navbar}"></div>
+                <div th:replace="${view}"></div>
+            </div>
         </div>
     </div>
     <!-- <div class="container-scroller">
