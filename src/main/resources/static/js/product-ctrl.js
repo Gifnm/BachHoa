@@ -16,11 +16,13 @@ app.controller("ctrl", function ($scope, $http) {
 
     $scope.getAccount = function () {
         // Fake auth account
-        return $http.get(`${host}/employee/findByID/3`).then(resp => {
+        let email = document.getElementById('accountEmail').innerText;
+        return $http.get(`${host}/employee/findByEmail/${email}`).then(resp => {
             $scope.account = resp.data;
+            console.log("[ProductCtrl:getAccount():21]\n> Account: " + $scope.account);
         }).catch(error => {
             alert("[ProductCtrl:initialize():19]\n> Loi lay account");
-            console.log("[ProductCtrl:initialize():20]\n> Error: " + error);
+            console.log("[ProductCtrl:getAccount():24]\n> Error: " + error);
         });
     }
     // Init data on table and form

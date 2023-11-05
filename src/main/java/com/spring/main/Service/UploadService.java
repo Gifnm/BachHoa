@@ -2,11 +2,13 @@ package com.spring.main.Service;
 
 import java.io.File;
 
+import javax.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.servlet.ServletContext;
+// import jakarta.servlet.ServletContext;
 
 @Service
 public class UploadService {

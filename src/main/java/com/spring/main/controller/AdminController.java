@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class ProductController {
+public class AdminController {
     @GetMapping("/admin/dashboard")
     public String dashboard() {
         return "pages/admin/dashboard";
@@ -14,4 +14,10 @@ public class ProductController {
     public String product() {
         return "pages/admin/product/index";
     }
+
+    @GetMapping("/admin/import-inventory")
+    public String importInventory() {
+        return "pages/admin/import_inventory/index";
+    }
+
 }
