@@ -32,6 +32,11 @@ public class EmployeeService implements UserDetailsService {
 		return list;
 	}
 
+	/**
+	 * Luu moi & cap nhat thong tin 1 nhan vien
+	 * 
+	 * @param employee Object nhan vien
+	 */
 	public void insert(Employee employee) {
 		// Gắn mã hóa vào chi tiết của 1 nhân viên (dùng cho những user mới được add sẽ
 		// đc mã hóa luôn)
@@ -39,11 +44,21 @@ public class EmployeeService implements UserDetailsService {
 		employeeJPA.save(employee);
 	}
 
+	/**
+	 * Xoa mot nhan vien
+	 * 
+	 * @param id Ma so nhan vien
+	 */
 	public void detele(Integer id) {
 		employeeJPA.deleteById(id);
 
 	}
 
+	/**
+	 * Lay 1 nhan vien
+	 * 
+	 * @param id Ma so nhan vien
+	 */
 	public Employee findByID(Integer id) {
 		Employee employee = employeeJPA.findById(id).get();
 		return employee;

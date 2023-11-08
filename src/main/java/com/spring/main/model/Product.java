@@ -53,7 +53,6 @@ public class Product {
 	@ManyToOne()
 	@JoinColumn(name = "storeID")
 	private Store store;
-
 	@Column(name = "inventory")
 	private Integer inventory;
 

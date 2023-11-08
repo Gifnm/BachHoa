@@ -79,7 +79,13 @@ public class ProductAPI {
 
     @GetMapping("product/findByIDOrName/{value}")
     public Product findByIDOrName(@PathVariable("value") String value) {
-        return productService.getByIDOrName(value);
+        Product product = productService.getByIDAndStoreID(productID, storeID);
+        if (product == null) {
+            return null;
+        } else {
+            return product;
+
+        }
     }
 
     // Start API thanhdq

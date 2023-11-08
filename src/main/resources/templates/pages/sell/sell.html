@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="app" xmlns:th="http://www.thymeleaf.org">
+<html  ng-app="app" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>BachHoa | Thanh toán</title>
@@ -24,8 +24,8 @@
 </head>
 
 <body ng-controller="bill-ctrl">
-    <div class="alert bg-info bg-gradient fw-bold fade show d-flex row alert-close flash" role="alert"
-        id="alert" style="position: fixed; right: 5%; top: 1%; width: 25%; display: none; z-index: 999;">
+	<div class="alert bg-info bg-gradient bg-opacity-75 fw-bold fade show d-flex row alert-close flash" role="alert"
+        id="alert" style="position: fixed; right: 39%; bottom: 1%; width: 25%; display: none; z-index: 999;">
         <span class="col" th:text="${message}"></span>
         <button type="button" id="alertClose" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
@@ -87,7 +87,7 @@
                             <p class="fw-light text-muted mb-0" id="email">[[${#httpServletRequest.remoteUser}]]</p>
                             <p class="d-none" id="employeeID">3</p>
                         </div>
-                        <li ng-show="admin"><a class="dropdown-item" href="/admin/product">Quản lý</a></li>
+
                         <li><a class="dropdown-item" href="#">Hồ sơ cá nhân</a></li>
                         <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
                         <li>
@@ -101,20 +101,18 @@
 
     </header>
 
-    <main>
+    <main >
         <div class="row p-0 m-0" style="min-height: 600px;">
             <div class="col-9 p-4">
                 <tabset>
-                    <tab ng-repeat="invoice in bills track by $index" active=invoice.active
-                        heading="Hóa đơn {{invoice.stt}}" class="nav-item">
-                        <tab-heading ng-click="selectBill(invoice.bill.billID)"
-                            class="tab nav-link {{invoice.active === true ? 'active' : ''}}">
+                    <tab ng-repeat="invoice in bills track by $index" active=invoice.active heading="Hóa đơn {{invoice.stt}}" class="nav-item">
+                        <tab-heading ng-click="selectBill(invoice.bill.billID)" class="tab nav-link {{invoice.active === true ? 'active' : ''}}">
                             Hóa đơn {{invoice.stt}}
                             <a ng-click="removeTab($index)" href='' class="ms-2 btn btn-outline-danger" style="outline: none !important;
                             border: none !important;padding: 0 0.25rem;">
                                 <i class="bi bi-x-octagon"></i>
                             </a>
-
+                            
                         </tab-heading>
                         <div>
                             <!-- Content start -->
@@ -142,15 +140,11 @@
                                                         {{item.billDetail.product.productName}}</td>
                                                     <td style="width: 10%;"><input
                                                             ng-change="updateBillDetailFromInput(item.billDetail.product.productID, item.billDetail.quantity, invoice.bill.billID)"
-                                                            ng-model="item.billDetail.quantity" type="number" min="1"
-                                                            step="1" class="rounded-pill text-center"
-                                                            style="width: 80%;"></td>
-                                                    <td style="width: 10%;">{{item.billDetail.product.price +
-                                                        (item.billDetail.product.price * (item.billDetail.product.vat /
-                                                        100)) | number}}</td>
+                                                            ng-model="item.billDetail.quantity" type="number" min="1" step="1"
+                                                            class="rounded-pill text-center" style="width: 80%;"></td>
+                                                    <td style="width: 10%;">{{item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100)) | number}}</td>
                                                     <td style="width: 15%;">{{item.discountName}}</td>
-                                                    <td style="width: 15%;">{{item.billDetail.totalAmount | number}}
-                                                    </td>
+                                                    <td style="width: 15%;">{{item.billDetail.totalAmount | number}}</td>
                                                     <td style="width: 5%;"><button
                                                             ng-click="deleteItem(item.billDetail.product.productID, invoice.bill.billID)"
                                                             type="button" class="btn-close" aria-label="Close"></button>
@@ -184,19 +178,16 @@
                     </div>
                 </div>
 
-                <div class="p-3 border-bottom border-3">
-                    <label class="mb-3">Tổng tiền: <strong id="totalAmount">{{totalAmount | number}}</strong>
-                        VND</label><br>
+                <div class="p-3 border-bottom border-3">                   
+                    <label class="mb-3">Tổng tiền: <strong id="totalAmount">{{totalAmount | number}}</strong> VND</label><br>
                     <label class="mb-3">Đã giảm: <strong id="discount">{{discount | number}}</strong> VND</label><br>
-                    <label class="mb-3">Phải thu: <strong id="amountReceivable">{{amountReceivable | number}}</strong>
-                        VND</label><br>
+                    <label class="mb-3">Phải thu: <strong id="amountReceivable">{{amountReceivable | number}}</strong> VND</label><br>
                     <label>Phải thu (đã làm tròn): <strong>{{roundAmountReceivable | number}}</strong> VND</label>
                 </div>
 
                 <div class="p-3 border-bottom border-3">
                     <label class="mb-3">Tiền mặt</label>
-                    <input id="cash" ng-model="money" ng-change="cash(money)" type="number" class="form-control"
-                        min="0"> <br>
+                    <input  id="cash" ng-model="money" ng-change="cash(money)" type="number" class="form-control" min="0" > <br>
                     <button type="button" class="btn btn-outline-primary">VN PAY</button>
                 </div>
 
@@ -209,24 +200,22 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade {{dialog}} bg-opacity-75 bg-gradient bg-dark" id="errorAlert" tabindex="-1"
-            aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal fade {{dialog}} bg-opacity-75 bg-gradient bg-dark" id="errorAlert" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-opacity-75 bg-warning mb-0">
-                        <h5 class="modal-title" id="errorModalLabel">Thông báo lỗi!</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                            ng-click="closeModal()"></button>
-                    </div>
-                    <div class="text-center p-3">
-                        Số tiền khách đưa phải lớn hơn hoặc bằng số tiền phải thu!
-                    </div>
-                    <!-- <div class="modal-footer">
+              <div class="modal-content">
+                <div class="modal-header bg-opacity-75 bg-warning mb-0">
+                  <h5 class="modal-title" id="errorModalLabel">Thông báo lỗi!</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ng-click="closeModal()"></button>
+                </div>
+                <div class="text-center p-3">
+                  Số tiền khách đưa phải lớn hơn hoặc bằng số tiền phải thu!
+                </div>
+                <!-- <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" ng-click="closeModal()">Đóng</button>
                 </div> -->
-                </div>
+              </div>
             </div>
-        </div>
+          </div>
     </main>
     <!-- js -->
     <script src="../js/angular-ui-tab-scroll.js"></script>
@@ -234,12 +223,12 @@
     <script>
         window.setTimeout(function () {
             $(".flash").animate({
-                top: "0",
+                bottom: "0",
                 opacity: "0",
             }, 300, 0).fadeOut(400, function () {
                 $(this).remove();
             });
-        }, 2000);
+        }, 5000);
     </script>
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"

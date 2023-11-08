@@ -16,8 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.spring.main.Service.UploadService;
 
-// import jakarta.websocket.server.PathParam;
-
 @CrossOrigin("*")
 @RestController
 public class UploadImageAPI {
