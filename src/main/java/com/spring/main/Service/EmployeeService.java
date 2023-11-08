@@ -18,6 +18,9 @@ public class EmployeeService {
 		return list;
 	}
 
+	public Employee create(Employee employee) {
+		return employeeJPA.save(employee);
+	}
 	public void insert(Employee employee) {
 		employeeJPA.save(employee);
 	}
@@ -27,8 +30,22 @@ public class EmployeeService {
 
 	}
 
-	public Employee findByID(Integer id) {
-		Employee employee = employeeJPA.findById(id).get();
+	public Employee findByID(Integer emloyeeid) {
+		Employee employee = employeeJPA.findById(emloyeeid).get();
 		return employee;
 	}
+
+	private void save(Employee employee){
+		employeeJPA.save(employee);
+	}
+
+	public List <Employee> getAll(){
+		return employeeJPA.findAll();
+	} 
+
+	public Employee update(Employee employee) {
+		return employeeJPA.save(employee);
+	}
 }
+
+
