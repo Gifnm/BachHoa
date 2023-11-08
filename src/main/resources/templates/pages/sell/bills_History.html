@@ -61,8 +61,111 @@
                         <p>{{employee.store.address}}</p>
                         <p id="storeID" class="d-none">ID</p>
                     </div>
+                    <div class="offcanvas-footer text-center p-4">
+						<!-- Button trigger modal -->
+						<button type="button" class="btn btn-outline-info fw-bold shadow-lg" data-bs-toggle="modal"
+							data-bs-target="#Noptien" ng-click="tinhTongTienThu()">Kết thúc ca làm</button>
+					</div>
                 </div>
             </div>
+            <!-- Modal kết ca -->
+            <div class="modal fade" id="Noptien" tabindex="999" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header bg-gradient bg-primary text-white">
+							<h5 class="modal-title" id="exampleModalLabel">Kết thúc ca làm việc.</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form action="">
+								<div>
+									<span>Chào bạn, </span><b>{{employee.employeeName}}</b>
+								</div>
+								<div>
+									<span>Tổng tiền phải nộp hôm nay là: </span> <b>{{TotalMoneytoPay | number}}
+										VNĐ</b>
+								</div>
+								<hr style="border: 5px solid steelblue;" class="rounded-1">
+								<div>
+									<span>Hãy nhập chính xác các mệnh giá bên dưới !</span>
+									<div class="row mt-2">
+										<div class="col-md-4 ms-auto">
+											<label for="500">Tờ 500k</label>
+											<input type="number" class="form-control" id="500" value="0"
+												ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+												min="0" ng-model="form.vnd500">
+										</div>
+										<div class="col-md-4 ms-auto">
+											<label for="200">Tờ <span id="price">200</span>k</label>
+											<input type="number" class="form-control" id="200" value="0"
+												ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+												min="0" ng-model="form.vnd200">
+										</div>
+										<div class="col-md-4 ms-auto">
+											<label for="100">Tờ 100k</label>
+											<input type="number" class="form-control" id="100" value="0"
+												ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+												min="0" ng-model="form.vnd100">
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4 ms-auto">
+											<label for="50">Tờ 50k</label>
+											<input type="number" class="form-control" id="50" value="0"
+												ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+												min="0" ng-model="form.vnd50">
+										</div>
+										<div class="col-md-4 ms-auto">
+											<label for="20">Tờ 20k</label>
+											<input type="number" class="form-control" id="20" value="0"
+												ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+												min="0" ng-model="form.vnd20">
+										</div>
+										<div class="col-md-4 ms-auto">
+											<label for="10">Tờ 10k</label>
+											<input type="number" class="form-control" id="10" value="0"
+												ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+												min="0" ng-model="form.vnd10">
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4 ms-auto">
+											<label for="5">Tờ 5k</label>
+											<br>
+											<input type="number" class="form-control" id="5" value="0"
+												ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+												min="0" ng-model="form.vnd5">
+										</div>
+										<div class="col-md-4 ms-auto">
+											<label for="2">Tờ 2k</label>
+											<br>
+											<input type="number" class="form-control" id="2" value="0"
+												ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+												min="0" ng-model="form.vnd2">
+										</div>
+										<div class="col-md-4 ms-auto">
+											<label for="1">Tờ 1k</label>
+											<br>
+											<input type="number" class="form-control" id="1" value="0"
+												ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+												min="0" ng-model="form.vnd1">
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer d-flex justify-content-between">
+							<div class="total-number">
+								<span>Tổng tiền mà bạn nộp: </span>
+								<b id="totalMoney" class="number">{{totalMoneyYouPay | number}}</b>
+								<span class="Dong-sign"> đ</span>
+							</div>
+							<!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button> -->
+							<button type="button" class="btn btn-success" ng-click="sendMoney()">Nộp tiền</button>
+						</div>
+					</div>
+				</div>
+			</div>
             <div class="col logo text-center">
                 <a href="/sell" class="text-decoration-none">
                     <img src="../images/logo/logo3-removebg.png" alt="logo" style="width: 100px;">
@@ -106,10 +209,13 @@
                             <div class="autocomplete d-flex text-dark">
                                 <input id="bill_ID" type="text" class="form-control" ng-model="bill_ID"
                                     ng-change="find(bill_ID)">
-                                <button class="btn btn-info ms-2 shadow-lg">
+                                <!-- <button class="btn btn-info ms-2 shadow-lg">
                                     <i class="bi bi-search" ng-click="find(bill_ID)"></i>
-                                </button>
-
+                                </button> -->
+                                <button class="btn btn-info text-white ms-2 shadow-lg">
+									<i class="bi bi-arrow-clockwise" ng-click="refresh()"
+										title="Nhấn vào khi cần refresh lại."></i>
+								</button>
                             </div>
                         </div>
                     </div>

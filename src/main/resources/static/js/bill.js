@@ -205,7 +205,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
     // thêm bill tạm vào mảng bills[]
     let addNewBill = function () {
         let listBill = $scope.bills;
-        let employeeID = parseInt(document.getElementById('employeeID').innerText);
+        let employeeID = $scope.employee.employeeID;
         $http.get(`/bachhoa/api/store/findByID/${$scope.employee.store.storeID}`).then(resp => {
             let bill = createBill();
             bill.store = resp.data;

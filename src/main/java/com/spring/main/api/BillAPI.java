@@ -60,6 +60,11 @@ public class BillAPI {
 		Pageable page = PageRequest.of(index.orElse(0), 8);
 		return billService.searchBetween(fromDate, toDate, page);
 	}
+	
+	@GetMapping("bill/findByEmployeeAndDate/{employeeID}/{fromDate}/{toDate}")
+	public List<Bill> findByEmployeeAndDate(@PathVariable("employeeID") Integer employeeID, @PathVariable("fromDate") Timestamp fromDate, @PathVariable("toDate") Timestamp toDate) {
+		return billService.findByEmployeeAndDate(employeeID, fromDate, toDate);
+	}
 	 
 	@PutMapping("bill/update")
 	public void update(@RequestBody Bill bill) {
