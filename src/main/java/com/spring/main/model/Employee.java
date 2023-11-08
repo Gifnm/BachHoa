@@ -56,8 +56,8 @@ public class Employee {
 	@OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
 	private List<Authority> authorities;
 
-	@Column(name = "activity")
-	private boolean activity;
+	@Column(name = "active")
+	private boolean active;
 
 	@Column(name = "email")
 	private String email;

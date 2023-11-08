@@ -24,6 +24,7 @@ import com.spring.main.model.Store;
 public class EmployeeAPI {
 	@Autowired
 	EmployeeJPA employeeJPA;
+	@Autowired
 	EmployeeService emService;
 
 	@GetMapping("/bachhoa/api/employees")
@@ -54,7 +55,7 @@ public class EmployeeAPI {
 		role.setRoleID("bhoa");
 		// employee.setRole(role);
 		employee.setStore(store);
-		employee.setActivity(true);
+		employee.setActive(true);
 		emService.insert(employee);
 		return employee;
 	}
@@ -96,15 +97,8 @@ public class EmployeeAPI {
 		return employeeJPA.getByStoreId(storeId);
 	}
 
-	@PostMapping("/bachhoa/api/employee")
-	public Employee create(@RequestBody Employee employee) {
-		return emService.create(employee);
-	}
 
-	@PostMapping("/bachhoa/api/employee")
-	public Employee update(@PathVariable("id") String id, @RequestBody Employee employee) {
-		return emService.update(employee);
-	}
+	
 
 	@DeleteMapping("/bachhoa/api/employee/{id}")
 	public void delete(@PathVariable("id") Integer id) {
