@@ -28,14 +28,20 @@ public class EmployeeAPI {
 
 	@GetMapping("/bachhoa/api/employees")
 	public List<Employee> getAll() {
-		return emService.getAll();
+		return emService.findAll();
 
 	}
 
-	@GetMapping("findById/{id}")
-	public Employee getByID(@PathVariable Integer id) {
-		System.out.println(id + "hm");
-		return emService.findByID(id);
+	@GetMapping("employee/findByEmail/{email}")
+	public Employee findByEmail(@PathVariable("email") String email) {
+		return emService.findByEmail(email);
+
+	}
+
+	@GetMapping("employee/findByID/{employeeID}")
+	public Employee getByID(@PathVariable("employeeID") Integer employeeID) {
+		// System.out.println(employeeID + "hm");
+		return emService.findByID(employeeID);
 
 	}
 
@@ -46,7 +52,7 @@ public class EmployeeAPI {
 		store.setStoreID(1);
 		Role role = new Role();
 		role.setRoleID("bhoa");
-		employee.setRole(role);
+		// employee.setRole(role);
 		employee.setStore(store);
 		employee.setActivity(true);
 		emService.insert(employee);
@@ -56,13 +62,13 @@ public class EmployeeAPI {
 	@GetMapping("login/{passW}/{user}")
 	public Employee login(@PathVariable("passW") String pass, @PathVariable("user") int user) {
 		System.out.println("Login: " + user + " - " + pass);
-		Employee employee = emService.findByID(12);
+		Employee employee = emService.findByID(user);
 		if (employee == null) {
 
 			return null;
 		} else {
 			System.out.println("j");
-			if (employee.getPasswork().equals(pass)) {
+			if (employee.getPassword().equals(pass)) {
 				return employee;
 			}
 			return null;
@@ -70,6 +76,7 @@ public class EmployeeAPI {
 		}
 
 	}
+
 	@GetMapping("/bachhoa/api/employees/search")
 	public List<Employee> getByKeyword(String keyword, int storeId) {
 		System.out.println("[EmplooyeeService:getByKeyWord():59]\n> calling repo with keyword '" + keyword + "'...");
@@ -89,17 +96,18 @@ public class EmployeeAPI {
 		return employeeJPA.getByStoreId(storeId);
 	}
 
-  @PostMapping("/bachhoa/api/employee")
-    public Employee create(@RequestBody Employee employee) {
-        return emService.create(employee);
-    }
+	@PostMapping("/bachhoa/api/employee")
+	public Employee create(@RequestBody Employee employee) {
+		return emService.create(employee);
+	}
 
 	@PostMapping("/bachhoa/api/employee")
-    public Employee update(@PathVariable("id") String id,@RequestBody Employee employee) {
-        return emService.update(employee);
-    }
+	public Employee update(@PathVariable("id") String id, @RequestBody Employee employee) {
+		return emService.update(employee);
+	}
+
 	@DeleteMapping("/bachhoa/api/employee/{id}")
-    public void delete(@PathVariable ("id") Integer id ) {
-        emService.detele(id);
-    }
+	public void delete(@PathVariable("id") Integer id) {
+		emService.detele(id);
+	}
 }

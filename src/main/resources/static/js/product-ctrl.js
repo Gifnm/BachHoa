@@ -1,126 +1,195 @@
-let host = "http://localhost:8081/bachhoa/api";
+const host = "http://localhost:8081/bachhoa/api";
+
 const app = angular.module("app", []);
-app.controller("ctrl", function($scope, $http, $filter){
-    $scope.items = [];
-    $scope.form = {};
-    $scope.categories = []
-    $scope.account = {}
-    //Mock store
-    $scope.store = {
-        storeID : 1,
-        address : "Trung tâm BachHoa",
-        size : "3t"
-    }
+app.controller("ctrl", function ($scope, $http) {
+    //Variables
+    $scope.today = new Date();
+    $scope.feature = 'create'
+    const formImageElement = document.getElementById('blah'); //Element image to preview image when create or update product
+    $scope.items = [] //List products to manage
+    $scope.form = {} //Form data
+    let formData = new FormData();
+    $scope.DEFAULT_PRODUCT_IMAGE = '/images/image_upload_icon.png';
+    $scope.categories = [] //List categories to create new product in form
+    $scope.account = {} //Account of login employee
+    var storeId;
 
-    $scope.initialize = function(){
-        //load products
-        var url = `${host}/products`;
-        $http.get(url).then(resp => {
-            $scope.items = resp.data;
-            $scope.items.forEach(item => {
-                item.nearestExpDate = new Date(item.nearestExpDate)
-            })
-        });
-        //load categories
-        url = `${host}/categories`;
-        $http.get(url).then(resp =>{
-            $scope.categories = resp.data;
-            // $http.post('')
-        });
-        $scope.form.store = $scope.store;
-        $scope.form.image = 'image_upload_icon.png';
-    }
-
-    $scope.create = function(){
-        var item = angular.copy($scope.form);
-        var url = `${host}/products`;
-        $http.post(url, item).then(resp => {
-            resp.data.nearestExpDate = new Date(resp.data.nearestExpDate)
-            $scope.items.push(resp.data);
-            $scope.reset();
-            alert("Them moi thanh cong!");
+    $scope.getAccount = function () {
+        // Fake auth account
+        let email = document.getElementById('accountEmail').innerText;
+        return $http.get(`${host}/employee/findByEmail/${email}`).then(resp => {
+            $scope.account = resp.data;
+            console.log("[ProductCtrl:getAccount():21]\n> Account: " + $scope.account);
         }).catch(error => {
-            alert("Loi them moi san pham!");
-            console.log("Error: "+ error);
+            alert("[ProductCtrl:initialize():19]\n> Loi lay account");
+            console.log("[ProductCtrl:getAccount():24]\n> Error: " + error);
+        });
+    }
+    // Init data on table and form
+    $scope.initialize = function () {
+        $scope.getAccount().then(() => {
+            // load products into table
+            storeId = $scope.account.store.storeID;
+            console.log("[ProductCtrl:initialize():28]\n> Store Id: " + storeId + " account name: " + $scope.account.employeeName);
+            let url = `${host}/products/${storeId}`;
+            $http.get(url).then(resp => {
+                $scope.items = resp.data;
+                $scope.items.forEach(item => {
+                    item.nearestExpDate = new Date(item.nearestExpDate)
+                })
+            });
+            // Load categories onto form's comboboxes
+            url = `${host}/categories`;
+            $http.get(url).then(resp => {
+                $scope.categories = resp.data;
+            });
+            // Set default value in form
+            $scope.form.store = $scope.account.store;
+            $scope.form.image = $scope.DEFAULT_PRODUCT_IMAGE;
+            $scope.search("");
         });
     }
 
-    $scope.update = function(){
-        var item = angular.copy($scope.form);
-        var url = `${host}/products/${item.productID}`;
+    //Save new product
+    $scope.create = function () {
+        $scope.feature = 'create';
+        let item = angular.copy($scope.form);
+        // Cal api
+        let url = `${host}/products`;
+        $http.post(url, item).then(resp => {
+            $scope.reset();
+            $scope.initialize();
+            alert("[product-ctrl.js:create():59]\n> Them moi thanh cong!");
+        }).catch(error => {
+            alert("[product-ctrl.js:create():61]\n> Loi them moi san pham!");
+            console.log("[product-ctrl.js:create():62]\n> Error", error);
+        })
+        //create product with image
+        // Collect product info and image in form into formData
+        // formData = new FormData();
+        // formData.append('product', JSON.stringify(angular.copy($scope.form)));
+        // formData.append('image', $scope.image);
+
+        // console.log("[product-ctrl.js:imageChanged():53]\n> Form data: " + $scope.formData);
+
+        // Call api
+        // let url = `${host}/upload`;
+        // $http
+        //     .post(url, formData, {
+        //         transformRequest: angular.identity,
+        //         headers: { 'Content-type': 'multipart/form-data; boundary=--WebKitFormBoundary7MA4YWxkTrZu0gW' },
+        //     })
+        //     .then(resp => {
+        //         console.log("[product-ctrl.js:create():60]\n> POST SUCCESS");
+        //         resp.data.nearestExpDate = new Date(resp.data.nearestExpDate);
+        //         $scope.items.push(resp.data);
+        //         $scope.reset();
+        //         alert("[product-ctrl.js:create():68]\n> Them moi thanh cong!");
+        //     })
+        //     .catch(error => {
+        //         alert("[product-ctrl.js:create():71]\n>Loi them moi san pham!");
+        //         console.log("Error: " + error);
+        //     });
+    };
+
+
+    $scope.update = function () {
+        $scope.feature = 'update'
+        let item = angular.copy($scope.form);
+        // Cal api
+        let url = `${host}/products/${item.productID}`;
         $http.put(url, item).then(resp => {
-            var index = $scope.items.findIndex(p => p.productID == item.productID);
+            let index = $scope.items.findIndex(p => p.productID == item.productID);
             $scope.items[index] = item;
             $scope.initialize();
-            alert("Cap nhat thanh cong!");
+            alert("[product-ctrl.js:update():85]\n> Cap nhat thanh cong!");
         }).catch(error => {
-            alert("Loi cap nhat san pham!");
-            console.log("Error", error);
+            alert("[product-ctrl.js:update():87]\n> Loi cap nhat san pham!");
+            console.log("[product-ctrl.js:update():88]\n> Error", error);
         })
     }
 
     $scope.delete = function (id) {
         if (confirm("THIS ACTION CAN'T UNDO!\nAre you sure to delete this product?") == true) {
-            var url = `${host}/products/${id}`;
+            let url = `${host}/products/${id}`;
             $http.delete(url).then(resp => {
-                var index = $scope.items.findIndex(item => item.productID == $scope.form.productID);
+                let index = $scope.items.findIndex(item => item.productID == $scope.form.productID);
                 $scope.items.splice(index, 1);
                 $scope.reset();
                 $scope.initialize();
-                alert("Delete successfully!");
+                alert("[product-ctrl.js:delete():100]\n> Delete successfully!");
             }).catch(error => {
-                console.log("Error", error)
+                console.log("[product-ctrl.js:delete():102]\n> Error", error)
             });
         }
     }
 
-    $scope.reset = function(){
+    //Clear form information
+    $scope.reset = function () {
         $scope.form = {
             nearestExpDate: new Date(),
-            image: 'image_upload_icon.png',
-            status:true,
-            store: $scope.store
+            image: null,
+            status: true,
+            store: $scope.account.store
         }
+        formImageElement.src = $scope.DEFAULT_PRODUCT_IMAGE;
     }
 
-    $scope.edit = function(item){
+    //Show detail product in form
+    $scope.edit = function (item) {
         $scope.form = angular.copy(item);
-        if($scope.form.image == null){
-            $scope.form.image = 'image_upload_icon.png';
+        if ($scope.item.image == null) {
+            formImageElement.src = $scope.DEFAULT_PRODUCT_IMAGE;
         }
+        formImageElement.src = $scope.form.image;
     }
 
-    $scope.imageChanged = function(files){
-        var data = new FormData();
-        data.append('file', files[0]);
-        var url = `${host}/upload/images`;
-        $http.post(url, data, {
-            transformRequest: angular.identify,
-            headers: {'Content-Type': undefined}
-        }).then(resp => {
-            alert(resp.data.path)
-            $scope.form.image = resp.data.name;
-        }).catch(error => {
-            alert("Loi upload anh");
-            console.log("Error: ", error);
-        })
+
+    //Preview image when change (NOT DONE)
+    $scope.imageChanged = function (e, files) {
+        // Check if the user has selected a file.
+        if (files) {
+            //Show image choosing on element with id 'blah'
+            formImageElement.src = e
+            //Save name of image file choosing
+            let fileName = files.name;
+            $scope.form.image = "http://192.168.1.5:8083/bachhoaimg//" + fileName;
+            console.log("[product-ctrl.js:imageChanged():130] - Form image file name: " + $scope.form.image);
+        } else {
+            // The user has not selected a file.
+            alert('[product-ctrl.js:imageChanged():141]\n> Please select an image file.');
+        }
+
+        // let data = new FormData();
+        // data.append('file', files[0]);
+        // let url = `${host}/upload/images`;
+        // $http.post(url, data, {
+        //     transformRequest: angular.identify,
+        //     headers: {'Content-Type': undefined}
+        // }).then(resp => {
+        //     alert(resp.data.path)
+        //     $scope.form.image = resp.data.name;
+        // }).catch(error => {
+        //     alert("Loi upload anh");
+        //     console.log("Error: ", error);
+        // })
     }
-    
+
     $scope.currentPage = 0;
     $scope.pageSize = 20;
-    $scope.sortingOrder = sortingOrder;
+    // $scope.sortingOrder = sortingOrder;
     $scope.reverse = false;
 
     $scope.numberOfPages = function () {
         return Math.ceil($scope.items.length / $scope.pageSize);
     }
     $scope.range = function (start, end) {
-        var ret = [];
+        let ret = [];
         if (!end) {
             end = start;
             start = 0;
         }
-        for (var i = start; i < end; i++) {
+        for (let i = start; i < end; i++) {
             ret.push(i);
         }
         return ret;
@@ -130,9 +199,9 @@ app.controller("ctrl", function($scope, $http, $filter){
     $scope.groupToPages = function () {
         $scope.pagedItems = [];
 
-        for (var i = 0; i < $scope.items.length; i++) {
+        for (let i = 0; i < $scope.items.length; i++) {
             if (i % $scope.pageSize === 0) {
-                $scope.pagedItems[Math.floor(i / $scope.pageSize)] = [ $scope.items[i] ];
+                $scope.pagedItems[Math.floor(i / $scope.pageSize)] = [$scope.items[i]];
             } else {
                 $scope.pagedItems[Math.floor(i / $scope.pageSize)].push($scope.items[i]);
             }
@@ -141,10 +210,10 @@ app.controller("ctrl", function($scope, $http, $filter){
 
     // init the filtered items
     $scope.search = function (query) {
-        var keyword = encodeURI(query)
-        console.log(keyword)
-        var url = `${host}/products/search?q=${keyword}`;
-        console.log(url)
+        let keyword = encodeURI(query)
+        console.log("[product-ctrl.js:search():195]\n> Search keyword: " + keyword)
+        let url = `${host}/products/search?q=${keyword}&storeid=${storeId}`;
+        console.log("[product-ctrl.js:search():197]\n> Search path: " + url)
         $http.get(url).then(resp => {
             $scope.items = resp.data;
             $scope.items.forEach(item => {
@@ -155,12 +224,11 @@ app.controller("ctrl", function($scope, $http, $filter){
         $scope.groupToPages();
     };
 
-    $scope.setPage = function(page){
+    $scope.setPage = function (page) {
         $scope.currentPage = page;
     }
 
-    $scope.initialize()
-    $scope.search("");
+    $scope.initialize();
 });
 // ctrl.$inject = ['$scope', '$filter'];
 //We already have a limitTo filter built-in to angular,

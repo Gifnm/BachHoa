@@ -3,23 +3,25 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Chi tiết sản phẩm</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{feature=='create'?'Thêm sản phẩm mới':'Chỉnh sửa
+                    thông
+                    tin sản phẩm'}}</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="row g-3">
+                <form class="row g-3" enctype="multipart/form-data">
                     <div class="col col-md-4 rounded">
                         <div class="rounded">
-                            <img ng-src="/images/{{form.image}}" class="object-fit-fill border border-1 h-100 w-100"
+                            <img id="blah" ng-src="{{form.image}}" class="object-fit-fill border border-1 h-100 w-100"
                                 alt="{{form.image}}">
                         </div>
-                        <input type="file" class="form-control" accept="image/*"
-                            onchange="angular.element(this).scope().imageChanged(this.files)">
+                        <input type="file" class="form-control" accept="image/*" ng-model="image"
+                            onchange="angular.element(this).scope().imageChanged(window.URL.createObjectURL(this.files[0]), this.files[0])">
                     </div>
                     <div class="col col-md-8">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label for="inputEmail4" class="form-label">Mã sản phẩm</label>
+                                <label for="inputEmail4" class="form-label disabled">Mã sản phẩm</label>
                                 <input ng-model="form.productID" class="form-control">
                             </div>
                             <div class="col-md-6">
@@ -64,9 +66,6 @@
                     </button>
                     <button ng-click="update()" class="btn btn-primary">
                         <i class="fas fa-rotate"></i> Lưu
-                    </button>
-                    <button ng-click="delete(form.productID)" class="btn btn-primary">
-                        <i class="fas fa-solid fa-ban"></i> Xóa sản phẩm
                     </button>
                     <button ng-click="reset()" class="btn btn-primary">
                         <i class="fas fa-regular fa-window-restore"></i> Xóa trắng form
