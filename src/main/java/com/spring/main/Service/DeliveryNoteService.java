@@ -19,8 +19,12 @@ public class DeliveryNoteService {
 	 * 
 	 * @param store Object cua hang
 	 */
-	public List<DeliveryNote> getAll(Store store) {
-		List<DeliveryNote> list = deliveryNoteJPA.getByStore(store);
+	public List<DeliveryNote> getAll(int storeID) {
+		List<DeliveryNote> list = deliveryNoteJPA.getAllByStore(storeID);
+		return list;
+	}
+	public List<DeliveryNote> getAll2() {
+		List<DeliveryNote> list = deliveryNoteJPA.findAll();
 		return list;
 	}
 }

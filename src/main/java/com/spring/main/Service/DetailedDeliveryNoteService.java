@@ -29,7 +29,7 @@ public class DetailedDeliveryNoteService {
 	 * @param
 	 */
 	public List<DetailedDeliveryNote> getall(DeliveryNote deliveryNote) {
-		List<DetailedDeliveryNote> list = deliveryNoteJPA.findByDeliveryNote(deliveryNote);
+		List<DetailedDeliveryNote> list = deliveryNoteJPA.getAllByID(deliveryNote.getId());
 		return list;
 	}
 

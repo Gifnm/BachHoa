@@ -3,6 +3,8 @@ package com.spring.main.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,10 +38,10 @@ public class EmployeeAPI {
 		return emService.findByEmail(email);
 
 	}
-	
+
 	@GetMapping("employee/findByID/{employeeID}")
 	public Employee getByID(@PathVariable("employeeID") Integer employeeID) {
-		//System.out.println(employeeID + "hm");
+		// System.out.println(employeeID + "hm");
 		return emService.findByID(employeeID);
 
 	}
@@ -51,7 +53,7 @@ public class EmployeeAPI {
 		store.setStoreID(1);
 		Role role = new Role();
 		role.setRoleID("bhoa");
-		//employee.setRole(role);
+		// employee.setRole(role);
 		employee.setStore(store);
 		employee.setActivity(true);
 		emService.insert(employee);
@@ -59,22 +61,22 @@ public class EmployeeAPI {
 	}
 
 	@GetMapping("login/{passW}/{user}")
-	public Employee login(@PathVariable("passW") String pass, @PathVariable("user") int user) {
+	private ResponseEntity<Employee> login(@PathVariable("passW") String pass, @PathVariable("user") int user) {
 		System.out.println("Login: " + user + " - " + pass);
 		Employee employee = emService.findByID(user);
+		System.out.println("-------");
+
 		if (employee == null) {
-
-			return null;
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		} else {
-			System.out.println("j");
+			System.out.println("Tim thay nhan vien");
 			if (employee.getPassword().equals(pass)) {
-				return employee;
+				System.out.println("Password is correct");
+				return ResponseEntity.status(HttpStatus.OK).body(employee);
 			}
-			return null;
-
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 
 	}
-	
-	
+
 }
