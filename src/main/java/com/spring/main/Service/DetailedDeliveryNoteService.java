@@ -28,8 +28,8 @@ public class DetailedDeliveryNoteService {
 	 * 
 	 * @param
 	 */
-	public List<DetailedDeliveryNote> getall(DeliveryNote deliveryNote) {
-		List<DetailedDeliveryNote> list = deliveryNoteJPA.getAllByID(deliveryNote.getId());
+	public List<DetailedDeliveryNote> getall(String id) {
+		List<DetailedDeliveryNote> list = deliveryNoteJPA.getAllByID(id);
 		return list;
 	}
 

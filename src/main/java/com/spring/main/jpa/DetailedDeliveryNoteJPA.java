@@ -10,10 +10,9 @@ import com.spring.main.model.DeliveryNote;
 import com.spring.main.model.DetailedDeliveryNote;
 import com.spring.main.model.DetailedDeliveryNoteID;
 
-public interface DetailedDeliveryNoteJPA extends JpaRepository<DetailedDeliveryNote, DetailedDeliveryNoteID>{
-	@Query("Select o from DetailedDeliveryNote o where o.id =:id  ORDER BY o.indext ASC")
+public interface DetailedDeliveryNoteJPA extends JpaRepository<DetailedDeliveryNote, String>{
+	@Query("Select o from DetailedDeliveryNote o where o.id =:id ")
 	List<DetailedDeliveryNote> getAllByID(@Param("id") String id);
 	
-	List<DetailedDeliveryNote> findByDeliveryNote(DeliveryNote deliveryNote);
 
 }

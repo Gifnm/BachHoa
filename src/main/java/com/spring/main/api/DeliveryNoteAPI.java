@@ -20,7 +20,8 @@ import com.spring.main.model.Store;
 @RestController
 @RequestMapping("/bachhoa/api/deliverynotapi/")
 public class DeliveryNoteAPI {
-	DeliveryNoteService deliveryNoteService = new DeliveryNoteService();
+	@Autowired
+	DeliveryNoteService deliveryNoteService;
 
 	// Getll
 	@GetMapping("getall/{storeID}")

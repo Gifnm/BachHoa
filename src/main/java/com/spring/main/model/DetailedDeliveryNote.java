@@ -7,6 +7,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -15,11 +16,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @IdClass(DetailedDeliveryNoteID.class)
-@EqualsAndHashCode
 @Table(name = "detailed_delivery_note")
 public class DetailedDeliveryNote {
 	@Id
@@ -32,7 +30,7 @@ public class DetailedDeliveryNote {
 	@JoinColumn(name = "id")
 	private DeliveryNote deliveryNote;
 
-	@ManyToOne
+	@OneToOne
 	@MapsId("productID")
 	@JoinColumn(name = "productID")
 	private Product product;
@@ -40,8 +38,8 @@ public class DetailedDeliveryNote {
 	@Column(name = "quantity")
 	private int quantity;
 	
-	@Column(name = "indext")
-	private int indext;
+	@Column(name = "index")
+	private int index;
 	
 	@Column(name = "count")
 	private int count;
