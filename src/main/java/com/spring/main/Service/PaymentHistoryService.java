@@ -1,8 +1,11 @@
 package com.spring.main.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.spring.main.jpa.PaymentHistoryJPA;
@@ -17,14 +20,18 @@ public class PaymentHistoryService {
 		paymentHistoryJPA.save(paymentHistory);
 	}
 
-	public List<PaymentHistory> findByEmployee(Integer employeeID) {
-		return paymentHistoryJPA.findByEmployee(employeeID);
+	public Page<PaymentHistory> findByEmployee(Integer employeeID, Pageable page) {
+		return paymentHistoryJPA.findByEmployee(employeeID, page);
+	}
+
+	public Page<PaymentHistory> findByDate(Timestamp fromeDate, Timestamp toDate, Pageable page) {
+		return paymentHistoryJPA.findByDate(fromeDate, toDate, page);
 	}
 
 	public List<PaymentHistory> getAll() {
 		return paymentHistoryJPA.findAll();
 	}
-	
+
 	public PaymentHistory findByID(Integer id) {
 		return paymentHistoryJPA.findById(id).get();
 	}

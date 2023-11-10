@@ -101,9 +101,9 @@
     </header>
 
     <main>
-        <div class="row p-0 m-0" style="min-height: 600px;">
+        <div class="row p-0 m-0">
             <div class="col-9 p-4">
-                <tabset>
+                <tabset style="height: 550px;">
                     <tab ng-repeat="invoice in bills track by $index" active=invoice.active
                         heading="Hóa đơn {{invoice.stt}}" class="nav-item">
                         <tab-heading ng-click="selectBill(invoice.bill.billID)"
@@ -119,7 +119,7 @@
                             <!-- Content start -->
                             <div class="tab-content" id="myTabContent" style="border: none !important; outline: none;">
                                 <div>
-                                    <p ng-bind="invoiceID"></p>
+                                    <!-- <p ng-bind="invoiceID"></p> -->
                                     <div class="tab-pane fade show table-responsive table border border-info rounded-2 mt-1"
                                         id="home" role="tabpanel" aria-labelledby="home-tab">
                                         <table class="table table-responsive text-center">
@@ -174,7 +174,7 @@
                     </tab>
                 </tabset>
             </div>
-            <div class="col-3 border" style="background-color: #F4F5F7; padding: 0px; height: 635px;">
+            <div class="col-3 border" style="background-color: #F4F5F7; padding: 0px; height: 638px;">
                 <div class="p-3 border-bottom border-3">
                     <label for="" class="mb-2">Nhập mã sản phẩm</label><br>
                     <div class="autocomplete">

@@ -39,7 +39,9 @@ public class PaymentHistory {
 	@Column(name = "totalAmount")
 	private float totalAmount;
 
+	@Column(name = "totalReceived")
+	private float totalReceived;
 
 	@Column(name = "paied")
-	private boolean paied;
+	private int paied;
 }

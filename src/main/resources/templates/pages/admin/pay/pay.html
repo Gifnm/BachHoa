@@ -32,11 +32,14 @@
                             <div class="d-flex align-items-center p-3 col-12 col-md-6">
                                 <div class="autocomplete d-flex text-dark">
                                     <input id="employee" type="text" class="form-control" ng-model="employeeID"
-                                        placeholder="Nhân viên">
+                                        placeholder="Nhân viên" list="datalistEmployee">
+                                        <datalist id="datalistEmployee">
+                                            <option ng-repeat="employeeName in listEmployee" value="{{employeeName}}">
+                                            
+                                          </datalist>
                                     <button class="btn btn-info ms-2 shadow-lg">
-                                        <i class="bi bi-search" ng-click="loadHistory(employeeID)"></i>
+                                        <i class="bi bi-search" ng-click="loadHistoryByEmployee(employeeID)"></i>
                                     </button>
-
                                 </div>
                             </div>
                         </div>
@@ -66,7 +69,9 @@
                         <tr>
                             <th scope="col">Nhân viên</th>
                             <th scope="col">Ngày nộp</th>
-                            <th scope="col">Tổng tiền thu</th>
+                            <th scope="col">Phải thu</th>
+                            <th scope="col">Đã thu</th>
+                            <th scope="col">Thiếu</th>
                             <th scope="col">Ngày thu</th>
                             <th scope="col">Người thu</th>
                             <th scope="col">Trạng thái</th>
@@ -75,21 +80,146 @@
                     <tbody>
                         <tr ng-repeat="item in items" style="cursor: pointer;" data-bs-toggle="modal"
                             data-bs-target="#paymentDetail" ng-click="showPaymentDetail(item.id)">
-                            <td style="width: 20%;">{{item.employee.employeeName}}</td>
+                            <td style="width: 15%;">{{item.employee.employeeName}}</td>
                             <td style="width: 15%;">
                                 {{item.timePay}}</td>
-                            <td style="width: 15%;">{{item.totalAmount | number}} VND</td>
+                            <td style="width: 10%;">{{item.totalAmount | number}} VND</td>
+                            <td style="width: 10%;">{{item.totalReceived | number}} VND</td>
+                            <td style="width: 10%;">{{item.totalAmount - item.totalReceived | number}} VND</td>
                             <td style="width: 15%;">
                                 {{item.timeReceived}}</td>
-                            <td style="width: 20%;">{{item.admin.employeeName}}</td>
-                            <td style="width: 15%;">
-                                <button ng-click="pay(item.id)" class="btn btn-primary {{item.paied?'disabled':''}}">
-                                    {{item.paied?'Đã thu':'Thu'}}
+                            <td style="width: 15%;">{{item.admin.employeeName}}</td>
+                            <td style="width: 10%;">
+                                <button ng-show="{{item.paied == 0 || item.paied == 2}}" ng-click="pay(item.id)"
+                                    class="btn {{item.paied == 2?'disabled btn-primary':'btn-danger'}}">
+                                    {{item.status}}
+                                </button>
+                                <button ng-show="{{item.paied == 1}}" ng-click="payContinue(item.id)"
+                                    class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#tiepTucThu">
+                                    {{item.status}}
                                 </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                
+                <!-- modal tiếp tục thu -->
+                <div class="modal fade" id="tiepTucThu" tabindex="999" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-gradient bg-primary text-white">
+                                <h5 class="modal-title" id="exampleModalLabel">Tiếp thu tiền còn thiếu</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="">
+                                    <div>
+                                        <span>Thu tiền cho nhân viên,
+                                        </span><b>{{paymentHistory.employee.employeeName}}</b>
+                                    </div>
+                                    <div>
+                                        <span>Tổng tiền còn lại phải nộp là: </span> <b>{{paymentHistory.totalAmount -
+                                            paymentHistory.totalReceived | number}}
+                                            VNĐ</b>
+                                    </div>
+                                    <hr style="border: 5px solid steelblue;" class="rounded-1">
+                                    <div>
+                                        <span>Hãy nhập chính xác các mệnh giá bên dưới !</span>
+                                        <div class="row mt-2">
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="500">Tờ 500k</label>
+                                                <input type="number" class="form-control" id="500" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd500">
+                                            </div>
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="200">Tờ <span id="price">200</span>k</label>
+                                                <input type="number" class="form-control" id="200" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd200">
+                                            </div>
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="100">Tờ 100k</label>
+                                                <input type="number" class="form-control" id="100" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd100">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="50">Tờ 50k</label>
+                                                <input type="number" class="form-control" id="50" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd50">
+                                            </div>
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="20">Tờ 20k</label>
+                                                <input type="number" class="form-control" id="20" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd20">
+                                            </div>
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="10">Tờ 10k</label>
+                                                <input type="number" class="form-control" id="10" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd10">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="5">Tờ 5k</label>
+                                                <br>
+                                                <input type="number" class="form-control" id="5" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd5">
+                                            </div>
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="2">Tờ 2k</label>
+                                                <br>
+                                                <input type="number" class="form-control" id="2" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd2">
+                                            </div>
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="1">Tờ 1k</label>
+                                                <br>
+                                                <input type="number" class="form-control" id="1" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-between">
+                                <div class="total-number">
+                                    <span>Tổng tiền mà bạn nộp: </span>
+                                    <b id="totalMoney" class="number">{{totalMoneyYouPay | number}}</b>
+                                    <span class="Dong-sign"> VND</span>
+                                </div>
+                                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button> -->
+                                <button type="button" class="btn btn-success" ng-click="payUpdate(paymentHistory.id)"
+                                    id="pay">Nộp tiền</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row w-75 m-auto mt-3">
+                <div class="col-2">
+                    <b class="count">Tổng số lượt thu: {{totalReceived}}</b>
+                </div>
+                <div class="col-10 text-end">
+                    <button ng-click="findByDate(fromDate,toDate,index - 1)"
+                        class="btn btn-outline-primary {{index == 0 ? 'disabled':''}}">Trước</button>
+                    <button ng-repeat="item in pages" ng-click="findByDate(fromDate,toDate,item - 1)"
+                        class="btn btn-outline-primary {{index == item - 1? 'active':''}} m-1 mb-0 mt-0"><b>
+                            {{item}}</b> </button>
+                    <button ng-click="findByDate(fromDate,toDate,index + 1)"
+                        class="btn btn-outline-primary {{index == maxPage - 1 ? 'disabled':''}}">Sau</button>
+                </div>
             </div>
             <!-- Modal -->
             <div class="modal fade" id="paymentDetail" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -97,59 +227,59 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Chi tiết nộp tiền</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Chi tiết nộp tiền (đơn vị: tờ)</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="row mt-5 text-center">
+                            <div class="row mt-3 text-center">
                                 <div class="col-md-4 ms-auto">
-                                    <label for="500">Số tờ 500,000 VND</label>
-                                    <br> <br>
-                                    <strong class="border py-3 px-4 rounded rounded-pill" style="font-size: 20pt;">{{payment.vnd500}}</strong>
+                                    <img src="../images/VND/500k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd500}}</strong>
                                 </div>
                                 <div class="col-md-4 ms-auto">
-                                    <label for="200">Số tờ 200,000 VND</label>
-                                    <br> <br>
-                                    <strong class="border py-3 px-4 rounded rounded-pill" style="font-size: 20pt;">{{payment.vnd200}}</strong>
+                                    <img src="../images/VND/200k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd200}}</strong>
                                 </div>
                                 <div class="col-md-4 ms-auto">
-                                    <label for="100">Số tờ 100,000 VND</label>
-                                    <br> <br>
-                                    <strong class="border py-3 px-4 rounded rounded-pill" style="font-size: 20pt;">{{payment.vnd100}}</strong>
-                                </div>
-                            </div>
-                            <div class="row mt-5 text-center">
-                                <div class="col-md-4 ms-auto">
-                                    <label for="50">Số tờ 50,000 VND</label>
-                                    <br> <br>
-                                    <strong class="border py-3 px-4 rounded rounded-pill" style="font-size: 20pt;">{{payment.vnd50}}</strong>
-                                </div>
-                                <div class="col-md-4 ms-auto">
-                                    <label for="20">Số tờ 20,000 VND</label>
-                                    <br> <br>
-                                    <strong class="border py-3 px-4 rounded rounded-pill" style="font-size: 20pt;">{{payment.vnd20}}</strong>
-                                </div>
-                                <div class="col-md-4 ms-auto">
-                                    <label for="10">Số tờ 10,000 VND</label>
-                                    <br> <br>
-                                    <strong class="border py-3 px-4 rounded rounded-pill" style="font-size: 20pt;">{{payment.vnd10}}</strong>
+                                    <img src="../images/VND/100k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd100}}</strong>
                                 </div>
                             </div>
-                            <div class="row my-5 text-center">
+                            <div class="row mt-3 text-center">
                                 <div class="col-md-4 ms-auto">
-                                    <label for="5">Số tờ 5000 VND</label>
-                                    <br> <br>
-                                    <strong class="border py-3 px-4 rounded rounded-pill" style="font-size: 20pt;">{{payment.vnd5}}</strong>
+                                    <img src="../images/VND/50k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd50}}</strong>
                                 </div>
                                 <div class="col-md-4 ms-auto">
-                                    <label for="2">Số tờ 2000 VND</label>
-                                    <br> <br>
-                                    <strong class="border py-3 px-4 rounded rounded-pill" style="font-size: 20pt;">{{payment.vnd2}}</strong>
+                                    <img src="../images/VND/20k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd20}}</strong>
                                 </div>
                                 <div class="col-md-4 ms-auto">
-                                    <label for="1">Số tờ 1000 VND</label>
-                                    <br> <br>
-                                    <strong class="border py-3 px-4 rounded rounded-pill" style="font-size: 20pt;">{{payment.vnd1}}</strong>
+                                    <img src="../images/VND/10k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd10}}</strong>
+                                </div>
+                            </div>
+                            <div class="row my-3 text-center">
+                                <div class="col-md-4 ms-auto">
+                                    <img src="../images/VND/5k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd5}}</strong>
+                                </div>
+                                <div class="col-md-4 ms-auto">
+                                    <img src="../images/VND/2k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;" b>{{paymentDetail.vnd2}}</strong>
+                                </div>
+                                <div class="col-md-4 ms-auto">
+                                    <img src="../images/VND/1k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd1}}</strong>
                                 </div>
                             </div>
                         </div>

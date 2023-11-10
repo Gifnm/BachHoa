@@ -370,6 +370,17 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		let time = new Date();
 		let startDate = startDateFormat(time);
 		let endDate = endtDateFormat(time);
+		$scope.form = {
+			vnd500: 0,
+			vnd200: 0,
+			vnd100: 0,
+			vnd50: 0,
+			vnd20: 0,
+			vnd10: 0,
+			vnd5: 0,
+			vnd2: 0,
+			vnd1: 0
+		}
 		$http.get(`/bachhoa/api/bill/findByEmployeeAndDate/${employeeID}/${startDate}/${endDate}`).then((resp) => {
 			let listbill = resp.data;
 			$scope.TotalMoneytoPay = 0;
@@ -385,23 +396,25 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 
 	// Nút nộp tiền - Bấm là gửi trạng thái qua cho admin duyệt
 	$scope.sendMoney = function () {
-		if ($scope.TotalMoneytoPay != $scope.totalMoneyYouPay) {
-			alert('Số tiền bạn nộp phải bằng số tiền bạn phải nộp hôm nay!');
+		if ($scope.TotalMoneytoPay < $scope.totalMoneyYouPay) {
+			alert('Số tiền bạn nộp phải bằng hoặc nhỏ hơn số tiền bạn phải nộp hôm nay!');
 			return;
 		}
+		if (!confirm('Bạn xác nhận nộp: ' + $scope.totalMoneyYouPay + ' VND')) return;
 		// Tính tổng tiền phải nộp (tổng thu các bill trong ngày)
 		// Lịch sử nộp
 		let createPH = `/bachhoa/api/paymentHistory/create`;
 		// Chi tiết số tiền nộp
 		let createPD = `/bachhoa/api/paymentDetail/create`;
+
 		let data = {
 			employee: $scope.employee,
 			admin: null,
 			timePay: new Date().getTime(),
 			timeReceived: null,
-			// chưa đúng - cần tạo 1 cái riêng chỉ ăn tổng thu của các bill ngày nộp
 			totalAmount: parseFloat($scope.TotalMoneytoPay),
-			// 0 - false - Chưa duyệt và ngược lại (1)
+			totalReceived: parseFloat($scope.totalMoneyYouPay),
+			// 0 - Chưa duyệt, thu chưa đủ 1 và đã thu 2
 			paied: 0,
 		};
 		// create payment history

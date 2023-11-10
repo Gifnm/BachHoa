@@ -27,5 +27,9 @@ public class PaymentDetailService {
 	public List<PaymentDetail> findAll() {
 		return paymentDetailJPA.findAll();
 	}
+	
+	public PaymentDetail findByID(Integer id) {
+		return paymentDetailJPA.findById(id).get();
+	}
 
 }
