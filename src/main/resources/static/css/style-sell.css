@@ -3,7 +3,7 @@ header {
   padding: 0 2%;
 }
 
-.menuHidden {
+.menuHidden{
   display: none;
 }
 
@@ -16,11 +16,11 @@ header {
   border-top: 0;
   padding: 0.75rem 1rem;
   text-align: justify;
-  min-height: 550px;
+  height: 100%;
 }
 
-.tab-pane {
-  height: 456px;
+.tab-pane{
+  height: 490px;
 }
 
 a {
@@ -41,7 +41,7 @@ a {
   padding-left: 0;
 } */
 
-/* @media (max-width: 700px) {
+@media (max-width: 700px) {
 
   .username,
   .logo,

@@ -54,8 +54,8 @@ public class Employee {
 	@JoinColumn(name = "Id")
 	private List<Authority> authorities;
 	
-	@Column(name = "activity")
-	private boolean activity;
+	@Column(name = "active")
+	private boolean active;
 	
 	@Column(name = "email")
 	private String email;

@@ -24,4 +24,9 @@ public class HomeController {
 	public String ktGia() {
 		return "pages/sell/productDetail";
 	}
+	
+	@RequestMapping("/admin/endOfShift")
+	public String endOfShift() {
+		return "pages/admin/pay/pay";
+	}
 }

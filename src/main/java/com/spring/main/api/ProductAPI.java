@@ -119,6 +119,11 @@ public class ProductAPI {
     public Product update(@PathVariable("id") String id, @RequestBody Product product) {
         return productService.update(product);
     }
+    
+    @PutMapping("/bachhoa/api/products/update")
+    public Product update(@RequestBody Product product) {
+        return productService.update(product);
+    }
 
     // Delete product
     @DeleteMapping("/bachhoa/api/products/{id}")

@@ -27,7 +27,7 @@ public class EmployeeAPI {
 	@Autowired
 	EmployeeService emService;
 
-	@GetMapping("/bachhoa/api/employees")
+	@GetMapping("employees/getAll")
 	public List<Employee> getAll() {
 		return emService.findAll();
 
@@ -55,7 +55,7 @@ public class EmployeeAPI {
 		role.setRoleID("bhoa");
 		// employee.setRole(role);
 		employee.setStore(store);
-		employee.setActivity(true);
+		employee.setActive(true);
 		emService.insert(employee);
 		return employee;
 	}
