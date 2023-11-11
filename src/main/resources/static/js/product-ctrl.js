@@ -12,7 +12,7 @@ app.controller("ctrl", function ($scope, $http) {
     $scope.DEFAULT_PRODUCT_IMAGE = '/images/image_upload_icon.png';
     $scope.categories = [] //List categories to create new product in form
     $scope.account = {} //Account of login employee
-    var storeId;
+    let storeId;
 
     $scope.getAccount = function () {
         // Fake auth account
@@ -28,7 +28,7 @@ app.controller("ctrl", function ($scope, $http) {
     // Init data on table and form
     $scope.initialize = function () {
         $scope.getAccount().then(() => {
-            // load products into table
+            // Load products into table
             storeId = $scope.account.store.storeID;
             console.log("[ProductCtrl:initialize():28]\n> Store Id: " + storeId + " account name: " + $scope.account.employeeName);
             let url = `${host}/products/${storeId}`;

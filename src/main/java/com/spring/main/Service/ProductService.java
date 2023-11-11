@@ -99,21 +99,5 @@ public class ProductService {
 		productJPA.deleteById(id);
 	}
 	// End service thanhdq
-	
-	// DVNghiep
-	public Product getByIDOrName(String value) {
-		Product product = productJPA.getByIDOrName(value);
-		return product;
-		
-	}
-	
-	public List<String> getProductName() {
-		return productJPA.getProductName();
-		
-	}
-	
-	public List<String> getProductID() {
-		return productJPA.getProductID();
-		
-	}
+
 }

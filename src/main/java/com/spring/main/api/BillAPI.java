@@ -36,12 +36,12 @@ public class BillAPI {
 	private void createBill(@RequestBody Bill bill) {
 		billService.save(bill);
 	}
-	
+
 	@GetMapping("bill/all")
 	public List<Bill> getAll() {
 		return billService.findAll();
 	}
-	
+
 	@GetMapping("bill/getBillID")
 	public List<String> getBillID() {
 		return billService.getBillID();
@@ -52,18 +52,25 @@ public class BillAPI {
 	public Bill getOne(@PathVariable("BillID") String id) {
 		return billService.findByID(id);
 	}
-	
+
 	@GetMapping("bill/searchBetween/{fromDate}/{toDate}")
-	public Page<Bill> searchTimeCreate(@PathVariable("fromDate") Timestamp fromDate, @PathVariable("toDate") Timestamp toDate, @RequestParam Optional<Integer> index) {
+	public Page<Bill> searchTimeCreate(@PathVariable("fromDate") Timestamp fromDate,
+			@PathVariable("toDate") Timestamp toDate, @RequestParam Optional<Integer> index) {
 		Pageable page = PageRequest.of(index.orElse(0), 8);
 		return billService.searchBetween(fromDate, toDate, page);
 	}
-	 
+
+	@GetMapping("bills")
+	public List<Bill> getBillsBetween(@RequestParam("from-date") String fromDate,
+			@RequestParam("to-date") String toDate) {
+		return billService.findAllByTimeCreateBetween(fromDate, toDate);
+	}
+
 	@PutMapping("bill/update")
 	public void update(@RequestBody Bill bill) {
 		billService.save(bill);
 	}
-	
+
 	@DeleteMapping("bill/delete/{billID}")
 	public void delete(@PathVariable("billID") String id) {
 		billService.delete(id);

@@ -43,7 +43,7 @@
 // role.setRoleID("bhoa");
 // employee.setRole(role);
 // employee.setStore(store);
-// employee.setActivity(true);
+// employee.setActive(true);
 // emService.insert(employee);
 // return employee;
 // }
