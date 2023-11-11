@@ -11,16 +11,14 @@ import org.springframework.data.jpa.repository.Query;
 import com.spring.main.model.Bill;
 import com.spring.main.model.Employee;
 
-public interface BillJPA extends JpaRepository<Bill, String>{
-	
-	/*
-	 * @Query("SELECT o FROM Bill o WHERE o.timeCreate >= ?1 AND o.timeCreate <= ?2"
-	 * ) List<Bill> SearchBetween2Date(Timestamp fromDate, Timestamp toDate);
-	 */
-	
+public interface BillJPA extends JpaRepository<Bill, String> {
+
+	@Query("SELECT o FROM Bill o WHERE o.timeCreate >= ?1 AND o.timeCreate <= ?2 ORDER BY timeCreate DESC")
+	List<Bill> findAllByTimeCreateBetween(Timestamp fromDate, Timestamp toDate);
+
 	@Query("SELECT o.billID FROM Bill o")
 	List<String> getBillID();
-	
+
 	@Query("SELECT o FROM Bill o WHERE o.timeCreate >= ?1 AND o.timeCreate <= ?2")
 	Page<Bill> SearchBetween2Date(Timestamp fromDate, Timestamp toDate, Pageable page);
 	

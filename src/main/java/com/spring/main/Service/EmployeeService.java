@@ -68,14 +68,14 @@ public class EmployeeService implements UserDetailsService {
 		Employee employee = employeeJPA.findbyEmail(email);
 		return employee;
 	}
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Employee employee = employeeJPA.findbyEmail(email);
-		
+
 		if (employee == null) {
 			throw new UsernameNotFoundException("Không tìm thấy nhân viên.");
-		} 
+		}
 		return new CustomEmployeeDetail(employee);
 	}
 
@@ -122,17 +122,16 @@ public class EmployeeService implements UserDetailsService {
 		}
 		return "Thay đổi mật khẩu thành công.";
 	}
-	
+
 	public boolean userPasswordCheck(String rawPassword, String email) {
 		Employee employee = employeeJPA.findbyEmail(email);
 		if (employee == null) {
 			throw new UsernameNotFoundException("Không tìm thấy nhân viên có email là: " + email);
 		} else {
 			passwordEncoder = new BCryptPasswordEncoder();
-		    String encodedPassword = employee.getPassword();
-		    return passwordEncoder.matches(rawPassword, encodedPassword);
+			String encodedPassword = employee.getPassword();
+			return passwordEncoder.matches(rawPassword, encodedPassword);
 		}
 	}
-	
-	
+
 }

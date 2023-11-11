@@ -2,7 +2,6 @@ package com.spring.main.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-//import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,8 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.main.Service.ProductService;
 import com.spring.main.model.Product;
-
-//import jakarta.servlet.ServletContext;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,33 +53,32 @@ public class ProductAPI {
 
     @GetMapping("product/findByID/{id}/{storeID}")
     private Product getByIdAndStoreID(@PathVariable("id") String productID, @PathVariable("storeID") int storeID) {
-    	Product product = productService.getByIDAndStoreID(productID, storeID);
-    	if(product == null) {
-    		return null;
-    	}
-    	else {
-    		return product;
-    		
-    	}
+        Product product = productService.getByIDAndStoreID(productID, storeID);
+        if (product == null) {
+            return null;
+        } else {
+            return product;
+
+        }
     }
-    
+
     @GetMapping("product/getProductID")
-    public List<String> getProductID() {    
+    public List<String> getProductID() {
         return productService.getProductID();
     }
-    
+
     @GetMapping("product/getProductName")
-    public List<String> getProductName() {    
+    public List<String> getProductName() {
         return productService.getProductName();
     }
-    
+
     @GetMapping("product/findByID/{productID}")
-    public Product findByID(@PathVariable("productID") String productID) {    
+    public Product findByID(@PathVariable("productID") String productID) {
         return productService.getByID(productID);
     }
-    
+
     @GetMapping("product/findByIDOrName/{value}")
-    public Product findByIDOrName(@PathVariable("value") String value) {    
+    public Product findByIDOrName(@PathVariable("value") String value) {
         return productService.getByIDOrName(value);
     }
 
@@ -132,5 +128,4 @@ public class ProductAPI {
     }
 
     // End api thanhdq
-
 }

@@ -18,8 +18,6 @@ import com.spring.main.model.Employee;
 import com.spring.main.model.Role;
 import com.spring.main.model.Store;
 
-//import jakarta.websocket.server.PathParam;
-
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/bachhoa/api/")
@@ -74,19 +72,22 @@ public class EmployeeAPI {
 				System.out.println("Password is correct");
 				return ResponseEntity.ok(employee);
 			} else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);}
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+			}
 		}
 
 	}
+
 	@GetMapping("findById/{id}")
-	private ResponseEntity<Employee> login( @PathVariable("id") int id) {
+	private ResponseEntity<Employee> login(@PathVariable("id") int id) {
 
 		Employee employee = emService.findByID(id);
 		if (employee == null) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		} else {
-	
-				return ResponseEntity.ok(employee);
-		}}
+
+			return ResponseEntity.ok(employee);
+		}
+	}
 
 }

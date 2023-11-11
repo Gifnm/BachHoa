@@ -10,29 +10,31 @@
 </head>
 
 <body ng-app="app" ng-controller="ctrl">
-    <!-- Begin Page Content -->
+    <div class="row">
+        <div class="d-sm-flex justify-content-between align-items-start p-3 border-bottom">
+            <div>
+                <h4 class="card-title card-title-dash fs-5 fw-bold">Danh sách sản phẩm</h4>
+                <p class="card-subtitle card-subtitle-dash">Tổng cộng <b>{{items.length}}</b> mặt hàng đã và đang
+                    được bày
+                    bán</p>
+            </div>
+            <div>
+                <button ng-click="reset()" class="btn btn-primary rounded-pill btn-md text-white me-3"
+                    data-bs-toggle="modal" data-bs-target="#productModal">Thêm sản phẩm mới</button>
+            </div>
+        </div>
+    </div>
+    <main class="row h-100 overflow-auto">
+        <div class="col pt-4">
+            <div class="h-100">
+                <div class="row h-100">
+                    <div th:replace="~{/pages/admin/product/_list}"></div>
 
-    <!-- End of Page Content -->
-    <div class="col d-flex flex-column h-sm-100">
-        <main class="row h-100 overflow-auto">
-            <div th:replace="~{/partials/_navbar}"></div>
-            <div class="col pt-4">
-                <div class="h-100">
-                    <div class="row h-100">
-                        <div th:replace="~{/pages/admin/product/_list}"></div>
-
-                        <div th:replace="~{/pages/admin/product/_form}"></div>
-                    </div>
+                    <div th:replace="~{/pages/admin/product/_form}"></div>
                 </div>
             </div>
-        </main>
-        <footer class="row bg-light py-4 mt-auto">
-            <div class="col"> Footer content here... </div>
-        </footer>
-    </div>
-    <script>
-        var sortingOrder = 'name';
-    </script>
+        </div>
+    </main>
+    <div th:replace="~{/partials/_footer}"></div>
     <script src="/js/product-ctrl.js"></script>
-    <!-- <script src="/js/pagination-ctrl.js"></script> -->
 </body>

@@ -12,21 +12,23 @@ app.controller("ctrl", function ($scope, $http) {
     $scope.DEFAULT_PRODUCT_IMAGE = '/images/image_upload_icon.png';
     $scope.categories = [] //List categories to create new product in form
     $scope.account = {} //Account of login employee
-    var storeId;
+    let storeId;
 
     $scope.getAccount = function () {
         // Fake auth account
-        return $http.get(`${host}/findById/2`).then(resp => {
+        let email = document.getElementById('accountEmail').innerText;
+        return $http.get(`${host}/employee/findByEmail/${email}`).then(resp => {
             $scope.account = resp.data;
+            console.log("[ProductCtrl:getAccount():21]\n> Account: " + $scope.account);
         }).catch(error => {
             alert("[ProductCtrl:initialize():19]\n> Loi lay account");
-            console.log("[ProductCtrl:initialize():20]\n> Error: " + error);
+            console.log("[ProductCtrl:getAccount():24]\n> Error: " + error);
         });
     }
     // Init data on table and form
     $scope.initialize = function () {
         $scope.getAccount().then(() => {
-            // load products into table
+            // Load products into table
             storeId = $scope.account.store.storeID;
             console.log("[ProductCtrl:initialize():28]\n> Store Id: " + storeId + " account name: " + $scope.account.employeeName);
             let url = `${host}/products/${storeId}`;
@@ -175,7 +177,7 @@ app.controller("ctrl", function ($scope, $http) {
 
     $scope.currentPage = 0;
     $scope.pageSize = 20;
-    $scope.sortingOrder = sortingOrder;
+    // $scope.sortingOrder = sortingOrder;
     $scope.reverse = false;
 
     $scope.numberOfPages = function () {
