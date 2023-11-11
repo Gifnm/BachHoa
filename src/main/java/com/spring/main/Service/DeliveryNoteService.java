@@ -1,5 +1,7 @@
 package com.spring.main.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +28,12 @@ public class DeliveryNoteService {
 	public List<DeliveryNote> getAll2() {
 		List<DeliveryNote> list = deliveryNoteJPA.findAll();
 		return list;
+	}
+	public void setFinish(String id) {
+		long yourmilliseconds = System.currentTimeMillis();
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");    
+		Date resultdate = new Date(yourmilliseconds);
+		deliveryNoteJPA.setFinish(resultdate, id);
+		
 	}
 }

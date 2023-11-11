@@ -72,11 +72,21 @@ public class EmployeeAPI {
 			System.out.println("Tim thay nhan vien");
 			if (employee.getPassword().equals(pass)) {
 				System.out.println("Password is correct");
-				return ResponseEntity.status(HttpStatus.OK).body(employee);
-			}
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+				return ResponseEntity.ok(employee);
+			} else {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);}
 		}
 
 	}
+	@GetMapping("findById/{id}")
+	private ResponseEntity<Employee> login( @PathVariable("id") int id) {
+
+		Employee employee = emService.findByID(id);
+		if (employee == null) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		} else {
+	
+				return ResponseEntity.ok(employee);
+		}}
 
 }

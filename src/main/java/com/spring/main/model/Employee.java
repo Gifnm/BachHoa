@@ -69,6 +69,7 @@ public class Employee {
         joinColumns = @JoinColumn(name = "employeeID"),
         inverseJoinColumns = @JoinColumn(name = "roleID")
         )
+	
 	private Set<Role> roles = new HashSet<>();
 
     public boolean hasRole(String roleName) {
@@ -81,4 +82,30 @@ public class Employee {
         }
         return false;
     }
+
+	public Employee(int employeeID, String employeeName, Date age, String address, String pictureURL, Date firstWork,
+			Store store, List<Authority> authorities, boolean activity, String email, String password,
+			Set<Role> roles) {
+		this.employeeID = employeeID;
+		this.employeeName = employeeName;
+		this.age = age;
+		this.address = address;
+		this.pictureURL = pictureURL;
+		this.firstWork = firstWork;
+		this.store = store;
+		this.authorities = authorities;
+		this.activity = activity;
+		this.email = email;
+		this.password = password;
+		this.roles = roles;
+	}
+
+	public Employee() {
+	}
+
+	public Employee(int employeeID) {
+
+		this.employeeID = employeeID;
+	}
+    
 }

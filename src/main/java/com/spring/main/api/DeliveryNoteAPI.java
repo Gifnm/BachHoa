@@ -26,12 +26,12 @@ public class DeliveryNoteAPI {
 	// Getll
 	@GetMapping("getall/{storeID}")
 	private ResponseEntity<List<DeliveryNote>> getAll(@PathVariable("storeID") int  storeID) {
-		System.out.println("getall/{storeID} :"+ storeID);
-		List<DeliveryNote> list = deliveryNoteService.getAll2();
+		List<DeliveryNote> list = deliveryNoteService.getAll(storeID);
 		if (list.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-		} else
-			return ResponseEntity.status(HttpStatus.OK).body(list);
+		} else {
+			System.out.println("Danh sach phieu nhap: "+ list.size());
+			return ResponseEntity.status(HttpStatus.OK).body(list);}
 	}
 
 }
