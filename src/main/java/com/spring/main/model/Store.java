@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+@Data
 @Entity
 @Table(name = "stores")
 public class Store {
@@ -20,6 +22,8 @@ public class Store {
 
 	@Column(name = "size")
 	private String size;
+	@Column(name = "storeName")
+	private String storeName;
 
 	public Store(int storeID) {
 	
@@ -30,36 +34,15 @@ public class Store {
 	
 	}
 
-	public Store(int storeID, String address, String size) {
-		
+	public Store(int storeID, String address, String size, String storeName) {
 		this.storeID = storeID;
 		this.address = address;
 		this.size = size;
+		this.storeName = storeName;
 	}
 
-	public int getStoreID() {
-		return storeID;
-	}
 
-	public void setStoreID(int storeID) {
-		this.storeID = storeID;
-	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getSize() {
-		return size;
-	}
-
-	public void setSize(String size) {
-		this.size = size;
-	}
 
 //    @OneToMany(mappedBy = "store")
 //    private List<Warehouse> warehouses;

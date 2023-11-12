@@ -84,7 +84,7 @@ public class Employee {
     }
 
 	public Employee(int employeeID, String employeeName, Date age, String address, String pictureURL, Date firstWork,
-			Store store, List<Authority> authorities, boolean activity, String email, String password,
+			Store store, List<Authority> authorities, boolean active, String email, String password,
 			Set<Role> roles) {
 		this.employeeID = employeeID;
 		this.employeeName = employeeName;
@@ -94,7 +94,7 @@ public class Employee {
 		this.firstWork = firstWork;
 		this.store = store;
 		this.authorities = authorities;
-		this.activity = activity;
+		this.active = active;
 		this.email = email;
 		this.password = password;
 		this.roles = roles;
