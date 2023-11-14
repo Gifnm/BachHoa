@@ -11,7 +11,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.spring.main.jpa.AuthorityJPA;
 import com.spring.main.jpa.EmployeeJPA;
+import com.spring.main.model.Authority;
 import com.spring.main.model.CustomEmployeeDetail;
 import com.spring.main.model.Employee;
 import com.spring.main.util.EmailUtil;
@@ -22,6 +24,8 @@ public class EmployeeService implements UserDetailsService {
 	@Autowired
 	private EmployeeJPA employeeJPA;
 	@Autowired
+	private AuthorityJPA authorityJPA;
+	@Autowired
 	private EmailUtil emailUtil;
 
 	/* Mã hóa password */
@@ -31,17 +35,39 @@ public class EmployeeService implements UserDetailsService {
 		List<Employee> list = employeeJPA.findAll();
 		return list;
 	}
-
-	public void insert(Employee employee) {
+	
+	public List<Authority> findAllRoles() {
+		List<Authority> list = authorityJPA.findAll();
+		return list;
+	}
+	
+	// Đăng ký
+	public Employee insert(Employee employee) {
 		// Gắn mã hóa vào chi tiết của 1 nhân viên (dùng cho những user mới được add sẽ
 		// đc mã hóa luôn)
 		employee.setPassword(passwordEncoder.encode(employee.getPassword()));
-		employeeJPA.save(employee);
+		return employeeJPA.save(employee);
+	}
+	
+	public void updateRoles(String roleID, Integer EmpolyeeID) {
+		employeeJPA.updateRole(roleID, EmpolyeeID);
+		// return employeeJPA.updateRole(roleID, EmpolyeeID);
+	}
+	
+	public Authority insertAuth(Authority authority) {
+		return authorityJPA.save(authority);
+	}
+	
+	public void deleteAuth(String roleID, Integer employeeID) {
+		authorityJPA.deleteByRoleAndEmployeeID(roleID, employeeID);
 	}
 
 	public void detele(Integer id) {
 		employeeJPA.deleteById(id);
-
+	}
+	
+	public Employee update(Employee employee) {
+		return employeeJPA.save(employee);
 	}
 
 	public Employee findByID(Integer id) {
@@ -116,6 +142,19 @@ public class EmployeeService implements UserDetailsService {
 			passwordEncoder = new BCryptPasswordEncoder();
 		    String encodedPassword = employee.getPassword();
 		    return passwordEncoder.matches(rawPassword, encodedPassword);
+		}
+	}
+	
+	public boolean CheckStore(String email) {
+		Employee employee = employeeJPA.findbyEmail(email);
+		if (employee == null) {
+			throw new UsernameNotFoundException("Không tìm thấy nhân viên có email là: " + email);
+		} else if (employee.getStore() == null) {
+			System.out.println("check check service");
+			// check nếu không có cửa hàng thì trả true và ngược lại.
+			return true;
+		} else {
+			return false;
 		}
 	}
 	

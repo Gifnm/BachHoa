@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org" ng-app="register-app" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký | BachHoa</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"
+        integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <!-- Message - Alert - Toast -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../images/favicon.png" />
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Angular-UI -->
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.0.js"></script>
+    <!-- links to files of angular-ui-tab-scroll  -->
+    <link rel="stylesheet" href="../css/angular-ui-tab-scroll.css" />
+    <script src="../js/angular-ui-tab-scroll.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+
+<body class="background-img" ng-controller="register-ctrl">
+    <div class="container-fluid d-flex flex-column min-vh-100 justify-content-center align-items-center ">
+        <div class="modal fade" id="mailModal" tabindex="-1" aria-labelledby="mailLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="mailLabel">Thông tin xin việc</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" th:if="${employee.store != null && employee.active == false}">
+                        <div class="d-flex justify-content-between">
+                            
+                            <p class="cookieHeading">
+                                <span class="text-success fw-bold">Thông tin cửa hàng yêu cầu:</span>
+                                <br>Tên cửa hàng: <b >{{employeeInfo.store.storeName}}</b>
+                                <br>Mã cửa hàng là: <b >{{employeeInfo.store.storeID}}</b>
+                                <br>Địa chỉ: <b >{{employeeInfo.store.address}}</b>
+                            </p>
+                            <div class="text-center p-2">
+                                <p class="cookieDescription d-flex align-items-center">Vẫn đang chờ duyệt</p>
+                                <button class="btn btn-outline-danger rounded-5" ng-click="quitJob()">Hủy đơn</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body" th:if="${employee.store == null}">
+                        <div class="d-flex justify-content-between">
+                            <p class="cookieDescription fs-5 w-100 text-center">Bạn chưa đăng ký tham gia bất cứ cửa hàng nào !</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center border-2 border-success">
+            <!-- Right form - tạo cửa hàng -->
+            <form action="" class="QL-form p-4 border-info" method="post"
+                style="right: 999px; position: relative;">
+                <h4 class="d-flex justify-content-center text-info fst-italic">
+                    <p>Bán hàng dễ dàng, Quản lý đơn giản</p>
+                    <h5 class="d-flex justify-content-center text-primary">[ Liên hệ tư vấn : 0911 000b ]</h5>
+                </h4>
+
+                <div class="input-container mt-4 input-group flex-nowrap">
+                    <span class="input-group-text bg-white border-secondary border border-2">
+                        <i class="ri-font-color text-warning fs-4"></i>
+                    </span>
+                    <input type="text" name="StoreName" placeholder="Tên cửa hàng của bạn ..." 
+                        ng-model="info.storeName" id="storeName"
+                        class="shadow-lg w-100 border border-2 border-start-0 border-secondary" required>
+                </div>
+                <div class="input-container mt-3 input-group flex-nowrap">
+                    <span class="input-group-text bg-white border-secondary border border-2">
+                        <i class="ri-home-smile-fill text-success fs-4"></i>
+                    </span>
+                    <input type="text" name="andress" placeholder="Nhập địa chỉ cửa hàng ..." ng-model="info.address"
+                        id="storeAddress"
+                        class="shadow-lg w-100 border border-2 border-start-0 border-secondary" required>
+                </div>
+                <div class="input-container mt-3 input-group flex-nowrap">
+                    <span class="input-group-text bg-white border-secondary border border-2">
+                        <i class="ri-archive-line text-danger fs-4"></i>
+                    </span>
+                    <input type="text" name="size" ng-model="info.size" id="storeSize"
+                        placeholder="Chi phí đầu tư của cửa hàng ... (500tr, 2 tỷ, 5 tỷ, ...)" 
+                        class="shadow-lg w-100 border border-2 border-start-0 border-secondary" required>
+                </div>
+                <button type="submit" class="submit mt-5 button " ng-click="createStore()">
+                    Đăng ký cửa hàng
+                </button>
+
+                <!-- button for toggle -->
+                <p class="signup-link mt-3 mb-0 back-right">
+                    <a href="#" class="text-decoration-none">Trở lại ?</a>
+                </p>
+            </form>
+
+            <!-- Main form - middle -->
+            <form class="like-dislike-container form">
+                <div class="logo img-fluid card-img position-absolute mb-4" id="logo" style="bottom: 70%; z-index: -1;">
+                    <img src="../images/favicon.png" alt="" width="150" height="auto" class="rounded-5">
+                </div>
+                <div class="d-flex w-100 fs-4 justify-content-end">
+                    <button type="button" class="btn btn-outline-success border-1 border-success shadow-lg"
+                        data-bs-toggle="modal" data-bs-target="#mailModal" title="Nhấn để kiểm tra yêu cầu tham gia">
+                        <i class="ri-mail-star-fill "></i>
+                    </button>
+                </div>
+
+                <p class="text-content mt-5" th:if="${employee.store == null}">
+                    <span id="employeeID" hidden>[[${employee.employeeID}]]</span>
+                    Chào anh/chị <b>[[${employee.employeeName}]]</b>,
+                    <br>Hãy chọn để tham gia cùng chúng tôi nhé !
+                </p>
+                <p class="text-content mt-5" th:if="${employee.store != null && employee.active == false}">
+                    <span id="employeeID" hidden>[[${employee.employeeID}]]</span>
+                    Chào anh/chị <b>[[${employee.employeeName}]]</b>,
+                    <br> Kiểm tra yêu cầu và báo lại với quản lý !
+                </p>
+                <div class="icons-box" th:if="${employee.store == null}">
+                    <div class="icons QL">
+                        <label class="btn-label" for="like-checkbox">
+                            <span class="like-text-content">Trở thành quản lý</span>
+                            <input class="input-box" id="like-checkbox" type="checkbox">
+
+                            <i class="ri-store-2-line fs-4 svgs" id="icon-like-regular"></i>
+
+                            <div class="fireworks">
+                                <div class="checked-like-fx"></div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="icons NV">
+                        <label class="btn-label" for="dislike-checkbox">
+                            <input class="input-box" id="dislike-checkbox" type="checkbox">
+                            <div class="fireworks">
+                                <div class="checked-dislike-fx"></div>
+                            </div>
+
+                            <i class="ri-user-add-line svgs fs-4" id="icon-dislike-regular"></i>
+
+                            <span class="dislike-text-content">Trở thành nhân viên</span>
+                        </label>
+                    </div>
+                </div>
+                <p class="mt-4 mb-0">
+                    <a href="/login" class="text-decoration-none">Trở lại trang đăng nhập ?</a>
+                </p>
+            </form>
+
+            <!-- Left form -->
+            <form action="" method="post" class="NV-form" style="left: 999px; position: relative;">
+                <h3 class="text-success text-center">
+                    <p>BachHoa</p>
+                </h3>
+                <div class="input-container mt-4 input-group flex-nowrap">
+                    <span class="input-group-text border-secondary border border-2 text-primary shadow">
+                        ID
+                    </span>
+                    <input type="text" name="storeID" placeholder="Nhập mã cửa hàng muốn tham gia ..." 
+                        ng-model="storeToJoin.storeID"
+                        class="shadow-lg w-100 border border-2 border-start-0 border-secondary" required>
+                </div>
+                <div class="d-flex justify-content-center mt-4 input-group flex-nowrap">
+                    <button type="button" class="submit button w-50" ng-click="joinStore()">
+                        Đăng ký làm nhân viên
+                    </button>
+                </div>
+                <!-- button for toggle -->
+                <p class="signup-link mt-3 mb-0 back-left">
+                    <a href="#" class="text-decoration-none">Trở lại ?</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    <!-- JS -->
+    <script src="../js/login.js"></script>
+    <script src="../js/register-ctrl.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+        </script>
+</body>
+
+</html>
