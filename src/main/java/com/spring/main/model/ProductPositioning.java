@@ -23,8 +23,8 @@ public class ProductPositioning {
 	@Column(name = "proPosID")
 	private Integer id;
 
-	// @JoinColumn(name = "disPlaID")
-	// private DisplayPlatter displayPlatter;
+	 @JoinColumn(name = "disPlaID")
+	 private DisplayPlatter displayPlatter;
 
 	@ManyToOne()
 	@JoinColumn(name = "disSheID")

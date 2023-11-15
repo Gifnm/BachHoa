@@ -16,7 +16,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @Entity
 @IdClass(DiscountDetailID.class)
-@EqualsAndHashCode
 @Table(name = "discount_details")
 public class DiscountDetails {
 	@Id
