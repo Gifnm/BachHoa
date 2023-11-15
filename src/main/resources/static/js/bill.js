@@ -129,6 +129,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
     $scope.discountName = "";
     $scope.discountDetail = {};
     $scope.employee = {};
+    $scope.form = {};
     $scope.admin = false;
 
     var stt = 1;
@@ -138,6 +139,9 @@ app.controller("bill-ctrl", function ($scope, $http) {
         let email = document.getElementById('email').innerText;
         $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
             $scope.employee = resp.data;
+            $scope.form.email = $scope.employee.email;
+            $scope.form.address = $scope.employee.address;
+            $scope.form.age = $scope.employee.age;
             console.log($scope.employee);
             angular.forEach($scope.employee.roles, function (item) {
                 if (item.roleID == "qlch") {
@@ -511,8 +515,8 @@ app.controller("bill-ctrl", function ($scope, $http) {
                         console.log(product);
                         $http.put(`/bachhoa/api/products/update`, product)
                         window.location = "/print/" + billID;
-                    })                 
-                    
+                    })
+
                 }).catch(error => {
                     console.log("Có lỗi xảy ra", error);
                 });
@@ -558,7 +562,63 @@ app.controller("bill-ctrl", function ($scope, $http) {
         document.getElementById("cash").focus()
     }
 
+    // Cập nhật thông tin nhân viên
+    //------------------------------------------------//
 
+    // $scope.updatePhoto = function () {
+    //     $http.post(`/bachhoa/api/employee/updatePhoto`, $scope.employee).then(resp => {
+    //         console.log(resp.data);
+    //         alert("Cập nhật thông tin thành công!")
+    //     }).catch(error => {
+    //         console.log(error);
+    //     })
+    // }
+
+
+    $scope.updateEmployee = function () {
+        const formData = new FormData();
+        const fileField = document.querySelector('input[id="uploadImage"]');
+        formData.append('file', fileField.files[0]);
+        let data = $scope.employee;
+        data.email = $scope.form.email;
+        data.age = $scope.form.age;
+        data.address = $scope.form.address;
+        if (fileField.files.length != 0) {
+            data.pictureURL = "http://192.168.1.4:8081/bachhoaimg/" + fileField.files[0].name;
+            $http.post(`/bachhoa/api/employee/updatePhoto`, formData, { transformRequest: angular.identity, headers: { 'Content-Type': undefined } }).then(resp => {
+                $http.post(`/bachhoa/api/employee/updateInformation`, data).then(resp => {
+                    document.getElementById('img-preview').src = data.pictureURL;
+                    alert("Cập nhật thông tin thành công!")
+                }).catch(error => {
+                    console.log(error);
+                })
+            }).catch(error => {
+                console.log(error);
+            })
+        } else {
+            $http.post(`/bachhoa/api/employee/updateInformation`, data).then(resp => {
+                console.log(resp.data);
+                alert("Cập nhật thông tin thành công!")
+                $scope.employee = resp.data;
+                console.log()
+            }).catch(error => {
+                console.log(error);
+            })
+        }
+
+    }
+
+    const input = document.getElementById('uploadImage');
+    const image = document.getElementById('img-preview');
+
+    input.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+            const src = URL.createObjectURL(e.target.files[0]);
+            image.src = src;
+            console.log(e.target.files[0].name)
+        }
+
+    });
     //------------------------------------------------//
     //KHỞI CHẠY
     // Khởi chạy tạo bill đầu tiên

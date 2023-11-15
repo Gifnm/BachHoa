@@ -1,14 +1,18 @@
 package com.spring.main.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.spring.main.Service.EmployeeService;
 import com.spring.main.util.SessionAttr;
-
 
 @Controller
 public class HomeController {
+	@Autowired
+	EmployeeService emService;
+
 	@RequestMapping("/sell")
 	public String home(Model model) {
 		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
@@ -24,7 +28,7 @@ public class HomeController {
 	public String ktGia() {
 		return "pages/sell/productDetail";
 	}
-	
+
 	@RequestMapping("/admin/endOfShift")
 	public String endOfShift() {
 		return "pages/admin/pay/pay";

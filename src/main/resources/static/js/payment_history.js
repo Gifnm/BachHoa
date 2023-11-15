@@ -29,6 +29,43 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
         })
     }
 
+    // hiển thị tất cả các yêu cầu nộp tiền
+    let loadPayment = function () {
+        document.getElementById('pagination').setAttribute("style", "display: none;");
+        $http.get(`/bachhoa/api/paymentHistory/getPayment`).then(resp => {
+            $scope.items = resp.data.content;
+            angular.forEach($scope.items, function (item) {
+                item.timePay = dateFormat(item.timePay);
+                if (item.paied == 0) {
+                    item.status = "Thu";
+                } else if (item.paied == 1) {
+                    item.status = "Tiếp tục thu";
+                } else {
+                    item.status = "Đã thu";
+                }
+
+                if (item.timeReceived != null) {
+                    item.timeReceived = dateFormat(item.timeReceived);
+                }
+            })
+			//console.log($scope.items);
+			$scope.totalReceived = resp.data.totalElements;
+			//alert($scope.totalBill);
+			if ($scope.totalReceived >= 0 && $scope.totalReceived <= 8) {
+				$scope.maxPage = 1;
+			} else {
+				$scope.maxPage = Math.ceil($scope.totalReceived / 8);
+			}
+			console.log($scope.maxPage)
+			$scope.index = index;
+			$scope.pages = [];
+			for (let i = 1; i <= $scope.maxPage; i++) {
+				$scope.pages.push(i);
+			}
+
+        });
+    }
+
     // tìm kiếm theo ngày
 	$scope.index = 1;
 	$scope.maxPage = 0;
@@ -64,7 +101,7 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
 			if ($scope.totalReceived >= 0 && $scope.totalReceived <= 8) {
 				$scope.maxPage = 1;
 			} else {
-				$scope.maxPage = Math.ceil($scope.totalBill / 8);
+				$scope.maxPage = Math.ceil($scope.totalReceived / 8);
 			}
 			console.log($scope.maxPage)
 			$scope.index = index;
@@ -72,7 +109,6 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
 			for (let i = 1; i <= $scope.maxPage; i++) {
 				$scope.pages.push(i);
 			}
-			Calc();
 		}).catch(error => {
 			console.log('Error', error)
 		});
@@ -81,7 +117,7 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
     // hiển thị tất cả các lịch sử nộp tiền
     let loadHistory = function () {
         $http.get(`/bachhoa/api/paymentHistory/getAll`).then(resp => {
-            $scope.items = resp.data;
+            $scope.items = resp.data.content;
             angular.forEach($scope.items, function (item) {
                 item.timePay = dateFormat(item.timePay);
                 if (item.paied == 0) {
@@ -96,6 +132,21 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
                     item.timeReceived = dateFormat(item.timeReceived);
                 }
             })
+			//console.log($scope.items);
+			$scope.totalReceived = resp.data.totalElements;
+			//alert($scope.totalBill);
+			if ($scope.totalReceived >= 0 && $scope.totalReceived <= 8) {
+				$scope.maxPage = 1;
+			} else {
+				$scope.maxPage = Math.ceil($scope.totalReceived / 8);
+			}
+			console.log($scope.maxPage)
+			$scope.index = index;
+			$scope.pages = [];
+			for (let i = 1; i <= $scope.maxPage; i++) {
+				$scope.pages.push(i);
+			}
+
         });
     }
     // hiển thị chi tiết nộp tiền
@@ -404,7 +455,7 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
     // chọn mặc định ngày hôm nay
     SetDefaultDate();
     // lấy danh sách lịch sử nộp tiền
-    loadHistory();
+    loadPayment();
     //giợ ý nhân viên
     initAutoComplete();
 

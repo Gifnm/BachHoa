@@ -24,8 +24,8 @@
 </head>
 
 <body ng-controller="bill-ctrl">
-    <div class="alert shadow bg-info bg-gradient fw-bold fade show d-flex row alert-close flash m-auto fixed-top" role="alert"
-        id="alert" style="top: 12%; width: 25%; display: none; z-index: 999;">
+    <div class="alert shadow bg-info bg-gradient fw-bold fade show d-flex row alert-close flash m-auto fixed-top"
+        role="alert" id="alert" style="top: 12%; width: 25%; display: none; z-index: 999;">
         <span class="col text-center" th:text="${message}"></span>
     </div>
     <header class="border-bottom">
@@ -58,7 +58,6 @@
                             <a href="/sell/productInfomation" class="list-group-item list-group-item-action">Kiểm tra
                                 giá</a>
                         </div>
-
                     </div>
                     <div class="offcanvas-footer text-center" style="padding: 1rem;">
                         <p>Cửa hàng:</p>
@@ -87,7 +86,8 @@
                             <p class="d-none" id="employeeID">{{employee.employeeID}}</p>
                         </div>
                         <li ng-show="admin"><a class="dropdown-item" href="/admin/product">Quản lý</a></li>
-                        <li><a class="dropdown-item" href="#">Hồ sơ cá nhân</a></li>
+                        <li><a class="dropdown-item" href="#" type="button" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">Hồ sơ cá nhân</a></li>
                         <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
                         <li>
                             <hr class="dropdown-divider">
@@ -97,7 +97,67 @@
                 </div>
             </div>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content rounded-0">
+                    <div class="d-flex justify-content-end p-2">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-5" style="background-color: #e7ebf5;">
+                        <div class="row">
+                            <div class="col-5">
+                                <div class="card py-5 border-0">
+                                    <img src="{{employee.pictureURL}}" class="card-img-top m-auto rounded-circle" style="height: 150px; width: 150px;"
+                                        alt="..." id="img-preview">
+                                    <input id="uploadImage" type="file" name="file"
+                                            accept="image/*" hidden>
+                                    <label for="uploadImage" class="d-flex justify-content-center"><i
+                                            class="bi bi-camera fs-3"></i></label>
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">{{employee.employeeName}} - {{employee.employeeID}}</h5>
+                                        <div>
+                                            <p class="text-muted">{{employee.roles[0].workRole}}</p>
+                                            <p>{{employee.store.storeName}}</p>
+                                            <p>Tham gia: {{employee.firstWork | date}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-7">
+                                <div class="w-100 bg-light rounded mb-4" style="height: 80%;">
+                                    <form action="bachhoa/api/employee/updatePhoto" method="POST"
+                                        enctype="multipart/form-data" class="p-3">
+                                        <!-- <input onchange="this.form.submit()" id="uploadImage" type="file" name="file"
+                                            accept="image/*" hidden> -->
 
+                                        <div class="mb-3">
+                                            <label for="exampleInputEmail1" class="form-label">Địa chỉ email</label>
+                                            <input type="email" class="form-control" ng-model="form.email">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleInputEmail1" class="form-label">Ngày sinh</label>
+                                            <input type="date" class="form-control" ng-value="form.age">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleInputEmail1" class="form-label">Địa chỉ</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                                                ng-model="form.address"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="w-100 bg-light rounded d-flex align-items-center px-3"
+                                    style="height: 14.5%;">
+                                    <label class="me-1">Nhấn "Cập nhật" để thay đổi thông tin</label>
+                                    <button class="btn btn-success" ng-click="updateEmployee()">Cập
+                                        nhật</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
 
     <main>
@@ -230,6 +290,7 @@
     <!-- js -->
     <script src="../js/angular-ui-tab-scroll.js"></script>
     <script src="../js/bill.js"></script>
+    <!-- <script src="../js/updateProfile.js"></script> -->
     <script>
         window.setTimeout(function () {
             $(".flash").animate({

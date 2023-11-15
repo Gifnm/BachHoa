@@ -1,23 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" ng-app="app">
 
 <head>
-    <title>Title</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="../css/autoComplete.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Tailwindcss -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- AngularJS -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <!-- Bootstrap CSS v5.2.1 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-
 </head>
 
 <body>
@@ -25,56 +18,53 @@
     <main>
         <div ng-controller="paymentHistory-ctrl">
             <header>
-                <div class="px-3 py-2 bg-opacity-75 bg-gradient bg-primary">
-                    <div class="d-flex">
-                        <div
-                            class="d-flex align-items-center my-2 my-lg-0 me-lg-auto col text-white text-decoration-none">
-                            <div class="d-flex align-items-center p-3 col-12 col-md-6">
-                                <div class="autocomplete d-flex text-dark">
-                                    <input id="employee" type="text" class="form-control" ng-model="employeeID"
-                                        placeholder="Nhân viên" list="datalistEmployee">
-                                        <datalist id="datalistEmployee">
-                                            <option ng-repeat="employeeName in listEmployee" value="{{employeeName}}">
-                                            
-                                          </datalist>
-                                    <button class="btn btn-info ms-2 shadow-lg">
-                                        <i class="bi bi-search" ng-click="loadHistoryByEmployee(employeeID)"></i>
-                                    </button>
-                                </div>
+                <div class="grid grid-cols-12 px-5 py-2 bg-cyan-400">
+                    <div class="flex px-3 col-start-1 col-end-5 items-center">
+                            <input id="employee" type="text" class="rounded p-2 w-80" ng-model="employeeID"
+                                placeholder="Nhân viên" list="datalistEmployee">
+                            <datalist id="datalistEmployee">
+                                <option ng-repeat="employeeName in listEmployee" value="{{employeeName}}">
+                            </datalist>
+                            <button class="mx-5" ng-click="loadHistoryByEmployee(employeeID)">                
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                </svg>
+                            </button>
+                    </div>
+
+                    <div class="flex col-end-13 col-span-5 items-center justify-end">
+                        <div class="flex p-3 items-center mr-2">
+                            <label for="" class="text-white">Từ ngày: </label>
+                            <div class="ms-2">
+                                <input id="from_Date" type="date" class="rounded p-2" ng-model="fromDate"
+                                    ng-change="findByDate(fromDate, toDate, 0)">
                             </div>
                         </div>
-
-                        <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-                            <li class="d-flex align-items-center p-3">
-                                <label for="" class="w-100 text-white">Từ ngày: </label><br>
-                                <div class="ms-2">
-                                    <input id="from_Date" type="date" class="form-control" ng-model="fromDate"
-                                        ng-change="findByDate(fromDate, toDate, 0)">
-                                </div>
-                            </li>
-                            <li class="d-flex align-items-center p-3">
-                                <label for="" class="w-100 text-white">Đến ngày: </label><br>
-                                <div class="ms-2">
-                                    <input id="to_Date" type="date" class="form-control" ng-model="toDate"
-                                        ng-change="findByDate(fromDate, toDate, 0)">
-                                </div>
-                            </li>
-                        </ul>
+                        <div class="flex p-3 items-center">
+                            <label for="" class="text-white">Đến ngày: </label>
+                            <div class="ms-2">
+                                <input id="to_Date" type="date" class="rounded p-2" ng-model="toDate"
+                                    ng-change="findByDate(fromDate, toDate, 0)">
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </header>
-            <div class="mt-5 border border-info rounded-2 m-auto" style="width: 85%;">
-                <table class="table table-responsive text-center table-hover mb-0 align-middle">
-                    <thead class="bg-info text-white">
-                        <tr>
-                            <th scope="col">Nhân viên</th>
-                            <th scope="col">Ngày nộp</th>
-                            <th scope="col">Phải thu</th>
-                            <th scope="col">Đã thu</th>
-                            <th scope="col">Thiếu</th>
-                            <th scope="col">Ngày thu</th>
-                            <th scope="col">Người thu</th>
-                            <th scope="col">Trạng thái</th>
+            <div class="mt-5 border rounded m-auto" style="width: 85%;">
+                <table class="table-auto rounded">
+                    <thead class="bg-sky-300 ">
+                        <tr class="rounded-t">
+                            <th class="p-3 rounded-ss">Nhân viên</th>
+                            <th class="p-3">Ngày nộp</th>
+                            <th class="p-3">Phải thu</th>
+                            <th class="p-3">Đã thu</th>
+                            <th class="p-3">Thiếu</th>
+                            <th class="p-3">Ngày thu</th>
+                            <th class="p-3">Người thu</th>
+                            <th class="p-3 rounded-se">Trạng thái</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -102,7 +92,58 @@
                         </tr>
                     </tbody>
                 </table>
-                
+                <!-- modal tailwind -->
+                <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <!--
+                      Background backdrop, show/hide based on modal state.
+                  
+                      Entering: "ease-out duration-300"
+                        From: "opacity-0"
+                        To: "opacity-100"
+                      Leaving: "ease-in duration-200"
+                        From: "opacity-100"
+                        To: "opacity-0"
+                    -->
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+                  
+                    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <!--
+                          Modal panel, show/hide based on modal state.
+                  
+                          Entering: "ease-out duration-300"
+                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            To: "opacity-100 translate-y-0 sm:scale-100"
+                          Leaving: "ease-in duration-200"
+                            From: "opacity-100 translate-y-0 sm:scale-100"
+                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        -->
+                        <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                          <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                            <div class="sm:flex sm:items-start">
+                              <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                </svg>
+                              </div>
+                              <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Deactivate account</h3>
+                                <div class="mt-2">
+                                  <p class="text-sm text-gray-500">Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Deactivate</button>
+                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  
                 <!-- modal tiếp tục thu -->
                 <div class="modal fade" id="tiepTucThu" tabindex="999" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
@@ -207,7 +248,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row w-75 m-auto mt-3" id="pagination">
+            <div class="row w-75 m-auto mt-3">
                 <div class="col-2">
                     <b class="count">Tổng số lượt thu: {{totalReceived}}</b>
                 </div>
@@ -289,14 +330,6 @@
         </div>
     </main>
     <script src="../js/payment_history.js"></script>
-    <!-- Bootstrap JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-        </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
-        </script>
 </body>
 
 </html>

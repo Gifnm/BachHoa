@@ -19,6 +19,10 @@ public class PaymentHistoryService {
 	public void save(PaymentHistory paymentHistory) {
 		paymentHistoryJPA.save(paymentHistory);
 	}
+	
+	public Page<PaymentHistory> getPayment(Pageable page) {
+		return paymentHistoryJPA.getPayment(page);
+	}
 
 	public Page<PaymentHistory> findByEmployee(Integer employeeID, Pageable page) {
 		return paymentHistoryJPA.findByEmployee(employeeID, page);
