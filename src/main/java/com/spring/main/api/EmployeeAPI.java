@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.main.Service.EmployeeService;
@@ -77,6 +78,7 @@ public class EmployeeAPI {
 		}
 
 	}
+	
 
 	@GetMapping("/bachhoa/api/employees/search")
 	public List<Employee> getByKeyword(String keyword, int storeId) {
@@ -91,10 +93,11 @@ public class EmployeeAPI {
 			return employeeJPA.findByKeyword(keyword, storeId);
 		}
 	}
+	
 
-	@GetMapping("/bachhoa/api/employee/{store-id}")
-	public List<Employee> getAllByStoreId(int storeId) {
-		return employeeJPA.getByStoreId(storeId);
+	@GetMapping("employee/{storeID}")
+	public List<Employee> getAllByStoreId(@PathVariable("storeID") Integer id) {
+		return employeeJPA.getByStoreId(id);
 	}
 
 @GetMapping("employee/Request/{storeID}")

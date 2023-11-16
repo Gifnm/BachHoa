@@ -6,8 +6,10 @@ app.controller("employee-ctrl", function ($scope, $http){
 	
 	
 	$scope.initialize = function(){
-		$http.get(`/bachhoa/api/employee`).then(resp=>{
+		$http.get(`/bachhoa/api/employee/${$scope.account.store.storeID}`).then(resp=>{
 			$scope.employees = resp.data;
+			let index = $scope.employees.findIndex(item => item.employeeID == $scope.account.employeeID);
+			$scope.employees.splice(index,1);
 		})
 	
 	
@@ -26,5 +28,21 @@ app.controller("employee-ctrl", function ($scope, $http){
     
 	
 }
-$scope.initialize();
+//-----------------------------------------------//
+	//	Tìm Nhân viên
+
+	$scope.findEmployee = function () {
+        // Fake auth account
+        let email = document.getElementById('accountEmail').innerText;
+        return $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
+            $scope.account = resp.data;
+            $scope.initialize();
+            console.log("[ProductCtrl:getAccount():21]\n> Account: " + $scope.account);
+        }).catch(error => {
+            alert("[ProductCtrl:initialize():19]\n> Loi lay account");
+            console.log("[ProductCtrl:getAccount():24]\n> Error: " + error);
+        });
+    }
+	//-----------------------------------------------//
+$scope.findEmployee();
 })

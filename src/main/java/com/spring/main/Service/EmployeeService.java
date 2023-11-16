@@ -43,6 +43,10 @@ public class EmployeeService implements UserDetailsService {
 		employeeJPA.save(employee);
 	}
 
+	public List<Employee> getAllbyStoreID (Integer id) {
+		 return employeeJPA.getByStoreId(id);
+	  }
+	
 	public void detele(Integer id) {
 		employeeJPA.deleteById(id);
 
