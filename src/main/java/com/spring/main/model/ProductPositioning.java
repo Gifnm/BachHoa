@@ -11,6 +11,7 @@ package com.spring.main.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,7 +23,7 @@ public class ProductPositioning {
 	@Id
 	@Column(name = "proPosID")
 	private Integer id;
-
+@ManyToOne
 	 @JoinColumn(name = "disPlaID")
 	 private DisplayPlatter displayPlatter;
 
@@ -36,7 +37,7 @@ public class ProductPositioning {
 
 	@Column(name = "displayQuantity")
 	private int displayQuantity;
-	@ManyToOne()
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "storeID")
 
 	private Store store;
@@ -51,13 +52,13 @@ public class ProductPositioning {
 		this.id = id;
 	}
 
-	// public DisplayPlatter getDisplayPlatter() {
-	// return displayPlatter;
-	// }
-	//
-	// public void setDisplayPlatter(DisplayPlatter displayPlatter) {
-	// this.displayPlatter = displayPlatter;
-	// }
+	 public DisplayPlatter getDisplayPlatter() {
+	 return displayPlatter;
+	 }
+	
+	 public void setDisplayPlatter(DisplayPlatter displayPlatter) {
+	 this.displayPlatter = displayPlatter;
+	 }
 
 	public DisplayShelves getDisplayShelves() {
 		return displayShelves;
