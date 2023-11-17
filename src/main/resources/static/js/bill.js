@@ -584,7 +584,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
         data.age = $scope.form.age;
         data.address = $scope.form.address;
         if (fileField.files.length != 0) {
-            data.pictureURL = "http://192.168.1.4:8081/bachhoaimg/" + fileField.files[0].name;
+            data.pictureURL = "http://172.16.109.217:8081/bachhoaimg/" + fileField.files[0].name;
             $http.post(`/bachhoa/api/employee/updatePhoto`, formData, { transformRequest: angular.identity, headers: { 'Content-Type': undefined } }).then(resp => {
                 $http.post(`/bachhoa/api/employee/updateInformation`, data).then(resp => {
                     document.getElementById('img-preview').src = data.pictureURL;

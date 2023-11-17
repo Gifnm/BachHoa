@@ -179,8 +179,13 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 			return;
 		}
 		let fromD = startDateFormat(fromDate);
-		let toD = endtDateFormat(toDate);
+		let toD = endDateFormat(toDate);
 		$http.get(`/bachhoa/api/bill/searchBetween/${fromD}/${toD}?index=${index}`).then(resp => {
+			if(resp.data.content.length == 0){
+                $scope.isNull = true;
+            }else{
+                $scope.isNull = false;
+            }
 			$scope.items = [];
 			$scope.bills = resp.data.content;
 			angular.forEach($scope.bills, function (item) {
@@ -232,7 +237,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		return `${year}-${month}-${day} ${0}:${0}:${1}`;
 	}
 
-	let endtDateFormat = function (value) {
+	let endDateFormat = function (value) {
 		date = new Date(value);
 		const day = date.getDate().toString().padStart(2, '0');
 		const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months start at 0!
@@ -441,7 +446,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 
 	/* Tìm kiếm theo ngày */
 	let startDate = startDateFormat(new Date());
-	let endDate = endtDateFormat(new Date());
+	let endDate = endDateFormat(new Date());
 	$scope.findByDate(startDate, endDate, 0);
 
 	// Tìm nhân viên theo email

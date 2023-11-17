@@ -76,16 +76,16 @@
                     <a href="#" class="d-block link-dark text-decoration-none" id="acount" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         <span class="px-2 username">{{employee.employeeName}}</span>
-                        <img src="../images/faces/face3.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
+                        <img src="{{employee.pictureURL}}" alt="mdo" width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="acount">
                         <div class="dropdown-header text-center">
-                            <img class="img-md rounded-circle" src="../images/faces/face3.jpg" alt="Profile image">
+                            <img class="img-md rounded-circle" src="{{employee.pictureURL}}" width="32" height="32" alt="Profile image">
                             <p class="mt-3 mb-1"><strong class="mb-1 mt-3">{{employee.employeeName}}</strong></p>
                             <p class="fw-light text-muted mb-0" id="email">[[${#httpServletRequest.remoteUser}]]</p>
                             <p class="d-none" id="employeeID">{{employee.employeeID}}</p>
                         </div>
-                        <li ng-show="admin"><a class="dropdown-item" href="/admin/product">Quản lý</a></li>
+                        <li ng-if="admin"><a class="dropdown-item" href="/admin/product">Quản lý</a></li>
                         <li><a class="dropdown-item" href="#" type="button" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal">Hồ sơ cá nhân</a></li>
                         <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>

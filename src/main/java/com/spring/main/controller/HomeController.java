@@ -1,21 +1,27 @@
 package com.spring.main.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.spring.main.Service.EmployeeService;
 import com.spring.main.util.SessionAttr;
 
 @Controller
 public class HomeController {
-	@Autowired
-	EmployeeService emService;
+	// Custom Toast
+	static void callToast(String name) {
+		// Tự gọi icon hiển thị
+		SessionAttr.Toast = name;
+		SessionAttr.Icon = name + "__icon";
+		SessionAttr.Title = name + "__title";
+		SessionAttr.Close = name + "__close";
+	}
 
 	@RequestMapping("/sell")
 	public String home(Model model) {
 		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
+		callToast("success");
+		SessionAttr.Show_Icon = SessionAttr.Success_Show_Icon;
 		return "pages/sell/sell";
 	}
 
@@ -29,8 +35,13 @@ public class HomeController {
 		return "pages/sell/productDetail";
 	}
 
-	@RequestMapping("/admin/endOfShift")
-	public String endOfShift() {
-		return "pages/admin/pay/pay";
+	@RequestMapping("/sell/endShift")
+	public String endShift() {
+		return "forward:/sell";
+	}
+	
+	@RequestMapping("/admin/inventoryHistory")
+	public String kiemke() {
+		return "pages/admin/inventory_history/inventory_history";
 	}
 }
