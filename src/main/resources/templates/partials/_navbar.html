@@ -1,7 +1,89 @@
-<nav class="row bg-light py-3 mt-auto">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <div class="fs-6" href="#">Cửa hàng {{account.store.address}}</div>
+<nav class="row bg-light p-3 me-2 mt-auto">
+	<div class="container-fluid d-flex justify-content-between">
+		<div class="navbar-header">
+			<div class="fs-6" href="#">Cửa hàng {{account.store.address}}</div>
+		</div>
+		<div>
+			<a class="btn p-1 pe-1 position-relative" title="Nhấn để kiểm tra đơn xin việc"
+				data-bs-toggle="modal" data-bs-target="#DonXinViec">
+				<i class="bi bi-inbox fs-3"></i> <span
+					class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+					99+ <span class="visually-hidden">Đơn xin việc</span>
+				</span>
+			</a>
+		</div>
+	</div>
+</nav>
+<!-- Modal -->
+<div class="modal fade" id="DonXinViec" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg m-4">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Đơn xin việc <i class="bi bi-person-lines-fill ms-2 fs-4"></i></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="list - employee" class="table-responsive  mt-1">
+            <table class="table select-table">
+                <thead>
+                    <tr>
+                        <th class="sticky order-col bg-white">#</th>
+                        <th class="sticky name-col bg-white">Mã Nhân Viên</th>
+                        <th class="sticky bg-white">Tên Nhân Viên</th>
+                        <th class="sticky bg-white">Ngày xin việc</th>
+                        <th class="sticky bg-white">Email</th>
+                        <th class="sticky bg-white">Trạng thái chờ</th>
+                        <th class="sticky function-col bg-white"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr ng-repeat="e in employees">
+                        <td class="sticky order-col bg-white" scope="row">{{$index+1+currentPage*pageSize}}</td>
+                        <td class="sticky name-col bg-white">
+                            <div class="d-flex">
+                                <img src="{{e.image==null?DEFAULT_PRODUCT_IMAGE:pro.image}}" alt="">
+                                <div>
+                                    <h6>{{e.employeeID}}</h6>
+                                    <p>{{e.employeeName}}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <h6>{{e.address}}</h6>
+                        </td>
+                        <td>
+                            <h6>{{e.firstWork}}</h6>
+                        </td>
+                        <td>
+                            <h6>{{e.email}}</h6>
+                        </td>
+                        <td>
+                            <h6>Đang chờ duyệt</h6>
+                        </td>
+                        
+                        <td class="sticky function-col bg-white">
+                            <button class="btn" data-bs-toggle="modal" data-bs-target="#employeeModal"
+                                ><i class="bi bi-check"></i>
+                            </button>
+                            <button class="btn" ng-click="delete(e.employeeID)">
+                            	<i class="bi bi-person-x"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="sticky-footer mt-3">
+            <div class="float-start">
+                Trang {{currentPage+1}} trên {{numberOfPages()}} trang
+            </div>
+
+            <div class="float-end">
+                <div th:replace="~{/pages/admin/employee/_pagination}"></div>
+            </div>
+        </div>
+      </div>
     </div>
   </div>
-</nav>
+</div>

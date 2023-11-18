@@ -21,10 +21,12 @@ public interface EmployeeJPA extends JpaRepository<Employee, Integer> {
 
   @Query("SELECT o FROM Employee o WHERE o.email = ?1")
   Employee findbyEmail(String email);
+  
   @Transactional
 	@Modifying
 	@Query(value = "UPDATE employees SET roleID = null, storeID = null, active = 0 WHERE employeeID = ?1", nativeQuery = true)
 	void DeleteWait(Integer employeeID);
+  
   @Query("SELECT o FROM Employee o WHERE o.store.storeID = ?1 AND o.active = false")
   List<Employee> getRequest(Integer storeID);
 }
