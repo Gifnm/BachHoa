@@ -109,7 +109,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		$http.get(`/bachhoa/api/billDetail/findByBillID/${billID}`).then(resp => {
 			$scope.billDetails = resp.data;
 			angular.forEach($scope.billDetails, function (item) {
-				$http.get(`/discount/findByProductIDAndStoreID/${item.product.productID}/${$scope.employee.store.storeID}`).then(resp => {
+				$http.get(`/bachhoa/api/discount/findDiscountIsActive/${item.product.productID}/${$scope.employee.store.storeID}`).then(resp => {
 					$scope.discountDetail = resp.data;
 					if ($scope.discountDetail.disID === "S25") {
 						item.discountName = "25%";

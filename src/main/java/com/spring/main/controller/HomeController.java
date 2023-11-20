@@ -39,9 +39,14 @@ public class HomeController {
 	public String endShift() {
 		return "forward:/sell";
 	}
-	
+
 	@RequestMapping("/admin/inventoryHistory")
 	public String kiemke() {
 		return "pages/admin/inventory_history/inventory_history";
+	}
+
+	@RequestMapping("/admin/discountManagement")
+	public String discountManagement() {
+		return "pages/admin/discount/discountManagement";
 	}
 }

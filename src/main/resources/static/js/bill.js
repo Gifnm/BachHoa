@@ -365,7 +365,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
                         let bill = temp.bill;
                         let quantity = 1;
                         let storeID = 1;
-                        $http.get(`/discount/findByProductIDAndStoreID/${productID}/${storeID}`).then(resp => {
+                        $http.get(`/bachhoa/api/discount/findDiscountIsActive/${productID}/${storeID}`).then(resp => {
                             //alert("run")
                             $scope.discountDetail = resp.data;
                             //console.log($scope.discountDetail)
