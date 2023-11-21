@@ -80,7 +80,8 @@
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="acount">
                         <div class="dropdown-header text-center">
-                            <img class="img-md rounded-circle" src="{{employee.pictureURL}}" width="32" height="32" alt="Profile image">
+                            <img class="img-md rounded-circle" src="{{employee.pictureURL}}" width="32" height="32"
+                                alt="Profile image">
                             <p class="mt-3 mb-1"><strong class="mb-1 mt-3">{{employee.employeeName}}</strong></p>
                             <p class="fw-light text-muted mb-0" id="email">[[${#httpServletRequest.remoteUser}]]</p>
                             <p class="d-none" id="employeeID">{{employee.employeeID}}</p>
@@ -101,17 +102,17 @@
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content rounded-0">
-                    <div class="d-flex justify-content-end p-2">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Thông tin cá nhân</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-5" style="background-color: #e7ebf5;">
                         <div class="row">
                             <div class="col-5">
                                 <div class="card py-5 border-0">
-                                    <img src="{{employee.pictureURL}}" class="card-img-top m-auto rounded-circle" style="height: 150px; width: 150px;"
-                                        alt="..." id="img-preview">
-                                    <input id="uploadImage" type="file" name="file"
-                                            accept="image/*" hidden>
+                                    <img src="{{employee.pictureURL}}" class="card-img-top m-auto rounded-circle"
+                                        style="height: 150px; width: 150px;" alt="..." id="img-preview">
+                                    <input id="uploadImage" type="file" name="file" accept="image/*" hidden>
                                     <label for="uploadImage" class="d-flex justify-content-center"><i
                                             class="bi bi-camera fs-3"></i></label>
                                     <div class="card-body text-center">
@@ -182,7 +183,7 @@
                                     <!-- <p ng-bind="invoiceID"></p> -->
                                     <div class="tab-pane fade show table-responsive table border border-info rounded-2 mt-1"
                                         id="home" role="tabpanel" aria-labelledby="home-tab">
-                                        <table class="table table-responsive text-center">
+                                        <table class="table table-responsive text-center align-middle">
                                             <thead class="bg-info text-white">
                                                 <tr>
                                                     <th scope="col">Mã sản phẩm</th>
@@ -199,11 +200,24 @@
                                                     <td style="width: 15%;">{{item.billDetail.product.productID}}</td>
                                                     <td style="width: 30%; word-wrap: break-word;">
                                                         {{item.billDetail.product.productName}}</td>
-                                                    <td style="width: 10%;"><input
-                                                            ng-change="updateBillDetailFromInput(item.billDetail.product.productID, item.billDetail.quantity, invoice.bill.billID)"
-                                                            ng-model="item.billDetail.quantity" type="number" min="1"
-                                                            step="1" class="rounded-pill text-center"
-                                                            style="width: 80%;"></td>
+                                                    <td class="d-flex justify-content-between" style="width: 10%;">
+                                                        <div class="d-flex">
+                                                            <i class="bi bi-plus-square fs-4"></i>
+                                                            <input class="text-center m-auto border-0 border-bottom border-top" style="width: 3rem; height: 2rem;"
+                                                                ng-change="updateBillDetailFromInput(item.billDetail.product.productID, item.billDetail.quantity, invoice.bill.billID)"
+                                                                ng-model="item.billDetail.quantity" type="number"
+                                                                min="1" step="1" id="slsp">
+                                                            <i class="bi bi-dash-square fs-4"></i>
+                                                        </div>
+                                                        <!-- <div class="number-control">
+                                                            <div class="number-left"></div>
+                                                            <input name="number" class="number-quantity"
+                                                                ng-change="updateBillDetailFromInput(item.billDetail.product.productID, item.billDetail.quantity, invoice.bill.billID)"
+                                                                ng-model="item.billDetail.quantity" type="number"
+                                                                min="1" step="1" id="slsp">
+                                                            <div class="number-right"></div>
+                                                        </div> -->
+                                                    </td>
                                                     <td style="width: 10%;">{{item.billDetail.product.price +
                                                         (item.billDetail.product.price * (item.billDetail.product.vat /
                                                         100)) | number}}</td>
@@ -292,6 +306,7 @@
     <script src="../js/bill.js"></script>
     <!-- <script src="../js/updateProfile.js"></script> -->
     <script>
+        // animation cho thông báo
         window.setTimeout(function () {
             $(".flash").animate({
                 top: "0",
@@ -300,6 +315,8 @@
                 $(this).remove();
             });
         }, 3000);
+        // Chỉ cho tăng hoặc giảm số lượng sản phẩm, không cho nhập
+        //document.getElementById("slsp").addEventListener("keydown", e => e.keyCode != 38 && e.keyCode != 40 && e.preventDefault());
     </script>
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"

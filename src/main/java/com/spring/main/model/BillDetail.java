@@ -2,7 +2,6 @@ package com.spring.main.model;
 
 import java.io.Serializable;
 
-
 //import jakarta.persistence.Column;
 //import jakarta.persistence.EmbeddedId;
 //import jakarta.persistence.Entity;
@@ -31,13 +30,13 @@ import lombok.EqualsAndHashCode;
 @IdClass(BillDetailID.class)
 @EqualsAndHashCode
 @Table(name = "bill_details")
-public class BillDetail{
+public class BillDetail {
 	@Id
 	private String billID;
-	
+
 	@Id
 	private String productID;
-	
+
 	@ManyToOne
 	@MapsId("billID")
 	@JoinColumn(name = "billID")
@@ -50,6 +49,9 @@ public class BillDetail{
 
 	@Column(name = "quantity")
 	private int quantity;
+	
+	@Column(name = "quantityGift")
+	private int quantityGift;
 
 	@Column(name = "totalAmount")
 	private float totalAmount;
@@ -108,7 +110,6 @@ public class BillDetail{
 //	public BillDetail() {
 //		super();
 //	}
-
 
 //	@Embeddable
 //	public class BillDetailID implements Serializable{
