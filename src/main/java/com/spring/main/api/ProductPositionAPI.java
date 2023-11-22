@@ -36,16 +36,13 @@ public class ProductPositionAPI {
 	@GetMapping("{shelfID}/{platterNb}/{storeID}")
 	private List<ProductPositioning> getALL(@PathVariable("shelfID") int shelfID,
 			@PathVariable("platterNb") int platterNb, @PathVariable("storeID") int storeID) {
-		System.out.println("get list Position");
 		List<ProductPositioning> list = productPosionService.getAllPosstion(platterNb, shelfID, storeID);
-		System.out.println(list.size());
 		return list;
 	}
 
 	// Them mot vi tri san pham moi
 	@PostMapping("insert")
 	private ProductPositioning insert(@RequestBody ProductPositioning productPositioning) {
-		System.out.println("Halo Post Position");
 		ProductPositioning productPositioning2 = productPositioning;
 		System.out.println(productPositioning2.getProduct().getProductID() + "bar");
 		Product product = productService.getByID(productPositioning.getProduct().getProductID());
@@ -75,7 +72,20 @@ public class ProductPositionAPI {
 	@GetMapping("getPriceTag/{storeID}/{productID}")
 	private ResponseEntity<PriceTag> getPriceTag(@PathVariable("storeID") int storeID,
 			@PathVariable("productID") String productID) {
-		System.out.println("getPriceTag/{storeID}/{productID}");
+		ProductPositioning productPositioning = productPosionService.getByIDAndStoreID(productID, storeID);
+		if (productPositioning == null) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		} else {
+			PriceTag priceTag = new PriceTag();
+			priceTag.setProductPositioning(productPositioning);
+			priceTag.setDiscountDetails(discountDetailService.findByProductIDAndStoreID(productID, storeID));
+			return ResponseEntity.status(HttpStatus.OK).body(priceTag);
+		}
+
+	}
+	@GetMapping("getPriceTag/{storeID}/{disSheID}")
+	private ResponseEntity<PriceTag> getPriceTags(@PathVariable("storeID") int storeID,
+			@PathVariable("productID") String productID) {
 		ProductPositioning productPositioning = productPosionService.getByIDAndStoreID(productID, storeID);
 		if (productPositioning == null) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);

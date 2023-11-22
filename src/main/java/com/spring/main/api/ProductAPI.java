@@ -41,6 +41,7 @@ public class ProductAPI {
 			productPositioning.setStore(product.getStore());
 			productPositioning.setProduct((Product) product);
 			productPositioning.setId(0);
+			posionService.insert(productPositioning);
 			return ResponseEntity.ok("Ok");
 		} catch (IOException e) {
 			e.printStackTrace();
