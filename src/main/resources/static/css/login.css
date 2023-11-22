@@ -35,13 +35,16 @@ html {
 .QL-form,
 .NV-form {
     display: none;
-    border-radius: 2rem;
-    border: 12px solid #39bda7;
-    width: 45rem;
+    border-radius: 11px;
+    border: 2px solid #39bda7;
+    width: 40rem;
 }
 
 .input-container {
     position: relative;
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 4px 4px 0px 0px #c6c6c6;
 }
 
 .input-container input,
@@ -90,12 +93,12 @@ html {
 .button {
     display: inline-block;
     padding: 12px 24px;
-    border: 1px solid #4f4f4f;
-    border-radius: 4px;
+    border: 2px solid #4f4f4f;
+    border-radius: 18px;
     transition: all 0.2s ease-in;
     position: relative;
     overflow: hidden;
-    font-size: 19px;
+    font-size: 18px;
     color: black;
     z-index: 1;
 }
@@ -132,7 +135,7 @@ html {
 
 .button:hover {
     color: #ffffff;
-    border: 1px solid #39bda7;
+    border: 2px solid #38756b;
 }
 
 .button:hover:before {
@@ -481,7 +484,60 @@ html {
     cursor: pointer;
 }
 
+/* Ra giữa Toast */
 .swal2-popup>#swal2-title {
     text-align: center;
-    margin: 0.6rem;
+    margin: 0 0.6rem;
+}
+
+/* Sửa lại đăng ký */
+.title {
+    font-size: 28px;
+    color: royalblue;
+    font-weight: 600;
+    letter-spacing: -1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+}
+
+.title::before,
+.title::after {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    left: 0px;
+    background-color: royalblue;
+}
+
+.title::before {
+    width: 18px;
+    height: 18px;
+    background-color: royalblue;
+}
+
+.title::after {
+    width: 18px;
+    height: 18px;
+    animation: pulse 1s linear infinite;
+}
+
+.message {
+    color: rgb(102 95 95 / 82%);
+    font-size: 14px;
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(0.9);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(1.8);
+        opacity: 0;
+    }
 }

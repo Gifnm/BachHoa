@@ -13,12 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.spring.main.Service.BillDetailService;
 import com.spring.main.Service.ProductService;
-import com.spring.main.model.Bill;
 import com.spring.main.model.BillDetail;
-import com.spring.main.model.Product;
 
 @CrossOrigin("*")
 @RestController()

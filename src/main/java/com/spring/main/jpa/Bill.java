@@ -1,5 +1,7 @@
 package com.spring.main.jpa;
 
-public interface Bill {
 
+
+public interface Bill  {
+	
 }

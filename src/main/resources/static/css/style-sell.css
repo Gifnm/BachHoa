@@ -91,3 +91,8 @@ a {
     display: block;
   }
 }
+
+.swal2-popup>#swal2-title {
+  text-align: center;
+  margin: 0.6rem;
+}
