@@ -23,6 +23,10 @@ public class DetailedDeliveryNoteService {
 		deliveryNoteJPA.save(deliveryNote);
 	}
 
+	public void update(DetailedDeliveryNote detailedDeliveryNote) {
+		deliveryNoteJPA.save(detailedDeliveryNote);
+	}
+
 	/**
 	 * Lay danh sach phieu nhap
 	 * 

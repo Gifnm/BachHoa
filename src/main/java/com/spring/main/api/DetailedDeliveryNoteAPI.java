@@ -69,7 +69,6 @@ public class DetailedDeliveryNoteAPI {
 			deliveryNoteService.delete(detailedDeliveryNote);
 		}
 		deliveService.setFinish(list.get(0).getId());
-		
 
 	}
 }
