@@ -335,7 +335,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
         $scope.listProduct = [];
         angular.forEach($scope.billDetails, function (item) {
             if (item.billDetail.billID == billID) {
-                item.billDetail.totalAmount = Math.round(item.billDetail.totalAmount);
+                //item.billDetail.totalAmount = Math.round(item.billDetail.totalAmount);
                 $scope.listProduct.push(item);
             }
         });
@@ -427,11 +427,11 @@ app.controller("bill-ctrl", function ($scope, $http) {
 
     //cập nhật billDetail khi tăng số lượng
     let updateBillDetail = function (productID, billID) {
-        const item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
+        let item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         item.billDetail.quantity = item.billDetail.quantity + 1;
-        let quantity = item.billDetail.quantity + item.quantityGift;
-        if ($scope.discountDetail.disID == "2T1" && (quantity % 3) === 0) {
+        let quantity = item.billDetail.quantity + item.billDetail.quantityGift;
+        if (item.discountName == "2 tặng 1" && (quantity % 3) === 0) {
             item.billDetail.quantity = item.billDetail.quantity - 1;
             item.billDetail.quantityGift = item.billDetail.quantityGift + 1;
             if (item.billDetail.quantityGift === 1) {
@@ -458,11 +458,11 @@ app.controller("bill-ctrl", function ($scope, $http) {
                 $scope.billDetails.splice(i, 1, giftData);
             }
             item.discount = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * item.billDetail.quantityGift;
-        } else if ($scope.discountDetail.disID == "S25" || $scope.discountDetail.disID == "S50") {
+        } else if (item.discountName == "25%" || item.discountName == "50%") {
             item.discount = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity * item.sale;
         }
         item.totalMoney = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity;
-        item.billDetail.totalAmount = item.totalMoney - item.discount;       
+        item.billDetail.totalAmount = item.totalMoney - item.discount;
         $scope.billDetails.splice(index, 1, item);
         console.log($scope.billDetails)
     };
@@ -472,7 +472,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
         let item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         item.billDetail.quantity = quantity;
-        if ($scope.discountDetail.disID == "2T1" && quantity >= 3) {
+        if (item.discountName == "2 tặng 1" && quantity >= 3) {
             item.billDetail.quantityGift = 0;
             item.billDetail.quantityGift = item.billDetail.quantityGift + Math.floor(item.billDetail.quantity / 3);
             item.billDetail.quantity = item.billDetail.quantity - item.billDetail.quantityGift;
@@ -500,7 +500,14 @@ app.controller("bill-ctrl", function ($scope, $http) {
                 $scope.billDetails.splice(i, 1, giftData);
             }
             item.discount = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * item.billDetail.quantityGift;
-        } else if ($scope.discountDetail.disID == "S25" || $scope.discountDetail.disID == "S50") {
+        } else if (item.discountName == "2 tặng 1" && quantity < 2) {
+            let i = $scope.billDetails.findIndex(
+                o => o.billDetail.productID == productID
+                    && o.billDetail.billID == billID
+                    && o.billDetail.product.productName.substr(0, 8) == "Quà tặng");
+            $scope.billDetails.splice(i, 1);
+            item.billDetail.quantityGift = 0;
+        } else if (item.discountName == "25%" || item.discountName == "50%") {
             item.discount = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity * item.sale;
         }
         item.totalMoney = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity;
@@ -512,10 +519,28 @@ app.controller("bill-ctrl", function ($scope, $http) {
         loadToBillDetail(billID);
     };
 
+    // Tăng số lượng sản phẩm lên 1
+    $scope.increase = function (productID, billID) {
+        updateBillDetail(productID, billID);
+        saveBillDetailToSessionStorage($scope.billDetails);
+        loadBillDetailFromSessionStorage();
+        loadToBillDetail($scope.invoiceID);
+    }
+
+    // Giảm số lượng sản phẩm xuống 1
+    $scope.reduce = function (productID, quantity, billID) {
+        let sl = quantity - 1;
+        $scope.updateBillDetailFromInput(productID, sl, billID);
+    }
+
 
     // Xóa sản phẩm trong billDetail
-    $scope.deleteItem = function (productID, billID) {
-        let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
+    $scope.deleteItem = function (index, billID, productID) {
+        if ($scope.billDetails[index].billDetail.product.productName.substr(0, 8) == "Quà tặng") {
+            let billDetail = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
+            billDetail.billDetail.quantityGift = 0;
+            $scope.updateBillDetailFromInput(productID, billDetail.billDetail.quantity, billID);
+        }
         $scope.billDetails.splice(index, 1);
         saveBillDetailToSessionStorage($scope.billDetails);
         loadBillDetailFromSessionStorage();
@@ -558,6 +583,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
     // lưu billDetail vào database
     let saveBillDetailToDatabse = function (billID) {
         let url = `/bachhoa/api/billDetail/save/`;
+        let isLast = false;
         angular.forEach($scope.billDetails, function (item) {
             if (item.billDetail.billID == billID && item.billDetail.product.productName.substr(0, 8) != "Quà tặng") {
                 $http.post(url, item.billDetail).then(resp => {
@@ -565,22 +591,24 @@ app.controller("bill-ctrl", function ($scope, $http) {
                     $http.get(`/product/findByID/${item.billDetail.productID}`).then(resp => {
                         let product = resp.data;
                         console.log(product);
-                        product.inventory = product.inventory - item.billDetail.quantity;
+                        product.inventory = product.inventory - (item.billDetail.quantity + item.billDetail.quantityGift);
                         console.log(product);
                         $http.put(`/bachhoa/api/products/update`, product)
                         window.location = "/print/" + billID;
                     })
-
                 }).catch(error => {
                     console.log("Có lỗi xảy ra", error);
                 });
             }
+            let i = $scope.billDetails.indexOf(item);
+            if (i == $scope.billDetails.length - 1) {
+                isLast = true;
+            }
         });
-        //alert('gio moi duoc chay')
-        //var billDetail = resp.data;
-        let index = $scope.bills.findIndex(item => item.bill.billID == billID);
-        $scope.removeTab(index);
-
+        if (isLast) {
+            let index = $scope.bills.findIndex(item => item.bill.billID == billID);
+            $scope.removeTab(index);
+        }
     };
 
     //------------------------------------------------//
@@ -616,19 +644,9 @@ app.controller("bill-ctrl", function ($scope, $http) {
         document.getElementById("cash").focus()
     }
 
-    // Cập nhật thông tin nhân viên
+
     //------------------------------------------------//
-
-    // $scope.updatePhoto = function () {
-    //     $http.post(`/bachhoa/api/employee/updatePhoto`, $scope.employee).then(resp => {
-    //         console.log(resp.data);
-    //         alert("Cập nhật thông tin thành công!")
-    //     }).catch(error => {
-    //         console.log(error);
-    //     })
-    // }
-
-
+    // Cập nhật thông tin nhân viên
     $scope.updateEmployee = function () {
         const formData = new FormData();
         const fileField = document.querySelector('input[id="uploadImage"]');

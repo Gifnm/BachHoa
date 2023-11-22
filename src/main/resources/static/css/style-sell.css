@@ -32,40 +32,39 @@ a {
   align-items: center;
 }
 
-.number-left::before,
-.number-right::after {
-  content: attr(data-content);
-  background-color: #333333;
+.number-left,
+.number-right{
+  background-color: rgb(122, 231, 255);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
-  width: 20px;
-  color: white;
+  padding: 2px;
+  color: black;
   transition: background-color 0.3s;
   cursor: pointer;
+  height: 1.5rem;
 }
-
+/* 
 .number-left::before {
   content: "-";
 }
 
 .number-right::after {
   content: "+";
-}
+} */
 
 .number-quantity {
-  padding: 0.25rem;
   border: 0;
   width: 50px;
   -moz-appearance: textfield;
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
+  /* border-top: 1px solid black;
+  border-bottom: 1px solid black; */
 }
 
-.number-left:hover::before,
-.number-right:hover::after {
+.number-left:hover,
+.number-right:hover {
   background-color: #666666;
+  color: white;
 }
 
 #slsp::-webkit-outer-spin-button,

@@ -200,23 +200,21 @@
                                                     <td style="width: 15%;">{{item.billDetail.product.productID}}</td>
                                                     <td style="width: 30%; word-wrap: break-word;">
                                                         {{item.billDetail.product.productName}}</td>
-                                                    <td class="d-flex justify-content-between" style="width: 10%;">
-                                                        <div class="d-flex">
-                                                            <i class="bi bi-plus-square fs-4"></i>
-                                                            <input class="text-center m-auto border-0 border-bottom border-top" style="width: 3rem; height: 2rem;"
+                                                    <td style="width: 10%;">
+                                                        <div class="number-control">
+                                                            <div class="number-left"
+                                                                ng-click="reduce(item.billDetail.product.productID, item.billDetail.quantity, invoice.bill.billID) ">
+                                                                <i class="bi bi-dash fs-5"></i>
+                                                            </div>
+                                                            <input name="number" class="number-quantity text-center"
                                                                 ng-change="updateBillDetailFromInput(item.billDetail.product.productID, item.billDetail.quantity, invoice.bill.billID)"
                                                                 ng-model="item.billDetail.quantity" type="number"
                                                                 min="1" step="1" id="slsp">
-                                                            <i class="bi bi-dash-square fs-4"></i>
+                                                            <div class="number-right"
+                                                                ng-click="increase(item.billDetail.product.productID, item.billDetail.billID)">
+                                                                <i class="bi bi-plus fs-5"></i>
+                                                            </div>
                                                         </div>
-                                                        <!-- <div class="number-control">
-                                                            <div class="number-left"></div>
-                                                            <input name="number" class="number-quantity"
-                                                                ng-change="updateBillDetailFromInput(item.billDetail.product.productID, item.billDetail.quantity, invoice.bill.billID)"
-                                                                ng-model="item.billDetail.quantity" type="number"
-                                                                min="1" step="1" id="slsp">
-                                                            <div class="number-right"></div>
-                                                        </div> -->
                                                     </td>
                                                     <td style="width: 10%;">{{item.billDetail.product.price +
                                                         (item.billDetail.product.price * (item.billDetail.product.vat /
@@ -225,7 +223,7 @@
                                                     <td style="width: 15%;">{{item.billDetail.totalAmount | number}}
                                                     </td>
                                                     <td style="width: 5%;"><button
-                                                            ng-click="deleteItem(item.billDetail.product.productID, invoice.bill.billID)"
+                                                            ng-click="deleteItem($index, item.billDetail.billID, item.billDetail.product.productID)"
                                                             type="button" class="btn-close" aria-label="Close"></button>
                                                     </td>
                                                 </tr>
