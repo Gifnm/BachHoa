@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/pages/admin/layout:: dynamic(~{::body})}">
+
+<head>
+    <title>Import Inventory</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+</head>
+
+<body ng-app="app" ng-controller="ctrl">
+    <div class="d-sm-flex justify-content-between align-items-start p-4 py-3 border border-2 bg-light"
+        style="border-radius: 1rem 1rem 0 0;">
+        <div ng-if="currentView === 'listView'">
+            <b class="fs-4">Phiếu nhập hàng</b><br>
+            <small class="text-muted">Tổng cộng <b>{{deliveryNotes.length}}</b> đợt nhập hàng
+            </small>
+        </div>
+        <div ng-if="currentFeature === 'createFeature'">
+            <h4 class="card-title card-title-dash fs-5 fw-bolder">Phiếu nhập hàng mới</h4>
+        </div>
+        <div ng-if="currentFeature === 'updateFeature'">
+            <h4 class="fs-5"><b>Chỉnh sửa phiếu nhập</b></h4>
+        </div>
+        <button ng-if="currentView === 'createView'" ng-click="changeView('listView', '')"
+            class="btn btn-white rounded-pill btn-md d-flex align-middle"><span class="material-symbols-outlined me-2">
+                list
+            </span>
+            Danh
+            Sách phiếu nhập</button>
+        <button ng-if="currentView === 'listView'" ng-click="changeView('createView', 'createFeature')"
+            class="btn btn-primary rounded-pill d-flex align-middle p-2 px-3"><span
+                class="material-symbols-outlined me-2">post_add</span> Tạo phiếu nhập</button>
+
+    </div>
+    <main class="overflow-auto flex-grow-1 bg-light border border-2 border-top-0" style="border-radius: 0 0 1rem 1rem;">
+        <div th:replace="~{/pages/admin/import_product/_list}"></div>
+        <div th:replace="~{/pages/admin/import_product/_create}"></div>
+        <div th:replace="~{/pages/admin/import_product/_delivery_detail}"></div>
+    </main>
+    <script src="/js/product-import-ctrl.js"></script>
+</body>

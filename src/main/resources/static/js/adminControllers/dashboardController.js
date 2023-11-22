@@ -3,13 +3,12 @@ const ctx2 = document.getElementById('myChart2');
 const pieChart = document.getElementById('pieChart');
 const host = "http://localhost:8081/bachhoa/api";
 
-const app = angular.module("app", []);
-app.controller("ctrl", function ($scope, $http, $filter) {
+app.controller("dashboard-ctrl", function ($scope, $http, $filter) {
     $scope.startDateSelected = new Date('2021-01-01')
     $scope.endDateSelected = new Date()
     $scope.startDate = formatDate($scope.startDateSelected)
     $scope.endDate = formatDate($scope.endDateSelected)
-    $scope.mileStone = 'month'
+    $scope.mileStone = 'year'
     $scope.revenueData = {
         increaseRevenue: [],
         revenue: [],

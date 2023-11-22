@@ -15,7 +15,6 @@ app.controller("ctrl", function ($scope, $http) {
     let storeId;
 
     $scope.getAccount = function () {
-        // Fake auth account
         let email = document.getElementById('accountEmail').innerText;
         return $http.get(`${host}/employee/findByEmail/${email}`).then(resp => {
             $scope.account = resp.data;
@@ -195,19 +194,6 @@ app.controller("ctrl", function ($scope, $http) {
         return ret;
     };
 
-    // calculate page in place
-    $scope.groupToPages = function () {
-        $scope.pagedItems = [];
-
-        for (let i = 0; i < $scope.items.length; i++) {
-            if (i % $scope.pageSize === 0) {
-                $scope.pagedItems[Math.floor(i / $scope.pageSize)] = [$scope.items[i]];
-            } else {
-                $scope.pagedItems[Math.floor(i / $scope.pageSize)].push($scope.items[i]);
-            }
-        }
-    };
-
     // init the filtered items
     $scope.search = function (query) {
         let keyword = encodeURI(query)
@@ -221,7 +207,6 @@ app.controller("ctrl", function ($scope, $http) {
             })
         })
         $scope.currentPage = 0;
-        $scope.groupToPages();
     };
 
     $scope.setPage = function (page) {

@@ -15,9 +15,9 @@ public class AdminController {
         return "pages/admin/product/index";
     }
 
-    @GetMapping("/admin/import-inventory")
+    @GetMapping("/admin/import-product")
     public String importInventory() {
-        return "pages/admin/import_inventory/index";
+        return "pages/admin/import_product/index";
     }
 
 }

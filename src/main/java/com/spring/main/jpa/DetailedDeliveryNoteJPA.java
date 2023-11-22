@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import com.spring.main.model.DetailedDeliveryNote;
 
 public interface DetailedDeliveryNoteJPA extends JpaRepository<DetailedDeliveryNote, String> {
-	@Query("Select o from DetailedDeliveryNote o where o.id =:id ")
+	@Query("Select o from DetailedDeliveryNote o where o.id =:id order by o.index")
 	List<DetailedDeliveryNote> getAllByID(@Param("id") String id);
 
 }
