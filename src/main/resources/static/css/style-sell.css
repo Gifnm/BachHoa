@@ -16,32 +16,64 @@ header {
   border-top: 0;
   padding: 0.75rem 1rem;
   text-align: justify;
-  min-height: 550px;
+  height: 100%;
 }
 
 .tab-pane {
-  height: 456px;
+  height: 490px;
 }
 
 a {
   text-decoration: none;
 }
 
-/* .tab-content.tab-content-vertical {
-  border-top: 1px solid #dee2e6;
+.number-control {
+  display: flex;
+  align-items: center;
 }
 
-.tab-content.tab-content-vertical-custom {
-  border: 0;
-  padding-top: 0;
+.number-left,
+.number-right{
+  background-color: rgb(122, 231, 255);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  color: black;
+  transition: background-color 0.3s;
+  cursor: pointer;
+  height: 1.5rem;
+}
+/* 
+.number-left::before {
+  content: "-";
 }
 
-.tab-content.tab-content-custom-pill {
-  border: 0;
-  padding-left: 0;
+.number-right::after {
+  content: "+";
 } */
 
-/* @media (max-width: 700px) {
+.number-quantity {
+  border: 0;
+  width: 50px;
+  -moz-appearance: textfield;
+  /* border-top: 1px solid black;
+  border-bottom: 1px solid black; */
+}
+
+.number-left:hover,
+.number-right:hover {
+  background-color: #666666;
+  color: white;
+}
+
+#slsp::-webkit-outer-spin-button,
+#slsp::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+@media (max-width: 700px) {
 
   .username,
   .logo,
@@ -58,4 +90,9 @@ a {
   .menuHidden {
     display: block;
   }
+}
+
+.swal2-popup>#swal2-title {
+  text-align: center;
+  margin: 0.6rem;
 }
