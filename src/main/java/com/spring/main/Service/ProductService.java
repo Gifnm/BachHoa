@@ -10,51 +10,56 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.main.jpa.ProductJPA;
 import com.spring.main.model.Product;
+
 @Service
 public class ProductService {
-@Autowired
-ProductJPA productJPA;
-private final String FOLDER_PATH="C:\\bachhoaimg\\";
-public String uploadProduct(MultipartFile file, Product product) throws IllegalStateException, IOException {
-	String filePath = FOLDER_PATH+file.getOriginalFilename();
-	file.transferTo(new File(filePath));
-	product.setImage("http://192.168.1.5:8083/bachhoaimg//"+file.getOriginalFilename());
-	productJPA.save(product);
-	return "Succes";
-	
-}
-private void save(Product product) {
-	productJPA.save(product);
-	
-}
-public Product getByID(String productID) {
-	Product product = productJPA.findById(productID).get();
-	return product;
-	
-}
-public Product getByIDAndStoreID(String ProductID, int storeID) {
-	Product product = productJPA.getByIDAndStoreID(ProductID, storeID);
-	return product;
-	
-}
+	@Autowired
+	ProductJPA productJPA;
+	private final String FOLDER_PATH = "C:\\bachhoaimg\\";
 
-public Product getByIDOrName(String value) {
-	Product product = productJPA.getByIDOrName(value);
-	return product;
-	
-}
+	public String uploadProduct(MultipartFile file, Product product) throws IllegalStateException, IOException {
+		String filePath = FOLDER_PATH + file.getOriginalFilename();
+		file.transferTo(new File(filePath));
+		product.setImage("http://192.168.1.5:8083/bachhoaimg//" + file.getOriginalFilename());
+		productJPA.save(product);
+		return "Succes";
 
-public List<String> getProductID() {
-	return productJPA.getProductID();
-	
-}
-public List<String> getProductName() {
-	return productJPA.getProductName();
-	
-}
+	}
 
+	private void save(Product product) {
+		productJPA.save(product);
 
-// Start service thanhdq
+	}
+
+	public Product getByID(String productID) {
+		Product product = productJPA.findById(productID).get();
+		return product;
+
+	}
+
+	public Product getByIDAndStoreID(String ProductID, int storeID) {
+		Product product = productJPA.getByIDAndStoreID(ProductID, storeID);
+		return product;
+
+	}
+
+	public Product getByIDOrName(String value) {
+		Product product = productJPA.getByIDOrName(value);
+		return product;
+
+	}
+
+	public List<String> getProductID() {
+		return productJPA.getProductID();
+
+	}
+
+	public List<String> getProductName() {
+		return productJPA.getProductName();
+
+	}
+
+	// Start service thanhdq
 	// Get all product in database
 	public List<Product> getAll() {
 		return productJPA.findAll();
@@ -94,4 +99,5 @@ public List<String> getProductName() {
 		productJPA.deleteById(id);
 	}
 	// End service thanhdq
+
 }

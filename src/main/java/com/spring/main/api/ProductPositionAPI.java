@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.main.Service.ProductPosionService;
 import com.spring.main.Service.ProductService;
-import com.spring.main.model.DisplayPlatter;
-import com.spring.main.model.DisplayShelves;
 import com.spring.main.model.Product;
 import com.spring.main.model.ProductPositioning;
 
@@ -27,9 +25,10 @@ public class ProductPositionAPI {
 	@Autowired
 	ProductService productService;
 
-// Tra ve danh sach vi tri san pham theo ke - mam - cua hang
+	// Tra ve danh sach vi tri san pham theo ke - mam - cua hang
 	@GetMapping("productPositioning/{shelfID}/{platterNb}/{storeID}")
-	private List<ProductPositioning> getALL(@PathVariable("shelfID") int shelfID, @PathVariable("platterNb") int platterNb,
+	private List<ProductPositioning> getALL(@PathVariable("shelfID") int shelfID,
+			@PathVariable("platterNb") int platterNb,
 			@PathVariable("storeID") int storeID) {
 		System.out.println("get list Position");
 		List<ProductPositioning> list = productPosionService.getAllPosstion(platterNb, shelfID, storeID);
@@ -37,7 +36,7 @@ public class ProductPositionAPI {
 		return list;
 	}
 
-// Them mot vi tri san pham moi
+	// Them mot vi tri san pham moi
 	@PostMapping("productPositioning/insert")
 	private ProductPositioning insert(@RequestBody ProductPositioning productPositioning) {
 		System.out.println("Halo Post Position");
@@ -45,8 +44,9 @@ public class ProductPositionAPI {
 		System.out.println(productPositioning2.getProduct().getProductID() + "bar");
 		Product product = productService.getByID(productPositioning.getProduct().getProductID());
 		productPositioning2.setProduct(product);
-//		System.out.println(productPositioning.getDisplayPlatter().getDisPlaID()+" -9");
-//		productPositioning2.setDisplayPlatter(new DisplayPlatter(1));
+		// System.out.println(productPositioning.getDisplayPlatter().getDisPlaID()+"
+		// -9");
+		// productPositioning2.setDisplayPlatter(new DisplayPlatter(1));
 		productPosionService.insert(productPositioning);
 		// productPosionService.insert(productPositioning);
 		return productPositioning2;

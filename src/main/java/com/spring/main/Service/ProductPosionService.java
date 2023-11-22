@@ -27,7 +27,8 @@ public class ProductPosionService {
 	}
 
 	public ProductPositioning getByIDAndStoreID(String productID, int storeID) {
-		ProductPositioning proPositioning = productPositionJPA.findByProductAndStore(new Product(productID), new Store(storeID));
+		ProductPositioning proPositioning = productPositionJPA.findByProductAndStore(new Product(productID),
+			new Store(storeID));
 		return proPositioning;
 	}
 }

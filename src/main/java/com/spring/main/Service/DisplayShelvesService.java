@@ -10,15 +10,21 @@ import com.spring.main.model.DisplayShelves;
 
 @Service
 public class DisplayShelvesService {
-@Autowired
-DisplayShelvesJPA diShelvesJPA;
+	@Autowired
+	DisplayShelvesJPA diShelvesJPA;
 
-public List<DisplayShelves> findAll(int id ){
-	List<DisplayShelves> list = diShelvesJPA.getByStoreID(id);
-	return list;
-}
-public void insert(DisplayShelves displayShelves) {
-	diShelvesJPA.save(displayShelves);
-	
-}
+	public List<DisplayShelves> findAll(int id) {
+		List<DisplayShelves> list = diShelvesJPA.getByStoreID(id);
+		return list;
+	}
+
+	/**
+	 * Luu moi & cap nhat 1 ke trung bay
+	 * 
+	 * @param displayShelves Object ke trung bay
+	 */
+	public void insert(DisplayShelves displayShelves) {
+		diShelvesJPA.save(displayShelves);
+
+	}
 }

@@ -10,14 +10,20 @@ import com.spring.main.model.DisplayPlatter;
 
 @Service
 public class DisplayPlatterService {
-@Autowired
-DisplayPlatterJPA displayPlatterJPA;
+	@Autowired
+	DisplayPlatterJPA displayPlatterJPA;
 
-public List<DisplayPlatter> getAllPlatter(int id){
-	return displayPlatterJPA.getByStoID(id);
-	
-}
-public void insert(DisplayPlatter diPlatterService) {	
-	displayPlatterJPA.save(diPlatterService);
-}
+	public List<DisplayPlatter> getAllPlatter(int id) {
+		return displayPlatterJPA.getByStoID(id);
+
+	}
+
+	/**
+	 * Luu & Cap nhat thong tin 1 mam
+	 * 
+	 * @param diPlatterService Object mam trung bay
+	 */
+	public void insert(DisplayPlatter diPlatterService) {
+		displayPlatterJPA.save(diPlatterService);
+	}
 }

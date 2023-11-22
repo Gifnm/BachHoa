@@ -28,8 +28,6 @@ import com.spring.main.model.Employee;
 import com.spring.main.model.Role;
 import com.spring.main.model.Store;
 
-//import jakarta.websocket.server.PathParam;
-
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/bachhoa/api/")
@@ -102,21 +100,35 @@ public class EmployeeAPI {
 	}
 
 	@GetMapping("login/{passW}/{user}")
-	public Employee login(@PathVariable("passW") String pass, @PathVariable("user") int user) {
+	private ResponseEntity<Employee> login(@PathVariable("passW") String pass, @PathVariable("user") int user) {
 		System.out.println("Login: " + user + " - " + pass);
 		Employee employee = emService.findByID(user);
+		System.out.println("-------");
+
 		if (employee == null) {
-
-			return null;
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		} else {
-			System.out.println("j");
+			System.out.println("Tim thay nhan vien");
 			if (employee.getPassword().equals(pass)) {
-				return employee;
+				System.out.println("Password is correct");
+				return ResponseEntity.ok(employee);
+			} else {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 			}
-			return null;
-
 		}
 
+	}
+
+	@GetMapping("findById/{id}")
+	private ResponseEntity<Employee> login(@PathVariable("id") int id) {
+
+		Employee employee = emService.findByID(id);
+		if (employee == null) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		} else {
+
+			return ResponseEntity.ok(employee);
+		}
 	}
 
 }

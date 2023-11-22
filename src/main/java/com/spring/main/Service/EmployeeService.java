@@ -38,26 +38,8 @@ public class EmployeeService implements UserDetailsService {
 		List<Employee> list = employeeJPA.findAll();
 		return list;
 	}
-	
-	public List<Authority> findAllRoles() {
-		List<Authority> list = authorityJPA.findAll();
-		return list;
-	}
-// Cập nhật thông tin
-	private final String FOLDER_PATH = "C:\\bachhoaimg\\";
 
-	public Employee updateInformation(Employee e){
-		employeeJPA.save(e);
-		return e;
-	}
-// Cập nhật ảnh
-	public void uploadImage(MultipartFile file) throws IllegalStateException, IOException {
-		String filePath = FOLDER_PATH + file.getOriginalFilename();
-		file.transferTo(new File(filePath));
-	}
-	
-	// Đăng ký
-	public Employee insert(Employee employee) {
+	public void insert(Employee employee) {
 		// Gắn mã hóa vào chi tiết của 1 nhân viên (dùng cho những user mới được add sẽ
 		// đc mã hóa luôn)
 		employee.setPassword(passwordEncoder.encode(employee.getPassword()));
@@ -77,6 +59,11 @@ public class EmployeeService implements UserDetailsService {
 		authorityJPA.deleteByRoleAndEmployeeID(roleID, employeeID);
 	}
 
+	/**
+	 * Xoa mot nhan vien
+	 * 
+	 * @param id Ma so nhan vien
+	 */
 	public void detele(Integer id) {
 		employeeJPA.deleteById(id);
 	}
@@ -85,6 +72,11 @@ public class EmployeeService implements UserDetailsService {
 		return employeeJPA.save(employee);
 	}
 
+	/**
+	 * Lay 1 nhan vien
+	 * 
+	 * @param id Ma so nhan vien
+	 */
 	public Employee findByID(Integer id) {
 		Employee employee = employeeJPA.findById(id).get();
 		return employee;
@@ -94,14 +86,14 @@ public class EmployeeService implements UserDetailsService {
 		Employee employee = employeeJPA.findbyEmail(email);
 		return employee;
 	}
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Employee employee = employeeJPA.findbyEmail(email);
-		
+
 		if (employee == null) {
 			throw new UsernameNotFoundException("Không tìm thấy nhân viên.");
-		} 
+		}
 		return new CustomEmployeeDetail(employee);
 	}
 
@@ -148,28 +140,15 @@ public class EmployeeService implements UserDetailsService {
 		}
 		return "Thay đổi mật khẩu thành công.";
 	}
-	
+
 	public boolean userPasswordCheck(String rawPassword, String email) {
 		Employee employee = employeeJPA.findbyEmail(email);
 		if (employee == null) {
 			throw new UsernameNotFoundException("Không tìm thấy nhân viên có email là: " + email);
 		} else {
 			passwordEncoder = new BCryptPasswordEncoder();
-		    String encodedPassword = employee.getPassword();
-		    return passwordEncoder.matches(rawPassword, encodedPassword);
-		}
-	}
-	
-	public boolean CheckStore(String email) {
-		Employee employee = employeeJPA.findbyEmail(email);
-		if (employee == null) {
-			throw new UsernameNotFoundException("Không tìm thấy nhân viên có email là: " + email);
-		} else if (employee.getStore() == null) {
-			System.out.println("check check service");
-			// check nếu không có cửa hàng thì trả true và ngược lại.
-			return true;
-		} else {
-			return false;
+			String encodedPassword = employee.getPassword();
+			return passwordEncoder.matches(rawPassword, encodedPassword);
 		}
 	}
 	
