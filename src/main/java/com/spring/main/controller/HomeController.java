@@ -21,6 +21,12 @@ public class HomeController {
 	public String home(Model model) {
 		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
 		callToast("success");
+		// Toast - Thông báo
+		model.addAttribute("Toast", SessionAttr.Toast);
+		model.addAttribute("Toast_icon", SessionAttr.Icon);
+		model.addAttribute("Toast_show_icon", SessionAttr.Show_Icon);
+		model.addAttribute("Toast_title", SessionAttr.Title);
+		model.addAttribute("Toast_close", SessionAttr.Close);
 		SessionAttr.Show_Icon = SessionAttr.Success_Show_Icon;
 		return "pages/sell/sell";
 	}
@@ -35,9 +41,9 @@ public class HomeController {
 		return "pages/sell/productDetail";
 	}
 
-	@RequestMapping("/sell/endShift")
+	@RequestMapping("/admin/endOfShift")
 	public String endShift() {
-		return "forward:/sell";
+		return "pages/admin/pay/pay";
 	}
 
 	@RequestMapping("/admin/inventoryHistory")

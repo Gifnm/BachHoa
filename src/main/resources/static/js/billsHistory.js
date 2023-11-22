@@ -12,13 +12,34 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 	$scope.form = {};
 	$scope.TotalMoneytoPay = 0;
 
+	// SweetAlert 2
+	var toastMixin = Swal.mixin({
+		toast: true,
+		icon: "success",
+		title: "General Title",
+		animation: false,
+		position: "top-right",
+		showConfirmButton: false,
+		timer: 3000,
+		timerProgressBar: true,
+		customClass: {
+			confirmButton: "btn btn-outline-warning rounded-5 cursor",
+			cancelButton: "btn btn-outline-danger rounded-5 cursor",
+		},
+		buttonsStyling: false,
+		didOpen: (toast) => {
+			toast.addEventListener("mouseenter", Swal.stopTimer);
+			toast.addEventListener("mouseleave", Swal.resumeTimer);
+		},
+	});
+
 
 	$scope.refresh = function () {
 		$scope.autocompleteInput.init();
 		$scope.SetDefaultDate();
 		document.getElementById("bill_ID").value = "";
 		let startDate = startDateFormat(new Date());
-		let endDate = endtDateFormat(new Date());
+		let endDate = endDateFormat(new Date());
 		$scope.findByDate(startDate, endDate, 0);
 	};
 
@@ -78,7 +99,10 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 	$scope.delete = function (billID) {
 		if (!confirm('Bạn sẽ xóa hóa đơn này?')) return;
 		$http.delete(`/bachhoa/api/bill/delete/${billID}`).then(() => {
-			alert("Đã xóa hóa đơn!");
+			toastMixin.fire({
+				title: "Đã xóa hóa đơn!",
+				icon: "success",
+			  });
 			$scope.findByDate($scope.fromDate, $scope.toDate, 0);
 		}).catch(error => {
 			//alert("Hiện không thể xóa hóa đơn!");
@@ -172,20 +196,23 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 	$scope.maxPage = 0;
 	$scope.findByDate = function (fromDate, toDate, index) {
 		if (fromDate > toDate) {
-			alert('Ngày bắt đầu phải nhỏ hơn ngày kết thúc!');
-			let date = new Date();
-			$scope.fromDate = date;
-			$scope.toDate = date;
+			toastMixin.fire({
+				title: "Ngày bắt đầu phải nhỏ hơn ngày kết thúc !!",
+				icon: "warning",
+			  });
+			// let date = new Date();
+			// $scope.fromDate = date;
+			// $scope.toDate = date;
 			return;
 		}
 		let fromD = startDateFormat(fromDate);
 		let toD = endDateFormat(toDate);
 		$http.get(`/bachhoa/api/bill/searchBetween/${fromD}/${toD}?index=${index}`).then(resp => {
-			if(resp.data.content.length == 0){
-                $scope.isNull = true;
-            }else{
-                $scope.isNull = false;
-            }
+			if (resp.data.content.length == 0) {
+				$scope.isNull = true;
+			} else {
+				$scope.isNull = false;
+			}
 			$scope.items = [];
 			$scope.bills = resp.data.content;
 			angular.forEach($scope.bills, function (item) {
@@ -374,7 +401,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		let employeeID = $scope.employee.employeeID;
 		let time = new Date();
 		let startDate = startDateFormat(time);
-		let endDate = endtDateFormat(time);
+		let endDate = endDateFormat(time);
 		$scope.form = {
 			vnd500: 0,
 			vnd200: 0,
@@ -402,7 +429,10 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 	// Nút nộp tiền - Bấm là gửi trạng thái qua cho admin duyệt
 	$scope.sendMoney = function () {
 		if ($scope.TotalMoneytoPay < $scope.totalMoneyYouPay) {
-			alert('Số tiền bạn nộp phải bằng hoặc nhỏ hơn số tiền bạn phải nộp hôm nay!');
+			toastMixin.fire({
+				title: "Số tiền bạn nộp phải bằng hoặc nhỏ hơn số tiền bạn phải nộp hôm nay!",
+				icon: "warning",
+			  });
 			return;
 		}
 		if (!confirm('Bạn xác nhận nộp: ' + $scope.totalMoneyYouPay + ' VND')) return;
@@ -428,8 +458,11 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 			let paymentDetail = angular.copy($scope.form);
 			paymentDetail.paymentHistory = resp.data;
 			console.log(paymentDetail)
-			$http.post(createPD, paymentDetail).then((resp) => {
-				alert("Nộp tiền thành công, hãy đợi quản lý duyệt nhé!");
+			$http.post(createPD, paymentDetail).then(() => {
+				toastMixin.fire({
+					title: "Nộp tiền thành công, hãy đợi quản lý duyệt nhé!",
+					icon: "success",
+				  });
 				window.location = "/logout";
 			}).catch((error) => {
 				alert("Lỗi thêm chi tiết!");

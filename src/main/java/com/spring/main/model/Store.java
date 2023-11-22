@@ -16,11 +16,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "stores")
 public class Store {
@@ -29,7 +33,7 @@ public class Store {
 	@Column(name = "storeID")
 	private int storeID;
 	
-	@Column(name = "storeNAme")
+	@Column(name = "storeName")
 	private String storeName;
 
 	@Column(name = "address")

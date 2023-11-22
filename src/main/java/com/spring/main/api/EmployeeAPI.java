@@ -43,19 +43,18 @@ public class EmployeeAPI {
 
 	}
 
-@GetMapping("authorities")
+	@GetMapping("authorities")
 	public List<Authority> getAllRoles() {
 		return emService.findAllRoles();
 	}
-	
+
 	@DeleteMapping("authorities/deleteBy2ID/{roleID}/{employeeID}")
-	public void deleteAuth(@PathVariable("roleID") String roleID,@PathVariable("employeeID") Integer employeeID ) {
+	public void deleteAuth(@PathVariable("roleID") String roleID, @PathVariable("employeeID") Integer employeeID) {
 		emService.deleteAuth(roleID, employeeID);
 	}
-	
+
 	@PutMapping("employee/updateRoles/{roleID}/{employeeID}")
-	public void updateRole(@PathVariable("roleID") String roleID,@PathVariable("employeeID") Integer employeeID)
-	{
+	public void updateRole(@PathVariable("roleID") String roleID, @PathVariable("employeeID") Integer employeeID) {
 		emService.updateRoles(roleID, employeeID);
 		// return emService.updateRoles(roleID, employeeID);
 	}
@@ -79,12 +78,12 @@ public class EmployeeAPI {
 		// StoreID, Role null at first
 		return emService.insert(employee);
 	}
-	
-	@PutMapping("employee/update/{employeeID}")
-    public Employee update(@PathVariable("employeeID") String employeeID, @RequestBody Employee employee) {
+
+	@PutMapping("employee/update")
+	public Employee update(@RequestBody Employee employee) {
 		return emService.update(employee);
-    }
-	
+	}
+
 	@PostMapping("employee/insert/authorities")
 	public Authority insertAuth(@RequestBody Authority authority) {
 		// System.out.println("test");

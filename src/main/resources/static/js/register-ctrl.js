@@ -42,7 +42,7 @@ app.controller("register-ctrl", function ($scope, $http) {
 
   $scope.getAllUsers = function () {
     // load accounts
-    $http.get("/bachhoa/api/employees").then((resp) => {
+    $http.get("/bachhoa/api/employees/getAll").then((resp) => {
       $scope.employees = resp.data;
     });
   };
@@ -84,55 +84,43 @@ app.controller("register-ctrl", function ($scope, $http) {
       });
     } else {
       var storeInfo = angular.copy($scope.info);
-      if ($scope.stores.find((p) => p.storeName == storeInfo.storeName)) {
+      if ($scope.stores.find(p => p.storeName == storeInfo.storeName)) {
         toastMixin.fire({
           title: "Cửa hàng hiện đã có người sở hữu !",
           icon: "error",
         });
         $event.preventDefault();
       } else {
-        $http
-          .post(`/bachhoa/api/store/insert`, storeInfo)
-          .then((resp) => {
+        $http.post(`/bachhoa/api/store/insert`, storeInfo).then(resp => {
             var addStore = resp.data;
             console.log(addStore);
             $scope.stores.push(resp.data);
             // Tìm nhân viên theo ID
             var employeeID = document.getElementById("employeeID").innerText;
-            $http
-              .get(`/bachhoa/api/employee/findByID/${employeeID}`)
-              .then((resp) => {
-                $scope.employee = resp.data;
+            $http.get(`/bachhoa/api/employee/findByID/${employeeID}`).then(responese => {
+                $scope.employee = responese.data;
                 $scope.authorities = {
                   employee: $scope.employee,
-                  role: { roleID: "qlch", workRole: "Quản lý cửa hàng" },
+                  role: { roleID: "qlch", workRole: "Quản lý cửa hàng" }
                 };
-                if (
-                  $scope.authority.find(
-                    (a) => a.employeeID == $scope.employee.employeeID
-                  )
-                ) {
-                  console.log("Đã có auth.").then(() => {});
+                if ($scope.authority.find(a => a.employeeID == $scope.employee.employeeID)) {
+                  console.log("Đã có auth.");
                 } else {
                   // Thêm auth mới
-                  $http.post(
-                    `/bachhoa/api/employee/insert/authorities`,
-                    $scope.authorities
-                  );
+                  alert("chuan bi ne")
+                  $http.post(`/bachhoa/api/employee/insert/authorities`, $scope.authorities).then(() =>{
+                    alert("them roi ne")
+                  });
                 }
                 // Update role lại
                 var role = "qlch";
-                $http
-                  .put(
-                    `/bachhoa/api/employee/updateRoles/${role}/${employeeID}`
-                  )
-                  .then(() => {});
+                $http.put(`/bachhoa/api/employee/updateRoles/${role}/${employeeID}`).then(resp => {console.log(resp.data)});
                 $scope.employee.store = addStore;
                 $scope.employee.active = 1;
                 // console.log($scope.employee);
                 $http
                   .put(
-                    `/bachhoa/api/employee/update/${employeeID}`,
+                    `/bachhoa/api/employee/update`,
                     $scope.employee
                   )
                   .then(() => {

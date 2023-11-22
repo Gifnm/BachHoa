@@ -1,6 +1,7 @@
 package com.spring.main.model;
 
 import java.sql.Date;
+import java.util.List;
 
 //import jakarta.persistence.Column;
 //import jakarta.persistence.Entity;

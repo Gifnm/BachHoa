@@ -1,5 +1,26 @@
 const app = angular.module("app", ["ui.bootstrap", "ui.tab.scroll"]);
 app.controller("bill-ctrl", function ($scope, $http) {
+    // SweetAlert 2
+    var toastMixin = Swal.mixin({
+        toast: true,
+        icon: "success",
+        title: "General Title",
+        animation: false,
+        position: "top-right",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        customClass: {
+            confirmButton: "btn btn-outline-warning rounded-5 cursor",
+            cancelButton: "btn btn-outline-danger rounded-5 cursor",
+        },
+        buttonsStyling: false,
+        didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
+
     // gợi ý sản phẩm
     $scope.autocompleteInput = {
         autocomplete(inp, arr) {
@@ -131,6 +152,9 @@ app.controller("bill-ctrl", function ($scope, $http) {
     $scope.employee = {};
     $scope.form = {};
     $scope.admin = false;
+
+
+
 
     var stt = 1;
     // Khởi tạo 1 bill tạm đầu tiên
@@ -619,10 +643,11 @@ app.controller("bill-ctrl", function ($scope, $http) {
         //alert('thong bao tai in' + billID)
         let data = $scope.bills.find(item => item.bill.billID == billID);
         let item = data.bill;
-        item.totalAmount = parseInt(document.getElementById('amountReceivable').innerText.replace(',', ''));
+        item.totalAmount = parseInt(document.getElementById('totalAmount').innerText.replaceAll(',', ''));
         item.cash = parseInt(document.getElementById('cash').value);
-        item.reduced = parseInt(document.getElementById('discount').innerText.replace(',', ''));
+        item.reduced = parseInt(document.getElementById('discount').innerText.replaceAll(',', ''));
         item.timeCreate = new Date().getTime();
+        alert(item.totalAmount)
         if (item.cash < $scope.roundAmountReceivable) {
             //alert('loi')
             document.getElementById('errorAlert').setAttribute("style", "display: block;");
@@ -646,8 +671,39 @@ app.controller("bill-ctrl", function ($scope, $http) {
 
 
     //------------------------------------------------//
+
     // Cập nhật thông tin nhân viên
     $scope.updateEmployee = function () {
+        const AGE = document.getElementById("age").value;
+
+        const ThisYear = new Date();
+        const EmployeeBorn = new Date(AGE);
+        const Timelines = ThisYear - EmployeeBorn;
+        if ($scope.form.email == null || $scope.form.email == "") {
+            toastMixin.fire({
+                title: "Vui lòng nhập email của bạn, hãy kiểm tra lại !",
+                icon: "warning",
+            });
+            return;
+        } else if (AGE == null || AGE == "") {
+            toastMixin.fire({
+                title: "Vui lòng nhập độ tuổi hiện tại của bạn, hãy xem lại !",
+                icon: "warning",
+            });
+            return;
+        } else if (Timelines <= 568036800000) {
+            toastMixin.fire({
+                title: "Bạn chưa đủ độ tuổi làm việc (18 tuổi), hãy xem lại !",
+                icon: "warning",
+            });
+            return;
+        } else if ($scope.form.address == null || $scope.form.address == "") {
+            toastMixin.fire({
+                title: "Hãy nhập địa chỉ thường trú của bạn !",
+                icon: "warning",
+            });
+            return;
+        }
         const formData = new FormData();
         const fileField = document.querySelector('input[id="uploadImage"]');
         formData.append('file', fileField.files[0]);
@@ -660,7 +716,10 @@ app.controller("bill-ctrl", function ($scope, $http) {
             $http.post(`/bachhoa/api/employee/updatePhoto`, formData, { transformRequest: angular.identity, headers: { 'Content-Type': undefined } }).then(resp => {
                 $http.post(`/bachhoa/api/employee/updateInformation`, data).then(resp => {
                     document.getElementById('img-preview').src = data.pictureURL;
-                    alert("Cập nhật thông tin thành công!")
+                    toastMixin.fire({
+                        title: "Cập nhật thông tin thành công !",
+                        icon: "success",
+                      });
                 }).catch(error => {
                     console.log(error);
                 })
@@ -670,9 +729,11 @@ app.controller("bill-ctrl", function ($scope, $http) {
         } else {
             $http.post(`/bachhoa/api/employee/updateInformation`, data).then(resp => {
                 console.log(resp.data);
-                alert("Cập nhật thông tin thành công!")
                 $scope.employee = resp.data;
-                console.log()
+                toastMixin.fire({
+                    title: "Cập nhật thông tin thành công !",
+                    icon: "success",
+                  });
             }).catch(error => {
                 console.log(error);
             })
