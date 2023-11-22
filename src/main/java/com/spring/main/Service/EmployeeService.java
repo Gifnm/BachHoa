@@ -38,8 +38,26 @@ public class EmployeeService implements UserDetailsService {
 		List<Employee> list = employeeJPA.findAll();
 		return list;
 	}
+	
+	public List<Authority> findAllRoles() {
+		List<Authority> list = authorityJPA.findAll();
+		return list;
+	}
+	
+	// Cập nhật thông tin
+		private final String FOLDER_PATH = "C:\\bachhoaimg\\";
 
-	public void insert(Employee employee) {
+		public Employee updateInformation(Employee e){
+			employeeJPA.save(e);
+			return e;
+		}
+	// Cập nhật ảnh
+		public void uploadImage(MultipartFile file) throws IllegalStateException, IOException {
+			String filePath = FOLDER_PATH + file.getOriginalFilename();
+			file.transferTo(new File(filePath));
+		}
+
+	public Employee insert(Employee employee) {
 		// Gắn mã hóa vào chi tiết của 1 nhân viên (dùng cho những user mới được add sẽ
 		// đc mã hóa luôn)
 		employee.setPassword(passwordEncoder.encode(employee.getPassword()));
@@ -152,5 +170,16 @@ public class EmployeeService implements UserDetailsService {
 		}
 	}
 	
-	
+	public boolean CheckStore(String email) {
+		Employee employee = employeeJPA.findbyEmail(email);
+		if (employee == null) {
+			throw new UsernameNotFoundException("Không tìm thấy nhân viên có email là: " + email);
+		} else if (employee.getStore() == null) {
+			System.out.println("check check service");
+			// check nếu không có cửa hàng thì trả true và ngược lại.
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

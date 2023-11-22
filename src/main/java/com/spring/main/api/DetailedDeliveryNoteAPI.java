@@ -60,7 +60,7 @@ public class DetailedDeliveryNoteAPI {
 			purchaseHistory.setSysInventory(detailedDeliveryNote.getProduct().getInventory());
 			purchaseHistory.setQuantityReceived(detailedDeliveryNote.getQuantity());
 			purchaseHistory.setConfirmedQuantity(detailedDeliveryNote.getCount());
-			purchaseHistory.setEmployee(new Employee(employeeID));
+			purchaseHistory.setEmployee(new Employee());
 			purchaseHistoryService.save(purchaseHistory);
 			Product product = detailedDeliveryNote.getProduct();
 			product.setInventory(product.getInventory() + detailedDeliveryNote.getCount());
