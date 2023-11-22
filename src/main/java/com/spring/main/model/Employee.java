@@ -20,6 +20,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Entity
@@ -49,13 +51,13 @@ public class Employee {
 	@ManyToOne
 	@JoinColumn(name = "storeID")
 	private Store store;
-
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "Id")
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
 	private List<Authority> authorities;
 	
-	@Column(name = "activity")
-	private boolean activity;
+	@Column(name = "active")
+	private boolean active;
 	
 	@Column(name = "email")
 	private String email;
