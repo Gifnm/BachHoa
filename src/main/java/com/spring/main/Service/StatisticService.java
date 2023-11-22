@@ -32,19 +32,13 @@ public class StatisticService {
         try {
             stDate = new Timestamp(dateFormat.parse(startDate).getTime());
             enDate = new Timestamp(dateFormat.parse(endDate).getTime());
+            enDate.setHours(23);
+            enDate.setMinutes(59);
+            enDate.setSeconds(59);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         List<Bill> bills = billJpa.findAllByTimeCreateBetween(stDate, enDate);
-        // System.out.println("LIST BILLS: " + stDate + " - " + enDate + " - " +
-        // typeMileStone + "\n");
-        // for (Bill bill : bills) {
-        // System.out.println(bill.getTimeCreate() + " - " + bill.getTotalAmount() +
-        // "\n");
-        // }
-
-        // System.out.println("LIST REVENUE & SORT REVENUE: " + stDate + " - " + enDate
-        // + " - " + typeMileStone + "\n");
         Map<String, Float> revenueMap = new HashMap<>();
         for (Bill bill : bills) {
             String mileStone = getMileStone(bill.getTimeCreate(), typeMileStone);
@@ -68,6 +62,9 @@ public class StatisticService {
         try {
             stDate = new Timestamp(dateFormat.parse(startDate).getTime());
             enDate = new Timestamp(dateFormat.parse(endDate).getTime());
+            enDate.setHours(23);
+            enDate.setMinutes(59);
+            enDate.setSeconds(59);
         } catch (ParseException e) {
             e.printStackTrace();
         }

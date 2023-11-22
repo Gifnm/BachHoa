@@ -29,7 +29,7 @@ public class BillService {
 	public Page<Bill> searchBetween(Timestamp fromDate, Timestamp toDate, Pageable page) {
 		return billJPA.SearchBetween2Date(fromDate, toDate, page);
 	}
-	
+
 	public List<Bill> findByEmployeeAndDate(Integer employeeID, Timestamp fromDate, Timestamp toDate) {
 		return billJPA.findByEmployeeAndDate(employeeID, fromDate, toDate);
 	}
@@ -53,6 +53,9 @@ public class BillService {
 		try {
 			stDate = new Timestamp(dateFormat.parse(fromDate).getTime());
 			enDate = new Timestamp(dateFormat.parse(toDate).getTime());
+			enDate.setHours(23);
+			enDate.setMinutes(59);
+			enDate.setSeconds(59);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
