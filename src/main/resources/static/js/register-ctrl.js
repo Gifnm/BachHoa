@@ -112,7 +112,7 @@ app.controller("register-ctrl", function ($scope, $http) {
                     (a) => a.employeeID == $scope.employee.employeeID
                   )
                 ) {
-                  console.log("Đã có auth.").then(() => {});
+                  console.log("Đã có auth.");
                 } else {
                   // Thêm auth mới
                   $http.post(
@@ -205,7 +205,7 @@ app.controller("register-ctrl", function ($scope, $http) {
             (a) => a.employeeID == $scope.employee.employeeID
           )
         ) {
-          console.log("Đã có auth.").then(() => {});
+          console.log("Đã có auth.");
         } else {
           // Thêm auth mới cho account
           $http.post(

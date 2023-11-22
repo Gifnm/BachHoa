@@ -18,7 +18,7 @@ import com.spring.main.model.Authority;
 import com.spring.main.model.Employee;
 
 @CrossOrigin("*")
-@RestController
+@RestController()
 @RequestMapping("/bachhoa/api/")
 public class EmployeeAPI {
 	@Autowired
@@ -56,7 +56,7 @@ public class EmployeeAPI {
 	
 	@GetMapping("employee/findByID/{employeeID}")
 	public Employee getByID(@PathVariable("employeeID") Integer employeeID) {
-		// System.out.println(employeeID + "hm");
+		//System.out.println(employeeID + " đã được tìm thấy");
 		return emService.findByID(employeeID);
 
 	}
@@ -75,7 +75,7 @@ public class EmployeeAPI {
 	
 	@PostMapping("employee/insert/authorities")
 	public Authority insertAuth(@RequestBody Authority authority) {
-		// System.out.println("test");
+		System.out.println("thêm auth");
 		return emService.insertAuth(authority);
 	}
 

@@ -14,6 +14,9 @@ public class Store {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "storeID")
 	private int storeID;
+	
+	@Column(name = "storeName")
+	private String storeName;
 
 	@Column(name = "address")
 	private String address;
@@ -60,6 +63,16 @@ public class Store {
 	public void setSize(String size) {
 		this.size = size;
 	}
+
+	public String getStoreName() {
+		return storeName;
+	}
+
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
+	
+	
 
 //    @OneToMany(mappedBy = "store")
 //    private List<Warehouse> warehouses;
