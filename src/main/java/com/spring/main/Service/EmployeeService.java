@@ -1,5 +1,7 @@
 package com.spring.main.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -10,8 +12,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.main.jpa.AuthorityJPA;
 import com.spring.main.jpa.EmployeeJPA;
+import com.spring.main.model.Authority;
 import com.spring.main.model.CustomEmployeeDetail;
 import com.spring.main.model.Employee;
 import com.spring.main.util.EmailUtil;
@@ -22,6 +27,8 @@ public class EmployeeService implements UserDetailsService {
 	@Autowired
 	private EmployeeJPA employeeJPA;
 	@Autowired
+	private AuthorityJPA authorityJPA;
+	@Autowired
 	private EmailUtil emailUtil;
 
 	/* Mã hóa password */
@@ -31,34 +38,53 @@ public class EmployeeService implements UserDetailsService {
 		List<Employee> list = employeeJPA.findAll();
 		return list;
 	}
+	
+	public List<Authority> findAllRoles() {
+		List<Authority> list = authorityJPA.findAll();
+		return list;
+	}
+// Cập nhật thông tin
+	private final String FOLDER_PATH = "C:\\bachhoaimg\\";
 
-	/**
-	 * Luu moi & cap nhat thong tin 1 nhan vien
-	 * 
-	 * @param employee Object nhan vien
-	 */
-	public void insert(Employee employee) {
+	public Employee updateInformation(Employee e){
+		employeeJPA.save(e);
+		return e;
+	}
+// Cập nhật ảnh
+	public void uploadImage(MultipartFile file) throws IllegalStateException, IOException {
+		String filePath = FOLDER_PATH + file.getOriginalFilename();
+		file.transferTo(new File(filePath));
+	}
+	
+	// Đăng ký
+	public Employee insert(Employee employee) {
 		// Gắn mã hóa vào chi tiết của 1 nhân viên (dùng cho những user mới được add sẽ
 		// đc mã hóa luôn)
 		employee.setPassword(passwordEncoder.encode(employee.getPassword()));
-		employeeJPA.save(employee);
+		return employeeJPA.save(employee);
+	}
+	
+	public void updateRoles(String roleID, Integer EmpolyeeID) {
+		employeeJPA.updateRole(roleID, EmpolyeeID);
+		// return employeeJPA.updateRole(roleID, EmpolyeeID);
+	}
+	
+	public Authority insertAuth(Authority authority) {
+		return authorityJPA.save(authority);
+	}
+	
+	public void deleteAuth(String roleID, Integer employeeID) {
+		authorityJPA.deleteByRoleAndEmployeeID(roleID, employeeID);
 	}
 
-	/**
-	 * Xoa mot nhan vien
-	 * 
-	 * @param id Ma so nhan vien
-	 */
 	public void detele(Integer id) {
 		employeeJPA.deleteById(id);
-
+	}
+	
+	public Employee update(Employee employee) {
+		return employeeJPA.save(employee);
 	}
 
-	/**
-	 * Lay 1 nhan vien
-	 * 
-	 * @param id Ma so nhan vien
-	 */
 	public Employee findByID(Integer id) {
 		Employee employee = employeeJPA.findById(id).get();
 		return employee;
@@ -131,6 +157,19 @@ public class EmployeeService implements UserDetailsService {
 			passwordEncoder = new BCryptPasswordEncoder();
 		    String encodedPassword = employee.getPassword();
 		    return passwordEncoder.matches(rawPassword, encodedPassword);
+		}
+	}
+	
+	public boolean CheckStore(String email) {
+		Employee employee = employeeJPA.findbyEmail(email);
+		if (employee == null) {
+			throw new UsernameNotFoundException("Không tìm thấy nhân viên có email là: " + email);
+		} else if (employee.getStore() == null) {
+			System.out.println("check check service");
+			// check nếu không có cửa hàng thì trả true và ngược lại.
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
