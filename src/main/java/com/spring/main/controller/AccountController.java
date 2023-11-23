@@ -74,7 +74,7 @@ public class AccountController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		if (authentication == null || authentication instanceof AnonymousAuthenticationToken
-			|| SessionAttr.USER_INFO.isActive() == false) {
+				|| SessionAttr.USER_INFO.isActive() == false) {
 			model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
 			// Toast - Thông báo
 			model.addAttribute("Toast", SessionAttr.Toast);
@@ -82,7 +82,7 @@ public class AccountController {
 			model.addAttribute("Toast_show_icon", SessionAttr.Show_Icon);
 			model.addAttribute("Toast_title", SessionAttr.Title);
 			model.addAttribute("Toast_close", SessionAttr.Close);
-			return "pages/account/Login";
+			return "pages/account/login";
 		}
 		// SessionAttr.USER_INFO = ES.findByEmail(authentication.getName());
 
@@ -207,7 +207,7 @@ public class AccountController {
 
 	@PostMapping("/set-password")
 	public String setPassword(Model model, @RequestParam("new_Password") String newPass,
-		@RequestParam("verify_Password") String VerifyPass) {
+			@RequestParam("verify_Password") String VerifyPass) {
 		String email = sessionService.get("email");
 		ES.setPassword(email, newPass, VerifyPass);
 		SessionAttr.CURRENT_MESSAGE = "Thay đổi mật khẩu thành công !";
