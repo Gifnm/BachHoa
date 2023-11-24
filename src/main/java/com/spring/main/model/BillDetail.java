@@ -2,6 +2,8 @@ package com.spring.main.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -10,10 +12,12 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
 @IdClass(BillDetailID.class)
+@EqualsAndHashCode
 @Table(name = "bill_details")
 public class BillDetail {
 	@Id
@@ -34,6 +38,9 @@ public class BillDetail {
 
 	@Column(name = "quantity")
 	private int quantity;
+
+	@Column(name = "quantityGift")
+	private int quantityGift;
 
 	@Column(name = "totalAmount")
 	private float totalAmount;

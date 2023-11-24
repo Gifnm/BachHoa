@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en" ng-app="app">
+
+<head>
+    <title>Quản lý chương trình khuyến mãi</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <main>
+        <div ng-controller="discountManagement-ctrl">
+            <header>
+                <div class="px-3 py-2 bg-opacity-75 bg-gradient bg-primary">
+                    <div class="d-flex">
+                        <div
+                            class="d-flex align-items-center my-2 my-lg-0 me-lg-auto col text-white text-decoration-none">
+                            <div class="d-flex align-items-center p-3 col-12 col-md-6">
+                                <div class="autocomplete d-flex text-dark">
+                                    <input id="product" type="text" class="form-control" ng-model="productID"
+                                        placeholder="Mã sản phẩm" list="datalistProduct1">
+                                    <datalist id="datalistProduct1">
+                                        <option ng-repeat="product in listProduct" value="{{product}}">
+
+                                    </datalist>
+                                    <button class="btn btn-info ms-2 shadow-lg">
+                                        <i class="bi bi-search" ng-click="findByProductID(productID)"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                            <li class="d-flex align-items-center p-3">
+                                <label for="" class="w-100 text-white">Từ ngày: </label><br>
+                                <div class="ms-2">
+                                    <input id="from_Date" type="date" class="form-control" ng-model="fromDate"
+                                        ng-change="findByDate(fromDate, toDate)">
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center p-3">
+                                <label for="" class="w-100 text-white">Đến ngày: </label><br>
+                                <div class="ms-2">
+                                    <input id="to_Date" type="date" class="form-control" ng-model="toDate"
+                                        ng-change="findByDate(fromDate, toDate)">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+            <div class="container mt-3"><!-- Button trigger modal -->
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createDiscount">
+                    Thêm KM
+                </button>
+            </div>
+            <div class="mt-2 border border-info rounded-2 m-auto" style="width: 85%;">
+                <table class="table table-responsive text-center table-hover mb-0 align-middle">
+                    <thead class="bg-info text-white">
+                        <tr>
+                            <th scope="col">Mã sản phẩm</th>
+                            <th scope="col">Sản phẩm</th>
+                            <th scope="col">Khuyến mãi</th>
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col">Ngày bắt đầu</th>
+                            <th scope="col">Ngày kết thúc</th>
+                            <th scope="col" colspan="2">Điều chỉnh</th>
+                            <!-- <th scope="col"></th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="isNull">
+                            <td colspan="7">Không có dữ liệu</td>
+                        </tr>
+                        <tr ng-repeat="item in items track by $index">
+                            <td style="width: 10%;">{{item.productID}}</td>
+                            <td style="width: 15%;">{{item.product.productName}}</td>
+                            <td style="width: 10%;">{{item.discount.discountType}}</td>
+                            <td style="width: 10%;">{{item.activity?'Đang áp dụng':'Đã kết thúc'}}</td>
+                            <td style="width: 15%;">{{item.startTime | date:'dd/MM/yyyy'}}</td>
+                            <td style="width: 15%;">{{item.endTime | date:'dd/MM/yyyy'}}</td>
+                            <td style="width: 10%;">
+                                <button ng-click="stop(item.productID)" ng-if="item.activity" class="btn btn-primary">
+                                    Kết thúc
+                                </button>
+                            </td>
+                            <td style="width: 15%;">
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editDiscount"
+                                    ng-click="edit(item.productID)">
+                                    Điều chỉnh
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- modal tạo khuyến mãi -->
+                <div class="modal fade" id="createDiscount" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="999" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-gradient bg-primary text-white">
+                                <h5 class="modal-title" id="exampleModalLabel">Thêm chương trình khuyến mãi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-3">
+                                <div class="row m-auto">
+                                    <div class="col-4 p-3 d-flex flex-column align-items-center"
+                                        style="background-color: #e7ebf5;">
+                                        <label class="mb-2">Danh sách sản phẩm</label>
+                                        <table class="table bg-white">
+                                            <tbody>
+                                                <tr ng-repeat="productID in listProductID">
+                                                    <td style="width: 85%;">{{productID}}</td>
+                                                    <td style="width: 15%;"><button ng-click="removeItem(productID)"
+                                                            type="button" class="btn-close"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-8">
+                                        <form class="p-2" validate>
+                                            <div class="mb-3 row">
+                                                <label for="productID" class="col-sm-3 col-form-label">Mã sản
+                                                    phẩm</label>
+                                                <div class="col-sm-9 d-flex">
+                                                    <input type="text" class="form-control" id="productID"
+                                                        list="datalistProduct2" ng-model="id">
+                                                    <datalist id="datalistProduct2">
+                                                        <option ng-repeat="product in listProduct" value="{{product}}">
+                                                    </datalist>
+                                                    <button class="btn btn-info ms-2 shadow-lg" ng-click="addList(id)">
+                                                        <i class="bi bi-patch-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="productID" class="col-sm-3 col-form-label">Loại hình
+                                                    KM</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-select" ng-model="form.disID">
+                                                        <option value="">Vui lòng chọn 1 loại hình KM</option>
+                                                        <option value="S25">Giảm giá 25%</option>
+                                                        <option value="S50">Giảm giá 50%</option>
+                                                        <option value="2T1">Mua 2 tặng 1</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="startDate" class="col-sm-3 col-form-label">Ngày bắt
+                                                    đầu</label>
+                                                <div class="col-sm-9">
+                                                    <input type="date" class="form-control" id="startDate"
+                                                        ng-model="form.startDate">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="endDate" class="col-sm-3 col-form-label">Ngày kết
+                                                    thúc</label>
+                                                <div class="col-sm-9">
+                                                    <input type="date" class="form-control" id="endDate"
+                                                        ng-model="form.endDate">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-between">
+                                <div class="total-number">
+                                    <span>Tổng số sản phẩm sẽ được khuyến mãi: <strong>{{totalProduct}}</strong></span>
+                                    <b id="totalMoney" class="number">{{totalMoneyYouPay | number}}</b>
+                                </div>
+                                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button> -->
+                                <button type="button" class="btn btn-success" ng-click="save()">Thêm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row w-75 m-auto mt-3" id="pagination">
+                <div class="col-4">
+                    <b class="count">Hiện có {{totalReceived}} khuyến mãi.</b>
+                </div>
+                <div class="col-8 text-end">
+                    <button ng-click="findByDate(fromDate,toDate,index - 1)"
+                        class="btn btn-outline-primary {{index == 0 ? 'disabled':''}}">Trước</button>
+                    <button ng-repeat="item in pages" ng-click="findByDate(fromDate,toDate,item - 1)"
+                        class="btn btn-outline-primary {{index == item - 1? 'active':''}} m-1 mb-0 mt-0"><b>
+                            {{item}}</b> </button>
+                    <button ng-click="findByDate(fromDate,toDate,index + 1)"
+                        class="btn btn-outline-primary {{index == maxPage - 1 ? 'disabled':''}}">Sau</button>
+                </div>
+            </div>
+            <!-- Modal cập nhật khuyến mãi -->
+            <div class="modal fade" id="editDiscount" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="999"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Cập nhật chương trình khuyến mãi</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="p-2">
+                                <div class="mb-3 row">
+                                    <label for="productID" class="col-sm-3 col-form-label">Mã sản phẩm</label>
+                                    <div class="col-sm-9 d-flex">
+                                        <input type="text" class="form-control" ng-model="discountDetail.productID"
+                                            disabled>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="productID" class="col-sm-3 col-form-label">Loại hình
+                                        KM</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select" ng-model="discountDetail.disID">
+                                            <option ng-repeat="dis in discountList" value="{{dis.value}}">{{dis.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="startDate" class="col-sm-3 col-form-label">Ngày bắt
+                                        đầu</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control" id="startDate"
+                                            ng-model="discountDetail.startTime">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="endDate" class="col-sm-3 col-form-label">Ngày kết
+                                        thúc</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control" id="endDate"
+                                            ng-model="discountDetail.endTime">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="start" class="btn btn-success"
+                                ng-click="update(discountDetail.productID)">Bắt đầu</button>
+                            <button type="button" id="close" class="btn btn-danger"
+                                ng-click="delete(discountDetail.productID)">Xóa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="../js/discountManagemnet.js"></script>
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+        </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+        </script>
+</body>
+
+</html>

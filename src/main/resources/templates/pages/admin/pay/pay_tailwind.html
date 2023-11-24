@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Tailwindcss -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <main>
+        <div ng-controller="paymentHistory-ctrl">
+            <header>
+                <div class="grid grid-cols-12 px-5 py-2 bg-cyan-400">
+                    <div class="flex px-3 col-start-1 col-end-5 items-center">
+                            <input id="employee" type="text" class="rounded p-2 w-80" ng-model="employeeID"
+                                placeholder="Nhân viên" list="datalistEmployee">
+                            <datalist id="datalistEmployee">
+                                <option ng-repeat="employeeName in listEmployee" value="{{employeeName}}">
+                            </datalist>
+                            <button class="mx-5" ng-click="loadHistoryByEmployee(employeeID)">                
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                </svg>
+                            </button>
+                    </div>
+
+                    <div class="flex col-end-13 col-span-5 items-center justify-end">
+                        <div class="flex p-3 items-center mr-2">
+                            <label for="" class="text-white">Từ ngày: </label>
+                            <div class="ms-2">
+                                <input id="from_Date" type="date" class="rounded p-2" ng-model="fromDate"
+                                    ng-change="findByDate(fromDate, toDate, 0)">
+                            </div>
+                        </div>
+                        <div class="flex p-3 items-center">
+                            <label for="" class="text-white">Đến ngày: </label>
+                            <div class="ms-2">
+                                <input id="to_Date" type="date" class="rounded p-2" ng-model="toDate"
+                                    ng-change="findByDate(fromDate, toDate, 0)">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </header>
+            <div class="mt-5 border rounded m-auto" style="width: 85%;">
+                <table class="table-auto rounded">
+                    <thead class="bg-sky-300 ">
+                        <tr class="rounded-t">
+                            <th class="p-3 rounded-ss">Nhân viên</th>
+                            <th class="p-3">Ngày nộp</th>
+                            <th class="p-3">Phải thu</th>
+                            <th class="p-3">Đã thu</th>
+                            <th class="p-3">Thiếu</th>
+                            <th class="p-3">Ngày thu</th>
+                            <th class="p-3">Người thu</th>
+                            <th class="p-3 rounded-se">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in items" style="cursor: pointer;" data-bs-toggle="modal"
+                            data-bs-target="#paymentDetail" ng-click="showPaymentDetail(item.id)">
+                            <td style="width: 15%;">{{item.employee.employeeName}}</td>
+                            <td style="width: 15%;">
+                                {{item.timePay}}</td>
+                            <td style="width: 10%;">{{item.totalAmount | number}} VND</td>
+                            <td style="width: 10%;">{{item.totalReceived | number}} VND</td>
+                            <td style="width: 10%;">{{item.totalAmount - item.totalReceived | number}} VND</td>
+                            <td style="width: 15%;">
+                                {{item.timeReceived}}</td>
+                            <td style="width: 15%;">{{item.admin.employeeName}}</td>
+                            <td style="width: 10%;">
+                                <button ng-show="{{item.paied == 0 || item.paied == 2}}" ng-click="pay(item.id)"
+                                    class="btn {{item.paied == 2?'disabled btn-primary':'btn-danger'}}">
+                                    {{item.status}}
+                                </button>
+                                <button ng-show="{{item.paied == 1}}" ng-click="payContinue(item.id)"
+                                    class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#tiepTucThu">
+                                    {{item.status}}
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- modal tailwind -->
+                <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <!--
+                      Background backdrop, show/hide based on modal state.
+                  
+                      Entering: "ease-out duration-300"
+                        From: "opacity-0"
+                        To: "opacity-100"
+                      Leaving: "ease-in duration-200"
+                        From: "opacity-100"
+                        To: "opacity-0"
+                    -->
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+                  
+                    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <!--
+                          Modal panel, show/hide based on modal state.
+                  
+                          Entering: "ease-out duration-300"
+                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            To: "opacity-100 translate-y-0 sm:scale-100"
+                          Leaving: "ease-in duration-200"
+                            From: "opacity-100 translate-y-0 sm:scale-100"
+                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        -->
+                        <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                          <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                            <div class="sm:flex sm:items-start">
+                              <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                </svg>
+                              </div>
+                              <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Deactivate account</h3>
+                                <div class="mt-2">
+                                  <p class="text-sm text-gray-500">Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Deactivate</button>
+                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  
+                <!-- modal tiếp tục thu -->
+                <div class="modal fade" id="tiepTucThu" tabindex="999" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-gradient bg-primary text-white">
+                                <h5 class="modal-title" id="exampleModalLabel">Tiếp thu tiền còn thiếu</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="">
+                                    <div>
+                                        <span>Thu tiền cho nhân viên,
+                                        </span><b>{{paymentHistory.employee.employeeName}}</b>
+                                    </div>
+                                    <div>
+                                        <span>Tổng tiền còn lại phải nộp là: </span> <b>{{paymentHistory.totalAmount -
+                                            paymentHistory.totalReceived | number}}
+                                            VNĐ</b>
+                                    </div>
+                                    <hr style="border: 5px solid steelblue;" class="rounded-1">
+                                    <div>
+                                        <span>Hãy nhập chính xác các mệnh giá bên dưới !</span>
+                                        <div class="row mt-2">
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="500">Tờ 500k</label>
+                                                <input type="number" class="form-control" id="500" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd500">
+                                            </div>
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="200">Tờ <span id="price">200</span>k</label>
+                                                <input type="number" class="form-control" id="200" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd200">
+                                            </div>
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="100">Tờ 100k</label>
+                                                <input type="number" class="form-control" id="100" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd100">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="50">Tờ 50k</label>
+                                                <input type="number" class="form-control" id="50" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd50">
+                                            </div>
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="20">Tờ 20k</label>
+                                                <input type="number" class="form-control" id="20" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd20">
+                                            </div>
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="10">Tờ 10k</label>
+                                                <input type="number" class="form-control" id="10" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd10">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="5">Tờ 5k</label>
+                                                <br>
+                                                <input type="number" class="form-control" id="5" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd5">
+                                            </div>
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="2">Tờ 2k</label>
+                                                <br>
+                                                <input type="number" class="form-control" id="2" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd2">
+                                            </div>
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="1">Tờ 1k</label>
+                                                <br>
+                                                <input type="number" class="form-control" id="1" value="0"
+                                                    ng-change="updateTotalMoney()" oninput="validity.valid||(value='');"
+                                                    min="0" ng-model="form.vnd1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-between">
+                                <div class="total-number">
+                                    <span>Tổng tiền mà bạn nộp: </span>
+                                    <b id="totalMoney" class="number">{{totalMoneyYouPay | number}}</b>
+                                    <span class="Dong-sign"> VND</span>
+                                </div>
+                                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button> -->
+                                <button type="button" class="btn btn-success" ng-click="payUpdate(paymentHistory.id)"
+                                    id="pay">Nộp tiền</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row w-75 m-auto mt-3">
+                <div class="col-2">
+                    <b class="count">Tổng số lượt thu: {{totalReceived}}</b>
+                </div>
+                <div class="col-10 text-end">
+                    <button ng-click="findByDate(fromDate,toDate,index - 1)"
+                        class="btn btn-outline-primary {{index == 0 ? 'disabled':''}}">Trước</button>
+                    <button ng-repeat="item in pages" ng-click="findByDate(fromDate,toDate,item - 1)"
+                        class="btn btn-outline-primary {{index == item - 1? 'active':''}} m-1 mb-0 mt-0"><b>
+                            {{item}}</b> </button>
+                    <button ng-click="findByDate(fromDate,toDate,index + 1)"
+                        class="btn btn-outline-primary {{index == maxPage - 1 ? 'disabled':''}}">Sau</button>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="paymentDetail" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Chi tiết nộp tiền (đơn vị: tờ)</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row mt-3 text-center">
+                                <div class="col-md-4 ms-auto">
+                                    <img src="../images/VND/500k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd500}}</strong>
+                                </div>
+                                <div class="col-md-4 ms-auto">
+                                    <img src="../images/VND/200k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd200}}</strong>
+                                </div>
+                                <div class="col-md-4 ms-auto">
+                                    <img src="../images/VND/100k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd100}}</strong>
+                                </div>
+                            </div>
+                            <div class="row mt-3 text-center">
+                                <div class="col-md-4 ms-auto">
+                                    <img src="../images/VND/50k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd50}}</strong>
+                                </div>
+                                <div class="col-md-4 ms-auto">
+                                    <img src="../images/VND/20k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd20}}</strong>
+                                </div>
+                                <div class="col-md-4 ms-auto">
+                                    <img src="../images/VND/10k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd10}}</strong>
+                                </div>
+                            </div>
+                            <div class="row my-3 text-center">
+                                <div class="col-md-4 ms-auto">
+                                    <img src="../images/VND/5k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd5}}</strong>
+                                </div>
+                                <div class="col-md-4 ms-auto">
+                                    <img src="../images/VND/2k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;" b>{{paymentDetail.vnd2}}</strong>
+                                </div>
+                                <div class="col-md-4 ms-auto">
+                                    <img src="../images/VND/1k.jpg" alt="500,000 VND" width="70%">
+                                    <br>
+                                    <strong style="font-size: 20pt;">{{paymentDetail.vnd1}}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="../js/payment_history.js"></script>
+</body>
+
+</html>

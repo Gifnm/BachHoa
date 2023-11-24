@@ -15,4 +15,7 @@ public interface PaymentHistoryJPA extends JpaRepository<PaymentHistory, Integer
 	
 	@Query("SELECT o FROM PaymentHistory o WHERE o.timePay >= ?1 AND o.timePay <= ?2")
 	Page<PaymentHistory> findByDate(Timestamp fromDate, Timestamp toDate, Pageable page);
+	
+	@Query("SELECT o FROM PaymentHistory o WHERE o.paied = 0 OR o.paied = 1")
+	Page<PaymentHistory> getPayment(Pageable page);
 }
