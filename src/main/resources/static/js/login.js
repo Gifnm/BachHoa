@@ -150,7 +150,7 @@ app.controller("register-ctrl", function ($scope, $http) {
 
   $scope.getAllUsers = function () {
     // load accounts
-    $http.get("/bachhoa/api/employees").then((resp) => {
+    $http.get("/bachhoa/api/employees/getAll").then((resp) => {
       $scope.items = resp.data;
     });
   };

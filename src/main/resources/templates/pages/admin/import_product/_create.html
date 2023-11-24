@@ -1,0 +1,137 @@
+<div ng-if="currentView === 'createView'">
+    <div class="d-flex">
+        <div class="col mx-3 p-4 h-100 border bg-white">
+            <!-- Right Column - Selected Products Table -->
+            <div class="p-4 d-flex justify-content-between border-bottom">
+                <div>
+                    <h6 class="fw-bolder">Phiếu nhập:</h6>
+                    <p>{{currentDeliveryNote.id}}</p>
+                    <p class="d-flex align-content-center"><span class="material-symbols-outlined">
+                            person
+                        </span> Người lập phiếu :
+                        <b>{{currentDeliveryNote.employeeName}}</b>
+                    </p>
+                    <p class="d-flex align-content-center"><span class="material-symbols-outlined">
+                            event
+                        </span> Ngày lập :
+                        <b>{{currentDeliveryNote.timeCreate| date:'dd/MM/yyyy'}}</b>
+                    </p>
+                </div>
+                <div>
+                    <button class="btn btn-success" ng-click="createDeliveryNote()"
+                        ng-if="currentFeature==='createFeature'">
+                        Tạo phiếu
+                    </button>
+                    <button class="btn btn-success" ng-click="updateDetailDeliveryNote()"
+                        ng-if="currentFeature==='updateFeature'">
+                        Lưu phiếu
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive" style="height: 550px;">
+                <table class="table border">
+                    <thead class="sticky-top bg-light">
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên và mã số</th>
+                            <th>Số lượng nhập</th>
+                            <th>Đơn giá nhập</th>
+                            <th>Thành tiền</th>
+                            <th>Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="product in selectedProducts">
+                            <td class="align-middle text-end">{{ $index + 1 }}</td>
+                            <td class="align-middle">
+                                <div>
+                                    <p>ID: {{product.productID}}</p>
+                                    <b>{{product.productName}}</b>
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <input type="number" min=1 class="form-control" ng-model="product.quantity"
+                                    placeholder="Số lượng nhập">
+                            </td>
+                            <td class="align-middle">{{ product.importPrice | currency:'₫':'0' }}</td>
+                            <td class="align-middle">
+                                <h6>{{product.importPrice * product.quantity | currency:'₫':'0'}}</h6>
+                            </td>
+                            <td class="align-middle">
+                                <button class="btn btn-white text-danger d-flex align-middle"
+                                    ng-click="removeProduct($index)"><span class="material-symbols-outlined">
+                                        remove
+                                    </span></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot class="bg-light">
+                        <td colspan="4" class="ps-2">
+                            <h4 class="text-danger">Tổng cộng :</h4>
+                        </td>
+                        <td colspan="2">
+                            <h4 class="text-danger"><b>{{calculateTotalAmount()|
+                                    currency:'₫':'0'}}</b>
+                            </h4>
+                        </td>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="col d-flex flex-column overflow-auto ">
+            <!-- Left Column - Filtered Products Table -->
+            <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+                <h6 class="fw-bolder">Danh sách sản phẩm:</h6>
+                <input type="text" class="form-control w-25" ng-model="searchProduct" placeholder="Tìm sản phẩm">
+            </div>
+            <!-- Your table with sticky header using Bootstrap classes -->
+            <div class="table-responsive" style="height: 650px;">
+                <table class="table">
+                    <thead class="sticky-top bg-light">
+                        <tr>
+                            <th>Thêm</th>
+                            <th>Tên và mã số</th>
+                            <th>Tồn kho</th>
+                            <th>Đơn giá nhập</th>
+                            <th>Chọn</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-light h-100">
+                        <tr ng-repeat="product in filteredProducts = (products | filter:searchProduct)">
+                            <td class="align-middle">
+                                <button class="btn btn-outline-primary d-flex align-middle"
+                                    ng-click="addProduct(product)"><span class="material-symbols-outlined">
+                                        keyboard_backspace
+                                    </span></button>
+                            </td>
+                            <td class="align-middle">
+                                <div class="">
+                                    <p>ID: {{product.productID}}</p>
+                                    <b>{{product.productName}}</b>
+                                </div>
+                            </td>
+                            <td class="align-middle">{{ product.inventory }}</td>
+                            <td class="align-middle">{{ product.importPrice | currency:'₫':'0' }}</td>
+                            <td class="align-middle">
+                                <input type="checkbox" ng-model="product.selected"
+                                    ng-change="toggleProductSelection(product)">
+                            </td>
+                        </tr>
+                    </tbody>
+                    <td ng-if="filteredProducts.length===0 && searchProduct" colspan="5"
+                        class="m-2 text-center text-danger">
+                        Không tìm thấy sản phẩm trùng khớp.
+                    </td>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function showAutoDismissAlert() {
+        $('#autoDismissAlert').fadeIn().delay(3000).fadeOut();
+    }
+</script>
+</div>

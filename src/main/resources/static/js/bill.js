@@ -1,5 +1,26 @@
 const app = angular.module("app", ["ui.bootstrap", "ui.tab.scroll"]);
 app.controller("bill-ctrl", function ($scope, $http) {
+    // SweetAlert 2
+    var toastMixin = Swal.mixin({
+        toast: true,
+        icon: "success",
+        title: "General Title",
+        animation: false,
+        position: "top-right",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        customClass: {
+            confirmButton: "btn btn-outline-warning rounded-5 cursor",
+            cancelButton: "btn btn-outline-danger rounded-5 cursor",
+        },
+        buttonsStyling: false,
+        didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
+
     // gợi ý sản phẩm
     $scope.autocompleteInput = {
         autocomplete(inp, arr) {
@@ -129,6 +150,11 @@ app.controller("bill-ctrl", function ($scope, $http) {
     $scope.discountName = "";
     $scope.discountDetail = {};
     $scope.employee = {};
+    $scope.form = {};
+    $scope.admin = false;
+
+
+
 
     var stt = 1;
     // Khởi tạo 1 bill tạm đầu tiên
@@ -137,10 +163,22 @@ app.controller("bill-ctrl", function ($scope, $http) {
         let email = document.getElementById('email').innerText;
         $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
             $scope.employee = resp.data;
-            console.log($scope.employee);
+            $scope.form.email = $scope.employee.email;
+            $scope.form.address = $scope.employee.address;
+            $scope.form.age = $scope.employee.age;
+            //console.log($scope.employee);
+            angular.forEach($scope.employee.roles, function (item) {
+                if (item.roleID == "qlch") {
+                    $scope.admin = true;
+                }
+            })
+            if ($scope.employee.roles[0].roleID == "qlch") {
+                $scope.admin = true;
+            }
+
             let test = sessionStorage.getItem("bills");
             loadBillFromSessionStorage();
-            console.log(test)
+            //console.log(test)
             //alert($scope.bills.length);
             if (test == null || $scope.bills.length == 0) {
                 $scope.bills = [];
@@ -195,7 +233,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
     // thêm bill tạm vào mảng bills[]
     let addNewBill = function () {
         let listBill = $scope.bills;
-        let employeeID = parseInt(document.getElementById('employeeID').innerText);
+        let employeeID = $scope.employee.employeeID;
         $http.get(`/bachhoa/api/store/findByID/${$scope.employee.store.storeID}`).then(resp => {
             let bill = createBill();
             bill.store = resp.data;
@@ -321,7 +359,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
         $scope.listProduct = [];
         angular.forEach($scope.billDetails, function (item) {
             if (item.billDetail.billID == billID) {
-                item.billDetail.totalAmount = Math.round(item.billDetail.totalAmount);
+                //item.billDetail.totalAmount = Math.round(item.billDetail.totalAmount);
                 $scope.listProduct.push(item);
             }
         });
@@ -350,8 +388,8 @@ app.controller("bill-ctrl", function ($scope, $http) {
                         let temp = $scope.bills.find(item => item.bill.billID == $scope.invoiceID);
                         let bill = temp.bill;
                         let quantity = 1;
-                        let storeID = 1;
-                        $http.get(`/discount/findByProductIDAndStoreID/${productID}/${storeID}`).then(resp => {
+                        let storeID = $scope.employee.store.storeID;
+                        $http.get(`/bachhoa/api/discount/findDiscountIsActive/${productID}/${storeID}`).then(resp => {
                             //alert("run")
                             $scope.discountDetail = resp.data;
                             //console.log($scope.discountDetail)
@@ -364,33 +402,37 @@ app.controller("bill-ctrl", function ($scope, $http) {
                                 $scope.sale = 0.5;
                                 $scope.discountName = "50%";
                                 //alert("s50")
+                            } else if ($scope.discountDetail.disID === "2T1") {
+                                $scope.discountName = "2 tặng 1";
+                                $scope.sale = 0;
                             } else {
                                 $scope.sale = 0;
                                 $scope.discountName = "Không";
                             }
 
-                            let totalMoney = Math.round(product.price + (product.price * (product.vat / 100)));
-                            let discount = Math.round((product.price + (product.price * (product.vat / 100))) * $scope.sale);
+                            let totalMoney = product.price + (product.price * (product.vat / 100));
+                            let discount = (product.price + (product.price * (product.vat / 100))) * $scope.sale;
                             let priceSale = totalMoney - discount;
                             let data = {
                                 discountName: $scope.discountName,
                                 sale: $scope.sale,
-                                discount: Math.round((product.price + (product.price * (product.vat / 100))) * $scope.sale),
-                                totalMoney: Math.round(product.price + (product.price * (product.vat / 100))),
+                                discount: (product.price + (product.price * (product.vat / 100))) * $scope.sale,
+                                totalMoney: product.price + (product.price * (product.vat / 100)),
                                 billDetail: {
                                     billID: $scope.invoiceID,
                                     productID: productID,
                                     bill: bill,
                                     product: product,
                                     quantity: quantity,
+                                    quantityGift: 0,
                                     totalAmount: priceSale
-                                }
+                                },
                             };
-                            $scope.billDetails.push(data);
-                            console.log($scope.billDetails);
+                            $scope.billDetails.unshift(data);
+                            //console.log($scope.billDetails);
                             saveBillDetailToSessionStorage($scope.billDetails);
                             loadBillDetailFromSessionStorage();
-                            console.log($scope.billDetails);
+                            //console.log($scope.billDetails);
                             loadToBillDetail($scope.invoiceID);
                             //$scope.productCode = '';
                         }).catch(error => {
@@ -412,11 +454,41 @@ app.controller("bill-ctrl", function ($scope, $http) {
         let item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         item.billDetail.quantity = item.billDetail.quantity + 1;
-        let quantity = item.billDetail.quantity;
-        item.discount = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity * item.sale;
+        let quantity = item.billDetail.quantity + item.billDetail.quantityGift;
+        if (item.discountName == "2 tặng 1" && (quantity % 3) === 0) {
+            item.billDetail.quantity = item.billDetail.quantity - 1;
+            item.billDetail.quantityGift = item.billDetail.quantityGift + 1;
+            if (item.billDetail.quantityGift === 1) {
+                let gift = angular.copy(item);
+                gift.billDetail.quantity = item.billDetail.quantityGift;
+                gift.sale = 0;
+                gift.discount = 0;
+                gift.totalMoney = 0;
+                gift.billDetail.totalAmount = 0;
+                gift.billDetail.product.price = 0;
+                gift.billDetail.product.productName = "Quà tặng: " + gift.billDetail.product.productName;
+                $scope.billDetails.push(gift);
+            } else {
+                let i = $scope.billDetails.findIndex(
+                    o => o.billDetail.productID == productID
+                        && o.billDetail.billID == billID
+                        && o.billDetail.product.productName.substr(0, 8) == "Quà tặng");
+                let giftData = $scope.billDetails.find(
+                    o => o.billDetail.productID == productID
+                        && o.billDetail.billID == billID
+                        && o.billDetail.product.productName.substr(0, 8) == "Quà tặng");
+                //console.log(giftData)
+                giftData.billDetail.quantity++;
+                $scope.billDetails.splice(i, 1, giftData);
+            }
+            item.discount = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * item.billDetail.quantityGift;
+        } else if (item.discountName == "25%" || item.discountName == "50%") {
+            item.discount = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity * item.sale;
+        }
         item.totalMoney = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity;
         item.billDetail.totalAmount = item.totalMoney - item.discount;
         $scope.billDetails.splice(index, 1, item);
+        console.log($scope.billDetails)
     };
 
     // Cập nhật billDetail khi tăng số lượng tại ô input số lượng
@@ -424,19 +496,75 @@ app.controller("bill-ctrl", function ($scope, $http) {
         let item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
         item.billDetail.quantity = quantity;
-        item.discount = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity * item.sale;
+        if (item.discountName == "2 tặng 1" && quantity >= 3) {
+            item.billDetail.quantityGift = 0;
+            item.billDetail.quantityGift = item.billDetail.quantityGift + Math.floor(item.billDetail.quantity / 3);
+            item.billDetail.quantity = item.billDetail.quantity - item.billDetail.quantityGift;
+
+            let giftData = $scope.billDetails.find(
+                o => o.billDetail.productID == productID
+                    && o.billDetail.billID == billID
+                    && o.billDetail.product.productName.substr(0, 8) == "Quà tặng");
+            if (item.billDetail.quantityGift > 0 && !giftData) {
+                let gift = angular.copy(item);
+                gift.billDetail.quantity = item.billDetail.quantityGift;
+                gift.sale = 0;
+                gift.discount = 0;
+                gift.totalMoney = 0;
+                gift.billDetail.totalAmount = 0;
+                gift.billDetail.product.price = 0;
+                gift.billDetail.product.productName = "Quà tặng: " + gift.billDetail.product.productName;
+                $scope.billDetails.push(gift);
+            } else {
+                let i = $scope.billDetails.findIndex(
+                    o => o.billDetail.productID == productID
+                        && o.billDetail.billID == billID
+                        && o.billDetail.product.productName.substr(0, 8) == "Quà tặng");
+                giftData.billDetail.quantity = item.billDetail.quantityGift;
+                $scope.billDetails.splice(i, 1, giftData);
+            }
+            item.discount = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * item.billDetail.quantityGift;
+        } else if (item.discountName == "2 tặng 1" && quantity < 2) {
+            let i = $scope.billDetails.findIndex(
+                o => o.billDetail.productID == productID
+                    && o.billDetail.billID == billID
+                    && o.billDetail.product.productName.substr(0, 8) == "Quà tặng");
+            $scope.billDetails.splice(i, 1);
+            item.billDetail.quantityGift = 0;
+        } else if (item.discountName == "25%" || item.discountName == "50%") {
+            item.discount = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity * item.sale;
+        }
         item.totalMoney = (item.billDetail.product.price + (item.billDetail.product.price * (item.billDetail.product.vat / 100))) * quantity;
         item.billDetail.totalAmount = item.totalMoney - item.discount;
         $scope.billDetails.splice(index, 1, item);
+        console.log($scope.billDetails)
         saveBillDetailToSessionStorage($scope.billDetails);
         loadBillDetailFromSessionStorage();
         loadToBillDetail(billID);
     };
 
+    // Tăng số lượng sản phẩm lên 1
+    $scope.increase = function (productID, billID) {
+        updateBillDetail(productID, billID);
+        saveBillDetailToSessionStorage($scope.billDetails);
+        loadBillDetailFromSessionStorage();
+        loadToBillDetail($scope.invoiceID);
+    }
+
+    // Giảm số lượng sản phẩm xuống 1
+    $scope.reduce = function (productID, quantity, billID) {
+        let sl = quantity - 1;
+        $scope.updateBillDetailFromInput(productID, sl, billID);
+    }
+
 
     // Xóa sản phẩm trong billDetail
-    $scope.deleteItem = function (productID, billID) {
-        let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
+    $scope.deleteItem = function (index, billID, productID) {
+        if ($scope.billDetails[index].billDetail.product.productName.substr(0, 8) == "Quà tặng") {
+            let billDetail = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
+            billDetail.billDetail.quantityGift = 0;
+            $scope.updateBillDetailFromInput(productID, billDetail.billDetail.quantity, billID);
+        }
         $scope.billDetails.splice(index, 1);
         saveBillDetailToSessionStorage($scope.billDetails);
         loadBillDetailFromSessionStorage();
@@ -467,7 +595,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
         $scope.productCode = "";
         $scope.money = "";
         $scope.change = 0;
-        document.getElementById("productCode").focus()
+        //document.getElementById("productCode").focus()
     };
 
     // Tính tiền thối lại
@@ -479,21 +607,32 @@ app.controller("bill-ctrl", function ($scope, $http) {
     // lưu billDetail vào database
     let saveBillDetailToDatabse = function (billID) {
         let url = `/bachhoa/api/billDetail/save/`;
+        let isLast = false;
         angular.forEach($scope.billDetails, function (item) {
-            if (item.billDetail.billID == billID) {
+            if (item.billDetail.billID == billID && item.billDetail.product.productName.substr(0, 8) != "Quà tặng") {
                 $http.post(url, item.billDetail).then(resp => {
                     console.log("Thêm thành công", resp);
-                    window.location = "/print/" + billID;
+                    $http.get(`/product/findByID/${item.billDetail.productID}`).then(resp => {
+                        let product = resp.data;
+                        console.log(product);
+                        product.inventory = product.inventory - (item.billDetail.quantity + item.billDetail.quantityGift);
+                        console.log(product);
+                        $http.put(`/bachhoa/api/products/update`, product)
+                        window.location = "/print/" + billID;
+                    })
                 }).catch(error => {
                     console.log("Có lỗi xảy ra", error);
                 });
             }
+            let i = $scope.billDetails.indexOf(item);
+            if (i == $scope.billDetails.length - 1) {
+                isLast = true;
+            }
         });
-        //alert('gio moi duoc chay')
-        //var billDetail = resp.data;
-        let index = $scope.bills.findIndex(item => item.bill.billID == billID);
-        $scope.removeTab(index);
-
+        if (isLast) {
+            let index = $scope.bills.findIndex(item => item.bill.billID == billID);
+            $scope.removeTab(index);
+        }
     };
 
     //------------------------------------------------//
@@ -504,10 +643,11 @@ app.controller("bill-ctrl", function ($scope, $http) {
         //alert('thong bao tai in' + billID)
         let data = $scope.bills.find(item => item.bill.billID == billID);
         let item = data.bill;
-        item.totalAmount = parseInt(document.getElementById('amountReceivable').innerText.replace(',', ''));
+        item.totalAmount = parseInt(document.getElementById('totalAmount').innerText.replaceAll(',', ''));
         item.cash = parseInt(document.getElementById('cash').value);
-        item.reduced = parseInt(document.getElementById('discount').innerText.replace(',', ''));
+        item.reduced = parseInt(document.getElementById('discount').innerText.replaceAll(',', ''));
         item.timeCreate = new Date().getTime();
+        alert(item.totalAmount)
         if (item.cash < $scope.roundAmountReceivable) {
             //alert('loi')
             document.getElementById('errorAlert').setAttribute("style", "display: block;");
@@ -530,6 +670,88 @@ app.controller("bill-ctrl", function ($scope, $http) {
     }
 
 
+    //------------------------------------------------//
+
+    // Cập nhật thông tin nhân viên
+    $scope.updateEmployee = function () {
+        const AGE = document.getElementById("age").value;
+
+        const ThisYear = new Date();
+        const EmployeeBorn = new Date(AGE);
+        const Timelines = ThisYear - EmployeeBorn;
+        if ($scope.form.email == null || $scope.form.email == "") {
+            toastMixin.fire({
+                title: "Vui lòng nhập email của bạn, hãy kiểm tra lại !",
+                icon: "warning",
+            });
+            return;
+        } else if (AGE == null || AGE == "") {
+            toastMixin.fire({
+                title: "Vui lòng nhập độ tuổi hiện tại của bạn, hãy xem lại !",
+                icon: "warning",
+            });
+            return;
+        } else if (Timelines <= 568036800000) {
+            toastMixin.fire({
+                title: "Bạn chưa đủ độ tuổi làm việc (18 tuổi), hãy xem lại !",
+                icon: "warning",
+            });
+            return;
+        } else if ($scope.form.address == null || $scope.form.address == "") {
+            toastMixin.fire({
+                title: "Hãy nhập địa chỉ thường trú của bạn !",
+                icon: "warning",
+            });
+            return;
+        }
+        const formData = new FormData();
+        const fileField = document.querySelector('input[id="uploadImage"]');
+        formData.append('file', fileField.files[0]);
+        let data = $scope.employee;
+        data.email = $scope.form.email;
+        data.age = $scope.form.age;
+        data.address = $scope.form.address;
+        if (fileField.files.length != 0) {
+            data.pictureURL = "http://172.16.109.217:8081/bachhoaimg/" + fileField.files[0].name;
+            $http.post(`/bachhoa/api/employee/updatePhoto`, formData, { transformRequest: angular.identity, headers: { 'Content-Type': undefined } }).then(resp => {
+                $http.post(`/bachhoa/api/employee/updateInformation`, data).then(resp => {
+                    document.getElementById('img-preview').src = data.pictureURL;
+                    toastMixin.fire({
+                        title: "Cập nhật thông tin thành công !",
+                        icon: "success",
+                      });
+                }).catch(error => {
+                    console.log(error);
+                })
+            }).catch(error => {
+                console.log(error);
+            })
+        } else {
+            $http.post(`/bachhoa/api/employee/updateInformation`, data).then(resp => {
+                console.log(resp.data);
+                $scope.employee = resp.data;
+                toastMixin.fire({
+                    title: "Cập nhật thông tin thành công !",
+                    icon: "success",
+                  });
+            }).catch(error => {
+                console.log(error);
+            })
+        }
+
+    }
+
+    const input = document.getElementById('uploadImage');
+    const image = document.getElementById('img-preview');
+
+    input.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+            const src = URL.createObjectURL(e.target.files[0]);
+            image.src = src;
+            console.log(e.target.files[0].name)
+        }
+
+    });
     //------------------------------------------------//
     //KHỞI CHẠY
     // Khởi chạy tạo bill đầu tiên
