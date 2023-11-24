@@ -7,6 +7,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 	$scope.totalAmountOfAllBills = 0;
 	$scope.employee = {};
 	$scope.discountDetail = {};
+	$scope.listBillID = [];
 	// Kết ca
 	$scope.totalMoneyYouPay = 0;
 	$scope.form = {};
@@ -45,8 +46,22 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 
 	$scope.initialize = function () {
 		// load hóa đơn
-		$http.get("/bachhoa/api/bill/all").then(resp => {
-			$scope.items = resp.data;
+		$http.get(`/bachhoa/api/bill/all/${$scope.employee.store.storeID}`).then(resp => {
+			$scope.bills = resp.data;
+			angular.forEach($scope.bills, function (item) {
+				item.timeCreate = dateFormat(item.timeCreate);
+				let data = {
+					bill: item,
+					amountReceivable: Math.round((item.totalAmount - item.reduced) / 1000) * 1000
+				}
+				$scope.items.push(data);
+
+			})
+			if (resp.data.length == 0) {
+				$scope.isNull = true;
+			} else {
+				$scope.isNull = false;
+			}
 			Calc();
 		});
 
@@ -102,7 +117,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 			toastMixin.fire({
 				title: "Đã xóa hóa đơn!",
 				icon: "success",
-			  });
+			});
 			$scope.findByDate($scope.fromDate, $scope.toDate, 0);
 		}).catch(error => {
 			//alert("Hiện không thể xóa hóa đơn!");
@@ -162,25 +177,26 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		if (billID == null || billID == undefined || billID == '') {
 			$scope.initialize();
 		} else {
-			$http.get(`/bachhoa/api/bill/getBillID`).then((response) => {
-				let item = response.data.find(item => item == billID);
-				if (item) {
-					$scope.items = [];
-					$http.get(`/bachhoa/api/bill/findBill/${billID}`).then(resp => {
-						let bill = resp.data;
-						bill.timeCreate = dateFormat(bill.timeCreate);
-						let data = {
-							bill: bill,
-							amountReceivable: Math.round((bill.totalAmount - bill.reduced) / 1000) * 1000
-						}
-						$scope.items.push(data);
-						Calc();
-					}).catch(error => {
-						console.log('Error', error)
-					});
-				}
-			})
-
+			let item = $scope.listBillID.find(item => item == billID);
+			if (item) {
+				$scope.isNull = false;
+				$scope.items = [];
+				$http.get(`/bachhoa/api/bill/findBill/${billID}`).then(resp => {
+					let bill = resp.data;
+					bill.timeCreate = dateFormat(bill.timeCreate);
+					let data = {
+						bill: bill,
+						amountReceivable: Math.round((bill.totalAmount - bill.reduced) / 1000) * 1000
+					}
+					$scope.items.push(data);
+					Calc();
+				}).catch(error => {
+					console.log('Error', error)
+				});
+			} else {
+				$scope.items = [];
+				$scope.isNull = true;
+			}
 		}
 	}
 
@@ -199,7 +215,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 			toastMixin.fire({
 				title: "Ngày bắt đầu phải nhỏ hơn ngày kết thúc !!",
 				icon: "warning",
-			  });
+			});
 			// let date = new Date();
 			// $scope.fromDate = date;
 			// $scope.toDate = date;
@@ -272,7 +288,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		return `${year}-${month}-${day} ${23}:${59}:${59}`;
 	}
 
-	// gợi ý mã hóa đơn
+
 	$scope.autocompleteInput = {
 		autocomplete(inp, arr) {
 			let currentFocus;
@@ -342,7 +358,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		},
 		// Lấy danh sách mã hóa đơn
 		init() {
-			$http.get(`/bachhoa/api/bill/getBillID`).then(resp => {
+			$http.get().then(resp => {
 				bill_ID = resp.data;
 				$scope.autocompleteInput.autocomplete(document.getElementById("bill_ID"), bill_ID);
 			}).catch(error => {
@@ -350,12 +366,21 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 			});
 		}
 	}
+	// gợi ý mã hóa đơn
+	let initAutoComplete = function () {
+		$http.get(`/bachhoa/api/bill/getBillID/${$scope.employee.store.storeID}`).then(resp => {
+			$scope.listBillID = resp.data;
+		}).catch(error => {
+			console.log('Error', error)
+		});
+	}
 	//-----------------------------------------------//
 	//	Tìm Nhân viên
 
 	$scope.findEmployee = function (email) {
 		$http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
 			$scope.employee = resp.data;
+			initAutoComplete();
 			if ($scope.employee.roles[0].roleID == "qlch") {
 				$scope.admin = true;
 			}
@@ -432,7 +457,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 			toastMixin.fire({
 				title: "Số tiền bạn nộp phải bằng hoặc nhỏ hơn số tiền bạn phải nộp hôm nay!",
 				icon: "warning",
-			  });
+			});
 			return;
 		}
 		if (!confirm('Bạn xác nhận nộp: ' + $scope.totalMoneyYouPay + ' VND')) return;
@@ -462,7 +487,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 				toastMixin.fire({
 					title: "Nộp tiền thành công, hãy đợi quản lý duyệt nhé!",
 					icon: "success",
-				  });
+				});
 				window.location = "/logout";
 			}).catch((error) => {
 				alert("Lỗi thêm chi tiết!");
@@ -474,7 +499,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 	//-----------------------------------------------//
 	// khởi động
 	//$scope.initialize();
-	$scope.autocompleteInput.init();
+
 	$scope.SetDefaultDate();
 
 	/* Tìm kiếm theo ngày */

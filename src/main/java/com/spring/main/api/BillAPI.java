@@ -37,14 +37,14 @@ public class BillAPI {
 		billService.save(bill);
 	}
 
-	@GetMapping("bill/all")
-	public List<Bill> getAll() {
-		return billService.findAll();
+	@GetMapping("bill/all/{storeID}")
+	public List<Bill> getAll(@PathVariable("storeID") Integer storeID) {
+		return billService.findAllByStoreID(storeID);
 	}
 
-	@GetMapping("bill/getBillID")
-	public List<String> getBillID() {
-		return billService.getBillID();
+	@GetMapping("bill/getBillID/{storeID}")
+	public List<String> getBillID(@PathVariable("storeID") Integer storeID) {
+		return billService.getBillID(storeID);
 
 	}
 
