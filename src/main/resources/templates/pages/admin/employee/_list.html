@@ -8,32 +8,32 @@
             <table class="table select-table">
                 <thead>
                     <tr>
-                        <th class="sticky order-col bg-white">#</th>
-                        <th class="sticky name-col bg-white">Mã Nhân Viên</th>
+                        <th class="sticky  bg-white">Hình ảnh</th>
+                        <th class="sticky  bg-white"> Mã Nhân Viên</th>
                         <th class="sticky bg-white">Tên Nhân Viên</th>
                         <th class="sticky bg-white">Tuổi</th>
                         <th class="sticky bg-white">Địa Chỉ</th>
-                        <th class="sticky bg-white">Hình ảnh</th>
                         <th class="sticky bg-white">firstWork</th>
                         <th class="sticky bg-white">email</th>
                         <th class="sticky bg-white">Trạng Thái</th>
                         <th class="sticky bg-white">Mã cửa hàng</th>
-                        <th class="sticky bg-white">Vai Trò</th>
-                        <th class="sticky function-col bg-white"></th>
                     </tr>
                 </thead>
                 <tbody>
 
                     <tr ng-repeat="e in employees">
-                        <td class="sticky order-col bg-white" scope="row">{{$index+1+currentPage*pageSize}}</td>
+                      <!--   <td class="sticky order-col bg-white" scope="row">{{$index+1+currentPage*pageSize}}</td> -->
                         <td class="sticky name-col bg-white">
-                            <div class="d-flex">
-                                <img src="{{e.image==null?DEFAULT_PRODUCT_IMAGE:pro.image}}" alt="">
-                                <div>
-                                    <h6>{{e.employeeID}}</h6>
-                                    <p>{{e.employeeName}}</p>
-                                </div>
-                            </div>
+                            
+                                <img src="{{e.image==null?DEFAULT_EMPLOYEE_IMAGE:e.image}}" alt="">
+                         </td>
+                         
+                        
+                        <td class="sticky name-col bg-white">
+                            <h6>{{e.employeeID}}</h6>
+                        </td>
+                        <td>
+                            <h6>{{e.employeeName}}</h6>
                         </td>
                         <td>
                             <h6>{{e.age}}</h6>
@@ -42,23 +42,23 @@
                             <h6>{{e.address}}</h6>
                         </td>
                         <td>
-                            <h6>{{e.pictureURL}}</h6>
-                        </td>
-                        <td>
                             <h6>{{e.firstWork}}</h6>
                         </td>
                         <td>
                             <h6>{{e.email}}</h6>
                         </td>
                         <td>
-                            <h6>{{e.active}}</h6>
+                            <h6>Đang làm việc</h6>
                         </td>
-                        <td>
-                            <h6>{{e.storeID}}</h6>
+                        <td class= "sticky bg-white">
+                            <h6>{{e.store.storeID}}</h6>
                         </td>
-                        <td>
-                            <h6>{{e.roleID}}</h6>
-                        </td>
+						<td>
+                           
+						</td>
+						<td>
+                           
+						</td>
                         <td>
                             <div>
                                 <!-- <div

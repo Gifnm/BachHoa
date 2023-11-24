@@ -103,6 +103,7 @@ public class EmployeeAPI {
 @GetMapping("employee/Request/{storeID}")
    public List<Employee> getRequest(@PathVariable("storeID") Integer id) {
 	return emService.getRequest(id);
+	
   }	
 
 	@DeleteMapping("/bachhoa/api/employee/{id}")

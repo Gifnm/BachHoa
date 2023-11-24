@@ -3,6 +3,7 @@ const app = angular.module("app", []);
 
 app.controller("employee-ctrl", function ($scope, $http){
 	$scope.employees = [];
+	$scope.badge = 0;
 	
 	
 	$scope.initialize = function(){
@@ -10,7 +11,10 @@ app.controller("employee-ctrl", function ($scope, $http){
 			$scope.employees = resp.data;
 			let index = $scope.employees.findIndex(item => item.employeeID == $scope.account.employeeID);
 			$scope.employees.splice(index,1);
+		    $scope.showRequest();
 		})
+		
+		
 	
 	
  $scope.delete = function (id) {
@@ -28,6 +32,15 @@ app.controller("employee-ctrl", function ($scope, $http){
     
 	
 }
+
+
+ $scope.showRequest = function(){
+			$http.get(`/bachhoa/api/employee/Request/${$scope.account.store.storeID}`).then(resp=>{
+			$scope.emRequest = resp.data;
+			$scope.badge = $scope.emRequest.length;
+			
+		})
+		};	
 //-----------------------------------------------//
 	//	Tìm Nhân viên
 
