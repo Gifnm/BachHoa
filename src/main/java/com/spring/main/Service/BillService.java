@@ -34,16 +34,16 @@ public class BillService {
 		return billJPA.findByEmployeeAndDate(employeeID, fromDate, toDate);
 	}
 
-	public List<Bill> findAll() {
-		return billJPA.findAll();
+	public List<Bill> findAllByStoreID(Integer storeID) {
+		return billJPA.findAllByStoreID(storeID);
 	}
 
 	public void delete(String billID) {
 		billJPA.deleteById(billID);
 	}
 
-	public List<String> getBillID() {
-		return billJPA.getBillID();
+	public List<String> getBillID(Integer storeID) {
+		return billJPA.getBillID(storeID);
 	}
 
 	public List<Bill> findAllByTimeCreateBetween(String fromDate, String toDate) {

@@ -209,13 +209,13 @@
                             <label for="" style="width: 40%;">Nhập hóa đơn: </label><br>
                             <div class="autocomplete d-flex text-dark">
                                 <input id="bill_ID" type="text" class="form-control" ng-model="bill_ID"
-                                    ng-change="find(bill_ID)">
-                                <!-- <button class="btn btn-info ms-2 shadow-lg">
-                                    <i class="bi bi-search" ng-click="find(bill_ID)"></i>
-                                </button> -->
+                                     list="datalistBillID">
+                                    <datalist id="datalistBillID">
+                                        <option ng-repeat="billID in listBillID" value="{{billID}}">
+                                    </datalist>
                                 <button class="btn btn-info text-white ms-2 shadow-lg">
-									<i class="bi bi-arrow-clockwise" ng-click="refresh()"
-										title="Nhấn vào khi cần refresh lại."></i>
+									<i class="bi bi-search" ng-click="find(bill_ID)"
+										title="Tìm hóa đơn"></i>
 								</button>
                             </div>
                         </div>
