@@ -21,10 +21,10 @@ import lombok.EqualsAndHashCode;
 public class DiscountDetails {
 	@Id
 	private String disID;
-
+	
 	@Id
 	private int storeID;
-
+	
 	@Id
 	private String productID;
 

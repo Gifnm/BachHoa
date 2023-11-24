@@ -31,10 +31,10 @@ public class Role {
 		this.workRole = workRole;
 	}
 
-	// @ManyToMany(cascade = CascadeType.ALL, mappedBy = "employees")
-	// private List<Employee> employees;
-	//
-	// @OneToMany(mappedBy = "role")
-	// private List<RoleBasedSalary> roleBasedSalaries;
+//	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "employees")
+//    private List<Employee> employees;
+//
+//    @OneToMany(mappedBy = "role")
+//    private List<RoleBasedSalary> roleBasedSalaries;
 
 }

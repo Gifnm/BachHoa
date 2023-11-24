@@ -46,6 +46,4 @@ public class PurchaseHistory {
 	private int quantityReceived;
 	@Column(name = "confirmedQuantity")
 	private int confirmedQuantity;
-	@Column(name = "totalAmount")
-	private Float totalAmount;
 }

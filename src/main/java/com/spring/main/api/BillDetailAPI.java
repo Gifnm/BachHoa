@@ -25,28 +25,27 @@ public class BillDetailAPI {
 	BillDetailService billDetailService;
 	@Autowired
 	ProductService productService;
-	// @GetMapping("billDetail/getproduct/{productID}")
-	// private BillDetail getProduct(@PathVariable String productID) {
-	// System.out.println("Alo kia kia");
-	// Product product = productService.getByID(productID);
-	// BillDetail billDetail= new BillDetail();
-	// billDetail.setQuantity(1);
-	// billDetail.setTotalAmount(product.getPrice());
-	// billDetail.setProduct(product);
-	// System.out.println(billDetail.toString());
-	// return billDetail;
-	// }
-	// @PostMapping("billDetail/create/{listDetail}/{billID}")
-	// private void createBillDetail(@PathVariable("listDetail") List<BillDetail>
-	// list , @PathVariable("billID") String billID) {
-	// Bill bill = new Bill();
-	// bill.setBillID(billID);
-	// for (BillDetail billDetail : list) {
-	// billDetail.setBill(bill);
-	// billDetaileService.save(billDetail);
-	// }
-	//
-	// }
+//@GetMapping("billDetail/getproduct/{productID}")
+//private BillDetail getProduct(@PathVariable String productID) {
+//	System.out.println("Alo kia kia");
+//	Product product = productService.getByID(productID);
+//	BillDetail billDetail= new BillDetail();
+//	billDetail.setQuantity(1);
+//	billDetail.setTotalAmount(product.getPrice());
+//	billDetail.setProduct(product);
+//	System.out.println(billDetail.toString());
+//	return billDetail;
+//}
+//@PostMapping("billDetail/create/{listDetail}/{billID}")
+//private void createBillDetail(@PathVariable("listDetail") List<BillDetail> list , @PathVariable("billID") String billID) {
+//	Bill bill = new Bill();
+//	bill.setBillID(billID);
+//	for (BillDetail billDetail : list) {
+//		billDetail.setBill(bill);
+//		billDetaileService.save(billDetail);
+//	}
+//	
+//}
 
 	@GetMapping("billDetail/findByBillID/{billID}")
 	private List<BillDetail> findByBillID(@PathVariable("billID") String billID) {
@@ -60,12 +59,12 @@ public class BillDetailAPI {
 		return billDetail;
 	}
 
-	// @PostMapping("billDetail/save/{listBillDetail}")
-	// private void saveBillDetail(@PathVariable List<BillDetail> listBillDetail) {
-	// for(BillDetail billDetail : listBillDetail) {
-	// billDetailService.save(billDetail);
-	// }
-	// }
+//@PostMapping("billDetail/save/{listBillDetail}")
+//private void saveBillDetail(@PathVariable List<BillDetail> listBillDetail) {
+//	for(BillDetail billDetail : listBillDetail) {
+//		billDetailService.save(billDetail);
+//	}
+//}
 
 	@PutMapping("billDetail/update")
 	private void updateBillDetail(@RequestBody BillDetail billDetail) {

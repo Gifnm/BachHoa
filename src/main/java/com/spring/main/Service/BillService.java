@@ -1,8 +1,6 @@
 package com.spring.main.Service;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,16 +44,4 @@ public class BillService {
 		return billJPA.getBillID();
 	}
 
-	public List<Bill> findAllByTimeCreateBetween(String fromDate, String toDate) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Timestamp stDate = null;
-		Timestamp enDate = null;
-		try {
-			stDate = new Timestamp(dateFormat.parse(fromDate).getTime());
-			enDate = new Timestamp(dateFormat.parse(toDate).getTime());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return billJPA.findAllByTimeCreateBetween(stDate, enDate);
-	}
 }

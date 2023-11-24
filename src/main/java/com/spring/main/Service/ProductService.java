@@ -16,12 +16,19 @@ public class ProductService {
 	@Autowired
 	ProductJPA productJPA;
 	private final String FOLDER_PATH = "C:\\bachhoaimg\\";
+	private final String FOLDER_PATH_LINUX = "/home/thanhdq/bachhoaimg/";
 
 	public String uploadProduct(MultipartFile file, Product product) throws IllegalStateException, IOException {
 		String filePath = FOLDER_PATH + file.getOriginalFilename();
 		file.transferTo(new File(filePath));
 		product.setImage("http://192.168.1.5:8083/bachhoaimg//" + file.getOriginalFilename());
 		productJPA.save(product);
+		return "Succes";
+	}
+
+	public String uploadProduct(MultipartFile file) throws IllegalStateException, IOException {
+		String filePath = FOLDER_PATH_LINUX + file.getOriginalFilename();
+		file.transferTo(new File(filePath));
 		return "Succes";
 
 	}
@@ -40,22 +47,6 @@ public class ProductService {
 	public Product getByIDAndStoreID(String ProductID, int storeID) {
 		Product product = productJPA.getByIDAndStoreID(ProductID, storeID);
 		return product;
-
-	}
-
-	public Product getByIDOrName(String value) {
-		Product product = productJPA.getByIDOrName(value);
-		return product;
-
-	}
-
-	public List<String> getProductID() {
-		return productJPA.getProductID();
-
-	}
-
-	public List<String> getProductName() {
-		return productJPA.getProductName();
 
 	}
 
@@ -99,5 +90,21 @@ public class ProductService {
 		productJPA.deleteById(id);
 	}
 	// End service thanhdq
-
+	
+	// DVNghiep
+	public Product getByIDOrName(String value) {
+		Product product = productJPA.getByIDOrName(value);
+		return product;
+		
+	}
+	
+	public List<String> getProductName() {
+		return productJPA.getProductName();
+		
+	}
+	
+	public List<String> getProductID() {
+		return productJPA.getProductID();
+		
+	}
 }
