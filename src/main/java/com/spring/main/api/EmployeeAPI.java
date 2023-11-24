@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.main.Service.EmployeeService;
 import com.spring.main.model.Authority;
+import com.spring.main.jpa.EmployeeJPA;
 import com.spring.main.model.Employee;
 import com.spring.main.model.Role;
 import com.spring.main.model.Store;
@@ -35,12 +36,13 @@ import com.spring.main.model.Store;
 @RequestMapping("/bachhoa/api/")
 public class EmployeeAPI {
 	@Autowired
+	EmployeeJPA employeeJPA;
+	@Autowired
 	EmployeeService emService;
 
 	@GetMapping("employees/getAll")
 	public List<Employee> getAll() {
 		return emService.findAll();
-
 	}
 
 	@GetMapping("authorities")
@@ -74,9 +76,16 @@ public class EmployeeAPI {
 
 	@PostMapping("employee/insert")
 	public Employee insert(@RequestBody Employee employee) {
-		System.out.println("Thêm nv");
-		// StoreID, Role null at first
-		return emService.insert(employee);
+		System.out.println("Insert");
+		Store store = new Store();
+		store.setStoreID(1);
+		Role role = new Role();
+		role.setRoleID("bhoa");
+		// employee.setRole(role);
+		employee.setStore(store);
+		employee.setActive(true);
+		emService.insert(employee);
+		return employee;
 	}
 
 	@PutMapping("employee/update")
@@ -131,4 +140,37 @@ public class EmployeeAPI {
 		}
 	}
 
+	@GetMapping("/bachhoa/api/employees/search")
+	public List<Employee> getByKeyword(String keyword, int storeId) {
+		System.out.println("[EmplooyeeService:getByKeyWord():59]\n> calling repo with keyword '" + keyword + "'...");
+		try {
+			Integer.parseInt(keyword);
+			System.out.println("[EmployeeService:getByKeyWord():62]\n> keyword after parse int: " + keyword);
+			return employeeJPA.findByKeyword(keyword, storeId);
+		} catch (Exception e) {
+			keyword = "%" + keyword + "%";
+			System.out.println("[EmployeeService:getByKeyWord():66]\n> keyword after makeup: " + keyword);
+			return employeeJPA.findByKeyword(keyword, storeId);
+		}
+	}
+
+	@GetMapping("employee/{storeID}")
+	public List<Employee> getAllByStoreId(@PathVariable("storeID") Integer id) {
+		return employeeJPA.getByStoreId(id);
+	}
+
+	@GetMapping("employee/Request/{storeID}")
+	public List<Employee> getRequest(@PathVariable("storeID") Integer id) {
+		return emService.getRequest(id);
+	}
+
+	@DeleteMapping("/bachhoa/api/employee/{id}")
+	public void delete(@PathVariable("id") Integer id) {
+		emService.detele(id);
+	}
+
+	@PutMapping("employeeDel/{id}")
+	public void DeleteWait(@PathVariable("id") Integer id) {
+		emService.DeleteWait(id);
+	}
 }

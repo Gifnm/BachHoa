@@ -19,5 +19,10 @@ public class AdminController {
     public String importInventory() {
         return "pages/admin/import_product/index";
     }
+    
+    @GetMapping("/admin/employee")
+    public String employee() {
+    	 return "pages/admin/employee/index";
+    }
 
 }

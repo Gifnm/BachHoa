@@ -35,8 +35,12 @@ public class EmployeeService implements UserDetailsService {
 	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	public List<Employee> findAll() {
-		List<Employee> list = employeeJPA.findAll();
-		return list;
+	
+		return employeeJPA.findAll();
+	}
+
+	public Employee create(Employee employee) {
+		return employeeJPA.save(employee);
 	}
 
 	public List<Authority> findAllRoles() {
@@ -78,6 +82,10 @@ public class EmployeeService implements UserDetailsService {
 		authorityJPA.deleteByRoleAndEmployeeID(roleID, employeeID);
 	}
 
+	public List<Employee> getAllbyStoreID (Integer id) {
+		 return employeeJPA.getByStoreId(id);
+	  }
+	
 	public void detele(Integer id) {
 		employeeJPA.deleteById(id);
 	}
@@ -85,10 +93,22 @@ public class EmployeeService implements UserDetailsService {
 	public Employee update(Employee employee) {
 		return employeeJPA.save(employee);
 	}
-
-	public Employee findByID(Integer id) {
-		Employee employee = employeeJPA.findById(id).get();
+	
+	public void DeleteWait(Integer id) {
+		employeeJPA.DeleteWait(id);
+	}
+	
+  public List<Employee> getRequest (Integer id) {
+	 return employeeJPA.getRequest(id);
+  }
+	
+	public Employee findByID(Integer emloyeeid) {
+		Employee employee = employeeJPA.findById(emloyeeid).get();
 		return employee;
+	}
+
+	public Employee update(Employee employee) {
+		return employeeJPA.save(employee);
 	}
 
 	public Employee findByEmail(String email) {
