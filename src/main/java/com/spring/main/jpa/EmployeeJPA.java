@@ -29,4 +29,10 @@ public interface EmployeeJPA extends JpaRepository<Employee, Integer> {
   
   @Query("SELECT o FROM Employee o WHERE o.store.storeID = ?1 AND o.active = false")
   List<Employee> getRequest(Integer storeID);
+
+  @Transactional
+	@Modifying
+	@Query(value = "UPDATE employees SET active = 1 where employeeID = ?1", nativeQuery = true)
+	void accept(Integer employeeID);
+
 }

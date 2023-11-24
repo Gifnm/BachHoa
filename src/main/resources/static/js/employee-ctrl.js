@@ -41,6 +41,21 @@ app.controller("employee-ctrl", function ($scope, $http){
 			
 		})
 		};	
+	$scope.Denied = function(id){
+		 $http.put(`/bachhoa/api/employeeDel/${id}`).then (resp =>{
+		 alert("Thao tác đã hoàn thành!!!!");
+		 $scope.showRequest();
+	 })
+	 
+	}	
+		
+ $scope.acceptNV = function(id){
+	 $http.put(`/bachhoa/api/employeeAccept/${id}`).then (resp =>{
+		 alert("Nhân viên đã được chấp nhận");
+		 $scope.initialize();
+	 })
+	 
+ }
 //-----------------------------------------------//
 	//	Tìm Nhân viên
 

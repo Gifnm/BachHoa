@@ -111,6 +111,11 @@ public class EmployeeAPI {
 		emService.detele(id);
 	}
 	
+	@PutMapping("employeeAccept/{id}")
+	public void Accept(@PathVariable("id") Integer id) {
+		emService.accept(id);
+	}
+	
 	@PutMapping("employeeDel/{id}")
 	public void DeleteWait(@PathVariable("id") Integer id) {
 		emService.DeleteWait(id);

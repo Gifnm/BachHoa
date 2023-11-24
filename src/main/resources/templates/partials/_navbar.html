@@ -63,10 +63,10 @@
                         </td>
                         
                         <td class="sticky function-col bg-white">
-                            <button class="btn" data-bs-toggle="modal" data-bs-target="#employeeModal"
+                            <button class="btn" ng-click="acceptNV(e.employeeID)" data-bs-toggle="modal" data-bs-target="#employeeModal"
                                 ><i class="bi bi-check"></i>
                             </button>
-                            <button class="btn" ng-click="delete(e.employeeID)">
+                            <button class="btn" ng-click="Denied(e.employeeID)">
                             	<i class="bi bi-person-x"></i>
                             </button>
                         </td>
