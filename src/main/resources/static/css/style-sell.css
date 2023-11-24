@@ -3,7 +3,7 @@ header {
   padding: 0 2%;
 }
 
-.menuHidden {
+.menuHidden{
   display: none;
 }
 
@@ -19,7 +19,7 @@ header {
   height: 100%;
 }
 
-.tab-pane {
+.tab-pane{
   height: 490px;
 }
 
@@ -27,51 +27,19 @@ a {
   text-decoration: none;
 }
 
-.number-control {
-  display: flex;
-  align-items: center;
+/* .tab-content.tab-content-vertical {
+  border-top: 1px solid #dee2e6;
 }
 
-.number-left,
-.number-right{
-  background-color: rgb(122, 231, 255);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2px;
-  color: black;
-  transition: background-color 0.3s;
-  cursor: pointer;
-  height: 1.5rem;
-}
-/* 
-.number-left::before {
-  content: "-";
-}
-
-.number-right::after {
-  content: "+";
-} */
-
-.number-quantity {
+.tab-content.tab-content-vertical-custom {
   border: 0;
-  width: 50px;
-  -moz-appearance: textfield;
-  /* border-top: 1px solid black;
-  border-bottom: 1px solid black; */
+  padding-top: 0;
 }
 
-.number-left:hover,
-.number-right:hover {
-  background-color: #666666;
-  color: white;
-}
-
-#slsp::-webkit-outer-spin-button,
-#slsp::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+.tab-content.tab-content-custom-pill {
+  border: 0;
+  padding-left: 0;
+} */
 
 @media (max-width: 700px) {
 
@@ -90,9 +58,4 @@ a {
   .menuHidden {
     display: block;
   }
-}
-
-.swal2-popup>#swal2-title {
-  text-align: center;
-  margin: 0.6rem;
 }

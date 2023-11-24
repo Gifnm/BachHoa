@@ -29,43 +29,6 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
         })
     }
 
-    // hiển thị tất cả các yêu cầu nộp tiền
-    let loadPayment = function () {
-        document.getElementById('pagination').setAttribute("style", "display: none;");
-        $http.get(`/bachhoa/api/paymentHistory/getPayment`).then(resp => {
-            $scope.items = resp.data.content;
-            angular.forEach($scope.items, function (item) {
-                item.timePay = dateFormat(item.timePay);
-                if (item.paied == 0) {
-                    item.status = "Thu";
-                } else if (item.paied == 1) {
-                    item.status = "Tiếp tục thu";
-                } else {
-                    item.status = "Đã thu";
-                }
-
-                if (item.timeReceived != null) {
-                    item.timeReceived = dateFormat(item.timeReceived);
-                }
-            })
-			//console.log($scope.items);
-			$scope.totalReceived = resp.data.totalElements;
-			//alert($scope.totalBill);
-			if ($scope.totalReceived >= 0 && $scope.totalReceived <= 8) {
-				$scope.maxPage = 1;
-			} else {
-				$scope.maxPage = Math.ceil($scope.totalReceived / 8);
-			}
-			console.log($scope.maxPage)
-			$scope.index = index;
-			$scope.pages = [];
-			for (let i = 1; i <= $scope.maxPage; i++) {
-				$scope.pages.push(i);
-			}
-
-        });
-    }
-
     // tìm kiếm theo ngày
 	$scope.index = 1;
 	$scope.maxPage = 0;
@@ -101,7 +64,7 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
 			if ($scope.totalReceived >= 0 && $scope.totalReceived <= 8) {
 				$scope.maxPage = 1;
 			} else {
-				$scope.maxPage = Math.ceil($scope.totalReceived / 8);
+				$scope.maxPage = Math.ceil($scope.totalBill / 8);
 			}
 			console.log($scope.maxPage)
 			$scope.index = index;
@@ -109,6 +72,7 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
 			for (let i = 1; i <= $scope.maxPage; i++) {
 				$scope.pages.push(i);
 			}
+			Calc();
 		}).catch(error => {
 			console.log('Error', error)
 		});
@@ -117,7 +81,7 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
     // hiển thị tất cả các lịch sử nộp tiền
     let loadHistory = function () {
         $http.get(`/bachhoa/api/paymentHistory/getAll`).then(resp => {
-            $scope.items = resp.data.content;
+            $scope.items = resp.data;
             angular.forEach($scope.items, function (item) {
                 item.timePay = dateFormat(item.timePay);
                 if (item.paied == 0) {
@@ -132,21 +96,6 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
                     item.timeReceived = dateFormat(item.timeReceived);
                 }
             })
-			//console.log($scope.items);
-			$scope.totalReceived = resp.data.totalElements;
-			//alert($scope.totalBill);
-			if ($scope.totalReceived >= 0 && $scope.totalReceived <= 8) {
-				$scope.maxPage = 1;
-			} else {
-				$scope.maxPage = Math.ceil($scope.totalReceived / 8);
-			}
-			console.log($scope.maxPage)
-			$scope.index = index;
-			$scope.pages = [];
-			for (let i = 1; i <= $scope.maxPage; i++) {
-				$scope.pages.push(i);
-			}
-
         });
     }
     // hiển thị chi tiết nộp tiền
@@ -315,6 +264,123 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
         });
     }
 
+    // gợi ý nhân viên
+    // $scope.autocompleteInput = {
+    //     autocomplete(inp, arr) {
+    //         /*the autocomplete function takes two arguments,
+    //         the text field element and an array of possible autocompleted values:*/
+    //         let currentFocus;
+    //         /*execute a function when someone writes in the text field:*/
+    //         inp.addEventListener("input", function (e) {
+    //             let a, b, i, val = this.value;
+    //             /*close any already open lists of autocompleted values*/
+    //             closeAllLists();
+    //             if (!val) { return false; }
+    //             currentFocus = -1;
+    //             /*create a DIV element that will contain the items (values):*/
+    //             a = document.createElement("DIV");
+    //             a.setAttribute("id", this.id + "autocomplete-list");
+    //             a.setAttribute("class", "autocomplete-items");
+    //             /*append the DIV element as a child of the autocomplete container:*/
+    //             this.parentNode.appendChild(a);
+    //             /*for each item in the array...*/
+    //             for (i = 0; i < arr.length; i++) {
+    //                 /*check if the item starts with the same letters as the text field value:*/
+    //                 if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+    //                     /*create a DIV element for each matching element:*/
+    //                     b = document.createElement("DIV");
+    //                     /*make the matching letters bold:*/
+    //                     b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+    //                     b.innerHTML += arr[i].substr(val.length);
+    //                     /*insert a input field that will hold the current array item's value:*/
+    //                     b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+    //                     /*execute a function when someone clicks on the item value (DIV element):*/
+    //                     b.addEventListener("click", function (e) {
+    //                         /*insert the value for the autocomplete text field:*/
+    //                         inp.value = this.getElementsByTagName("input")[0].value;
+    //                         //document.getElementById("productCode").focus()
+    //                         /*close the list of autocompleted values,
+    //                         (or any other open lists of autocompleted values:*/
+    //                         closeAllLists();
+    //                     });
+    //                     a.appendChild(b);
+    //                 }
+    //             }
+    //         });
+    //         /*execute a function presses a key on the keyboard:*/
+    //         inp.addEventListener("keydown", function (e) {
+    //             let x = document.getElementById(this.id + "autocomplete-list");
+    //             if (x) x = x.getElementsByTagName("div");
+    //             if (e.keyCode == 40) {
+    //                 /*If the arrow DOWN key is pressed,
+    //                 increase the currentFocus variable:*/
+    //                 currentFocus++;
+    //                 /*and and make the current item more visible:*/
+    //                 addActive(x);
+    //             } else if (e.keyCode == 38) { //up
+    //                 /*If the arrow UP key is pressed,
+    //                 decrease the currentFocus variable:*/
+    //                 currentFocus--;
+    //                 /*and and make the current item more visible:*/
+    //                 addActive(x);
+    //             } else if (e.keyCode == 13) {
+    //                 /*If the ENTER key is pressed, prevent the form from being submitted,*/
+    //                 e.preventDefault();
+    //                 if (currentFocus > -1) {
+    //                     /*and simulate a click on the "active" item:*/
+    //                     if (x) x[currentFocus].click();
+    //                 }
+    //             }
+    //         });
+    //         function addActive(x) {
+    //             /*a function to classify an item as "active":*/
+    //             if (!x) return false;
+    //             /*start by removing the "active" class on all items:*/
+    //             removeActive(x);
+    //             if (currentFocus >= x.length) currentFocus = 0;
+    //             if (currentFocus < 0) currentFocus = (x.length - 1);
+    //             /*add class "autocomplete-active":*/
+    //             x[currentFocus].classList.add("autocomplete-active");
+    //         }
+    //         function removeActive(x) {
+    //             /*a function to remove the "active" class from all autocomplete items:*/
+    //             for (let i = 0; i < x.length; i++) {
+    //                 x[i].classList.remove("autocomplete-active");
+    //             }
+    //         }
+    //         function closeAllLists(elmnt) {
+    //             /*close all autocomplete lists in the document,
+    //             except the one passed as an argument:*/
+    //             var x = document.getElementsByClassName("autocomplete-items");
+    //             for (let i = 0; i < x.length; i++) {
+    //                 if (elmnt != x[i] && elmnt != inp) {
+    //                     x[i].parentNode.removeChild(x[i]);
+    //                 }
+    //             }
+    //         }
+    //         /*execute a function when someone clicks in the document:*/
+    //         document.addEventListener("click", function (e) {
+    //             closeAllLists(e.target);
+    //         });
+    //     },
+
+    //     // Lấy danh dách các nhân viên
+    //     initAutoComplete() {
+    //         $http.get(`/bachhoa/api/employees/getAll`).then(resp => {
+    //             $scope.listEmployee = resp.data;
+    //             //console.log($scope.listEmployee);
+    //             let list = [];
+    //             angular.forEach($scope.listEmployee, function (item) {
+    //                 let employee = item.employeeID + " - " + item.employeeName;
+    //                 list.push(employee);
+    //             })
+    //             //console.log(list);
+    //             $scope.autocompleteInput.autocomplete(document.getElementById("employee"), list);
+    //         }).catch(error => {
+    //             console.log('Error', error)
+    //         });
+    //     }
+    // }
     //------------------------------------------------//
     // lấy danh sách nhân viên
     let initAutoComplete = function () {
@@ -338,7 +404,7 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
     // chọn mặc định ngày hôm nay
     SetDefaultDate();
     // lấy danh sách lịch sử nộp tiền
-    loadPayment();
+    loadHistory();
     //giợ ý nhân viên
     initAutoComplete();
 

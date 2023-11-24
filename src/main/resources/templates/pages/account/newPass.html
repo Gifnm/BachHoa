@@ -27,19 +27,11 @@
 </head>
 
 <body class="background-img">
-    <!-- Toast Thông báo -->
-    <div th:classappend="*{Toast}" class="alert flash show" id="alert" role="alert" 
-            style="position: fixed; right: 1%; top: 1%; z-index: 999;">
-        <div th:classappend="${Toast_icon}" th:utext="${Toast_show_icon}">
-
-        </div>
-        <div th:classappend="${Toast_title}" th:text="${message}"></div>
-        <div th:classappend="${Toast_close}" 
-                type="button" id="alertClose" data-bs-dismiss="alert" aria-label="Close">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 20 20" height="20"><path fill="#393a37" d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"></path></svg>
-        </div>
+    <div class="alert bg-info bg-gradient bg-opacity-75 fw-bold fade show d-flex row alert-close flash" role="alert"
+        id="alert" style="position: fixed; right: 1%; top: 1%; width: 25%; display: none; z-index: 999;">
+        <span class="col">[[${message}]]</span>
+        <button type="button" id="alertClose" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    
     <div class="back_home">
         <a th:href="@{/login}" class="text-decoration-none" style="position: fixed; left: 1%; top: 1%; width: 22%; z-index: 999;">
             <button>

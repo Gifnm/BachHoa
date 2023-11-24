@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.spring.main.model.Bill;
+import com.spring.main.model.Employee;
 
 public interface BillJPA extends JpaRepository<Bill, String>{
 	

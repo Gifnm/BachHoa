@@ -39,12 +39,6 @@ public class PaymentHistoryAPI {
 		return paymentHistoryService.getAll();
 	}
 	
-	@GetMapping("paymentHistory/getPayment")
-	public Page<PaymentHistory> getPayment(@RequestParam Optional<Integer> index){
-		Pageable page = PageRequest.of(index.orElse(0), 8);
-		return paymentHistoryService.getPayment(page);
-	}
-	
 	@GetMapping("paymentHistory/findByDate/{fromDate}/{toDate}")
 	public Page<PaymentHistory> findByDate(@PathVariable("fromDate") Timestamp fromDate, @PathVariable("toDate") Timestamp toDate,  @RequestParam Optional<Integer> index){
 		Pageable page = PageRequest.of(index.orElse(0), 8);

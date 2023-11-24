@@ -41,10 +41,9 @@ public class PrintController {
 	BillDetailService billDetailService;
 	@Autowired
 	BillService billService;
-
+	
 	@GetMapping("/print/{billID}")
-	public ResponseEntity<byte[]> print(@PathVariable("billID") String billID)
-			throws FileNotFoundException, JRException {
+	public ResponseEntity<byte[]> print(@PathVariable("billID") String billID) throws FileNotFoundException, JRException {
 		Bill bill = billService.findByID(billID);
 		List<BillDetail> billDetail = billDetailService.findByBillID(bill.getBillID());
 		List<Invoice> list = new ArrayList<>();
@@ -52,21 +51,11 @@ public class PrintController {
 			Invoice invoice = new Invoice();
 			invoice.setProductName(item.getProduct().getProductName());
 			invoice.setQuantity(item.getQuantity());
-			float vat = (float) item.getProduct().getVat() / 100;
+			float vat = (float)item.getProduct().getVat() / 100;
 			float price = item.getProduct().getPrice() + (item.getProduct().getPrice() * vat);
 			invoice.setPrice(formatNumber(Math.round(price)));
 			invoice.setTotalAmount(formatNumber(Math.round(item.getTotalAmount())));
 			list.add(invoice);
-		}
-		for (BillDetail item : billDetail) {
-			if (item.getQuantityGift() > 0) {
-				Invoice invoiceGift = new Invoice();
-				invoiceGift.setProductName("Quà tặng: " + item.getProduct().getProductName());
-				invoiceGift.setQuantity(item.getQuantityGift());
-				invoiceGift.setPrice("0");
-				invoiceGift.setTotalAmount("0");
-				list.add(invoiceGift);
-			}
 		}
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
 		JasperReport compileReport = JasperCompileManager
@@ -80,9 +69,8 @@ public class PrintController {
 		map.put("createDate", dateString);
 		map.put("amountReceivable", formatNumber(Math.round(bill.getTotalAmount())));
 		map.put("cashRound", formatNumber(roundToThousand(Math.round(bill.getTotalAmount()))));
-		map.put("cash", formatNumber(Math.round(bill.getCash())));
-		map.put("change",
-				formatNumber(Math.round(bill.getCash()) - roundToThousand(Math.round(bill.getTotalAmount()))));
+		map.put("cash",formatNumber( Math.round(bill.getCash())));
+		map.put("change", formatNumber(Math.round(bill.getCash()) - roundToThousand(Math.round(bill.getTotalAmount()))));
 		JasperPrint report = JasperFillManager.fillReport(compileReport, map, beanCollectionDataSource);
 
 		// JasperExportManager.exportReportToPdfFile(report, "invoice.pdf");
@@ -92,15 +80,18 @@ public class PrintController {
 		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
 		// return "ok";
 	}
-
+	
 	public static int roundToThousand(float value) {
-		double scale = 1000;
-		return (int) (Math.round(value / scale) * scale);
-	}
-
+		  double scale = 1000;
+		  return (int) (Math.round (value / scale) * scale);
+		}
+	
 	public static String formatNumber(int value) {
 		DecimalFormat df = new DecimalFormat("#,###");
-		return df.format(value);
-	}
-
+	    return df.format(value);
+		}
+	
+	
 }
+
+
