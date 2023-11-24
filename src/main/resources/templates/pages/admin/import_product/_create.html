@@ -18,11 +18,11 @@
                     </p>
                 </div>
                 <div>
-                    <button class="btn btn-success" ng-click="createDeliveryNote()"
-                        ng-if="currentFeature==='createFeature'">
+                    <button class="btn btn-primary rounded-pill {{selectedProducts.length==0?'disabled':''}}"
+                        ng-click="createDeliveryNote()" ng-if="currentFeature==='createFeature'">
                         Tạo phiếu
                     </button>
-                    <button class="btn btn-success" ng-click="updateDetailDeliveryNote()"
+                    <button class="btn btn-primary rounded-pill" ng-click="updateDetailDeliveryNote()"
                         ng-if="currentFeature==='updateFeature'">
                         Lưu phiếu
                     </button>

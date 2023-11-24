@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/pages/admin/layout:: dynamic(~{::body})}">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-route.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-  
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-route.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
 <head>
     <title>Employee</title>
     <!-- Required meta tags -->
@@ -15,25 +15,23 @@
 </head>
 
 <body ng-app="app" ng-controller="employee-ctrl">
-    <div class="row">
-        <div class="d-sm-flex justify-content-between align-items-start p-3 border-bottom">
-            <div>
-                <h4 class="card-title card-title-dash fs-5 fw-bold">Danh sách Nhân Viên</h4>
-              
-            </div>
+    <div class="d-sm-flex justify-content-between align-items-start p-4 py-3 border border-2 bg-light"
+        style="border-radius: 1rem 1rem 0 0;">
+        <div>
+            <b class="fs-4">Nhân sự</b><br>
+            <small class="text-muted">Tổng cộng <b>{{employees.length}}</b> nhân sự
+            </small>
         </div>
-    </div>
-    <main class="row h-100 overflow-auto">
-        <div class="col pt-4">
-            <div class="h-100">
-                <div class="row h-100">
-                    <div th:replace="~{/pages/admin/employee/_list}"></div>
+        <div class="">
+            <a href="#" class="btn btn-primary rounded-pill d-flex align-items-center"><span
+                    class="material-symbols-outlined me-2">
+                    file_save
+                </span> Excel</a>
+        </div>
 
-                   <!-- <div th:replace="~{/pages/admin/employee/_form}"></div> -->
-                </div>
-            </div>
-        </div>
+    </div>
+    <main class="overflow-auto flex-grow-1 bg-light border border-2 border-top-0" style="border-radius: 0 0 1rem 1rem;">
+        <div th:replace="~{/pages/admin/employee/_list}"></div>
     </main>
-    <div th:replace="~{/partials/_footer}"></div>
     <script src="/js/employee-ctrl.js"></script>
 </body>

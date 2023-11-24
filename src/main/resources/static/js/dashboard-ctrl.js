@@ -30,9 +30,9 @@ app.controller("ctrl", function ($scope, $http, $filter) {
     }
 
     function formatDate(date) {
-        var year = date.getFullYear();
-        var month = ('0' + (date.getMonth() + 1)).slice(-2);
-        var day = ('0' + date.getDate()).slice(-2);
+        let year = date.getFullYear();
+        let month = ('0' + (date.getMonth() + 1)).slice(-2);
+        let day = ('0' + date.getDate()).slice(-2);
         return year + '-' + month + '-' + day;
     }
 
@@ -123,7 +123,8 @@ app.controller("ctrl", function ($scope, $http, $filter) {
             params: {
                 'start-date': $scope.startDate,
                 'end-date': $scope.endDate,
-                'mile-stone': $scope.mileStone
+                'mile-stone': $scope.mileStone,
+                'store-id': $scope.account.store.storeID
             }
         }).then(resp => {
             $scope.revenueData.increaseRevenue = resp.data;
@@ -132,7 +133,8 @@ app.controller("ctrl", function ($scope, $http, $filter) {
                 params: {
                     'start-date': $scope.startDate,
                     'end-date': $scope.endDate,
-                    'mile-stone': $scope.mileStone
+                    'mile-stone': $scope.mileStone,
+                    'store-id': $scope.account.store.storeID
                 }
             }).then(resp => {
                 $scope.revenueData.revenue = resp.data;
@@ -141,7 +143,8 @@ app.controller("ctrl", function ($scope, $http, $filter) {
                     params: {
                         'start-date': $scope.startDate,
                         'end-date': $scope.endDate,
-                        'mile-stone': $scope.mileStone
+                        'mile-stone': $scope.mileStone,
+                        'store-id': $scope.account.store.storeID
                     }
                 }).then(resp => {
                     $scope.revenueData.labels = resp.data;
@@ -162,7 +165,8 @@ app.controller("ctrl", function ($scope, $http, $filter) {
         $http.get(`${host}/bills`, {
             params: {
                 'from-date': $scope.startDate,
-                'to-date': $scope.endDate
+                'to-date': $scope.endDate,
+                'store-id': $scope.account.store.storeID
             }
         }).then(resp => {
             console.log('Total bills: ' + resp.data.length);
@@ -171,10 +175,11 @@ app.controller("ctrl", function ($scope, $http, $filter) {
     }
 
     $scope.initialize = function () {
-        $scope.getAccount();
-        $scope.initChart();
-        $scope.totalRevenue = $scope.revenueData.increaseRevenue[$scope.revenueData.increaseRevenue.length - 1]
-        $scope.allBills = $scope.totalBills();
+        $scope.getAccount().then(() => {
+            $scope.initChart();
+            $scope.totalRevenue = $scope.revenueData.increaseRevenue[$scope.revenueData.increaseRevenue.length - 1]
+            $scope.allBills = $scope.totalBills();
+        });
     }
 
     $scope.initialize();

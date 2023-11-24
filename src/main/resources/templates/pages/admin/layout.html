@@ -1,4 +1,4 @@
-	<!doctype html>
+<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="dynamic(view)">
 
 <head>
@@ -44,12 +44,10 @@
         </div>Đang tải...
     </div>
     <div class="d-flex vh-100 layout">
-        <div class="bg-warning">
-            <div th:replace="~{/partials/_sidebar}"></div>
-        </div>
-        <div class="flex-grow-1 d-flex flex-column px-3 pb-3">
+        <div th:replace="~{/partials/_sidebar}"></div>
+        <div class="flex-grow-1 d-flex flex-column">
             <div th:replace="~{/partials/_navbar}"></div>
-            <div class="overflow-auto rounded-4 flex-grow-1 d-flex flex-column">
+            <div class="overflow-auto rounded-4 flex-grow-1 d-flex flex-column m-3">
                 <div th:replace="${view}"></div>
             </div>
         </div>
@@ -67,6 +65,10 @@
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.min.js"></script>
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>
 </body>
 
 </html>

@@ -223,7 +223,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		}
 		let fromD = startDateFormat(fromDate);
 		let toD = endDateFormat(toDate);
-		$http.get(`/bachhoa/api/bill/searchBetween/${fromD}/${toD}?index=${index}`).then(resp => {
+		$http.get(`/bachhoa/api/bill/searchBetween/${fromD}/${toD}?index=${index}&store-id=${$scope.account.store.storeID}`).then(resp => {
 			if (resp.data.content.length == 0) {
 				$scope.isNull = true;
 			} else {

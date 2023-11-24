@@ -25,7 +25,8 @@ public class StatisticService {
 
     private String dateFormatString = "yyyy-MM-dd";
 
-    public Map<String, Float> getMapRevenueEachMileStone(String startDate, String endDate, String typeMileStone) {
+    public Map<String, Float> getMapRevenueEachMileStone(String startDate, String endDate, String typeMileStone,
+            int storeId) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatString);
         Timestamp stDate = null;
         Timestamp enDate = null;
@@ -38,7 +39,7 @@ public class StatisticService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Bill> bills = billJpa.findAllByTimeCreateBetween(stDate, enDate);
+        List<Bill> bills = billJpa.findAllByTimeCreateBetween(stDate, enDate, storeId);
         Map<String, Float> revenueMap = new HashMap<>();
         for (Bill bill : bills) {
             String mileStone = getMileStone(bill.getTimeCreate(), typeMileStone);
@@ -55,7 +56,7 @@ public class StatisticService {
         return sortedRevenueMap;
     }
 
-    public String[] getListMileStone(String startDate, String endDate, String typeMileStone) {
+    public String[] getListMileStone(String startDate, String endDate, String typeMileStone, int storeId) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatString);
         Timestamp stDate = null;
         Timestamp enDate = null;
@@ -68,7 +69,7 @@ public class StatisticService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Bill> bills = billJpa.findAllByTimeCreateBetween(stDate, enDate);
+        List<Bill> bills = billJpa.findAllByTimeCreateBetween(stDate, enDate, storeId);
         Set<String> mileStoneSet = new HashSet<>();
 
         for (Bill bill : bills) {
@@ -92,8 +93,9 @@ public class StatisticService {
         }
     }
 
-    public Float[] getListIncreaseRevenue(String startDate, String endDate, String typeMileStone) {
-        Map<String, Float> sortedRevenueMap = this.getMapRevenueEachMileStone(startDate, endDate, typeMileStone);
+    public Float[] getListIncreaseRevenue(String startDate, String endDate, String typeMileStone, int storeId) {
+        Map<String, Float> sortedRevenueMap = this.getMapRevenueEachMileStone(startDate, endDate, typeMileStone,
+                storeId);
 
         // Cumulative revenue by milestone
         System.out.println("LIST INCREASE REVENUE: " + startDate + " - " + endDate + " - " + typeMileStone + "\n");
@@ -109,8 +111,9 @@ public class StatisticService {
         return revenueIncreaseList.toArray(new Float[0]);
     }
 
-    public Float[] getListRevenue(String startDate, String endDate, String typeMileStone) {
-        Map<String, Float> sortedRevenueMap = this.getMapRevenueEachMileStone(startDate, endDate, typeMileStone);
+    public Float[] getListRevenue(String startDate, String endDate, String typeMileStone, int storeId) {
+        Map<String, Float> sortedRevenueMap = this.getMapRevenueEachMileStone(startDate, endDate, typeMileStone,
+                storeId);
         // Convert to List<Float>
         List<Float> revenueList = new ArrayList<>(sortedRevenueMap.values());
         return revenueList.toArray(new Float[0]);

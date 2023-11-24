@@ -20,12 +20,9 @@ app.controller("ctrl", function ($scope, $http, $filter) {
     $scope.getAccount = function () {
         let email = document.getElementById('accountEmail').innerText;
         return $http.get(`${host}/employee/findByEmail/${email}`).then(resp => {
-            console.log("[Product-image-ctrl:getAccount()10]\n> Account: " + `${host}/employee/findByEmail/${email}`);
             $scope.account = resp.data;
-            console.log("[Product-image-ctrl:getAccount():12]\n> Account: " + $scope.account);
         }).catch(error => {
-            alert("[Product-image-ctrl:initialize():19]\n> Loi lay account");
-            console.log("[Product-image-ctrl:getAccount():15]\n> Error: " + error);
+            console.log("[Product-image-ctrl:getAccount():25]\n> Error: " + error);
         });
     }
 
@@ -104,8 +101,8 @@ app.controller("ctrl", function ($scope, $http, $filter) {
                 // Handle success, e.g., show a success message
                 console.log('Delivery note created successfully:', response.data);
                 Swal.fire({
-                    title: 'Success!',
-                    text: 'Created successfully',
+                    title: 'Thành công!',
+                    text: 'Tạo phiếu nhập mới thành công.',
                     icon: 'success',
                     showConfirmButton: false,
                     timer: 1500
@@ -115,8 +112,8 @@ app.controller("ctrl", function ($scope, $http, $filter) {
                 // Handle error, e.g., show an error message
                 console.error('Error creating delivery note:', error.data);
                 Swal.fire({
-                    title: 'Error!',
-                    text: 'Failed to create delivery note. Please try again.',
+                    title: 'Thất bại!',
+                    text: 'Tạo mới phiếu nhập thất bại. Vui lòng thử lại.',
                     icon: 'error',
                     showConfirmButton: false,
                     timer: 1500
@@ -151,8 +148,8 @@ app.controller("ctrl", function ($scope, $http, $filter) {
                 // Handle success, e.g., show a success message
                 console.log('Delivery note updated successfully:', response.data);
                 Swal.fire({
-                    title: 'Success!',
-                    text: 'Updated successfully',
+                    title: 'Thành công!',
+                    text: 'Cập nhật thành công',
                     icon: 'success',
                     showConfirmButton: false,
                     timer: 1500
@@ -175,8 +172,8 @@ app.controller("ctrl", function ($scope, $http, $filter) {
                 console.error('Error updating delivery note:', error.data);
                 // Show a success notification
                 Swal.fire({
-                    title: 'Error!',
-                    text: 'Failed to update delivery note. Please try again.',
+                    title: 'Lỗi!',
+                    text: 'Cập nhật phiếu nhập thất bại. Vui lòng thử lại.',
                     icon: 'error',
                     showConfirmButton: false,
                     timer: 1500

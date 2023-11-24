@@ -1,0 +1,52 @@
+<!-- Modal cập nhật khuyến mãi -->
+<div class="modal fade" id="editDiscount" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="999"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cập nhật chương trình khuyến mãi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="p-2">
+                    <div class="mb-3 row">
+                        <label for="productID" class="col-sm-3 col-form-label">Mã sản phẩm</label>
+                        <div class="col-sm-9 d-flex">
+                            <input type="text" class="form-control" ng-model="discountDetail.productID" disabled>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productID" class="col-sm-3 col-form-label">Loại hình
+                            KM</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" ng-model="discountDetail.disID">
+                                <option ng-repeat="dis in discountList" value="{{dis.value}}">{{dis.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="startDate" class="col-sm-3 col-form-label">Ngày bắt
+                            đầu</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control" id="startDate" ng-model="discountDetail.startTime">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="endDate" class="col-sm-3 col-form-label">Ngày kết
+                            thúc</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control" id="endDate" ng-model="discountDetail.endTime">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="start" class="btn btn-success" ng-click="update(discountDetail.productID)">Bắt
+                    đầu</button>
+                <button type="button" id="close" class="btn btn-danger"
+                    ng-click="delete(discountDetail.productID)">Xóa</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -26,8 +26,8 @@ public class BillService {
 		return billJPA.findById(billID).get();
 	}
 
-	public Page<Bill> searchBetween(Timestamp fromDate, Timestamp toDate, Pageable page) {
-		return billJPA.SearchBetween2Date(fromDate, toDate, page);
+	public Page<Bill> searchBetween(Timestamp fromDate, Timestamp toDate, Pageable page, int storeId) {
+		return billJPA.SearchBetween2Date(storeId, fromDate, toDate, page);
 	}
 
 	public List<Bill> findByEmployeeAndDate(Integer employeeID, Timestamp fromDate, Timestamp toDate) {
@@ -46,7 +46,7 @@ public class BillService {
 		return billJPA.getBillID(storeID);
 	}
 
-	public List<Bill> findAllByTimeCreateBetween(String fromDate, String toDate) {
+	public List<Bill> findAllByTimeCreateBetween(String fromDate, String toDate, int storeId) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Timestamp stDate = null;
 		Timestamp enDate = null;
@@ -59,6 +59,11 @@ public class BillService {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		return billJPA.findAllByTimeCreateBetween(stDate, enDate);
+		return billJPA.findAllByTimeCreateBetween(stDate, enDate, storeId);
+	}
+
+	public Bill findOneByBillIdAndStoreId(String billId, int storeId) {
+		System.out.println(billJPA.findOneByBillIdAndStoreId(billId, storeId));
+		return billJPA.findOneByBillIdAndStoreId(billId, storeId);
 	}
 }

@@ -1,19 +1,20 @@
-<div class="d-flex justify-content-start">
+<div class="topbar bg-light d-flex align-middle justify-content-between">
     <button id="sidebarCollapse" class="btn d-flex align-items-center">
         <span class="material-symbols-outlined text-primary">
             left_panel_close
         </span>
     </button>
-    <b class="my-auto text-muted">Cửa hàng {{account.store.address}}</b>
-    <div>
-        <a class="btn p-1 pe-1 position-relative" title="Nhấn để kiểm tra đơn xin việc" data-bs-toggle="modal"
-            data-bs-target="#DonXinViec">
-            <i class="bi bi-inbox fs-3"></i> <span
-                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                99+ <span class="visually-hidden">Đơn xin việc</span>
-            </span>
-        </a>
-    </div>
+    <b class="my-auto text-muted" data-bs-toggle="tooltip" data-bs-placement="bottom"
+        data-bs-custom-class="custom-tooltip"
+        data-bs-title="This top tooltip is themed via CSS variables.">{{account.store.storeName}}</b>
+    <a class="btn position-relative d-flex align-items-center rounded m-3 me-0" title="Nhấn để kiểm tra đơn xin việc"
+        data-bs-toggle="modal" data-bs-target="#DonXinViec">
+        <span class="material-symbols-outlined text-primary">
+            inbox
+        </span> <small class="position-absolute top-0 start-25 translate-middle badge rounded-pill bg-danger">
+            9
+        </small>
+    </a>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="DonXinViec" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
