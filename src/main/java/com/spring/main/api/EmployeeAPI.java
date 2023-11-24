@@ -119,4 +119,16 @@ public class EmployeeAPI {
 
 	}
 
+	@GetMapping("findById/{id}")
+	private ResponseEntity<Employee> login(@PathVariable("id") int id) {
+
+		Employee employee = emService.findByID(id);
+		if (employee == null) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		} else {
+
+			return ResponseEntity.ok(employee);
+		}
+	}
+
 }
