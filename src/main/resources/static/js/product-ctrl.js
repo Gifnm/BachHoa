@@ -14,6 +14,26 @@ app.controller("ctrl", function ($scope, $http) {
     $scope.account = {} //Account of login employee
     let storeId;
 
+    let toastMixin = Swal.mixin({
+        toast: true,
+        icon: "success",
+        title: "General Title",
+        animation: false,
+        position: "top-right",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        customClass: {
+            confirmButton: "btn btn-outline-warning rounded-5 cursor",
+            cancelButton: "btn btn-outline-danger rounded-5 cursor",
+        },
+        buttonsStyling: false,
+        didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
+
     $scope.getAccount = function () {
         let email = document.getElementById('accountEmail').innerText;
         return $http.get(`${host}/employee/findByEmail/${email}`).then(resp => {
@@ -58,10 +78,34 @@ app.controller("ctrl", function ($scope, $http) {
         $http.post(url, item).then(resp => {
             $scope.reset();
             $scope.initialize();
-            alert("[product-ctrl.js:create():59]\n> Them moi thanh cong!");
+            let defaultShelve;
+            $http.get(`${host}/shelve/0`).then(resp => {
+                defaultShelve = resp.data;
+            })
+            let defaultProductPosition = {
+                id: 0,
+                product: resp.data,
+                displayQuantity: 0,
+                displayShelves: defaultShelve,
+                store: $scope.account.store,
+                form: 0
+            }
+            $http.post(`${host}/productPosition/insert`, defaultProductPosition).then(resp => {
+                console.log('Create default position successfully: ' + resp.data);
+            }).catch((error) => {
+                console.log('Create fail: ' + error);
+            })
+            toastMixin.fire({
+                title: "Thêm sản phẩm thành công!",
+                icon: "success",
+            })
         }).catch(error => {
             alert("[product-ctrl.js:create():61]\n> Loi them moi san pham!");
             console.log("[product-ctrl.js:create():62]\n> Error", error);
+            toastMixin.fire({
+                title: "Lỗi thêm sản phẩm!",
+                icon: "Error",
+            })
         })
         //create product with image
         // Collect product info and image in form into formData
@@ -121,6 +165,24 @@ app.controller("ctrl", function ($scope, $http) {
                 console.log("[product-ctrl.js:delete():102]\n> Error", error)
             });
         }
+    }
+
+    $scope.changeStatus = function (product) {
+        product.status = !product.status;
+        $http.put(`${host}/products/update`, product).then(resp => {
+            $scope.initialize();
+            toastMixin.fire({
+                title: "Cập nhật trạng thái thành công!",
+                icon: "success",
+            });
+            console.log('Set inactive successfully! ', resp.data);
+        }).catch(error => {
+            toastMixin.fire({
+                title: "Cập nhật thất bại!",
+                icon: "warning",
+            });
+            console.log("Set status fail\n> Error: ", error);
+        })
     }
 
     //Clear form information

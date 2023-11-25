@@ -94,11 +94,11 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li>
-                                    <a class="btn p-2 d-flex align-middle" ng-click="delete(pro.productID)">
+                                    <a class="btn p-2 d-flex align-middle" ng-click="changeStatus(pro)">
                                         <span class="material-symbols-outlined text-primary me-2">
-                                            delete
+                                            {{pro.status?'archive':'unarchive'}}
                                         </span>
-                                        <small>Xóa sản phẩm</small>
+                                        <small>{{pro.status?'Ngừng kinh doanh':'Bán lại'}}</small>
                                     </a>
                                 </li>
                             </ul>

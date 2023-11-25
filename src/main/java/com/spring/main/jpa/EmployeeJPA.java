@@ -21,7 +21,7 @@ public interface EmployeeJPA extends JpaRepository<Employee, Integer> {
   @Query(value = "Select * from employees where (employeeID = ?1 or employeeName like ?1 or roleID like ?1 or email like ?1) and storeID = ?2", nativeQuery = true)
   List<Employee> findByKeyword(String keyword, int storeId);
 
-  @Query(value = "Select * from employees where storeID = ?1", nativeQuery = true)
+  @Query(value = "Select * from employees where storeID = ?1 and active = true", nativeQuery = true)
   List<Employee> getByStoreId(int storeId);
 
   @Query("SELECT o FROM Employee o WHERE o.email = ?1")
@@ -34,4 +34,10 @@ public interface EmployeeJPA extends JpaRepository<Employee, Integer> {
 
   @Query("SELECT o FROM Employee o WHERE o.store.storeID = ?1 AND o.active = false")
   List<Employee> getRequest(Integer storeID);
+
+  @Transactional
+	@Modifying
+	@Query(value = "UPDATE employees SET active = 1 where employeeID = ?1", nativeQuery = true)
+	void accept(Integer employeeID);
+
 }

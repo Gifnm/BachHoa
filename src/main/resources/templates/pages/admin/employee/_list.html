@@ -44,7 +44,9 @@
                         <span>{{e.email}}</span>
                     </td>
                     <td class="sticky align-middle">
-                        <button class="btn d-flex align-items-center" ng-click="delete(e.employeeID)">
+                        <button class="btn d-flex align-items-center" ng-click="delete(e.employeeID)"
+                            data-bs-toggle="tooltip" data-bs-placement="start" data-bs-custom-class="custom-tooltip"
+                            data-bs-title="Xóa tài khoản này khỏi cửa hàng">
                             <span class="material-symbols-outlined text-primary">
                                 person_remove
                             </span>
@@ -60,3 +62,7 @@
 
     </div>
 </div>
+<script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>

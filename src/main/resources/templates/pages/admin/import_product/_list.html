@@ -23,12 +23,12 @@
                     </span>Hoàn tất ({{statusFilters.completedCount}})</label>
             </div>
         </div>
-        <label class="mb-2">Ngày tạo</label>
+        <!-- <label class="mb-2">Ngày tạo</label>
         <div class="d-flex justify-content-between mb-3">
             <div class="input-group w-25 me-auto">
                 <input class="form-control" type="date" ng-model="startDateSelected"
-                    ng-change="updateDataRevenueChart()">
-                <input class="form-control" type="date" ng-model="endDateSelected" ng-change="updateDataRevenueChart()">
+                    ng-change="filterTableDataByDate()">
+                <input class="form-control" type="date" ng-model="endDateSelected" ng-change="filterTableDataByDate()">
             </div>
 
             <ul class="pagination my-auto">
@@ -59,7 +59,7 @@
                     <option value="50">50 dòng</option>
                 </select>
             </div>
-        </div>
+        </div> -->
         <div class="table-responsive rounded" style="max-height: 550px;
     overflow: auto;">
             <table class="table table-hover table-striped">

@@ -238,6 +238,8 @@ app.controller("ctrl", function ($scope, $http, $filter) {
                 $scope.filterTableData();
                 $scope.getCurrentPageData();
                 $scope.countDataByStatus();
+                // Call the function to set default values when the controller is loaded
+                $scope.setDurationFilterDefault();
             })
             .catch(error => {
                 console.error('Error fetching delivery notes:', error);
@@ -379,6 +381,7 @@ app.controller("ctrl", function ($scope, $http, $filter) {
         return $scope.filteredDeliveryNotes.slice(startIndex, endIndex);
     };
 
+
     $scope.filterTableData = function () {
         const filteredData = $scope.deliveryNotes.filter(row => {
             if ($scope.statusFilters.waiting && row.status === 'Chờ nhập') {
@@ -402,6 +405,34 @@ app.controller("ctrl", function ($scope, $http, $filter) {
         $scope.limitPage(filteredData);
         $scope.filteredDeliveryNotes = filteredData;
     }
+
+    // Function to set the default values for start and end dates
+    $scope.setDurationFilterDefault = function () {
+        const firstItem = $scope.deliveryNotes[0];
+        const lastItem = $scope.deliveryNotes[$scope.deliveryNotes.length - 1];
+        $scope.startDateSelected = lastItem.timeCreate ? $filter('date')(lastItem.timeCreate, 'yyyy-MM-dd') : '';
+        $scope.endDateSelected = firstItem.timeCreate ? $filter('date')(firstItem.timeCreate, 'yyyy-MM-dd') : '';
+
+        // Call the filter function to update the view
+        $scope.filterTableDataByDate();
+    }
+
+
+
+    // Function to filter the table data based on date range
+    $scope.filterTableDataByDate = function () {
+        // Parse the selected dates into JavaScript Date objects
+        const startDate = new Date($scope.startDateSelected);
+        const endDate = new Date($scope.endDateSelected);
+
+        // Filter the delivery notes based on the date range
+        $scope.filteredDeliveryNotes = $scope.deliveryNotes.filter(function (row) {
+            const rowDate = new Date(row.timeCreate);
+
+            // Check if the row date is within the selected date range
+            return rowDate >= startDate && rowDate <= endDate;
+        });
+    };
 
     $scope.countDataByStatus = function () {
         $scope.statusFilters.waitingCount = 0;

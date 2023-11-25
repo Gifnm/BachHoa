@@ -98,6 +98,10 @@ public class EmployeeService implements UserDetailsService {
 		employeeJPA.DeleteWait(id);
 	}
 	
+	public void accept(Integer id) {
+		employeeJPA.accept(id);
+	}
+	
   public List<Employee> getRequest (Integer id) {
 	 return employeeJPA.getRequest(id);
   }
@@ -180,6 +184,7 @@ public class EmployeeService implements UserDetailsService {
 			return passwordEncoder.matches(rawPassword, encodedPassword);
 		}
 	}
+	
 
 	public boolean CheckStore(String email) {
 		Employee employee = employeeJPA.findbyEmail(email);

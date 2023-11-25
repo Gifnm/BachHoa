@@ -1,0 +1,67 @@
+<!-- Modal -->
+<div class="modal fade" id="DonXinViec" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="exampleModalLabel">Đơn xin việc
+                    <i class="bi bi-person-lines-fill ms-2 fs-4"></i>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="list - employee" class="table-responsive  mt-1">
+                    <table class="table select-table">
+                        <thead>
+                            <tr>
+                                <th class="sticky  bg-white">Hình Ảnh</th>
+                                <th class="sticky  bg-white">Mã Nhân Viên</th>
+                                <th class="sticky bg-white">Tên Nhân Viên</th>
+                                <th class="sticky bg-white">Ngày xin việc</th>
+                                <th class="sticky bg-white">Email</th>
+                                <th class="sticky bg-white">Trạng thái chờ</th>
+                                <th class="sticky function-col bg-white"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr ng-repeat="e in emRequest">
+                                <!-- <td class="sticky order-col bg-white" scope="row">{{$index+1+currentPage*pageSize}}</td> -->
+                                <td class="sticky name-col bg-white">
+                                    <div class="d-flex">
+                                        <img src="{{e.image==null?DEFAULT_EMPLOYEE_IMAGE:e.image}}" alt="">
+
+                                    </div>
+                                </td>
+                                <td class="sticky  bg-white">
+                                    <h6>{{e.employeeID}}</h6>
+                                </td>
+                                <td>
+                                    <h6>{{e.employeeName}}</h6>
+                                </td>
+                                <td>
+                                    <h6>{{e.firstWork}}</h6>
+                                </td>
+                                <td>
+                                    <h6>{{e.email}}</h6>
+                                </td>
+                                <td>
+                                    <h6>Đang chờ duyệt</h6>
+                                </td>
+
+                                <td class="sticky function-col bg-white">
+                                    <button class="btn" ng-click="acceptNV(e.employeeID)" data-bs-toggle="modal"
+                                        data-bs-target="#employeeModal"><i class="bi bi-check"></i>
+                                    </button>
+                                    <button class="btn" ng-click="Denied(e.employeeID)">
+                                        <i class="bi bi-person-x"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

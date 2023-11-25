@@ -1,7 +1,22 @@
 <div class="px-3 py-2">
+    <div class="input-group rounded-4">
+        <span class="input-group-text bg-white border-end-0 pe-0" id="search-icon"><span
+                class="material-symbols-outlined">
+                search
+            </span></span>
+        <div class="form-floating">
+            <input id="bill_ID" type="search" ng-model="bill_ID" list="datalistBillID" ng-change="find(bill_ID)"
+                class="form-control border-start-0" placeholder="Nhập tên, mã, giá hoặc VAT để tìm sản phẩm"
+                title="Search here">
+            <label class="text-muted" for="bill_ID">Lọc theo mã</label>
+            <datalist id="datalistBillID">
+                <option ng-repeat="billID in listBillID" value="{{billID}}">
+            </datalist>
+        </div>
+    </div>
     <div class="container-fluid">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <div class="d-flex align-items-center my-2 my-lg-0 me-lg-auto col text-decoration-none">
+            <!-- <div class="d-flex align-items-center my-2 my-lg-0 me-lg-auto col text-decoration-none">
                 <div class="d-flex align-items-center p-3 col-12 col-md-6">
                     <label>Nhập hóa đơn: </label>
                     <div class="autocomplete d-flex text-dark">
@@ -14,7 +29,7 @@
                         </button>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                 <li class="d-flex align-items-center p-3">
@@ -32,6 +47,7 @@
                     </div>
                 </li>
             </ul>
+            <!-- <div th:replace="~{/pages/admin/employee/_pagination}"></div> -->
         </div>
     </div>
 </div>
@@ -74,8 +90,8 @@
                 </tbody>
             </table>
         </div>
-        <div class="row">
-            <div class="col-2">
+        <div class="d-flex justify-content-between">
+            <div class="">
                 <b class="count">{{totalBill}} Hóa đơn</b>
             </div>
             <div class="col-10 text-end">
@@ -87,6 +103,7 @@
                 <button ng-click="findByDate(fromDate,toDate,index + 1)"
                     class="btn btn-outline-primary {{index == maxPage - 1 ? 'disabled':''}}">Sau</button>
             </div>
+
         </div>
 
     </div>
