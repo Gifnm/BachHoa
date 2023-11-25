@@ -35,8 +35,9 @@ public class PaymentHistoryAPI {
 	}
 	
 	@GetMapping("paymentHistory/getAll")
-	public List<PaymentHistory> getAll(){
-		return paymentHistoryService.getAll();
+	public Page<PaymentHistory> getAll(@RequestParam("storeID") Integer storeID, @RequestParam("index") Optional<Integer> index){
+		Pageable page = PageRequest.of(index.orElse(0), 8);
+		return paymentHistoryService.getAllPayment(storeID, page);
 	}
 	
 	@GetMapping("paymentHistory/getPayment")

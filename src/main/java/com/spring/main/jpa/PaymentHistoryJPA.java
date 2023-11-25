@@ -18,4 +18,7 @@ public interface PaymentHistoryJPA extends JpaRepository<PaymentHistory, Integer
 	
 	@Query("SELECT o FROM PaymentHistory o WHERE o.paied = 0 OR o.paied = 1")
 	Page<PaymentHistory> getPayment(Pageable page);
+	
+	@Query("SELECT o FROM PaymentHistory o WHERE o.employee.store.storeID = ?1")
+	Page<PaymentHistory> getAllPayment(Integer storeID, Pageable page);
 }
