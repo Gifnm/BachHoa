@@ -54,9 +54,9 @@ public class StatisticService {
         // Convert to TreeMap to automatically sort by keys
         Map<String, Float> sortedRevenueMap = new TreeMap<>(revenueMap);
         // Print the sorted map
-        for (Map.Entry<String, Float> entry : sortedRevenueMap.entrySet()) {
-            // System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
+//        for (Map.Entry<String, Float> entry : sortedRevenueMap.entrySet()) {
+//             System.out.println(entry.getKey() + ": " + entry.getValue());
+//        }
 
         return sortedRevenueMap;
     }

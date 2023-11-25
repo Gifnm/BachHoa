@@ -46,7 +46,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 			redirectURL = "/business";
 		} else {
 			if (userDetails.hasRole("qlch")) {
-				redirectURL = "/admin/product";
+				redirectURL = "/admin/dashboard";
 			} else {
 				redirectURL = "/login/success";
 			}

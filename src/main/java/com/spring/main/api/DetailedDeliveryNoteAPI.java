@@ -17,7 +17,6 @@ import com.spring.main.Service.DeliveryNoteService;
 import com.spring.main.Service.DetailedDeliveryNoteService;
 import com.spring.main.Service.ProductService;
 import com.spring.main.Service.PurchaseHistoryService;
-import com.spring.main.model.DeliveryNote;
 import com.spring.main.model.DetailedDeliveryNote;
 import com.spring.main.model.Employee;
 import com.spring.main.model.Product;
