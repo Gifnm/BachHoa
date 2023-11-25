@@ -39,34 +39,33 @@
                     <td class="align-middle">
                         <input type="checkbox" ng-model="pro.selected" ng-change="toggleProductSelection(pro)">
                     </td>
-                    <td class="align-middle">
-                        <div class="d-flex">
-                            <img src="{{pro.image==null?DEFAULT_PRODUCT_IMAGE:pro.image}}" alt="">
-                            <div class="">
+                    <td class="d-flex align-middle">
+                        <div class="h-100">
+                            <!-- <img class="bg-secondary h-100 w-25"
+                                src="{{pro.image==null?DEFAULT_PRODUCT_IMAGE:pro.image}}" alt="..."> -->
+                            <span class="d-grid">
                                 <b>{{pro.productName}}</b>
-                                <p class="text-muted">{{pro.productID}}</p>
-                            </div>
+                                <span class="text-muted">{{pro.productID}}</span>
+                            </span>
                         </div>
                     </td>
                     <td class="align-middle">
-                        <p>{{pro.categories.categoriesName}}</p>
+                        <span>{{pro.categories.categoriesName}}</span>
                     </td>
                     <td class="align-middle">
-                        <p>{{pro.price}} VND</p>
+                        <span>{{pro.price}} VND</span>
                     </td>
                     <td class="align-middle">
-                        <p>{{pro.importPrice}} VND</p>
+                        <span>{{pro.importPrice}} VND</span>
                     </td>
                     <td class="align-middle">
-                        <p>{{pro.vat}} %</p>
+                        <span>{{pro.vat}} %</span>
                     </td>
                     <td class="align-middle">
-                        <p>{{pro.inventory}}</p>
+                        <span>{{pro.inventory}}</span>
                     </td>
                     <td class="align-middle">
-                        <div>
-                            <p>HSD: {{pro.nearestExpDate| date:'dd/MM/yyyy'}}</p>
-                        </div>
+                        <span>HSD: {{pro.nearestExpDate| date:'dd/MM/yyyy'}}</span>
                     </td>
                     <td class="align-middle">
                         <div class="badge rounded-pill text-bg-{{pro.status?'success':'warning'}}">{{pro.status?'Đang
@@ -75,7 +74,8 @@
                     </td>
                     <td class="sticky align-middle">
                         <div class="btn-group dropstart">
-                            <button class="btn rounded-pill" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn d-flex align-items-center rounded-pill" data-bs-toggle="dropdown"
+                                aria-expanded="false">
                                 <span class="material-symbols-outlined text-primary">
                                     more_vert
                                 </span>

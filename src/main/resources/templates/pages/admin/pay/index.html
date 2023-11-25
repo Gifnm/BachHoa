@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/pages/admin/layout:: dynamic(~{::body})}">
+
+<head>
+    <title>Bill Histories</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+</head>
+
+<body ng-app="app" ng-controller="paymentHistory-ctrl">
+    <div class="d-sm-flex align-items-center justify-content-between align-items-start border border-bottom border-2 p-4 py-3 bg-light"
+        style="border-radius: 1rem 1rem 0 0;">
+        <div>
+            <b class="fs-4">Thu tiền</b><br>
+            <!-- <small class="text-muted">Tổng cộng <b>{{items.length}}</b> hóa đơn</small> -->
+        </div>
+        <a href="#" class="btn btn-primary rounded-pill d-flex align-items-center"><span
+                class="material-symbols-outlined me-2">
+                file_save
+            </span> Excel</a>
+    </div>
+    <main class="overflow-auto flex-grow-1 bg-light border border-top-0 border-2" style="border-radius: 0 0 1rem 1rem;">
+        <div th:replace=" ~{/pages/admin/pay/_list}">
+        </div>
+        <div th:replace="~{/pages/admin/pay/_payForm}"></div>
+        <div th:replace="~{/pages/admin/pay/_continuePaymentForm}"></div>
+
+    </main>
+
+    <script src="/js/adminControllers/payment_history.js"></script>
+</body>

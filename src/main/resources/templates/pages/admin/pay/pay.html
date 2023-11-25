@@ -33,10 +33,10 @@
                                 <div class="autocomplete d-flex text-dark">
                                     <input id="employee" type="text" class="form-control" ng-model="employeeID"
                                         placeholder="Nhân viên" list="datalistEmployee">
-                                        <datalist id="datalistEmployee">
-                                            <option ng-repeat="employeeName in listEmployee" value="{{employeeName}}">
-                                            
-                                          </datalist>
+                                    <datalist id="datalistEmployee">
+                                        <option ng-repeat="employeeName in listEmployee" value="{{employeeName}}">
+
+                                    </datalist>
                                     <button class="btn btn-info ms-2 shadow-lg">
                                         <i class="bi bi-search" ng-click="loadHistoryByEmployee(employeeID)"></i>
                                     </button>
@@ -102,7 +102,7 @@
                         </tr>
                     </tbody>
                 </table>
-                
+
                 <!-- modal tiếp tục thu -->
                 <div class="modal fade" id="tiepTucThu" tabindex="999" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">

@@ -1,0 +1,92 @@
+<header>
+    <div class="px-3 py-2 bg-opacity-75">
+        <div class="d-flex">
+            <div class="d-flex align-items-center my-2 my-lg-0 me-lg-auto col text-white text-decoration-none">
+                <div class="d-flex align-items-center p-3 col-12 col-md-6">
+                    <div class="autocomplete d-flex text-dark">
+                        <input id="product" type="text" class="form-control" ng-model="productID"
+                            placeholder="Mã sản phẩm" list="datalistProduct1">
+                        <datalist id="datalistProduct1">
+                            <option ng-repeat="product in listProduct" value="{{product}}">
+
+                        </datalist>
+                        <button class="btn btn-info ms-2 shadow-lg">
+                            <i class="bi bi-search" ng-click="findByProductID(productID)"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                <li class="d-flex align-items-center p-3">
+                    <label for="" class="w-100">Từ ngày: </label><br>
+                    <div class="ms-2">
+                        <input id="from_Date" type="date" class="form-control" ng-model="fromDate"
+                            ng-change="findByDate(fromDate, toDate)">
+                    </div>
+                </li>
+                <li class="d-flex align-items-center p-3">
+                    <label for="" class="w-100">Đến ngày: </label><br>
+                    <div class="ms-2">
+                        <input id="to_Date" type="date" class="form-control" ng-model="toDate"
+                            ng-change="findByDate(fromDate, toDate)">
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="mt-2 border border-info rounded-2 m-auto" style="width: 85%;">
+    <table class="table table-responsive text-center table-hover mb-0 align-middle">
+        <thead class="bg-info text-white">
+            <tr>
+                <th scope="col">Mã sản phẩm</th>
+                <th scope="col">Sản phẩm</th>
+                <th scope="col">Khuyến mãi</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Ngày bắt đầu</th>
+                <th scope="col">Ngày kết thúc</th>
+                <th scope="col" colspan="2">Điều chỉnh</th>
+                <!-- <th scope="col"></th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-if="isNull">
+                <td colspan="7">Không có dữ liệu</td>
+            </tr>
+            <tr ng-repeat="item in items track by $index">
+                <td style="width: 10%;">{{item.productID}}</td>
+                <td style="width: 15%;">{{item.product.productName}}</td>
+                <td style="width: 10%;">{{item.discount.discountType}}</td>
+                <td style="width: 10%;">{{item.activity?'Đang áp dụng':'Đã kết thúc'}}</td>
+                <td style="width: 15%;">{{item.startTime | date:'dd/MM/yyyy'}}</td>
+                <td style="width: 15%;">{{item.endTime | date:'dd/MM/yyyy'}}</td>
+                <td style="width: 10%;">
+                    <button ng-click="stop(item.productID)" ng-if="item.activity" class="btn btn-primary">
+                        Kết thúc
+                    </button>
+                </td>
+                <td style="width: 15%;">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editDiscount"
+                        ng-click="edit(item.productID)">
+                        Điều chỉnh
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row w-75 m-auto mt-3" id="pagination">
+    <div class="col-4">
+        <b class="count">Hiện có {{totalReceived}} khuyến mãi.</b>
+    </div>
+    <div class="col-8 text-end">
+        <button ng-click="findByDate(fromDate,toDate,index - 1)"
+            class="btn btn-outline-primary {{index == 0 ? 'disabled':''}}">Trước</button>
+        <button ng-repeat="item in pages" ng-click="findByDate(fromDate,toDate,item - 1)"
+            class="btn btn-outline-primary {{index == item - 1? 'active':''}} m-1 mb-0 mt-0"><b>
+                {{item}}</b> </button>
+        <button ng-click="findByDate(fromDate,toDate,index + 1)"
+            class="btn btn-outline-primary {{index == maxPage - 1 ? 'disabled':''}}">Sau</button>
+    </div>
+</div>

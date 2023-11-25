@@ -1,0 +1,93 @@
+<header>
+    <div class="px-3 py-2">
+        <div class="d-flex">
+            <div class="d-flex align-items-center my-2 my-lg-0 me-lg-auto col text-white text-decoration-none">
+                <div class="d-flex align-items-center p-3 col-12 col-md-6">
+                    <div class="autocomplete d-flex text-dark">
+                        <input id="employee" type="text" class="form-control" ng-model="employeeID"
+                            placeholder="Nhân viên" list="datalistEmployee">
+                        <datalist id="datalistEmployee">
+                            <option ng-repeat="employeeName in listEmployee" value="{{employeeName}}">
+
+                        </datalist>
+                        <button class="btn btn-info ms-2 shadow-lg">
+                            <i class="bi bi-search" ng-click="loadHistoryByEmployee(employeeID)"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                <li class="d-flex align-items-center p-3">
+                    <label for="" class="w-100">Từ ngày: </label><br>
+                    <div class="ms-2">
+                        <input id="from_Date" type="date" class="form-control" ng-model="fromDate"
+                            ng-change="findByDate(fromDate, toDate, 0)">
+                    </div>
+                </li>
+                <li class="d-flex align-items-center p-3">
+                    <label for="" class="w-100">Đến ngày: </label><br>
+                    <div class="ms-2">
+                        <input id="to_Date" type="date" class="form-control" ng-model="toDate"
+                            ng-change="findByDate(fromDate, toDate, 0)">
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="mt-5 border border-info rounded-2 m-auto" style="width: 85%;">
+    <table class="table table-responsive text-center table-hover mb-0 align-middle">
+        <thead class="bg-info text-white">
+            <tr>
+                <th scope="col">Nhân viên</th>
+                <th scope="col">Ngày nộp</th>
+                <th scope="col">Phải thu</th>
+                <th scope="col">Đã thu</th>
+                <th scope="col">Thiếu</th>
+                <th scope="col">Ngày thu</th>
+                <th scope="col">Người thu</th>
+                <th scope="col">Trạng thái</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in items" style="cursor: pointer;" data-bs-toggle="modal"
+                data-bs-target="#paymentDetail" ng-click="showPaymentDetail(item.id)">
+                <td style="width: 15%;">{{item.employee.employeeName}}</td>
+                <td style="width: 15%;">
+                    {{item.timePay}}</td>
+                <td style="width: 10%;">{{item.totalAmount | number}} VND</td>
+                <td style="width: 10%;">{{item.totalReceived | number}} VND</td>
+                <td style="width: 10%;">{{item.totalAmount - item.totalReceived | number}} VND</td>
+                <td style="width: 15%;">
+                    {{item.timeReceived}}</td>
+                <td style="width: 15%;">{{item.admin.employeeName}}</td>
+                <td style="width: 10%;">
+                    <button ng-show="{{item.paied == 0 || item.paied == 2}}" ng-click="pay(item.id)"
+                        class="btn {{item.paied == 2?'disabled btn-primary':'btn-danger'}}">
+                        {{item.status}}
+                    </button>
+                    <button ng-show="{{item.paied == 1}}" ng-click="payContinue(item.id)" class="btn btn-warning"
+                        data-bs-toggle="modal" data-bs-target="#tiepTucThu">
+                        {{item.status}}
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+<div class="row w-75 m-auto mt-3" id="pagination">
+    <div class="col-2">
+        <b class="count">Tổng số lượt thu: {{totalReceived}}</b>
+    </div>
+    <div class="col-10 text-end">
+        <button ng-click="findByDate(fromDate,toDate,index - 1)"
+            class="btn btn-outline-primary {{index == 0 ? 'disabled':''}}">Trước</button>
+        <button ng-repeat="item in pages" ng-click="findByDate(fromDate,toDate,item - 1)"
+            class="btn btn-outline-primary {{index == item - 1? 'active':''}} m-1 mb-0 mt-0"><b>
+                {{item}}</b> </button>
+        <button ng-click="findByDate(fromDate,toDate,index + 1)"
+            class="btn btn-outline-primary {{index == maxPage - 1 ? 'disabled':''}}">Sau</button>
+    </div>
+</div>

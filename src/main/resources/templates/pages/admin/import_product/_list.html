@@ -65,14 +65,14 @@
             <table class="table table-hover table-striped">
                 <thead class="table-light sticky">
                     <tr>
-                        <td class="py-4"><small>Mã phiếu nhập</small></td>
-                        <td class="py-4 name-col"><small>Người lập phiếu</small></td>
-                        <td class="py-4 name-col"><small>Ngày tạo</small></td>
-                        <td class="py-4"><small>Ngày nhập</small></td>
-                        <td class="py-4 ms-auto"><small>Số mặt hàng</small></td>
-                        <td class="py-4"><small class="float-end">Tổng tiền</small></td>
-                        <td class="py-4"><small>Trạng thái</small></td>
-                        <td class="py-4"><small>Chi tiết</small></td>
+                        <td class="py-4 text-truncate"><small>Mã phiếu nhập</small></td>
+                        <td class="py-4 text-truncate name-col"><small>Người lập phiếu</small></td>
+                        <td class="py-4 text-truncate name-col"><small>Ngày tạo</small></td>
+                        <td class="py-4 text-truncate"><small>Ngày nhập</small></td>
+                        <td class="py-4 text-truncate ms-auto"><small>Số mặt hàng</small></td>
+                        <td class="py-4 text-truncate"><small class="float-end">Tổng tiền</small></td>
+                        <td class="py-4 text-truncate"><small>Trạng thái</small></td>
+                        <td class="py-4 text-truncate"><small>Chi tiết</small></td>
                     </tr>
                 </thead>
                 <tbody class="bg-white">
@@ -83,32 +83,31 @@
                         </td>
                         <td class="align-middle">
                             <div class="d-flex align-middle">
-                                <p>{{row.employeeName}}</p>
-                                <small class="text-muted ms-2">ID: {{row.employeeId}}</small>
+                                <span class=" text-truncate">{{row.employeeName}}</span>
+                                <small class="text-muted text-truncate ms-2">ID: {{row.employeeId}}</small>
                             </div>
                         </td>
                         <td class="sticky align-middle">
-                            <p class="d-flex align-middle">
+                            <span class="d-flex align-middle text-truncate">
                                 <span class="material-symbols-outlined me-1 text-muted">
                                     History
                                 </span>
-                                {{row.timeCreate|
-                                date:'dd / MM / yyyy'}}
-                            </p>
+                                {{row.timeCreate| date:'dd / MM / yyyy'}}
+                            </span>
                         </td>
                         <td class="align-middle">
-                            <p class="d-flex align-middle">
+                            <span class="d-flex align-middle">
                                 <span class="material-symbols-outlined me-1 text-muted">
                                     schedule
                                 </span>
                                 {{row.timeCompleted==null?'--/--/----':row.timeCompleted | date:'dd / MM / yyyy'}}
-                            </p>
+                            </span>
                         </td>
                         <td class="align-middle">
-                            <p>{{row.productCount}}</p>
+                            <span class="float-end">{{row.productCount}}</span>
                         </td>
                         <td class="align-middle">
-                            <p class="float-end">{{row.totalAmount | currency:'₫':'0'}}</p>
+                            <span class="float-end">{{row.totalAmount | currency:'₫':'0'}}</span>
                         </td>
                         <td class="align-middle">
                             <div

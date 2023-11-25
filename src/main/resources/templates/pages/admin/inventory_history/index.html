@@ -9,25 +9,25 @@
 
 </head>
 
-<body ng-app="app" ng-controller="ctrl">
+<body ng-app="app" ng-controller="inventoryHistory-ctrl">
     <div class="d-sm-flex align-items-center justify-content-between align-items-start border border-bottom border-2 p-4 py-3 bg-light"
         style="border-radius: 1rem 1rem 0 0;">
         <div>
-            <b class="fs-4">Sản phẩm</b><br>
-            <small class="text-muted">Tổng cộng <b>{{items.length}}</b> mặt hàng đã và đang được
-                bày bán</nmal>
+            <b class="fs-4">Kiểm kho</b><br>
+            <!-- <small class="text-muted">Tổng cộng <b>{{items.length}}</b> mặt hàng đã và đang được
+                bày bán</nmal> -->
         </div>
-        <button ng-click="reset()" class="btn btn-primary rounded-pill d-flex align-middle p-2 px-3"
-            data-bs-toggle="modal" data-bs-target="#productModal"><span class="material-symbols-outlined me-2">
-                add_box
-            </span> Thêm sản phẩm</button>
+        <button class="btn btn-primary rounded-pill d-flex align-items-center" onclick="exportData()"><span
+                class="material-symbols-outlined me-2">
+                file_save
+            </span> Excel</button>
     </div>
     <main class="overflow-auto flex-grow-1 bg-light border border-top-0 border-2" style="border-radius: 0 0 1rem 1rem;">
-        <div th:replace=" ~{/pages/admin/product/_list}">
+        <div th:replace=" ~{/pages/admin/inventory_history/_list}">
         </div>
-        <div th:replace="~{/pages/admin/product/_form}"></div>
 
     </main>
 
-    <script src="/js/product-ctrl.js"></script>
+    <script src="/js/adminControllers/inventory_history.js"></script>
+    <script src="/js/table2excel.js"></script>
 </body>

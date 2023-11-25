@@ -26,7 +26,7 @@ public interface DiscountDetailJPA extends JpaRepository<DiscountDetails, String
 
 	@Transactional
 	@Modifying
-	@Query(value = "UPDATE discount_details SET disID = ?1, activity = 1, startTime = ?2, endTime = ?3 WHERE productID = ?4 AND storeID = ?5", nativeQuery = true)
-	void update(String disID, Date startTime, Date endTime, String productID, Integer storeID);
+	@Query(value = "UPDATE discount_details SET activity = 1, startTime = ?1, endTime = ?2 WHERE productID = ?3 AND storeID = ?4", nativeQuery = true)
+	void update(Date startTime, Date endTime, String productID, Integer storeID);
 
 }

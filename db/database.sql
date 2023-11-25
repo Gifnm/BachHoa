@@ -672,5 +672,10 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+use bachhoa
+create trigger tg_delete_bill
+before delete on bills
+for each row
+delete from bill_details where billID = old.billID;
 
 -- Dump completed on 2023-11-05 21:36:54

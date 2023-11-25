@@ -30,11 +30,11 @@
 
 .logo,
 .topbar {
-    height: 70px;
+    height: 60px;
 }
 
 .topbar {
-    min-height: 70px;
+    min-height: 60px;
 }
 
 .layout {
@@ -48,10 +48,10 @@
     width: 250px;
 }
 
-#sidebar ul a {
+/* #sidebar ul a {
     background-color: #d1d1d1;
     color: black;
-}
+} */
 
 .menu-collapsed {
     transition: all 0.3s ease;

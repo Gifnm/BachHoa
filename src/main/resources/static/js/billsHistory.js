@@ -223,7 +223,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		}
 		let fromD = startDateFormat(fromDate);
 		let toD = endDateFormat(toDate);
-		$http.get(`/bachhoa/api/bill/searchBetween/${fromD}/${toD}?index=${index}`).then(resp => {
+		$http.get(`/bachhoa/api/bill/searchBetween/${fromD}/${toD}?index=${index}&store-id=${$scope.employee.store.storeID}`).then(resp => {
 			if (resp.data.content.length == 0) {
 				$scope.isNull = true;
 			} else {
@@ -303,6 +303,11 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		$http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
 			$scope.employee = resp.data;
 			initAutoComplete();
+
+			/* Tìm kiếm theo ngày */
+			let startDate = startDateFormat(new Date());
+			let endDate = endDateFormat(new Date());
+			$scope.findByDate(startDate, endDate, 0);
 			if ($scope.employee.roles[0].roleID == "qlch") {
 				$scope.admin = true;
 			}
@@ -423,11 +428,6 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 	//$scope.initialize();
 
 	$scope.SetDefaultDate();
-
-	/* Tìm kiếm theo ngày */
-	let startDate = startDateFormat(new Date());
-	let endDate = endDateFormat(new Date());
-	$scope.findByDate(startDate, endDate, 0);
 
 	// Tìm nhân viên theo email
 	let email = document.getElementById('email').innerText;

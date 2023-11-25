@@ -59,11 +59,11 @@ public class DiscountAPI {
 		return discountDetailService.create(discount);
 	}
 
-	@PutMapping("discount/update/{disID}/{startTime}/{endTime}/{productID}/{storeID}")
-	public void update(@PathVariable("disID") String disID, @PathVariable("startTime") Date startTime,
+	@PutMapping("discount/update/{startTime}/{endTime}/{productID}/{storeID}")
+	public void update(@PathVariable("startTime") Date startTime,
 			@PathVariable("endTime") Date endTime, @PathVariable("productID") String productID,
 			@PathVariable("storeID") Integer storeID) {
-		discountDetailService.update(disID, startTime, endTime, productID, storeID);
+		discountDetailService.update(startTime, endTime, productID, storeID);
 	}
 
 	@DeleteMapping("discount/delete/{productID}/{storeID}")
