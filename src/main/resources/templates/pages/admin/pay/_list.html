@@ -51,6 +51,9 @@
             </tr>
         </thead>
         <tbody>
+            <tr ng-if="isNull">
+                <td colspan="7">Không có dữ liệu</td>
+            </tr>
             <tr ng-repeat="item in items" style="cursor: pointer;" data-bs-toggle="modal"
                 data-bs-target="#paymentDetail" ng-click="showPaymentDetail(item.id)">
                 <td style="width: 15%;">{{item.employee.employeeName}}</td>

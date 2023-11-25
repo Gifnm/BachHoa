@@ -3,7 +3,6 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
     $scope.listEmployee = [];
     $scope.paymentDetail = {};
     $scope.paymentHistory = {};
-    // $scope.bills = [];
     // $scope.listBill = [];
     $scope.items = [];
 
@@ -12,6 +11,11 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
         let ID = parseInt(employeeID.substr(0, 1));
         $http.get(`/bachhoa/api/paymentHistory/findByEmployee/${ID}?index=0`).then(resp => {
             $scope.items = resp.data.content;
+            if (resp.data.content.length == 0) {
+                $scope.isNull = true;
+            } else {
+                $scope.isNull = false;
+            }
             angular.forEach($scope.items, function (item) {
                 item.timePay = dateFormat(item.timePay);
                 if (item.paied == 0) {
@@ -34,6 +38,11 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
         document.getElementById('pagination').setAttribute("style", "display: none;");
         $http.get(`/bachhoa/api/paymentHistory/getPayment`).then(resp => {
             $scope.items = resp.data.content;
+            if (resp.data.content.length == 0) {
+                $scope.isNull = true;
+            } else {
+                $scope.isNull = false;
+            }
             angular.forEach($scope.items, function (item) {
                 item.timePay = dateFormat(item.timePay);
                 if (item.paied == 0) {
@@ -48,39 +57,44 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
                     item.timeReceived = dateFormat(item.timeReceived);
                 }
             })
-			//console.log($scope.items);
-			$scope.totalReceived = resp.data.totalElements;
-			//alert($scope.totalBill);
-			if ($scope.totalReceived >= 0 && $scope.totalReceived <= 8) {
-				$scope.maxPage = 1;
-			} else {
-				$scope.maxPage = Math.ceil($scope.totalReceived / 8);
-			}
-			console.log($scope.maxPage)
-			$scope.index = index;
-			$scope.pages = [];
-			for (let i = 1; i <= $scope.maxPage; i++) {
-				$scope.pages.push(i);
-			}
+            //console.log($scope.items);
+            $scope.totalReceived = resp.data.totalElements;
+            //alert($scope.totalBill);
+            if ($scope.totalReceived >= 0 && $scope.totalReceived <= 8) {
+                $scope.maxPage = 1;
+            } else {
+                $scope.maxPage = Math.ceil($scope.totalReceived / 8);
+            }
+            console.log($scope.maxPage)
+            $scope.index = 1;
+            $scope.pages = [];
+            for (let i = 1; i <= $scope.maxPage; i++) {
+                $scope.pages.push(i);
+            }
 
         });
     }
 
     // tìm kiếm theo ngày
-	$scope.index = 1;
-	$scope.maxPage = 0;
+    $scope.index = 1;
+    $scope.maxPage = 0;
     $scope.findByDate = function (fromDate, toDate, index) {
-		if (fromDate > toDate) {
-			alert('Ngày bắt đầu phải nhỏ hơn ngày kết thúc!');
-			let date = new Date();
-			$scope.fromDate = date;
-			$scope.toDate = date;
-			return;
-		}
-		let fromD = startDateFormat(fromDate);
-		let toD = endtDateFormat(toDate);
-		$http.get(`/bachhoa/api/paymentHistory/findByDate/${fromD}/${toD}?index=${index}`).then(resp => {
-			$scope.items = resp.data.content;
+        if (fromDate > toDate) {
+            alert('Ngày bắt đầu phải nhỏ hơn ngày kết thúc!');
+            let date = new Date();
+            $scope.fromDate = date;
+            $scope.toDate = date;
+            return;
+        }
+        let fromD = startDateFormat(fromDate);
+        let toD = endtDateFormat(toDate);
+        $http.get(`/bachhoa/api/paymentHistory/findByDate/${fromD}/${toD}?index=${index}`).then(resp => {
+            $scope.items = resp.data.content;
+            if (resp.data.content.length == 0) {
+                $scope.isNull = true;
+            } else {
+                $scope.isNull = false;
+            }
             angular.forEach($scope.items, function (item) {
                 item.timePay = dateFormat(item.timePay);
                 if (item.paied == 0) {
@@ -95,29 +109,34 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
                     item.timeReceived = dateFormat(item.timeReceived);
                 }
             })
-			//console.log($scope.items);
-			$scope.totalReceived = resp.data.totalElements;
-			//alert($scope.totalBill);
-			if ($scope.totalReceived >= 0 && $scope.totalReceived <= 8) {
-				$scope.maxPage = 1;
-			} else {
-				$scope.maxPage = Math.ceil($scope.totalReceived / 8);
-			}
-			console.log($scope.maxPage)
-			$scope.index = index;
-			$scope.pages = [];
-			for (let i = 1; i <= $scope.maxPage; i++) {
-				$scope.pages.push(i);
-			}
-		}).catch(error => {
-			console.log('Error', error)
-		});
-	}
+            //console.log($scope.items);
+            $scope.totalReceived = resp.data.totalElements;
+            //alert($scope.totalBill);
+            if ($scope.totalReceived >= 0 && $scope.totalReceived <= 8) {
+                $scope.maxPage = 1;
+            } else {
+                $scope.maxPage = Math.ceil($scope.totalReceived / 8);
+            }
+            console.log($scope.maxPage)
+            $scope.index = index;
+            $scope.pages = [];
+            for (let i = 1; i <= $scope.maxPage; i++) {
+                $scope.pages.push(i);
+            }
+        }).catch(error => {
+            console.log('Error', error)
+        });
+    }
 
     // hiển thị tất cả các lịch sử nộp tiền
     let loadHistory = function () {
-        $http.get(`/bachhoa/api/paymentHistory/getAll`).then(resp => {
+        $http.get(`/bachhoa/api/paymentHistory/getAll?index=0&storeID=${$scope.account.store.storeID}`).then(resp => {
             $scope.items = resp.data.content;
+            if (resp.data.content.length == 0) {
+                $scope.isNull = true;
+            } else {
+                $scope.isNull = false;
+            }
             angular.forEach($scope.items, function (item) {
                 item.timePay = dateFormat(item.timePay);
                 if (item.paied == 0) {
@@ -132,20 +151,20 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
                     item.timeReceived = dateFormat(item.timeReceived);
                 }
             })
-			//console.log($scope.items);
-			$scope.totalReceived = resp.data.totalElements;
-			//alert($scope.totalBill);
-			if ($scope.totalReceived >= 0 && $scope.totalReceived <= 8) {
-				$scope.maxPage = 1;
-			} else {
-				$scope.maxPage = Math.ceil($scope.totalReceived / 8);
-			}
-			console.log($scope.maxPage)
-			$scope.index = index;
-			$scope.pages = [];
-			for (let i = 1; i <= $scope.maxPage; i++) {
-				$scope.pages.push(i);
-			}
+            //console.log($scope.items);
+            $scope.totalReceived = resp.data.totalElements;
+            //alert($scope.totalBill);
+            if ($scope.totalReceived >= 0 && $scope.totalReceived <= 8) {
+                $scope.maxPage = 1;
+            } else {
+                $scope.maxPage = Math.ceil($scope.totalReceived / 8);
+            }
+            console.log($scope.maxPage)
+            $scope.index = 1;
+            $scope.pages = [];
+            for (let i = 1; i <= $scope.maxPage; i++) {
+                $scope.pages.push(i);
+            }
 
         });
     }
@@ -226,7 +245,7 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
         $http.get(`/bachhoa/api/paymentHistory/findByID/${id}`).then(resp => {
             let item = resp.data;
             item.timeReceived = new Date().getTime();
-            item.admin = $scope.employee;
+            item.admin = $scope.account;
             if (item.totalReceived < item.totalAmount) {
                 item.paied = 1;
             } else {
@@ -253,7 +272,7 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
         $http.get(`/bachhoa/api/paymentHistory/findByID/${id}`).then(resp => {
             let item = resp.data;
             item.timeReceived = new Date().getTime();
-            item.admin = $scope.employee;
+            item.admin = $scope.account;
             item.totalReceived = item.totalAmount;
             item.paied = 2;
             $http.put(`/bachhoa/api/paymentHistory/update`, item).then(() => {
@@ -278,7 +297,7 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
                     $http.put(`/bachhoa/api/paymentDetail/update`, data).then(() => {
                         alert('Đã thu');
                         document.getElementById("pay").setAttribute("data-bs-dismiss", "modal");
-                        document.getElementById("pay").setAttribute("aria-label","Close");
+                        document.getElementById("pay").setAttribute("aria-label", "Close");
                         document.getElementById("pay").click();
                     })
                 })
@@ -311,7 +330,7 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
 
     $scope.findEmployee = function (email) {
         $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
-            $scope.employee = resp.data;
+            $scope.account = resp.data;
         });
     }
 
@@ -333,8 +352,8 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
     //--------------------------------------------//
 
     // Tìm nhân viên theo email
-    //let email = document.getElementById('email').innerText;
-    $scope.findEmployee("dongnghiepit@gmail.com")
+    let email = document.getElementById('accountEmail').innerText;
+    $scope.findEmployee(email)
     // chọn mặc định ngày hôm nay
     SetDefaultDate();
     // lấy danh sách lịch sử nộp tiền

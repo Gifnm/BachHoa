@@ -26,8 +26,8 @@ public class BillService {
 		return billJPA.findById(billID).get();
 	}
 
-	public Page<Bill> searchBetween(Timestamp fromDate, Timestamp toDate, Pageable page, int storeId) {
-		return billJPA.SearchBetween2Date(storeId, fromDate, toDate, page);
+	public Page<Bill> searchBetween(Timestamp fromDate, Timestamp toDate, Integer storeID, Pageable page) {
+		return billJPA.SearchBetween2Date(fromDate, toDate, storeID, page);
 	}
 
 	public List<Bill> findByEmployeeAndDate(Integer employeeID, Timestamp fromDate, Timestamp toDate) {

@@ -5,15 +5,15 @@ app.controller("inventoryHistory-ctrl", function ($scope, $http) {
     $scope.index = 1;
     $scope.maxPage = 0;
     $scope.totalItem = 0;
-    $scope.employee = {};
+    $scope.account = {};
     $scope.findByDate = function (date, index) {
         let fromD = startDateFormat(date);
         let toD = endDateFormat(date);
-        $http.get(`/bachhoa/api/inventoryHistory/findByDate/${$scope.employee.store.storeID}/${fromD}/${toD}?index=${index}`).then(resp => {
+        $http.get(`/bachhoa/api/inventoryHistory/findByDate/${$scope.account.store.storeID}/${fromD}/${toD}?index=${index}`).then(resp => {
             $scope.items = resp.data.content;
-            if(resp.data.content.length == 0){
+            if (resp.data.content.length == 0) {
                 $scope.isNull = true;
-            }else{
+            } else {
                 $scope.isNull = false;
             }
             angular.forEach($scope.items, function (item) {
@@ -70,7 +70,7 @@ app.controller("inventoryHistory-ctrl", function ($scope, $http) {
 
     $scope.findEmployee = function (email) {
         $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
-            $scope.employee = resp.data;
+            $scope.account = resp.data;
             let date = new Date();
             $scope.findByDate(date, 0);
         });
@@ -81,8 +81,8 @@ app.controller("inventoryHistory-ctrl", function ($scope, $http) {
     //--------------------------------------------//
 
     // Tìm nhân viên theo email
-    //let email = document.getElementById('email').innerText;
-    $scope.findEmployee("dongnghiepit@gmail.com")
+    let email = document.getElementById('accountEmail').innerText;
+    $scope.findEmployee(email)
     // chọn mặc định ngày hôm nay
     SetDefaultDate();
     // lấy danh sách lịch sử kiểm kê ngày hôm nay

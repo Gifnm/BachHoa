@@ -1,7 +1,7 @@
 const app = angular.module("app", []);
 app.controller("discountManagement-ctrl", function ($scope, $http) {
     $scope.items = [];
-    $scope.employee = {};
+    $scope.account = {};
     $scope.listProduct = [];
     $scope.listProductID = [];
     $scope.totalProduct = 0;
@@ -13,7 +13,7 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
 
     // Lấy danh sách sản phẩm
     let initAutoComplete = function () {
-        $http.get(`/bachhoa/api/products/${$scope.employee.store.storeID}`).then(resp => {
+        $http.get(`/bachhoa/api/products/${$scope.account.store.storeID}`).then(resp => {
             let list = resp.data;
             $scope.listProduct = [];
             angular.forEach(list, function (item) {
@@ -32,7 +32,7 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
 
     $scope.findEmployee = function (email) {
         $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
-            $scope.employee = resp.data;
+            $scope.account = resp.data;
             $scope.loadAll();
             initAutoComplete();
         });
@@ -40,7 +40,7 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
 
     //-----------------------------------------------//
     $scope.loadAll = function () {
-        $http.get(`/bachhoa/api/discount/findByStoreID/${$scope.employee.store.storeID}`).then(resp => {
+        $http.get(`/bachhoa/api/discount/findByStoreID/${$scope.account.store.storeID}`).then(resp => {
             $scope.items = resp.data;
             if (resp.data.length == 0) {
                 $scope.isNull = true;
@@ -58,7 +58,7 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
             $scope.loadAll();
         } else {
             let productID = id.substr(0, 13);
-            $http.get(`/bachhoa/api/discount/findByStoreIDAndProductID/${$scope.employee.store.storeID}/${productID}`).then(resp => {
+            $http.get(`/bachhoa/api/discount/findByStoreIDAndProductID/${$scope.account.store.storeID}/${productID}`).then(resp => {
                 $scope.items = resp.data;
                 if (resp.data.length == 0) {
                     $scope.isNull = true;
@@ -81,7 +81,7 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
         }
         let TD = dateFormat(fromDate);
         let ED = dateFormat(toDate);
-        $http.get(`/bachhoa/api/discount/findByDate/${$scope.employee.store.storeID}/${TD}/${ED}`).then(resp => {
+        $http.get(`/bachhoa/api/discount/findByDate/${$scope.account.store.storeID}/${TD}/${ED}`).then(resp => {
             $scope.items = resp.data;
             console.log($scope.items)
             if (resp.data.length == 0) {
@@ -109,7 +109,7 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
             data.activity = 1;
             $scope.items.splice(index, 1, data);
             console.log(data)
-            $http.put(`/bachhoa/api/discount/update/${form.disID}/${dateFormat(form.startTime)}/${dateFormat(form.endTime)}/${id}/${$scope.employee.store.storeID}`).then(() => {
+            $http.put(`/bachhoa/api/discount/update/${dateFormat(form.startTime)}/${dateFormat(form.endTime)}/${id}/${$scope.account.store.storeID}`).then(() => {
                 alert('Chương trinh khuyến mãi đã được cập nhật!');
                 document.getElementById("start").setAttribute("data-bs-dismiss", "modal");
                 document.getElementById("start").setAttribute("aria-label", "Close");
@@ -172,7 +172,7 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
     $scope.delete = function (id) {
         let index = $scope.items.findIndex(item => item.productID == id);
         $scope.items.splice(index, 1);
-        $http.delete(`/bachhoa/api/discount/delete/${id}/${$scope.employee.store.storeID}`).then(() => {
+        $http.delete(`/bachhoa/api/discount/delete/${id}/${$scope.account.store.storeID}`).then(() => {
             alert('Xóa chương trình khuyến mãi thành công!')
             document.getElementById("close").setAttribute("data-bs-dismiss", "modal");
             document.getElementById("close").setAttribute("aria-label", "Close");
@@ -203,15 +203,15 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
             $scope.discount = resp.data;
             //console.log($scope.discount)
             angular.forEach($scope.listProductID, item => {
-                $http.get(`/product/findByID/${item}/${$scope.employee.store.storeID}`).then(resp => {
+                $http.get(`/product/findByID/${item}/${$scope.account.store.storeID}`).then(resp => {
                     $scope.product = resp.data;
                     //console.log($scope.product)
                     let data = {
                         disID: form.disID,
-                        storeID: $scope.employee.store.storeID,
+                        storeID: $scope.account.store.storeID,
                         productID: item,
                         discount: $scope.discount,
-                        store: $scope.employee.store,
+                        store: $scope.account.store,
                         product: $scope.product,
                         activity: 1,
                         startTime: form.startDate,
@@ -220,6 +220,7 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
                     //console.log(data);
                     $http.post(`/bachhoa/api/discount/create`, data).then(resp => {
                         console.log(resp.data);
+                        $scope.loadAll();
                     }).catch(error => {
                         console.log(error);
                     })
@@ -227,7 +228,7 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
                     console.log(error);
                 })
             })
-            alert("Thêm khuyến mãi thành công!")
+            alert("Thêm khuyến mãi thành công!");
         }).catch(error => {
             console.log(error);
         })

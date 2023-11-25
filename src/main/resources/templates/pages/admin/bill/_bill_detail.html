@@ -36,9 +36,9 @@
                                 <th scope="col">Tên sản phẩm</th>
                                 <th scope="col">Số lượng</th>
                                 <th scope="col">Đơn giá (Có VAT)</th>
-                                <th scope="col">Khuyến mãi</th>
+                                <!-- <th scope="col">Khuyến mãi</th> -->
                                 <th scope="col">Thành tiền</th>
-                                <!-- <th scope="col">Bỏ</th> -->
+                                <th scope="col">Bỏ</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,15 +46,15 @@
                                 <td style="width: 13%;">{{item.product.productID}}</td>
                                 <td style="word-wrap: break-word; width: 25%;">
                                     {{item.product.productName}}</td>
-                                <td style="width: 8%;">{{item.quantity}}</td>
-                                <!-- <input type="number" ng-model="item.quantity" min="1" ng-change="update(item.product.productID, item.quantity)"> -->
+                                <td style="width: 8%;"><input type="number" ng-model="item.quantity" min="1"
+                                        ng-change="update(item.product.productID, item.quantity)"></td>
+
                                 <td style="width: 15%;">{{item.product.price + item.product.price *
                                     (item.product.vat/100) | number}}</td>
-                                <td style="width: 15%;">{{item.discountName}}</td>
+                                <!-- <td style="width: 15%;">{{item.discountName}}</td> -->
                                 <td style="width: 15%;">{{item.totalAmount | number}}</td>
-                                <!-- <td style="width: 1%;"><button
-                                                        ng-click="deleteItem(item.billID, item.productID)"
-                                                        type="button" class="btn-close"></td> -->
+                                <td style="width: 1%;"><button ng-click="deleteItem(item.billID, item.productID)"
+                                        type="button" class="btn-close"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -88,7 +88,8 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center w-100">
-                    <!-- <button ng-click="delete(bill.billID)" type="button" class="btn btn-danger me-4" style="width: 17%;" data-bs-dismiss="modal" aria-label="Close">Xóa</button> -->
+                    <button ng-click="delete(bill.billID)" type="button" class="btn btn-danger me-4" style="width: 17%;"
+                        data-bs-dismiss="modal" aria-label="Close">Xóa</button>
                     <!-- <button type="button" class="btn btn-info me-4" style="width: 17%;">Cập
                                         nhật</button> -->
                     <a href="/print/{{bill.billID}}" class="btn btn-primary" style="width: 17%;">Xuất hóa

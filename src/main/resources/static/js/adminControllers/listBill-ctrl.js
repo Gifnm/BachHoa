@@ -5,7 +5,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
     $scope.billDetails = [];
     $scope.bill = {};
     $scope.totalAmountOfAllBills = 0;
-    $scope.employee = {};
+    $scope.account = {};
     $scope.discountDetail = {};
     $scope.listBillID = [];
     // Kết ca
@@ -14,10 +14,12 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
     $scope.TotalMoneytoPay = 0;
     $scope.account = {} //Account of login employee
     let email;
+
     $scope.getAccount = function () {
         email = document.getElementById('accountEmail').innerText;
         return $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
-            $scope.employee = $scope.account = resp.data;
+            $scope.account = resp.data;
+            initAutoComplete();
         }).catch(error => {
             console.log("[Product-image-ctrl:getAccount():25]\n> Error: " + error);
         });
@@ -46,8 +48,9 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 
     $scope.initialize = function () {
         // load hóa đơn
-        $http.get(`/bachhoa/api/bill/all/${$scope.employee.store.storeID}`).then(resp => {
+        $http.get(`/bachhoa/api/bill/all/${$scope.account.store.storeID}`).then(resp => {
             $scope.bills = resp.data;
+            $scope.items = [];
             angular.forEach($scope.bills, function (item) {
                 item.timeCreate = dateFormat(item.timeCreate);
                 let data = {
@@ -88,8 +91,9 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
                 angular.forEach($scope.billDetails, function (item) {
                     $scope.bill.totalAmount += item.totalAmount;
                 })
+                $scope.bill.amountReceivable = Math.round(($scope.bill.totalAmount - $scope.bill.reduced) / 1000) * 1000;
                 $http.put(`/bachhoa/api/bill/update`, $scope.bill).then(() => {
-                    //alert("Update bill thành công!");
+                    $scope.findByDate($scope.fromDate, $scope.toDate, 0);
                     console.log($scope.bill);
                     $scope.bill.timeCreate = dateFormat($scope.bill.timeCreate);
                 }).catch(error => {
@@ -147,18 +151,18 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
         )
         $http.get(`/bachhoa/api/billDetail/findByBillID/${billID}`).then(resp => {
             $scope.billDetails = resp.data;
-            angular.forEach($scope.billDetails, function (item) {
-                $http.get(`/bachhoa/api/discount/findDiscountIsActive/${item.product.productID}/${$scope.employee.store.storeID}`).then(resp => {
-                    $scope.discountDetail = resp.data;
-                    if ($scope.discountDetail.disID === "S25") {
-                        item.discountName = "25%";
-                    } else if ($scope.discountDetail.disID === "S50") {
-                        item.discountName = "50%";
-                    } else {
-                        item.discountName = "Không";
-                    }
-                })
-            })
+            // angular.forEach($scope.billDetails, function (item) {
+            //     $http.get(`/bachhoa/api/discount/findDiscountIsActive/${item.product.productID}/${$scope.account.store.storeID}`).then(resp => {
+            //         $scope.discountDetail = resp.data;
+            //         if ($scope.discountDetail.disID === "S25") {
+            //             item.discountName = "25%";
+            //         } else if ($scope.discountDetail.disID === "S50") {
+            //             item.discountName = "50%";
+            //         } else {
+            //             item.discountName = "Không";
+            //         }
+            //     })
+            // })
 
         }
         )
@@ -290,133 +294,14 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 
     // gợi ý mã hóa đơn
     let initAutoComplete = function () {
-        $http.get(`/bachhoa/api/bill/getBillID/${$scope.employee.store.storeID}`).then(resp => {
+        $http.get(`/bachhoa/api/bill/getBillID/${$scope.account.store.storeID}`).then(resp => {
             $scope.listBillID = resp.data;
         }).catch(error => {
             console.log('Error', error)
         });
     }
-    //-----------------------------------------------//
-    //	Tìm Nhân viên
-
-    $scope.findEmployee = function (email) {
-        $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
-            $scope.employee = resp.data;
-            initAutoComplete();
-            if ($scope.employee.roles[0].roleID == "qlch") {
-                $scope.admin = true;
-            }
-            console.log($scope.employee);
-        });
-    }
 
     //-----------------------------------------------//
-    // --------- Kết thúc ca làm ----------- //
-
-    // Tính tiền nộp (thay đổi dựa trên giá trị các mệnh giá)
-    $scope.updateTotalMoney = function () {
-        // Lấy số lượng
-        const SL500 = document.getElementById("500").value;
-        const SL200 = document.getElementById("200").value;
-        const SL100 = document.getElementById("100").value;
-        const SL50 = document.getElementById("50").value;
-        const SL20 = document.getElementById("20").value;
-        const SL10 = document.getElementById("10").value;
-        const SL5 = document.getElementById("5").value;
-        const SL2 = document.getElementById("2").value;
-        const SL1 = document.getElementById("1").value;
-
-        let moneyInput =
-            500000 * SL500 +
-            200000 * SL200 +
-            100000 * SL100 +
-            50000 * SL50 +
-            20000 * SL20 +
-            10000 * SL10 +
-            5000 * SL5 +
-            2000 * SL2 +
-            1000 * SL1;
-
-        console.log(moneyInput);
-        $scope.totalMoneyYouPay = moneyInput;
-        console.log($scope.totalMoneyYouPay);
-    };
-
-    //Tính tổng tiền phải thu
-
-    $scope.tinhTongTienThu = function () {
-        let employeeID = $scope.employee.employeeID;
-        let time = new Date();
-        let startDate = startDateFormat(time);
-        let endDate = endDateFormat(time);
-        $scope.form = {
-            vnd500: 0,
-            vnd200: 0,
-            vnd100: 0,
-            vnd50: 0,
-            vnd20: 0,
-            vnd10: 0,
-            vnd5: 0,
-            vnd2: 0,
-            vnd1: 0
-        }
-        $http.get(`/bachhoa/api/bill/findByEmployeeAndDate/${employeeID}/${startDate}/${endDate}`).then((resp) => {
-            let listbill = resp.data;
-            $scope.TotalMoneytoPay = 0;
-            angular.forEach(listbill, function (item) {
-                let amountReceivable = Math.round((item.totalAmount - item.reduced) / 1000) * 1000;
-                $scope.TotalMoneytoPay += amountReceivable;
-            });
-        }).catch((error) => {
-            alert("Lỗi tính tổng tiền!");
-            console.log("Error", error);
-        });
-    }
-
-    // Nút nộp tiền - Bấm là gửi trạng thái qua cho admin duyệt
-    $scope.sendMoney = function () {
-        if ($scope.TotalMoneytoPay < $scope.totalMoneyYouPay) {
-            toastMixin.fire({
-                title: "Số tiền bạn nộp phải bằng hoặc nhỏ hơn số tiền bạn phải nộp hôm nay!",
-                icon: "warning",
-            });
-            return;
-        }
-        if (!confirm('Bạn xác nhận nộp: ' + $scope.totalMoneyYouPay + ' VND')) return;
-        // Tính tổng tiền phải nộp (tổng thu các bill trong ngày)
-        // Lịch sử nộp
-        let createPH = `/bachhoa/api/paymentHistory/create`;
-        // Chi tiết số tiền nộp
-        let createPD = `/bachhoa/api/paymentDetail/create`;
-
-        let data = {
-            employee: $scope.employee,
-            admin: null,
-            timePay: new Date().getTime(),
-            timeReceived: null,
-            totalAmount: parseFloat($scope.TotalMoneytoPay),
-            totalReceived: parseFloat($scope.totalMoneyYouPay),
-            // 0 - Chưa duyệt, thu chưa đủ 1 và đã thu 2
-            paied: 0,
-        };
-        // create payment history
-        $http.post(createPH, data).then((resp) => {
-            // create payment detail
-            let paymentDetail = angular.copy($scope.form);
-            paymentDetail.paymentHistory = resp.data;
-            console.log(paymentDetail)
-            $http.post(createPD, paymentDetail).then(() => {
-                toastMixin.fire({
-                    title: "Nộp tiền thành công, hãy đợi quản lý duyệt nhé!",
-                    icon: "success",
-                });
-                window.location = "/logout";
-            }).catch((error) => {
-                alert("Lỗi thêm chi tiết!");
-                console.log("Error", error);
-            });
-        });
-    };
 
     $scope.refresh = function () {
         $scope.SetDefaultDate();

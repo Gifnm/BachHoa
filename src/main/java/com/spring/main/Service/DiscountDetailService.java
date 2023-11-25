@@ -38,7 +38,7 @@ public class DiscountDetailService {
 		discountDetaileJPA.delete(discount);
 	}
 	
-	public void update(String disID, Date startTime, Date endTime, String productID, Integer storeID) {
-		discountDetaileJPA.update(disID, startTime, endTime, productID, storeID);
+	public void update(Date startTime, Date endTime, String productID, Integer storeID) {
+		discountDetaileJPA.update(startTime, endTime, productID, storeID);
 	}
 }
