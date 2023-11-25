@@ -57,7 +57,7 @@ public class BillAPI {
 	public Page<Bill> searchTimeCreate(@PathVariable("fromDate") Timestamp fromDate,
 			@PathVariable("toDate") Timestamp toDate, @RequestParam Optional<Integer> index, @RequestParam("store-id") Integer storeID) {
 		Pageable page = PageRequest.of(index.orElse(0), 8);
-		return billService.searchBetween(fromDate, toDate, page, storeID);
+		return billService.searchBetween(fromDate, toDate, storeID, page);
 	}
 
 	@GetMapping("bill/findByEmployeeAndDate/{employeeID}/{fromDate}/{toDate}")
