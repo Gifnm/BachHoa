@@ -28,31 +28,16 @@ public class HomeController {
 		model.addAttribute("Toast_title", SessionAttr.Title);
 		model.addAttribute("Toast_close", SessionAttr.Close);
 		SessionAttr.Show_Icon = SessionAttr.Success_Show_Icon;
-		return "pages/sell/sell";
+		return "pages/sell/pay/index";
 	}
 
 	@RequestMapping("/sell/billsHistory")
 	public String bills() {
-		return "pages/sell/bills_History";
+		return "pages/sell/bill/index";
 	}
 
 	@RequestMapping("/sell/productInfomation")
 	public String ktGia() {
-		return "pages/sell/productDetail";
-	}
-
-	@RequestMapping("/admin/endOfShift")
-	public String endShift() {
-		return "pages/admin/pay/pay";
-	}
-
-	@RequestMapping("/admin/inventoryHistory")
-	public String kiemke() {
-		return "pages/admin/inventory_history/inventory_history";
-	}
-
-	@RequestMapping("/admin/discountManagement")
-	public String discountManagement() {
-		return "pages/admin/discount/discountManagement";
+		return "pages/sell/product/index";
 	}
 }

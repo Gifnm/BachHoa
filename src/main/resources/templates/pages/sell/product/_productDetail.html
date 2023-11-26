@@ -1,10 +1,16 @@
-<main ng-controller="productInf-ctrl">
+<main>
     <div class="row p-0 m-0" style="min-height: 600px;">
         <div class="col-3 border" style="background-color: #F4F5F7; padding: 0px; height: 635px;">
             <div class="p-3">
                 <label for="" class="mb-2">Nhập mã (hoặc tên) sản phẩm</label><br>
-                <div class="autocomplete">
-                    <input id="product" type="text" class="form-control" ng-model="value" ng-change="find(value)">
+                <div class="autocomplete d-flex">
+                    <input id="product" type="text" class="form-control" ng-model="value" list="datalistProductName">
+                    <datalist id="datalistProductName">
+                        <option ng-repeat="productName in listProductName" value="{{productName}}">
+                    </datalist>
+                    <button class="btn btn-info text-white ms-2 shadow-lg">
+                        <i class="bi bi-search"  ng-click="find(value)" title="Tìm sản phẩm"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -34,6 +40,4 @@
             </div>
         </div>
     </div>
-    <!-- js -->
-    <script src="../js/productInf.js"></script>
 </main>

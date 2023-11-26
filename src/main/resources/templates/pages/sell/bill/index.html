@@ -1,11 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/pages/sell/layout:: dynamic(~{:: title}, ~{::body})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{/pages/sell/layout:: dynamic(~{:: title}, ~{:: #uiBill})}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BachHoa | Tra cứu hóa đơn</title>
 </head>
+
 <body>
-    <main th:replace="~{/pages/sell/pay/_bill_history}"></main>
+    <div id="uiBill" ng-controller="bill-ctrl">
+        <header th:replace="~{/pages/sell/_header}"></header>
+        <main th:replace="~{/pages/sell/bill/_billHistory}"></main>
+
+        <!-- js -->
+        <script src="../js/sell/billsHistory.js"></script>
+    </div>
 </body>
+
 </html>

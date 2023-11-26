@@ -1,4 +1,4 @@
-<main ng-controller="bill-ctrl">
+<main>
     <div class="row p-0 m-0">
         <div class="col-9 p-4">
             <tabset style="height: 550px;">
@@ -85,7 +85,7 @@
         </div>
         <div class="col-3 border" style="background-color: #F4F5F7; padding: 0px; height: 638px;">
             <div class="p-3 border-bottom border-3">
-                <label for="" class="mb-2">Nhập mã sản phẩm</label><br>
+                <label class="mb-2">Nhập mã sản phẩm</label><br>
                 <div class="autocomplete">
                     <input id="productCode" type="text" class="form-control" ng-model="productCode"
                         ng-change="addProductToBillDetail(productCode)">
@@ -135,7 +135,4 @@
             </div>
         </div>
     </div>
-    <!-- js -->
-    <script src="../js/angular-ui-tab-scroll.js"></script>
-    <script src="../js/bill.js"></script>
 </main>

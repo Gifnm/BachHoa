@@ -68,8 +68,8 @@ public class ProductAPI {
     }
 
     @GetMapping("product/getProductName")
-    public List<String> getProductName() {
-        return productService.getProductName();
+    public List<String> getProductName(@RequestParam("storeID") Integer storeID) {
+        return productService.getProductName(storeID);
     }
 
     @GetMapping("product/findByID/{productID}")
