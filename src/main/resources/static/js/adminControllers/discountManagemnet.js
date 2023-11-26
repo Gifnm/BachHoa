@@ -1,5 +1,6 @@
 const app = angular.module("app", []);
 app.controller("discountManagement-ctrl", function ($scope, $http) {
+    $scope.menu = 'khuyenmai'
     $scope.items = [];
     $scope.account = {};
     $scope.listProduct = [];

@@ -2,6 +2,7 @@
 const app = angular.module("app", []);
 
 app.controller("employee-ctrl", function ($scope, $http) {
+	$scope.menu = 'nhansu'
 	$scope.employees = [];
 	$scope.badge = 0;
 	let toastMixin = Swal.mixin({
@@ -80,7 +81,7 @@ app.controller("employee-ctrl", function ($scope, $http) {
 		return $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
 			$scope.account = resp.data;
 			$scope.initialize();
-			console.log("[ProductCtrl:getAccount():21]\n> Account: " + $scope.account);
+			console.log("[ProductCtrl:getAccount():21]\n> Account: " + $scope.account.email);
 		}).catch(error => {
 			alert("[ProductCtrl:initialize():19]\n> Loi lay account");
 			console.log("[ProductCtrl:getAccount():24]\n> Error: " + error);

@@ -25,7 +25,7 @@
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 				</reportElement>
 				<box leftPadding="0"/>
-				<imageExpression><![CDATA["D:/logo3-removebg.png"]]></imageExpression>
+				<imageExpression><![CDATA["src/main/resources/static/images/logo/logo3-removebg.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="30" y="0" width="111" height="30" uuid="ba4acdd2-c404-42eb-a9df-bd690b1f6889">

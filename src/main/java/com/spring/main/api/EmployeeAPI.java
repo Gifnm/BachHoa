@@ -76,16 +76,9 @@ public class EmployeeAPI {
 
 	@PostMapping("employee/insert")
 	public Employee insert(@RequestBody Employee employee) {
-		System.out.println("Insert");
-		Store store = new Store();
-		store.setStoreID(1);
-		Role role = new Role();
-		role.setRoleID("bhoa");
-		// employee.setRole(role);
-		employee.setStore(store);
-		employee.setActive(true);
-		emService.insert(employee);
-		return employee;
+		System.out.println("Thêm nv");
+		// StoreID, Role null at first
+		return emService.insert(employee);
 	}
 
 	@PutMapping("employee/update")

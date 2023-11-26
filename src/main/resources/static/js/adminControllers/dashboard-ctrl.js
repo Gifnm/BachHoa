@@ -5,6 +5,7 @@ const host = "http://localhost:8081/bachhoa/api";
 
 const app = angular.module("app", []);
 app.controller("ctrl", function ($scope, $http, $filter) {
+    $scope.menu = 'thongke'
     $scope.startDateSelected = new Date('2021-01-01')
     $scope.endDateSelected = new Date()
     $scope.startDate = formatDate($scope.startDateSelected)
@@ -44,7 +45,8 @@ app.controller("ctrl", function ($scope, $http, $filter) {
                 type: 'line',
                 label: 'Tổng doanh thu',
                 data: $scope.revenueData.increaseRevenue,
-                borderWidth: 1
+                borderWidth: 1,
+                hidden: true
             }, {
                 type: 'bar',
                 label: 'Doanh thu trong ' + $scope.translateTypeMileStone(),
@@ -59,6 +61,13 @@ app.controller("ctrl", function ($scope, $http, $filter) {
                     title: {
                         display: true,
                         text: 'Doanh thu',
+                    },
+                },
+                x: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Thời gian',
                     },
                 }
             }
@@ -176,6 +185,7 @@ app.controller("ctrl", function ($scope, $http, $filter) {
 
     $scope.initialize = function () {
         $scope.getAccount().then(() => {
+            $scope.showRequest();
             $scope.initChart();
             $scope.totalRevenue = $scope.revenueData.increaseRevenue[$scope.revenueData.increaseRevenue.length - 1]
             $scope.allBills = $scope.totalBills();
@@ -183,4 +193,27 @@ app.controller("ctrl", function ($scope, $http, $filter) {
     }
 
     $scope.initialize();
+
+    $scope.showRequest = function () {
+        $http.get(`/bachhoa/api/employee/Request/${$scope.account.store.storeID}`).then(resp => {
+            $scope.emRequest = resp.data;
+            $scope.badge = $scope.emRequest.length;
+
+        })
+    };
+    $scope.Denied = function (id) {
+        $http.put(`/bachhoa/api/employeeDel/${id}`).then(resp => {
+            alert("Thao tác đã hoàn thành!!!!");
+            $scope.showRequest();
+        })
+
+    }
+
+    $scope.acceptNV = function (id) {
+        $http.put(`/bachhoa/api/employeeAccept/${id}`).then(resp => {
+            alert("Nhân viên đã được chấp nhận");
+            $scope.initialize();
+        })
+
+    }
 });

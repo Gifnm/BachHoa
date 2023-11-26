@@ -13,14 +13,14 @@
     </div>
     <div class="table-responsive rounded" style="max-height: 550px;
     overflow: auto;">
-        <table class="table table-hover table-striped">
+        <table class="table table-hover">
             <thead class="table-light sticky">
                 <tr>
-                    <td class="py-4 order-col"><small>#</small></td>
                     <td class="py-4  function-col">
                         <input type="checkbox" ng-model="selectAll" ng-change="toggleSelectAll()">
                         <small>Chọn tất cả</small>
                     </td>
+                    <td class="py-4 order-col"><small>#</small></td>
                     <td class="py-4 name-col"> <small>Sản phẩm</small></td>
                     <td class="py-4 "><small>Phân loại</small></td>
                     <td class="py-4 "><small>Đơn giá bán</small></td>
@@ -33,11 +33,12 @@
                 </tr>
             </thead>
             <tbody class="bg-white">
-                <tr ng-repeat="pro in items | startFrom:currentPage*pageSize | limitTo:pageSize">
-                    <td class="sticky order-col bg-white align-middle" scope="row">{{$index+1+currentPage*pageSize}}
-                    </td>
+                <tr ng-repeat="pro in items | startFrom:currentPage*pageSize | limitTo:pageSize"
+                    class="{{pro.status?'':'text-muted bg-light'}}">
                     <td class="align-middle">
                         <input type="checkbox" ng-model="pro.selected" ng-change="toggleProductSelection(pro)">
+                    </td>
+                    <td class="sticky order-col align-middle" scope="row">{{$index+1+currentPage*pageSize}}
                     </td>
                     <td class="d-flex align-middle">
                         <div class="h-100">
@@ -82,8 +83,9 @@
                             </button>
                             <ul class="dropdown-menu rounded-4 bg-light">
                                 <li>
-                                    <a class="btn p-2 d-flex align-middle" data-bs-toggle="modal"
-                                        data-bs-target="#productModal" ng-click="edit(pro)">
+                                    <a class="btn p-2 d-flex align-middle" data-bs-toggle="offcanvas"
+                                        data-bs-target="#createForm" aria-controls="offcanvasExample"
+                                        ng-click="edit(pro)">
                                         <span class="material-symbols-outlined text-primary me-2">
                                             edit
                                         </span>

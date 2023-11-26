@@ -22,11 +22,9 @@ public interface BillJPA extends JpaRepository<Bill, String> {
 	List<Bill> findAllByStoreID(Integer storeID);
 
 	@Query("SELECT o FROM Bill o WHERE o.timeCreate >= ?1 AND o.timeCreate <= ?2 AND o.store.storeID = ?3")
-	Page<Bill> SearchBetween2Date(Timestamp fromDate, Timestamp toDate, Pageable page, Integer storeID);
+	Page<Bill> SearchBetween2Date(Timestamp fromDate, Timestamp toDate, Integer storeID, Pageable page);
 
 	@Query("SELECT o FROM Bill o WHERE o.employee.employeeID = ?1 AND (o.timeCreate >= ?2 AND o.timeCreate <= ?3)")
 	List<Bill> findByEmployeeAndDate(Integer employeeID, Timestamp fromDate, Timestamp toDate);
 
-	@Query("SELECT o FROM Bill o WHERE o.billID = ?1 AND o.store.storeID = ?2")
-	Bill findOneByBillIdAndStoreId(String billId, int storeId);
 }

@@ -44,7 +44,7 @@
 #sidebar {
     background-color: #d1d1d1;
     opacity: 1;
-    transition: all 0.3s ease;
+    /* transition: all 0.3s ease; */
     width: 250px;
 }
 

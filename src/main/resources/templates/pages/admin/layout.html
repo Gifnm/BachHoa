@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="dynamic(view)">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="dynamic(title,view)">
 
 <head>
     <meta charset="utf-8">
-    <title>Admin - BACHHOA</title>
+    <title th:replace="${title}">Admin - BACHHOA</title>
+    <link rel="shortcut icon" href="../images/logo3-removebg.png" />
     <!-- Bootstrap CSS v5.2.1 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">

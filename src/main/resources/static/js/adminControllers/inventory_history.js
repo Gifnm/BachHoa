@@ -1,5 +1,6 @@
 const app = angular.module("app", []);
 app.controller("inventoryHistory-ctrl", function ($scope, $http) {
+    $scope.menu = 'kiemkho'
     $scope.items = [];
     // tìm kiếm theo ngày
     $scope.index = 1;

@@ -2,6 +2,7 @@ const host = "http://localhost:8081/bachhoa/api";
 
 const app = angular.module("app", []);
 app.controller("ctrl", function ($scope, $http, $filter) {
+    $scope.menu = 'nhaphang'
     $scope.deliveryNotes = []
     $scope.currentDeliveryNote = {};
     $scope.successMessage = '';

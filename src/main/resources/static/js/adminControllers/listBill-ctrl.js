@@ -1,5 +1,6 @@
 const app = angular.module("app", []);
 app.controller("billsHistory-ctrl", function ($scope, $http) {
+    $scope.menu = 'hoadon'
     $scope.items = [];
     $scope.form = {};
     $scope.billDetails = [];
@@ -13,6 +14,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
     $scope.form = {};
     $scope.TotalMoneytoPay = 0;
     $scope.account = {} //Account of login employee
+    $scope.allBills = 0;
     let email;
 
     $scope.getAccount = function () {
@@ -50,6 +52,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
         // load hóa đơn
         $http.get(`/bachhoa/api/bill/all/${$scope.account.store.storeID}`).then(resp => {
             $scope.bills = resp.data;
+            $scope.allBills = resp.data.length;
             $scope.items = [];
             angular.forEach($scope.bills, function (item) {
                 item.timeCreate = dateFormat(item.timeCreate);
@@ -317,6 +320,9 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 
     $scope.getAccount().then(() => {
         $scope.refresh();
+        $http.get(`/bachhoa/api/bill/all/${$scope.account.store.storeID}`).then(resp => {
+            $scope.allBills = resp.data.length;
+        })
     });
 
 })

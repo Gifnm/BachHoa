@@ -1,5 +1,6 @@
 const app = angular.module("app", []);
 app.controller("paymentHistory-ctrl", function ($scope, $http) {
+    $scope.menu = 'thutien'
     $scope.listEmployee = [];
     $scope.paymentDetail = {};
     $scope.paymentHistory = {};

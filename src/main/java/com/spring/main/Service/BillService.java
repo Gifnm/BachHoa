@@ -62,8 +62,4 @@ public class BillService {
 		return billJPA.findAllByTimeCreateBetween(stDate, enDate, storeId);
 	}
 
-	public Bill findOneByBillIdAndStoreId(String billId, int storeId) {
-		System.out.println(billJPA.findOneByBillIdAndStoreId(billId, storeId));
-		return billJPA.findOneByBillIdAndStoreId(billId, storeId);
-	}
 }

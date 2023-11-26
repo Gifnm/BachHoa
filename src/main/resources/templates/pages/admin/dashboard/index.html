@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/pages/admin/layout:: dynamic(~{::body})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/pages/admin/layout:: dynamic(~{::title},~{::body})}">
 
 <head>
-  <title>Dashboard</title>
+  <title>Thống kê - Bachhoa Admin</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -50,7 +50,16 @@
           <b>Tổng doanh thu</b>
           <div class="d-sm-flex align-items-center justify-content-between">
             <h4 class="text-success fw-bold">{{totalRevenue | currency:'₫':'0'}}</h4>
-            <p class="text-success">(+1.37%)</p>
+            <!-- <p class="text-success">(+1.37%)</p> -->
+          </div>
+        </div>
+      </div>
+      <div class="col ms-3">
+        <div class=" rounded-4 p-4 bg-light">
+          <b>Lợi nhuận</b>
+          <div class="d-sm-flex align-items-center justify-content-between">
+            <h5 class="text-muted fw-bold">{{0 | currency:'₫':'0'}} (Đang phát triển)</h5>
+            <!-- <p class="text-danger"><span>-0.5%</span></p> -->
           </div>
         </div>
       </div>
@@ -59,8 +68,8 @@
           <b>Hóa đơn đã xuất</b>
           <div class="d-sm-flex align-items-center justify-content-between">
             <h2 class="fw-bold">{{billsAmount}}</h2>
-            <p class="text-danger"><span>-0.5%</span></p>
-            <a href="#" class="btn btn-primary rounded-pill"><small>Chi tiết</small></a>
+            <!-- <p class="text-danger"><span>-0.5%</span></p> -->
+            <a href="/admin/bill-history" class="btn btn-primary rounded-pill"><small>Chi tiết</a></small>
           </div>
         </div>
       </div>
@@ -69,17 +78,7 @@
           <b>Hóa đơn đã xuất</b>
           <div class="d-sm-flex align-items-center justify-content-between">
             <h2 class="fw-bold">{{billsAmount}}</h2>
-            <p class="text-danger"><span>-0.5%</span></p>
-            <a href="#" class="btn btn-primary rounded-pill"><small>Chi tiết</a></small>
-          </div>
-        </div>
-      </div>
-      <div class="col ms-3">
-        <div class=" rounded-4 p-4 bg-light">
-          <b>Hóa đơn đã xuất</b>
-          <div class="d-sm-flex align-items-center justify-content-between">
-            <h2 class="fw-bold">{{billsAmount}}</h2>
-            <p class="text-danger"><span>-0.5%</span></p>
+            <!-- <p class="text-danger"><span>-0.5%</span></p> -->
             <a href="#" class="btn btn-primary rounded-pill"><small>Chi tiết</a></small>
           </div>
         </div>
@@ -112,7 +111,7 @@
       </div>
     </div>
 
-    <table class="table">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -141,35 +140,6 @@
         </tr>
       </tbody>
     </table>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
-        </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td colspan="2">Larry the Bird</td>
-          <td>@twitter</td>
-        </tr>
-      </tbody>
-    </table>
   </main>
-  <script src="../js/dashboard-ctrl.js"></script>
+  <script src="../js/adminControllers/dashboard-ctrl.js"></script>
 </body>

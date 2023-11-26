@@ -49,8 +49,8 @@ public class BillAPI {
 	}
 
 	@GetMapping("bill/findBill/{BillID}")
-	public Bill getOne(@PathVariable("BillID") String id, @RequestParam(value = "store-id") int storeId) {
-		return billService.findOneByBillIdAndStoreId(id, storeId);
+	public Bill getOne(@PathVariable("BillID") String id) {
+		return billService.findByID(id);
 	}
 
 	@GetMapping("bill/searchBetween/{fromDate}/{toDate}")
@@ -58,7 +58,7 @@ public class BillAPI {
 			@PathVariable("toDate") Timestamp toDate, @RequestParam Optional<Integer> index,
 			@RequestParam("store-id") Integer storeID) {
 		Pageable page = PageRequest.of(index.orElse(0), 8);
-		return billService.searchBetween(fromDate, toDate, page, storeID);
+		return billService.searchBetween(fromDate, toDate, storeID, page);
 	}
 
 	@GetMapping("bill/findByEmployeeAndDate/{employeeID}/{fromDate}/{toDate}")

@@ -1,11 +1,8 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/pages/admin/layout:: dynamic(~{::body})}">
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-route.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/pages/admin/layout:: dynamic(~{::title},~{::body})}">
 
 <head>
-    <title>Employee</title>
+    <title>Nhân viên - Bachhoa Admin</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

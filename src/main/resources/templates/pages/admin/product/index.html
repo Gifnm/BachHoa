@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/pages/admin/layout:: dynamic(~{::body})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{/pages/admin/layout:: dynamic(~{::title}, ~{::body})}">
 
 <head>
-    <title>Product</title>
+    <title>Sản phẩm - Bachhoa Admin</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,7 +19,8 @@
                 bày bán</nmal>
         </div>
         <button ng-click="reset()" class="btn btn-primary rounded-pill d-flex align-middle p-2 px-3"
-            data-bs-toggle="modal" data-bs-target="#productModal"><span class="material-symbols-outlined me-2">
+            data-bs-toggle="offcanvas" data-bs-target="#createForm" aria-controls="offcanvasExample"><span
+                class="material-symbols-outlined me-2">
                 add_box
             </span> Thêm sản phẩm</button>
     </div>
@@ -29,5 +31,5 @@
 
     </main>
 
-    <script src="/js/product-ctrl.js"></script>
+    <script src="../js/adminControllers/product-ctrl.js"></script>
 </body>

@@ -2,6 +2,7 @@ const host = "http://localhost:8081/bachhoa/api";
 
 const app = angular.module("app", []);
 app.controller("ctrl", function ($scope, $http) {
+    $scope.menu = 'sanpham'
     //Variables
     $scope.today = new Date();
     $scope.feature = 'create'
@@ -47,6 +48,7 @@ app.controller("ctrl", function ($scope, $http) {
     // Init data on table and form
     $scope.initialize = function () {
         $scope.getAccount().then(() => {
+            $scope.showRequest();
             // Load products into table
             storeId = $scope.account.store.storeID;
             console.log("[ProductCtrl:initialize():28]\n> Store Id: " + storeId + " account name: " + $scope.account.employeeName);
@@ -71,7 +73,6 @@ app.controller("ctrl", function ($scope, $http) {
 
     //Save new product
     $scope.create = function () {
-        $scope.feature = 'create';
         let item = angular.copy($scope.form);
         // Cal api
         let url = `${host}/products`;
@@ -100,11 +101,10 @@ app.controller("ctrl", function ($scope, $http) {
                 icon: "success",
             })
         }).catch(error => {
-            alert("[product-ctrl.js:create():61]\n> Loi them moi san pham!");
             console.log("[product-ctrl.js:create():62]\n> Error", error);
             toastMixin.fire({
                 title: "Lỗi thêm sản phẩm!",
-                icon: "Error",
+                icon: "error",
             })
         })
         //create product with image
@@ -137,7 +137,7 @@ app.controller("ctrl", function ($scope, $http) {
 
 
     $scope.update = function () {
-        $scope.feature = 'update'
+
         let item = angular.copy($scope.form);
         // Cal api
         let url = `${host}/products/${item.productID}`;
@@ -145,9 +145,15 @@ app.controller("ctrl", function ($scope, $http) {
             let index = $scope.items.findIndex(p => p.productID == item.productID);
             $scope.items[index] = item;
             $scope.initialize();
-            alert("[product-ctrl.js:update():85]\n> Cap nhat thanh cong!");
+            toastMixin.fire({
+                title: 'Cập nhật sản phẩm thành công',
+                icon: 'success'
+            })
         }).catch(error => {
-            alert("[product-ctrl.js:update():87]\n> Loi cap nhat san pham!");
+            toastMixin.fire({
+                title: 'Cập nhật sản phẩm thất bại',
+                icon: 'error'
+            })
             console.log("[product-ctrl.js:update():88]\n> Error", error);
         })
     }
@@ -187,6 +193,7 @@ app.controller("ctrl", function ($scope, $http) {
 
     //Clear form information
     $scope.reset = function () {
+        $scope.feature = 'create';
         $scope.form = {
             nearestExpDate: new Date(),
             image: null,
@@ -198,6 +205,7 @@ app.controller("ctrl", function ($scope, $http) {
 
     //Show detail product in form
     $scope.edit = function (item) {
+        $scope.feature = 'update'
         $scope.form = angular.copy(item);
         if ($scope.item.image == null) {
             formImageElement.src = $scope.DEFAULT_PRODUCT_IMAGE;
@@ -276,6 +284,48 @@ app.controller("ctrl", function ($scope, $http) {
     }
 
     $scope.initialize();
+    const input = document.getElementById('uploadImage');
+    const image = document.getElementById('img-preview');
+
+    input.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+            const src = URL.createObjectURL(e.target.files[0]);
+            image.src = src;
+            console.log(e.target.files[0].name)
+        }
+
+    });
+
+
+    $scope.showRequest = function () {
+        $http.get(`/bachhoa/api/employee/Request/${$scope.account.store.storeID}`).then(resp => {
+            console.log(`/bachhoa/api/employee/Request/${$scope.account.store.storeID}`)
+            $scope.emRequest = resp.data;
+            $scope.badge = $scope.emRequest.length;
+
+        })
+    };
+    $scope.Denied = function (id) {
+        $http.put(`/bachhoa/api/employeeDel/${id}`).then(resp => {
+            toastMixin.fire({
+                title: 'Đã từ chối nhân viên.',
+                icon: 'success'
+            })
+            $scope.showRequest();
+        })
+
+    }
+
+    $scope.acceptNV = function (id) {
+        $http.put(`/bachhoa/api/employeeAccept/${id}`).then(resp => {
+            toastMixin.fire({
+                title: 'Nhân viên đã được chấp nhận!',
+                icon: 'success'
+            })
+            $scope.initialize();
+        })
+
+    }
 });
 // ctrl.$inject = ['$scope', '$filter'];
 //We already have a limitTo filter built-in to angular,
