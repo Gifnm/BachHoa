@@ -1,5 +1,5 @@
-const app = angular.module("app", ["ui.bootstrap", "ui.tab.scroll"]);
-app.controller("bill-ctrl", function ($scope, $http) {
+const app_pay = angular.module("app", ["ui.bootstrap", "ui.tab.scroll"]);
+app_pay.controller("pay-ctrl", function ($scope, $http) {
     // SweetAlert 2
     var toastMixin = Swal.mixin({
         toast: true,
@@ -150,41 +150,31 @@ app.controller("bill-ctrl", function ($scope, $http) {
     $scope.discountName = "";
     $scope.discountDetail = {};
     $scope.employee = {};
-    $scope.form = {};
-    $scope.admin = false;
-
-
-
 
     var stt = 1;
     // Khởi tạo 1 bill tạm đầu tiên
     let init = function () {
-        // Tìm thông tin nhân viên
+
         let email = document.getElementById('email').innerText;
         $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
             $scope.employee = resp.data;
-            $scope.form.email = $scope.employee.email;
-            $scope.form.address = $scope.employee.address;
-            $scope.form.age = $scope.employee.age;
-            //console.log($scope.employee);
+            $scope.dataEmployee.email = $scope.employee.email;
+            $scope.dataEmployee.address = $scope.employee.address;
+            $scope.dataEmployee.age = $scope.employee.age;
             angular.forEach($scope.employee.roles, function (item) {
                 if (item.roleID == "qlch") {
                     $scope.admin = true;
                 }
             })
-            if ($scope.employee.roles[0].roleID == "qlch") {
-                $scope.admin = true;
-            }
-
+            console.log($scope.employee)
             let test = sessionStorage.getItem("bills");
             loadBillFromSessionStorage();
-            //console.log(test)
-            //alert($scope.bills.length);
             if (test == null || $scope.bills.length == 0) {
                 $scope.bills = [];
                 addNewBill();
             } else {
                 loadBillFromSessionStorage();
+                angular.forEach($scope.bills, function (item) { item.bill.employee = $scope.employee });
                 setAllInactive();
                 $scope.invoiceID = $scope.bills[0].bill.billID;
                 stt = $scope.bills[0].stt;
@@ -647,7 +637,6 @@ app.controller("bill-ctrl", function ($scope, $http) {
         item.cash = parseInt(document.getElementById('cash').value);
         item.reduced = parseInt(document.getElementById('discount').innerText.replaceAll(',', ''));
         item.timeCreate = new Date().getTime();
-        alert(item.totalAmount)
         if (item.cash < $scope.roundAmountReceivable) {
             //alert('loi')
             document.getElementById('errorAlert').setAttribute("style", "display: block;");
@@ -668,9 +657,22 @@ app.controller("bill-ctrl", function ($scope, $http) {
         $scope.dialog = "";
         document.getElementById("cash").focus()
     }
+    //---------------------------------//
+    // cập nhật hồ sơ và kết ca
 
+    //cập nhật hồ sơ
+    $scope.admin = false;
+    $scope.dataEmployee = {};
+    // Kết ca
+    $scope.totalMoneyYouPay = 0;
+    $scope.formMoney = {};
+    $scope.TotalMoneytoPay = 0;
 
-    //------------------------------------------------//
+    // Active tab
+
+    $scope.setActive = function () {
+        // alert('window.location')
+    }
 
     // Cập nhật thông tin nhân viên
     $scope.updateEmployee = function () {
@@ -679,7 +681,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
         const ThisYear = new Date();
         const EmployeeBorn = new Date(AGE);
         const Timelines = ThisYear - EmployeeBorn;
-        if ($scope.form.email == null || $scope.form.email == "") {
+        if ($scope.dataEmployee.email == null || $scope.form.email == "") {
             toastMixin.fire({
                 title: "Vui lòng nhập email của bạn, hãy kiểm tra lại !",
                 icon: "warning",
@@ -697,7 +699,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
                 icon: "warning",
             });
             return;
-        } else if ($scope.form.address == null || $scope.form.address == "") {
+        } else if ($scope.dataEmployee.address == null || $scope.dataEmployee.address == "") {
             toastMixin.fire({
                 title: "Hãy nhập địa chỉ thường trú của bạn !",
                 icon: "warning",
@@ -707,10 +709,10 @@ app.controller("bill-ctrl", function ($scope, $http) {
         const formData = new FormData();
         const fileField = document.querySelector('input[id="uploadImage"]');
         formData.append('file', fileField.files[0]);
-        let data = $scope.employee;
-        data.email = $scope.form.email;
-        data.age = $scope.form.age;
-        data.address = $scope.form.address;
+        let data = angular.copy($scope.employee);
+        data.email = $scope.dataEmployee.email;
+        data.age = $scope.dataEmployee.age;
+        data.address = $scope.dataEmployee.address;
         if (fileField.files.length != 0) {
             data.pictureURL = "http://172.16.109.217:8081/bachhoaimg/" + fileField.files[0].name;
             $http.post(`/bachhoa/api/employee/updatePhoto`, formData, { transformRequest: angular.identity, headers: { 'Content-Type': undefined } }).then(resp => {
@@ -719,7 +721,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
                     toastMixin.fire({
                         title: "Cập nhật thông tin thành công !",
                         icon: "success",
-                      });
+                    });
                 }).catch(error => {
                     console.log(error);
                 })
@@ -733,7 +735,7 @@ app.controller("bill-ctrl", function ($scope, $http) {
                 toastMixin.fire({
                     title: "Cập nhật thông tin thành công !",
                     icon: "success",
-                  });
+                });
             }).catch(error => {
                 console.log(error);
             })
@@ -752,7 +754,132 @@ app.controller("bill-ctrl", function ($scope, $http) {
         }
 
     });
+
+    // --------- Kết thúc ca làm ----------- //
+
+    let startDateFormat = function (value) {
+        let date = new Date(value);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months start at 0!
+        const year = date.getFullYear();
+        return `${year}-${month}-${day} ${0}:${0}:${1}`;
+    }
+
+    let endDateFormat = function (value) {
+        let date = new Date(value);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months start at 0!
+        const year = date.getFullYear();
+        return `${year}-${month}-${day} ${23}:${59}:${59}`;
+    }
+
+    // Tính tiền nộp (thay đổi dựa trên giá trị các mệnh giá)
+    $scope.updateTotalMoney = function () {
+        // Lấy số lượng
+        const SL500 = document.getElementById("500").value;
+        const SL200 = document.getElementById("200").value;
+        const SL100 = document.getElementById("100").value;
+        const SL50 = document.getElementById("50").value;
+        const SL20 = document.getElementById("20").value;
+        const SL10 = document.getElementById("10").value;
+        const SL5 = document.getElementById("5").value;
+        const SL2 = document.getElementById("2").value;
+        const SL1 = document.getElementById("1").value;
+
+        let moneyInput =
+            500000 * SL500 +
+            200000 * SL200 +
+            100000 * SL100 +
+            50000 * SL50 +
+            20000 * SL20 +
+            10000 * SL10 +
+            5000 * SL5 +
+            2000 * SL2 +
+            1000 * SL1;
+
+        console.log(moneyInput);
+        $scope.totalMoneyYouPay = moneyInput;
+        console.log($scope.totalMoneyYouPay);
+    };
+
+    //Tính tổng tiền phải thu
+
+    $scope.tinhTongTienThu = function () {
+        let employeeID = $scope.employee.employeeID;
+        let time = new Date();
+        let startDate = startDateFormat(time);
+        let endDate = endDateFormat(time);
+        $scope.formMoney = {
+            vnd500: 0,
+            vnd200: 0,
+            vnd100: 0,
+            vnd50: 0,
+            vnd20: 0,
+            vnd10: 0,
+            vnd5: 0,
+            vnd2: 0,
+            vnd1: 0
+        }
+        $http.get(`/bachhoa/api/bill/findByEmployeeAndDate/${employeeID}/${startDate}/${endDate}`).then((resp) => {
+            let listbill = resp.data;
+            $scope.TotalMoneytoPay = 0;
+            angular.forEach(listbill, function (item) {
+                let amountReceivable = Math.round((item.totalAmount - item.reduced) / 1000) * 1000;
+                $scope.TotalMoneytoPay += amountReceivable;
+            });
+        }).catch((error) => {
+            alert("Lỗi tính tổng tiền!");
+            console.log("Error", error);
+        });
+    }
+
+    // Nút nộp tiền - Bấm là gửi trạng thái qua cho admin duyệt
+    $scope.sendMoney = function () {
+        if ($scope.TotalMoneytoPay < $scope.totalMoneyYouPay) {
+            toastMixin.fire({
+                title: "Số tiền bạn nộp phải bằng hoặc nhỏ hơn số tiền bạn phải nộp hôm nay!",
+                icon: "warning",
+            });
+            return;
+        }
+        if (!confirm('Bạn xác nhận nộp: ' + $scope.totalMoneyYouPay + ' VND')) return;
+        // Tính tổng tiền phải nộp (tổng thu các bill trong ngày)
+        // Lịch sử nộp
+        let createPH = `/bachhoa/api/paymentHistory/create`;
+        // Chi tiết số tiền nộp
+        let createPD = `/bachhoa/api/paymentDetail/create`;
+
+        let data = {
+            employee: $scope.employee,
+            admin: null,
+            timePay: new Date().getTime(),
+            timeReceived: null,
+            totalAmount: parseFloat($scope.TotalMoneytoPay),
+            totalReceived: parseFloat($scope.totalMoneyYouPay),
+            // 0 - Chưa duyệt, thu chưa đủ 1 và đã thu 2
+            paied: 0,
+        };
+        // create payment history
+        $http.post(createPH, data).then((resp) => {
+            // create payment detail
+            let paymentDetail = angular.copy($scope.formMoney);
+            paymentDetail.paymentHistory = resp.data;
+            console.log(paymentDetail)
+            $http.post(createPD, paymentDetail).then(() => {
+                toastMixin.fire({
+                    title: "Nộp tiền thành công, hãy đợi quản lý duyệt nhé!",
+                    icon: "success",
+                });
+                window.location = "/logout";
+            }).catch((error) => {
+                alert("Lỗi thêm chi tiết!");
+                console.log("Error", error);
+            });
+        });
+    };
+
     //------------------------------------------------//
+
     //KHỞI CHẠY
     // Khởi chạy tạo bill đầu tiên
     init();

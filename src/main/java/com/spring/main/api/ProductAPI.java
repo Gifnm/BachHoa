@@ -29,7 +29,7 @@ public class ProductAPI {
 	@Autowired
 	ProductPosionService posionService;
 
-// Su dung khi tao san pham moi
+	// Su dung khi tao san pham moi
 	@PostMapping("/bachhoa/api/upload")
 	public ResponseEntity<String> uploadSanPhamWithImage(@RequestPart("product") Product product,
 			@RequestPart("image") MultipartFile hinhAnh) throws IOException {
@@ -80,14 +80,14 @@ public class ProductAPI {
 		return productService.getProductID();
 	}
 
-	@GetMapping("product/getProductName")
-	public List<String> getProductName() {
-		return productService.getProductName();
-	}
-
 	@GetMapping("product/findByID/{productID}")
 	public Product findByID(@PathVariable("productID") String productID) {
 		return productService.getByID(productID);
+	}
+
+	@GetMapping("product/getProductName")
+	public List<String> getProductName(@RequestParam("storeID") Integer storeID) {
+		return productService.getProductName(storeID);
 	}
 
 	@GetMapping("product/findByIDOrName/{value}")

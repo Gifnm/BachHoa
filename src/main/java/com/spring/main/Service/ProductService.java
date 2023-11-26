@@ -54,8 +54,8 @@ public class ProductService {
 
 	}
 
-	public List<String> getProductName() {
-		return productJPA.getProductName();
+	public List<String> getProductName(Integer storeID) {
+		return productJPA.getProductName(storeID);
 
 	}
 

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{/pages/sell/layout:: dynamic(~{:: title}, ~{:: #uiSell})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BachHoa | Thanh toán</title>
+</head>
+
+<body>
+    <div id="uiSell" ng-controller="pay-ctrl">
+        <header th:replace="~{/pages/sell/_header}"></header>
+        <main th:replace="~{/pages/sell/pay/_sell}"></main>
+        <!-- js -->
+        <script src="../js/sell/pay.js"></script>
+    </div>
+</body>
+
+</html>

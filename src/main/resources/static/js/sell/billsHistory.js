@@ -1,5 +1,5 @@
-const app = angular.module("app", []);
-app.controller("billsHistory-ctrl", function ($scope, $http) {
+const app_bill = angular.module("app", ["ui.bootstrap", "ui.tab.scroll"]);
+app_bill.controller("bill-ctrl", function ($scope, $http) {
 	$scope.items = [];
 	$scope.form = {};
 	$scope.billDetails = [];
@@ -8,10 +8,6 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 	$scope.employee = {};
 	$scope.discountDetail = {};
 	$scope.listBillID = [];
-	// Kết ca
-	$scope.totalMoneyYouPay = 0;
-	$scope.form = {};
-	$scope.TotalMoneytoPay = 0;
 
 	// SweetAlert 2
 	var toastMixin = Swal.mixin({
@@ -302,6 +298,17 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 	$scope.findEmployee = function (email) {
 		$http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
 			$scope.employee = resp.data;
+			// gán thông tin nhân viên
+			$scope.dataEmployee.email = $scope.employee.email;
+			$scope.dataEmployee.address = $scope.employee.address;
+			$scope.dataEmployee.age = $scope.employee.age;
+			angular.forEach($scope.employee.roles, function (item) {
+				if (item.roleID == "qlch") {
+					$scope.admin = true;
+				}
+			})
+
+			// lấy mảng billID
 			initAutoComplete();
 
 			/* Tìm kiếm theo ngày */
@@ -314,8 +321,105 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 			console.log($scope.employee);
 		});
 	}
+	//---------------------------------//
+	// cập nhật hồ sơ và kết ca
 
-	//-----------------------------------------------//
+	//cập nhật hồ sơ
+	//$scope.employee = {};
+	$scope.admin = false;
+	$scope.dataEmployee = {};
+	// Kết ca
+	$scope.totalMoneyYouPay = 0;
+	$scope.formMoney = {};
+	$scope.TotalMoneytoPay = 0;
+
+	// Active tab
+
+	$scope.setActive = function () {
+		// alert('window.location')
+	}
+
+	// Cập nhật thông tin nhân viên
+	$scope.updateEmployee = function () {
+		const AGE = document.getElementById("age").value;
+
+		const ThisYear = new Date();
+		const EmployeeBorn = new Date(AGE);
+		const Timelines = ThisYear - EmployeeBorn;
+		if ($scope.dataEmployee.email == null || $scope.form.email == "") {
+			toastMixin.fire({
+				title: "Vui lòng nhập email của bạn, hãy kiểm tra lại !",
+				icon: "warning",
+			});
+			return;
+		} else if (AGE == null || AGE == "") {
+			toastMixin.fire({
+				title: "Vui lòng nhập độ tuổi hiện tại của bạn, hãy xem lại !",
+				icon: "warning",
+			});
+			return;
+		} else if (Timelines <= 568036800000) {
+			toastMixin.fire({
+				title: "Bạn chưa đủ độ tuổi làm việc (18 tuổi), hãy xem lại !",
+				icon: "warning",
+			});
+			return;
+		} else if ($scope.dataEmployee.address == null || $scope.dataEmployee.address == "") {
+			toastMixin.fire({
+				title: "Hãy nhập địa chỉ thường trú của bạn !",
+				icon: "warning",
+			});
+			return;
+		}
+		const formData = new FormData();
+		const fileField = document.querySelector('input[id="uploadImage"]');
+		formData.append('file', fileField.files[0]);
+		let data = angular.copy($scope.employee);
+		data.email = $scope.dataEmployee.email;
+		data.age = $scope.dataEmployee.age;
+		data.address = $scope.dataEmployee.address;
+		if (fileField.files.length != 0) {
+			data.pictureURL = "http://172.16.109.217:8081/bachhoaimg/" + fileField.files[0].name;
+			$http.post(`/bachhoa/api/employee/updatePhoto`, formData, { transformRequest: angular.identity, headers: { 'Content-Type': undefined } }).then(resp => {
+				$http.post(`/bachhoa/api/employee/updateInformation`, data).then(resp => {
+					document.getElementById('img-preview').src = data.pictureURL;
+					toastMixin.fire({
+						title: "Cập nhật thông tin thành công !",
+						icon: "success",
+					});
+				}).catch(error => {
+					console.log(error);
+				})
+			}).catch(error => {
+				console.log(error);
+			})
+		} else {
+			$http.post(`/bachhoa/api/employee/updateInformation`, data).then(resp => {
+				console.log(resp.data);
+				$scope.employee = resp.data;
+				toastMixin.fire({
+					title: "Cập nhật thông tin thành công !",
+					icon: "success",
+				});
+			}).catch(error => {
+				console.log(error);
+			})
+		}
+
+	}
+
+	const input = document.getElementById('uploadImage');
+	const image = document.getElementById('img-preview');
+
+	input.addEventListener('change', (e) => {
+		if (e.target.files.length) {
+			const src = URL.createObjectURL(e.target.files[0]);
+			image.src = src;
+			console.log(e.target.files[0].name)
+		}
+
+	});
+
 	// --------- Kết thúc ca làm ----------- //
 
 	// Tính tiền nộp (thay đổi dựa trên giá trị các mệnh giá)
@@ -354,7 +458,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		let time = new Date();
 		let startDate = startDateFormat(time);
 		let endDate = endDateFormat(time);
-		$scope.form = {
+		$scope.formMoney = {
 			vnd500: 0,
 			vnd200: 0,
 			vnd100: 0,
@@ -407,7 +511,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 		// create payment history
 		$http.post(createPH, data).then((resp) => {
 			// create payment detail
-			let paymentDetail = angular.copy($scope.form);
+			let paymentDetail = angular.copy($scope.formMoney);
 			paymentDetail.paymentHistory = resp.data;
 			console.log(paymentDetail)
 			$http.post(createPD, paymentDetail).then(() => {
@@ -425,8 +529,6 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 
 	//-----------------------------------------------//
 	// khởi động
-	//$scope.initialize();
-
 	$scope.SetDefaultDate();
 
 	// Tìm nhân viên theo email

@@ -1,0 +1,238 @@
+<header class="border-bottom">
+    <div class="row align-items-center">
+        <div class="welcome col">
+            <button class="btn bg-info bg-gradient menu" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#menuHidden" aria-controls="menuHidden" title="Menu">
+                <i class="bi bi-list"></i>
+            </button>
+            <a class="menuHidden" data-bs-toggle="offcanvas" href="#menuHidden" role="button"
+                aria-controls="menuHidden">
+                <img src="../images/logo/logo3-removebg.png" alt="logo" style="width: 100px;">
+            </a>
+
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="menuHidden"
+                aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Chức năng</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+
+                    <div class="list-group">
+                        <a href="/sell" class="list-group-item list-group-item-action {{isPay?'active':''}}"
+                            ng-click="setActive()">
+                            Thanh toán
+                        </a>
+                        <a href="/sell/billsHistory"
+                            class="list-group-item list-group-item-action {{isBill?'active':''}}"
+                            ng-click="setActive()">Nhập trả
+                            hóa đơn</a>
+                        <a href="/sell/productInfomation"
+                            class="list-group-item list-group-item-action {{isProduct?'active':''}}"
+                            ng-click="setActive()">Kiểm tra
+                            giá</a>
+                    </div>
+                </div>
+                <div class="offcanvas-footer text-center" style="padding: 1rem;">
+                    <p>Cửa hàng:</p>
+                    <p id="address">{{employee.store.address}}</p>
+                    <p id="storeID" class="d-none">ID</p>
+                </div>
+                <div class="offcanvas-footer text-center p-4">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-outline-info fw-bold shadow-lg" data-bs-toggle="modal"
+                        data-bs-target="#Noptien" ng-click="tinhTongTienThu()">Kết thúc ca làm</button>
+                </div>
+            </div>
+        </div>
+        <!-- modal kết ca -->
+        <div class="modal fade" id="Noptien" tabindex="999" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-gradient bg-primary text-white">
+                        <h5 class="modal-title" id="exampleModalLabel">Kết thúc ca làm việc.</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <div>
+                                <span>Chào bạn, </span><b>{{employee.employeeName}}</b>
+                            </div>
+                            <div>
+                                <span>Tổng tiền phải nộp hôm nay là: </span> <b>{{TotalMoneytoPay | number}}
+                                    VNĐ</b>
+                            </div>
+                            <hr style="border: 5px solid steelblue;" class="rounded-1">
+                            <div>
+                                <span>Hãy nhập chính xác các mệnh giá bên dưới !</span>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 ms-auto">
+                                        <label for="500">Tờ 500k</label>
+                                        <input type="number" class="form-control" id="500" value="0"
+                                            ng-change="updateTotalMoney()" oninput="validity.valid||(value='');" min="0"
+                                            ng-model="formMoney.vnd500">
+                                    </div>
+                                    <div class="col-md-4 ms-auto">
+                                        <label for="200">Tờ <span id="price">200</span>k</label>
+                                        <input type="number" class="form-control" id="200" value="0"
+                                            ng-change="updateTotalMoney()" oninput="validity.valid||(value='');" min="0"
+                                            ng-model="formMoney.vnd200">
+                                    </div>
+                                    <div class="col-md-4 ms-auto">
+                                        <label for="100">Tờ 100k</label>
+                                        <input type="number" class="form-control" id="100" value="0"
+                                            ng-change="updateTotalMoney()" oninput="validity.valid||(value='');" min="0"
+                                            ng-model="formMoney.vnd100">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 ms-auto">
+                                        <label for="50">Tờ 50k</label>
+                                        <input type="number" class="form-control" id="50" value="0"
+                                            ng-change="updateTotalMoney()" oninput="validity.valid||(value='');" min="0"
+                                            ng-model="formMoney.vnd50">
+                                    </div>
+                                    <div class="col-md-4 ms-auto">
+                                        <label for="20">Tờ 20k</label>
+                                        <input type="number" class="form-control" id="20" value="0"
+                                            ng-change="updateTotalMoney()" oninput="validity.valid||(value='');" min="0"
+                                            ng-model="formMoney.vnd20">
+                                    </div>
+                                    <div class="col-md-4 ms-auto">
+                                        <label for="10">Tờ 10k</label>
+                                        <input type="number" class="form-control" id="10" value="0"
+                                            ng-change="updateTotalMoney()" oninput="validity.valid||(value='');" min="0"
+                                            ng-model="formMoney.vnd10">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 ms-auto">
+                                        <label for="5">Tờ 5k</label>
+                                        <br>
+                                        <input type="number" class="form-control" id="5" value="0"
+                                            ng-change="updateTotalMoney()" oninput="validity.valid||(value='');" min="0"
+                                            ng-model="formMoney.vnd5">
+                                    </div>
+                                    <div class="col-md-4 ms-auto">
+                                        <label for="2">Tờ 2k</label>
+                                        <br>
+                                        <input type="number" class="form-control" id="2" value="0"
+                                            ng-change="updateTotalMoney()" oninput="validity.valid||(value='');" min="0"
+                                            ng-model="formMoney.vnd2">
+                                    </div>
+                                    <div class="col-md-4 ms-auto">
+                                        <label for="1">Tờ 1k</label>
+                                        <br>
+                                        <input type="number" class="form-control" id="1" value="0"
+                                            ng-change="updateTotalMoney()" oninput="validity.valid||(value='');" min="0"
+                                            ng-model="formMoney.vnd1">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <div class="total-number">
+                            <span>Tổng tiền mà bạn nộp: </span>
+                            <b id="totalMoney" class="number">{{totalMoneyYouPay | number}}</b>
+                            <span class="Dong-sign"> đ</span>
+                        </div>
+                        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button> -->
+                        <button type="button" class="btn btn-success" ng-click="sendMoney()">Nộp tiền</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col logo text-center">
+            <a href="/sell" class="text-decoration-none">
+                <img src="../images/logo/logo3-removebg.png" alt="logo" style="width: 100px;">
+            </a>
+        </div>
+        <div class="col account">
+            <div class="dropdown d-flex justify-content-end">
+                <a href="#" class="d-block link-dark text-decoration-none" id="acount" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <span class="px-2 username">{{employee.employeeName}}</span>
+                    <img src="{{employee.pictureURL}}" alt="mdo" width="32" height="32" class="rounded-circle">
+                </a>
+                <ul class="dropdown-menu text-small" aria-labelledby="acount">
+                    <div class="dropdown-header text-center">
+                        <img class="img-md rounded-circle" src="{{employee.pictureURL}}" width="32" height="32"
+                            alt="Profile image">
+                        <p class="mt-3 mb-1"><strong class="mb-1 mt-3">{{employee.employeeName}}</strong></p>
+                        <p class="fw-light text-muted mb-0" id="email">[[${#httpServletRequest.remoteUser}]]</p>
+                        <p class="d-none" id="employeeID">{{employee.employeeID}}</p>
+                    </div>
+                    <li ng-if="admin"><a class="dropdown-item" href="/admin/dashboard">Quản lý</a></li>
+                    <li><a class="dropdown-item" href="#" type="button" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">Hồ sơ cá nhân</a></li>
+                    <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-0">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thông tin cá nhân</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-5" style="background-color: #e7ebf5;">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="card py-5 border-0">
+                                <img src="{{employee.pictureURL}}" class="card-img-top m-auto rounded-circle"
+                                    style="height: 150px; width: 150px;" alt="..." id="img-preview">
+                                <input id="uploadImage" type="file" name="file" accept="image/*" hidden>
+                                <label for="uploadImage" class="d-flex justify-content-center"><i
+                                        class="bi bi-camera fs-3"></i></label>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">{{employee.employeeName}} - {{employee.employeeID}}</h5>
+                                    <div>
+                                        <p class="text-muted">{{employee.roles[0].workRole}}</p>
+                                        <p>{{employee.store.storeName}}</p>
+                                        <p>Tham gia: {{employee.firstWork | date}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-7">
+                            <div class="w-100 bg-light rounded mb-4" style="height: 80%;">
+                                <form class="p-3">
+                                    <!-- <input onchange="this.form.submit()" id="uploadImage" type="file" name="file"
+                                        accept="image/*" hidden> -->
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Địa chỉ email</label>
+                                        <input type="email" class="form-control" ng-model="dataEmployee.email">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Ngày sinh</label>
+                                        <input type="date" class="form-control" ng-value="dataEmployee.age" id="age">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Địa chỉ</label>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                                            ng-model="dataEmployee.address"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="w-100 bg-light rounded d-flex align-items-center px-3" style="height: 14.5%;">
+                                <label class="me-1">Nhấn "Cập nhật" để thay đổi thông tin</label>
+                                <button class="btn btn-success" ng-click="updateEmployee()">Cập
+                                    nhật</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
