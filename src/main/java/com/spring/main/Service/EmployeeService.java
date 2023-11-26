@@ -111,10 +111,6 @@ public class EmployeeService implements UserDetailsService {
 		return employee;
 	}
 
-	public Employee update(Employee employee) {
-		return employeeJPA.save(employee);
-	}
-
 	public Employee findByEmail(String email) {
 		Employee employee = employeeJPA.findbyEmail(email);
 		return employee;

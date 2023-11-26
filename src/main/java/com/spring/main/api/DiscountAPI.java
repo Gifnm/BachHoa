@@ -59,6 +59,11 @@ public class DiscountAPI {
 		return discountDetailService.create(discount);
 	}
 
+	@PutMapping("discount/stop")
+	public DiscountDetails stop(@RequestBody DiscountDetails discount) {
+		return discountDetailService.stop(discount);
+	}
+
 	@PutMapping("discount/update/{startTime}/{endTime}/{productID}/{storeID}")
 	public void update(@PathVariable("startTime") Date startTime,
 			@PathVariable("endTime") Date endTime, @PathVariable("productID") String productID,

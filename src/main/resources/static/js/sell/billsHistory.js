@@ -322,22 +322,18 @@ app_bill.controller("bill-ctrl", function ($scope, $http) {
 		});
 	}
 	//---------------------------------//
+	// Active tab
+	$scope.isActive = 'isBill';
 	// cập nhật hồ sơ và kết ca
 
 	//cập nhật hồ sơ
-	//$scope.employee = {};
+
 	$scope.admin = false;
 	$scope.dataEmployee = {};
 	// Kết ca
 	$scope.totalMoneyYouPay = 0;
 	$scope.formMoney = {};
 	$scope.TotalMoneytoPay = 0;
-
-	// Active tab
-
-	$scope.setActive = function () {
-		// alert('window.location')
-	}
 
 	// Cập nhật thông tin nhân viên
 	$scope.updateEmployee = function () {

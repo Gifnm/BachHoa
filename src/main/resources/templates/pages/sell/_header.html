@@ -20,18 +20,16 @@
                 <div class="offcanvas-body">
 
                     <div class="list-group">
-                        <a href="/sell" class="list-group-item list-group-item-action {{isPay?'active':''}}"
-                            ng-click="setActive()">
+                        <a href="/sell"
+                            class="list-group-item list-group-item-action {{isActive==='isPay'?'active':''}}">
                             Thanh toán
                         </a>
                         <a href="/sell/billsHistory"
-                            class="list-group-item list-group-item-action {{isBill?'active':''}}"
-                            ng-click="setActive()">Nhập trả
+                            class="list-group-item list-group-item-action {{isActive==='isBill'?'active':''}}">Nhập trả
                             hóa đơn</a>
                         <a href="/sell/productInfomation"
-                            class="list-group-item list-group-item-action {{isProduct?'active':''}}"
-                            ng-click="setActive()">Kiểm tra
-                            giá</a>
+                            class="list-group-item list-group-item-action {{isActive==='isProduct'?'active':''}}">Kiểm
+                            tra giá</a>
                     </div>
                 </div>
                 <div class="offcanvas-footer text-center" style="padding: 1rem;">
