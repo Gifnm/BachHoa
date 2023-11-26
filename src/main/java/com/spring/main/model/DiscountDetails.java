@@ -33,12 +33,12 @@ public class DiscountDetails {
 	@JoinColumn(name = "disID")
 	private Discount discount;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@MapsId("storeID")
 	@JoinColumn(name = "storeID")
 	private Store store;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@MapsId("productID")
 	@JoinColumn(name = "productID")
 	private Product product;

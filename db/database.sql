@@ -261,7 +261,6 @@ INSERT INTO bachhoa.detailed_delivery_note (id,productID,quantity,`index`,count)
 	 ('20231113203728','8935526000012',1,5,0),
 	 ('20231113203728','8936096670021',1,4,0);
 INSERT INTO bachhoa.detailed_delivery_note (id,productID,quantity,`index`,count) VALUES
-	 ('20231113203728','8935526000012',1,3,0),
 	 ('20231113203728','8934807006679',1,2,0),
 	 ('20231113203728','8936500366375',1,1,0),
 	 ('20231113204642','8935149556083',1,1,0),
