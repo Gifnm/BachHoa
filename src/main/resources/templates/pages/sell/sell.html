@@ -22,12 +22,21 @@
     <link rel="stylesheet" href="../css/style-sell.css">
     <link rel="stylesheet" href="../css/angular-ui-tab-scroll.css" />
     <link rel="stylesheet" href="../css/autoComplete.css">
+    <link rel="stylesheet" href="../css/Toast.css">
 </head>
 
 <body ng-controller="bill-ctrl">
-    <div class="alert shadow bg-info bg-gradient fw-bold fade show d-flex row alert-close flash m-auto fixed-top"
-        role="alert" id="alert" style="top: 12%; width: 25%; display: none; z-index: 999;">
-        <span class="col text-center" th:text="${message}"></span>
+    <!-- Toast Thông báo -->
+    <div th:classappend="*{Toast}" class="alert flash show" id="alert" role="alert" 
+            style="position: fixed; right: 1%; top: 1%; z-index: 999;">
+        <div th:classappend="${Toast_icon}" th:utext="${Toast_show_icon}">
+
+        </div>
+        <div th:classappend="${Toast_title}" th:text="${message}"></div>
+        <div th:classappend="${Toast_close}" 
+                type="button" id="alertClose" data-bs-dismiss="alert" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 20 20" height="20"><path fill="#393a37" d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"></path></svg>
+        </div>
     </div>
     <header class="border-bottom">
         <div class="row align-items-center">
@@ -87,7 +96,7 @@
                             <p class="fw-light text-muted mb-0" id="email">[[${#httpServletRequest.remoteUser}]]</p>
                             <p class="d-none" id="employeeID">{{employee.employeeID}}</p>
                         </div>
-                        <li ng-if="admin"><a class="dropdown-item" href="/admin/product">Quản lý</a></li>
+                        <li ng-if="admin"><a class="dropdown-item" href="/admin/dashboard">Quản lý</a></li>
                         <li><a class="dropdown-item" href="#" type="button" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal">Hồ sơ cá nhân</a></li>
                         <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>

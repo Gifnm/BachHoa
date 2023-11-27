@@ -20,4 +20,29 @@ public class AdminController {
         return "pages/admin/import_product/index";
     }
 
+    @GetMapping("/admin/employee")
+    public String employee() {
+        return "pages/admin/employee/index";
+    }
+
+    @GetMapping("/admin/bill-history")
+    public String bills() {
+        return "pages/admin/bill/index";
+    }
+
+    @GetMapping("/admin/payment-history")
+    public String payments() {
+        return "pages/admin/pay/index";
+    }
+
+    @GetMapping("/admin/discount")
+    public String discount() {
+        return "pages/admin/discount/index";
+    }
+
+    @GetMapping("/admin/inventory-history")
+    public String inventoryHistory() {
+        return "pages/admin/inventory_history/index";
+    }
+
 }
