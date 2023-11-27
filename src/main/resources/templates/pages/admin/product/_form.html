@@ -1,81 +1,3 @@
-<!-- Modal -->
-<!-- <div class="modal fade" id="productModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">{{feature=='create'?'Thêm sản phẩm mới':'Chỉnh sửa
-                    thông
-                    tin sản phẩm'}}</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form class="row g-3" enctype="multipart/form-data">
-                    <div class="col col-md-4 rounded">
-                        <div class="rounded">
-                            <img id="blah" ng-src="{{form.image}}" class="object-fit-fill border border-1 h-100 w-100"
-                                alt="{{form.image}}">
-                        </div>
-                        <input type="file" class="form-control" accept="image/*" ng-model="image"
-                            onchange="angular.element(this).scope().imageChanged(window.URL.createObjectURL(this.files[0]), this.files[0])">
-                    </div>
-                    <div class="col col-md-8">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="inputEmail4" class="form-label disabled">Mã sản phẩm</label>
-                                <input ng-model="form.productID" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputAddress" class="form-label">Phân loại</label>
-                                <select ng-model="form.categories.categoriesID" class="form-select">
-                                    <option ng-repeat="c in categories" ng-value="c.categoriesID">{{c.categoriesName}}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-12">
-                                <label for="inputPassword4" class="form-label">Tên sản phẩm</label>
-                                <input ng-model="form.productName" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputAddress2" class="form-label">Đơn giá bán</label>
-                                <input ng-model="form.price" type="number" min="0" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputCity" class="form-label">Đơn giá nhập hàng</label>
-                                <input ng-model="form.importPrice" type="number" min="0" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="inputState" class="form-label">Số lượng tồn kho hiện tại</label>
-                                <input ng-model="form.inventory" type="number" min="0" class="form-control">
-                            </div>
-                            <div class="col-md-2">
-                                <label for="inputZip" class="form-label">VAT</label>
-                                <input ng-model="form.vat" type="number" min="0" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputZip" class="form-label">Ngày hết hạn gần nhất</label>
-                                <input ng-model="form.nearestExpDate" class="form-control" type="date">
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>  
-            <div class="modal-footer">
-                <div class="">
-                    <button ng-click="create()" class="btn btn-primary" data-bs-dismiss="modal">
-                        <i class="fas fa-plus"></i> Thêm
-                    </button>
-                    <button ng-click="update()" class="btn btn-primary">
-                        <i class="fas fa-rotate"></i> Lưu
-                    </button>
-                    <button ng-click="reset()" class="btn btn-primary">
-                        <i class="fas fa-regular fa-window-restore"></i> Xóa trắng form
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
-
 <div class="offcanvas offcanvas-end" tabindex="-1" id="createForm" aria-labelledby="staticBackdropLabel">
     <div class="offcanvas-header">
         <div>
@@ -96,22 +18,15 @@
     </div>
     <div class="offcanvas-body bg-light p-4 rounded">
         <form enctype="multipart/form-data">
-            <div class="row g-3">
+            <!-- <div class="row g-3">
                 <div class="rounded bg-white col">
-                    <!-- <div class=" rounded">
-                    <img id="blah" ng-src="{{form.image}}" class="object-fit-fill border border-1 h-100 w-100"
-                        alt="{{form.image}}">
-                </div>
-                <input type="file" class="form-control" accept="image/*" ng-model="image"
-                    onchange="angular.element(this).scope().imageChanged(window.URL.createObjectURL(this.files[0]), this.files[0])">
-                -->
                     <img src="{{employee.pictureURL}}" class="mt-2 card-img-top" alt="..." id="img-preview">
                     <input id="uploadImage" type="file" name="file" accept="image/*" hidden>
                     <label for="uploadImage" class="d-flex justify-content-center"><i
                             class="bi bi-camera fs-3"></i></label>
                 </div>
                 <div class="col"></div>
-            </div>
+            </div> -->
             <div class="my-3">
                 <label for="inputEmail4" class="form-label disabled">Mã sản phẩm</label>
                 <input ng-model="form.productID" class="form-control">

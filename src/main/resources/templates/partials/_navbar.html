@@ -6,27 +6,28 @@
                 left_panel_close
             </span>
         </button>
-        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <!-- <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb my-auto">
                 <li class="breadcrumb-item"><b class="my-auto text-muted">{{account.store.storeName}}</b></li>
                 <li class="breadcrumb-item active fw-bold text-black" aria-current="page">Sản phẩm</li>
             </ol>
-        </nav>
+        </nav> -->
     </div>
+    <b class="my-auto text-muted">{{account.store.storeName}}</b>
 
     <div class="d-flex align-middle py-2">
-        <a href="#" class="btn d-flex align-items-center ms-3">
+        <!-- <a href="#" class="btn d-flex align-items-center ms-3">
             <span class="material-symbols-outlined text-primary me-2">
                 file_save
             </span>
         </a>
-        <div class="vr my-2"></div>
+        <div class="vr my-2"></div> -->
 
         <div th:replace="~{/pages/admin/employee/_formAcceptRequest}"></div>
-        <a class="btn d-flex align-items-center rounded" title="Trợ giúp" data-bs-toggle="modal">
+        <!-- <a class="btn d-flex align-items-center rounded" title="Trợ giúp" data-bs-toggle="modal">
             <span class=" material-symbols-outlined text-primary">
                 help
             </span>
-        </a>
+        </a> -->
     </div>
 </div>
