@@ -33,6 +33,10 @@ public class DiscountDetailService {
 	public DiscountDetails create(DiscountDetails discount) {
 		return discountDetaileJPA.save(discount);
 	}
+
+	public DiscountDetails stop(DiscountDetails discount) {
+		return discountDetaileJPA.save(discount);
+	}
 	
 	public void delete(DiscountDetails discount) {
 		discountDetaileJPA.delete(discount);

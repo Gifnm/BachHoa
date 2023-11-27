@@ -658,6 +658,8 @@ app_pay.controller("pay-ctrl", function ($scope, $http) {
         document.getElementById("cash").focus()
     }
     //---------------------------------//
+    // Active tab
+    $scope.isActive = 'isPay';
     // cập nhật hồ sơ và kết ca
 
     //cập nhật hồ sơ
@@ -668,20 +670,15 @@ app_pay.controller("pay-ctrl", function ($scope, $http) {
     $scope.formMoney = {};
     $scope.TotalMoneytoPay = 0;
 
-    // Active tab
-
-    $scope.setActive = function () {
-        // alert('window.location')
-    }
-
     // Cập nhật thông tin nhân viên
     $scope.updateEmployee = function () {
+        let em = angular.copy($scope.dataEmployee);
         const AGE = document.getElementById("age").value;
 
         const ThisYear = new Date();
         const EmployeeBorn = new Date(AGE);
         const Timelines = ThisYear - EmployeeBorn;
-        if ($scope.dataEmployee.email == null || $scope.form.email == "") {
+        if (em.email == null || em.email == "") {
             toastMixin.fire({
                 title: "Vui lòng nhập email của bạn, hãy kiểm tra lại !",
                 icon: "warning",
@@ -699,7 +696,7 @@ app_pay.controller("pay-ctrl", function ($scope, $http) {
                 icon: "warning",
             });
             return;
-        } else if ($scope.dataEmployee.address == null || $scope.dataEmployee.address == "") {
+        } else if (em.address == null || em.address == "") {
             toastMixin.fire({
                 title: "Hãy nhập địa chỉ thường trú của bạn !",
                 icon: "warning",
@@ -710,9 +707,9 @@ app_pay.controller("pay-ctrl", function ($scope, $http) {
         const fileField = document.querySelector('input[id="uploadImage"]');
         formData.append('file', fileField.files[0]);
         let data = angular.copy($scope.employee);
-        data.email = $scope.dataEmployee.email;
-        data.age = $scope.dataEmployee.age;
-        data.address = $scope.dataEmployee.address;
+        data.email = em.email;
+        data.age = em.age;
+        data.address = em.address;
         if (fileField.files.length != 0) {
             data.pictureURL = "http://172.16.109.217:8081/bachhoaimg/" + fileField.files[0].name;
             $http.post(`/bachhoa/api/employee/updatePhoto`, formData, { transformRequest: angular.identity, headers: { 'Content-Type': undefined } }).then(resp => {

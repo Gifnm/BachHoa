@@ -48,6 +48,8 @@ app_product.controller("product-ctrl", function ($scope, $http) {
     }
 
     //---------------------------------//
+    // Active tab
+    $scope.isActive = 'isProduct';
     // cập nhật hồ sơ và kết ca
 
     //cập nhật hồ sơ
@@ -57,12 +59,6 @@ app_product.controller("product-ctrl", function ($scope, $http) {
     $scope.totalMoneyYouPay = 0;
     $scope.formMoney = {};
     $scope.TotalMoneytoPay = 0;
-
-    // Active tab
-
-    $scope.setActive = function () {
-        // alert('window.location')
-    }
 
     // Cập nhật thông tin nhân viên
     $scope.updateEmployee = function () {

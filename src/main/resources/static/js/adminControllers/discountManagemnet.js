@@ -163,7 +163,7 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
         let data = $scope.items.find(item => item.productID == id);
         data.activity = 0;
         $scope.items.splice(index, 1, data);
-        $http.put(`/bachhoa/api/discount/update`, data).then(() => {
+        $http.put(`/bachhoa/api/discount/stop`, data).then(() => {
             alert('Đã kết thúc chương trình khuyến mãi!')
         }).catch(error => {
             console.log(error);
