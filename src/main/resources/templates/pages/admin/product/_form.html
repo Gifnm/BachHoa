@@ -79,14 +79,18 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="createForm" aria-labelledby="staticBackdropLabel">
     <div class="offcanvas-header">
         <div>
-            <h5 class="offcanvas-title fw-bold" id="staticBackdropLabel">
+            <h5 class="offcanvas-title fw-bold text-truncate flex-grow-1" id="staticBackdropLabel">
                 {{feature==='create'?'Sản phẩm mới':form.productName}}
             </h5>
             <small ng-if="feature==='update'">{{form.productID}}</small>
         </div>
 
-        <input type="checkbox" class="btn-check" id="btn-check-outlined" autocomplete="off" ng-model="form.status">
-        <label class="btn btn-outline-primary" for="btn-check-outlined">{{form.status==true?'Đang bán':'Ngừng kinh
+        <input type="checkbox" class="btn-check " id="btn-check-outlined" autocomplete="off" ng-model="form.status">
+        <label class="btn btn-outline-success btn-sm btn-warning rounded-pill" data-bs-toggle="tooltip"
+            data-bs-placement="bottom" data-bs-title="Thay đổi trạng thái sản phẩm"
+            for="btn-check-outlined">{{form.status==true?'Đang
+            bán':'Ngừng
+            kinh
             doanh'}}</label>
         <!-- <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button> -->
     </div>
@@ -143,14 +147,18 @@
                 <label for="inputZip" class="form-label">Ngày hết hạn gần nhất</label>
                 <input ng-model="form.nearestExpDate" class="form-control" type="date">
             </div>
-            <button ng-if="feature==='create'" ng-click="create()" class="btn btn-primary rounded-4 px-3 float-end mb-4"
-                data-bs-dismiss="offcanvas">
-                <i class="fas fa-plus"></i> Thêm
-            </button>
-            <button ng-if="feature==='update'" ng-click="update()" class="btn btn-primary rounded-4 px-3 float-end mb-4"
-                data-bs-dismiss="offcanvas">
-                <i class="fas fa-rotate"></i> Lưu
-            </button>
+            <div class="vstack gap-2 col-md-5 w-100">
+                <button ng-if="feature==='create'" ng-click="create()" class="btn btn-primary rounded-3"
+                    data-bs-dismiss="offcanvas">
+                    <i class="fas fa-plus"></i> Thêm
+                </button>
+                <button ng-if="feature==='update'" ng-click="update()" class="btn btn-primary rounded-3"
+                    data-bs-dismiss="offcanvas">
+                    <i class="fas fa-rotate"></i> Lưu
+                </button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Đóng</button>
+            </div>
+
         </form>
     </div>
 </div>
