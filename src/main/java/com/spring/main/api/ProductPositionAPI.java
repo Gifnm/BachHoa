@@ -78,7 +78,7 @@ public class ProductPositionAPI {
 		} else {
 			PriceTag priceTag = new PriceTag();
 			priceTag.setProductPositioning(productPositioning);
-			priceTag.setDiscountDetails(discountDetailService.findByProductIDAndStoreID(productID, storeID));
+			// priceTag.setDiscountDetails(discountDetailService.findByProductIDAndStoreID(productID, storeID));
 			return ResponseEntity.status(HttpStatus.OK).body(priceTag);
 		}
 
@@ -92,7 +92,7 @@ public class ProductPositionAPI {
 		} else {
 			PriceTag priceTag = new PriceTag();
 			priceTag.setProductPositioning(productPositioning);
-			priceTag.setDiscountDetails(discountDetailService.findByProductIDAndStoreID(productID, storeID));
+			// priceTag.setDiscountDetails(discountDetailService.findByProductIDAndStoreID(productID, storeID));
 			return ResponseEntity.status(HttpStatus.OK).body(priceTag);
 		}
 
