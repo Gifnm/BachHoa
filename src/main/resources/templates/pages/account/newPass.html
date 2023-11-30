@@ -22,6 +22,7 @@
     <script src="../js/angular-ui-tab-scroll.js"></script>
     <!-- CSS -->
     <link rel="stylesheet" href="../css/login.css">
+     <link rel="stylesheet" href="../css/toast.css">
     <!-- JS -->
     <script src="../js/login.js"></script>
 </head>
@@ -57,18 +58,18 @@
         <div class="d-flex justify-content-center ">
             <div>
                 <div class="logo img-fluid card-img">
-                    <img src="../images/favicon.png" alt="" width="275" height="auto" class="rounded-start">
+                    <img src="../images/favicon.png" alt="" width="316" height="auto" class="rounded-start">
                 </div>
             </div>
             <div class="d-block">
                 <form action="/set-password" class="form" method="post">
                     <div>
-                        <p>Thay đổi mật khẩu</p>
+                        <p class="form-title">Thay đổi mật khẩu</p>
                     </div>
-                    <div class="input-container mt-5">
-                        <input type="password" name="new_Password" placeholder="Nhập mật khẩu mới ..." class="shadow"
+                    <div class="mt-5 input-container" style="box-shadow: none">
+                        <input type="password" name="new_Password" placeholder="Nhập mật khẩu mới ..." class="border border-2 shadow form-control"
                             autofocus required>
-                        <input type="password" name="verify_Password" placeholder="Xác nhận mật khẩu ..." class="shadow" autofocus
+                        <input type="password" name="verify_Password" placeholder="Xác nhận mật khẩu ..." class="border border-2 shadow form-control mt-2" autofocus
                             required>
                     </div>
                     <button type="submit" class="submit mt-5 button" value="Send">

@@ -191,7 +191,7 @@ html {
 }
 
 .back_home button:hover span {
-    transform: scale(0.85);
+    transform: scale(0.9);
 }
 
 .back_home button:active {

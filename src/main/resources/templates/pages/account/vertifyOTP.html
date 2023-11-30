@@ -22,6 +22,7 @@
     <script src="../js/angular-ui-tab-scroll.js"></script>
     <!-- CSS -->
     <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/toast.css">
 </head>
 
 <body class="background-img">
@@ -39,7 +40,7 @@
     </div>
     
     <div class="back_home" style="position: fixed; left: 1%; top: 1%; width: 22%; z-index: 999;">
-        <a th:href="@{/login}" class="text-decoration-none">
+        <a th:href="@{/logout}" class="text-decoration-none">
             <button>
                 <div class="icon-wrapper-1">
                     <div class="icon-wrapper">
@@ -54,19 +55,19 @@
         <div class="d-flex justify-content-center ">
             <div>
                 <div class="logo img-fluid card-img">
-                    <img src="../images/favicon.png" alt="" width="275" height="auto" class="rounded-start">
+                    <img src="../images/favicon.png" alt="" width="256.3" height="auto" class="rounded-start">
                 </div>
             </div>
             <div class="d-block">
                 <form action="/verify-account" class="form" method="post">
                     <div>
-                        <p>Nhập mã OTP để xác minh</p>
+                        <p class="form-title">Nhập mã OTP để xác minh</p>
                     </div>
                     <div class="input-container mt-5">
-                        <input type="text" name="OTP" placeholder="Mã xác nhận (OTP) ..." class="shadow" autofocus
+                        <input type="text" name="OTP" placeholder="Mã xác nhận (OTP) ..." class="shadow border border-3" autofocus
                             required>
                     </div>
-                    <button type="submit" class="submit mt-5 button" value="Send">
+                    <button type="submit" class="submit mt-5 button border border-2" value="Send">
                         Tìm lại mật khẩu
                     </button>
                 </form>

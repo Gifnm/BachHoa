@@ -1,6 +1,5 @@
 package com.spring.main.controller;
 
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,7 @@ public class AccountController {
 		SessionAttr.Title = name + "__title";
 		SessionAttr.Close = name + "__close";
 	}
-	
+
 	// --------- Register to be a manager or staffs --------- //
 	@RequestMapping("/business")
 	public String showRegister(Model model) {
@@ -163,8 +162,8 @@ public class AccountController {
 		SessionAttr.Show_Icon = SessionAttr.Info_Show_Icon;
 		return "redirect:/login";
 	}
-	
-	// -------------------- Check Error ----------------------------- //	
+
+	// -------------------- Check Error ----------------------------- //
 
 	@RequestMapping("/auth/access/denied")
 	public String denied(Model model, HttpServletRequest request) {
@@ -174,8 +173,8 @@ public class AccountController {
 		SessionAttr.Show_Icon = SessionAttr.Warning_Show_Icon;
 		return "redirect:/sell";
 	}
-	
-	// ------------------- Forget Password ------------------------- //	
+
+	// ------------------- Forget Password ------------------------- //
 	@RequestMapping("/regenerate-otp")
 	public String regenerateOTP(@RequestParam("R_Email") String email, Model model) {
 		Employee employee = ES.findByEmail(email);
@@ -189,13 +188,15 @@ public class AccountController {
 				Random_otp = OTP(8);
 				model.addAttribute("message", "Hãy check email để lấy mã OTP");
 				ES.verifyAccount(email, Random_otp);
+				callToast("success");
+				SessionAttr.Show_Icon = SessionAttr.Success_Show_Icon;
+				sessionService.set("email", email);
 			}
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
+			callToast("error");
+			SessionAttr.Show_Icon = SessionAttr.Error_Show_Icon;
 		}
-		callToast("success");
-		SessionAttr.Show_Icon = SessionAttr.Success_Show_Icon;
-		sessionService.set("email", email);
 		return "pages/account/vertifyOTP";
 	}
 
@@ -218,6 +219,12 @@ public class AccountController {
 		model.addAttribute("message", "Đừng quên mật khẩu của bạn nữa nhé.");
 		callToast("warning");
 		SessionAttr.Show_Icon = SessionAttr.Warning_Show_Icon;
+		// Toast - Thông báo
+		model.addAttribute("Toast", SessionAttr.Toast);
+		model.addAttribute("Toast_icon", SessionAttr.Icon);
+		model.addAttribute("Toast_show_icon", SessionAttr.Show_Icon);
+		model.addAttribute("Toast_title", SessionAttr.Title);
+		model.addAttribute("Toast_close", SessionAttr.Close);
 		return "pages/account/newPass";
 	}
 
