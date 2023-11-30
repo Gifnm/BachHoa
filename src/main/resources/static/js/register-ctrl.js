@@ -84,7 +84,7 @@ app.controller("register-ctrl", function ($scope, $http) {
       });
     } else {
       var storeInfo = angular.copy($scope.info);
-      if ($scope.stores.find((p) => p.storeName == storeInfo.storeName)) {
+      if ($scope.stores.find(p => p.storeName == storeInfo.storeName)) {
         toastMixin.fire({
           title: "Cửa hàng hiện đã có người sở hữu !",
           icon: "error",

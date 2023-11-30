@@ -1,0 +1,68 @@
+<div class="p-4">
+    <div class="table-responsive rounded" style="max-height: 550px;
+    overflow: auto;">
+        <table class="table table-hover table-striped">
+            <thead class="table-light sticky">
+                <tr>
+                    <td class="py-4 name-col"> <small>Mã số</small></td>
+                    <td class="py-4 "><small>Họ và tên</small></td>
+                    <td class="py-4 "><small>Ngày sinh</small></td>
+                    <td class="py-4 "><small>Địa chỉ</small></td>
+                    <td class="py-4 "><small>Ngày vào làm</small></td>
+                    <td class="py-4 "><small>Email</small></td>
+                    <td class="py-4"></td>
+                </tr>
+            </thead>
+            <tbody class="bg-white">
+                <tr ng-repeat="e in employees">
+                    <td class="align-middle">
+                        <span>{{e.employeeID}}</span>
+                    </td>
+                    <td class="align-middle">
+                        <b>{{e.employeeName}}</b>
+                    </td>
+                    <td class="align-middle">
+                        <span class="d-flex align-middle">
+                            <span class="material-symbols-outlined me-1 text-muted">
+                                cake
+                            </span>
+                            {{e.age==null?'--/--/----':e.age| date:'dd / MM / yyyy'}}
+                        </span>
+                    </td>
+                    <td class="align-middle">
+                        <span>{{e.address}}</span>
+                    </td>
+                    <td class="align-middle">
+                        <span class="d-flex align-middle">
+                            <span class="material-symbols-outlined me-1 text-muted">
+                                work_history
+                            </span>
+                            {{e.firstWork==null?'--/--/----':e.firstWork| date:'dd / MM / yyyy'}}
+                        </span>
+                    </td>
+                    <td class="align-middle">
+                        <span>{{e.email}}</span>
+                    </td>
+                    <td class="sticky align-middle">
+                        <button class="btn d-flex align-items-center" ng-click="delete(e.employeeID)"
+                            data-bs-toggle="tooltip" data-bs-placement="start" data-bs-custom-class="custom-tooltip"
+                            data-bs-title="Xóa tài khoản này khỏi cửa hàng">
+                            <span class="material-symbols-outlined text-primary">
+                                person_remove
+                            </span>
+                        </button>
+                    </td>
+                </tr>
+                <!-- Display message if no matching products found -->
+                <td colspan="11" ng-if="items.length === 0" class="my-3 text-danger">
+                    Không tìm thấy sản phẩm trùng khớp.
+                </td>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>

@@ -20,24 +20,27 @@ public class StatisticAPI {
     @GetMapping("increase-revenue")
     public Float[] getListIncreaseRevenue(@RequestParam(value = "start-date") String startDate,
             @RequestParam(value = "end-date") String endDate,
-            @RequestParam(value = "mile-stone") String mileStoneType) {
+            @RequestParam(value = "mile-stone") String mileStoneType,
+            @RequestParam(value = "store-id") int storeId) {
         System.out.println(startDate + " - " + endDate + " - " + mileStoneType);
-        return this.statisticService.getListIncreaseRevenue(startDate, endDate, mileStoneType);
+        return this.statisticService.getListIncreaseRevenue(startDate, endDate, mileStoneType, storeId);
     }
 
     @GetMapping("revenue")
     public Float[] getListRevenue(@RequestParam(value = "start-date") String startDate,
             @RequestParam(value = "end-date") String endDate,
-            @RequestParam(value = "mile-stone") String mileStoneType) {
+            @RequestParam(value = "mile-stone") String mileStoneType,
+            @RequestParam(value = "store-id") int storeId) {
         System.out.println(startDate + " - " + endDate + " - " + mileStoneType);
-        return this.statisticService.getListRevenue(startDate, endDate, mileStoneType);
+        return this.statisticService.getListRevenue(startDate, endDate, mileStoneType, storeId);
     }
 
     @GetMapping("revenue/mile-stone-type")
     public String[] getListMileStone(@RequestParam(value = "start-date") String startDate,
             @RequestParam(value = "end-date") String endDate,
-            @RequestParam(value = "mile-stone") String mileStoneType) {
+            @RequestParam(value = "mile-stone") String mileStoneType,
+            @RequestParam(value = "store-id") int storeId) {
         System.out.println("CONTROLLER " + startDate + " - " + endDate + " - " + mileStoneType);
-        return this.statisticService.getListMileStone(startDate, endDate, mileStoneType);
+        return this.statisticService.getListMileStone(startDate, endDate, mileStoneType, storeId);
     }
 }

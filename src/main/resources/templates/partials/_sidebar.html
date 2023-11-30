@@ -1,134 +1,105 @@
-<!-- <div id="sidebar" class="d-flex bg-dark h-100">
-  <div class="d-flex flex-sm-column flex-row flex-grow-1 align-items-center align-items-xl-start text-white">
-    <a href="/admin/dashboard"
-      class="logo w-100  d-flex align-items-center mb-md-0 mx-xl-auto text-white text-decoration-none">
-      <img class="h-100 mx-auto" src="/images/logo3-removebg.png" alt="">
-    </a>
-    <ul class="w-100 list-group list-group-flush">
-      <a href="/admin/dashboard"
-        class="list-group-item list-group-item-action list-group-item-light py-3 d-flex align-items-center">
-        <span class="material-symbols-outlined">
-          finance
-        </span><span class="ms-3 d-none d-xl-inline">Thống kê</span> </a>
-      <a href="/admin/product"
-        class="list-group-item list-group-item-action list-group-item-light py-3 d-flex align-items-center">
-        <span class="material-symbols-outlined">
-          package_2
-        </span><span class="ms-3 d-none d-xl-inline">Sản phẩm</span></a>
-      <a href="/admin/discount"
-        class="list-group-item list-group-item-action list-group-item-light py-3 d-flex align-items-center">
-        <span class="material-symbols-outlined">
-          sell
-        </span><span class="ms-3 d-none d-xl-inline">Khuyến mãi</span></a>
-      <a href="/admin/employee"
-        class="list-group-item list-group-item-action list-group-item-light py-3 d-flex align-items-center">
-        <span class="material-symbols-outlined">
-          groups
-        </span><span class="ms-3 d-none d-xl-inline">Nhân sự</span>
-      </a>
-      <a href="/admin/bill"
-        class="list-group-item list-group-item-action list-group-item-light py-3 d-flex align-items-center">
-        <span class="material-symbols-outlined">
-          receipt_long
-        </span><span class="ms-3 d-none d-xl-inline">Hóa đơn</span></a>
-      <a href="/admin/import-product"
-        class="w-100 list-group-item list-group-item-action list-group-item-light py-3 d-flex align-items-center">
-        <span class="material-symbols-outlined">
-          warehouse
-        </span><span class="ms-3 d-none d-xl-inline">Nhập hàng</span>
-      </a>
-      <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
-        aria-controls="collapseExample"
-        class="w-100 list-group-item list-group-item-action list-group-item-light py-3 d-flex align-items-center">
-        <span class="material-symbols-outlined">
-          assignment_turned_in
-        </span><span class="ms-3 d-none d-xl-inline">Lịch sử kiểm kho</span>
-      </a>
-      <a href="/admin/lost"
-        class="list-group-item list-group-item-action list-group-item-light py-3 d-flex align-items-center">
-        <span class="material-symbols-outlined">
-          data_alert
-        </span><span class="ms-3 d-none d-xl-inline">Mất mát </span>
-      </a>
-    </ul>
-    <div class="dropdown py-sm-4 px-3 mt-sm-auto ms-sm-0 flex-shrink-1">
-      <a href="#" class="d-flex align-items-center text-black text-decoration-none dropdown-toggle" id="dropdownUser1"
-        data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="https://github.com/mdo.png" alt="hugenerd" width="28" height="28" class="rounded-circle">
-        <span class="d-none d-sm-inline mx-1 text-truncate" style="max-width: 150px;">{{account.employeeName}}</span>
-      </a>
-      <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-        <li><a class="dropdown-item" href="/sell">Bán hàng</a></li>
-        <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
-        <li><a class="dropdown-item" href="#">Hồ sơ cá nhân</a></li>
-        <li>
-          <hr class="dropdown-divider">
-        </li>
-        <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
-      </ul>
-    </div>
-  </div>
-</div> -->
-
 <div id="sidebar" class="vh-100 ps-0 d-flex flex-column">
   <a href="/" class="logo d-flex align-items-center link-dark text-decoration-none border-bottom">
     <img class="h-100 mx-auto" src="/images/logo3-removebg.png" alt="">
     <!-- <h4 class="fw-bold ms-3 menu-collapsed text-truncate">BachHoa</h4> -->
   </a>
-  <ul class="ms-0 px-2">
-    <a href="/admin/dashboard" class="btn my-2 rounded-3 d-flex align-items-center">
-      <span class="material-symbols-outlined text-primary">
-        finance
-      </span>
-      <span class="menu-collapsed ms-2  text-truncate">Thống kê</span>
-    </a>
-    <a href="/admin/product" class="btn my-2 rounded-3 d-flex align-items-center">
-      <span class="material-symbols-outlined text-primary">
-        package_2
-      </span><span class="menu-collapsed ms-2 text-truncate">Sản phẩm</span></a>
-    <a href="/admin/discount" class="btn my-2 rounded-3 d-flex align-items-center">
-      <span class="material-symbols-outlined text-primary">
-        sell
-      </span><span class="menu-collapsed ms-2 text-truncate">Khuyến mãi</span></a>
-    <a href="/admin/employee" class="btn my-2 rounded-3 d-flex align-items-center">
-      <span class="material-symbols-outlined text-primary">
-        groups
-      </span><span class="menu-collapsed ms-2 text-truncate">Nhân sự</span>
-    </a>
-    <a href="/admin/bill" class="btn my-2 rounded-3 d-flex align-items-center">
-      <span class="material-symbols-outlined text-primary">
-        receipt_long
-      </span><span class="menu-collapsed ms-2 text-truncate">Hóa đơn</span></a>
-    <a href="/admin/import-product" class="btn my-2 rounded-3 d-flex align-items-center">
-      <span class="material-symbols-outlined text-primary">
-        warehouse
-      </span><span class="menu-collapsed ms-2 text-truncate">Nhập hàng</span>
-    </a>
-    <button data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false"
-      class="btn my-2 rounded-3 w-100 d-flex align-items-center ">
-      <span class="material-symbols-outlined text-primary">
-        assignment_turned_in
-      </span><span class="menu-collapsed ms-2 me-auto text-truncate">Kiểm kho</span>
+  <ul class="ms-0 px-2 overflow-auto">
+    <li data-bs-toggle="collapse" data-bs-target="#statistic-collapse" aria-expanded="true"
+      class="text-muted mt-3 d-flex align-items-center">
+      <small class="menu-collapsed me-auto text-truncate"><small>PHÂN TÍCH</small></small>
       <span class="material-symbols-outlined text-white">
         expand_more
       </span>
-    </button>
-
-    <div class="collapse" id="home-collapse">
+    </li>
+    <div class="collapse show" id="statistic-collapse">
       <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-        <li><a href="/admin/lost" class="btn my-2 rounded-3 d-flex align-items-center">
-            <span class="material-symbols-outlined">
-              history
-            </span><span class="menu-collapsed ms-2 text-truncate">Lịch sử</span>
-          </a></li>
-        <li><a href="/admin/lost" class="btn my-2 rounded-3 d-flex align-items-center">
-            <span class="material-symbols-outlined">
-              data_alert
-            </span><span class="menu-collapsed ms-2 text-truncate">Báo cáo</span>
-          </a></li>
+        <a href="/admin/dashboard"
+          class="btn my-1 rounded-3 d-flex align-items-center {{menu==='thongke'?' text-white bg-primary':''}}">
+          <span class="material-symbols-outlined text-{{menu==='thongke'?'white':'primary'}}">
+            finance
+          </span>
+          <span class="menu-collapsed ms-2  text-truncate">Thống kê</span>
+        </a>
       </ul>
     </div>
+
+    <li data-bs-toggle="collapse" data-bs-target="#sell-collapse" aria-expanded="true"
+      class="text-muted mt-3 d-flex align-items-center">
+      <small class="menu-collapsed me-auto text-truncate"><small>BÁN HÀNG</small></small>
+      <span class="material-symbols-outlined text-white">
+        expand_more
+      </span>
+    </li>
+    <div class="collapse show" id="sell-collapse">
+      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+        <a href="/admin/product"
+          class="btn my-1 rounded-3 d-flex align-items-center {{menu==='sanpham'?' text-white bg-primary':''}}">
+          <span class="material-symbols-outlined text-{{menu==='sanpham'?'white':'primary'}} ">
+            package_2
+          </span><span class="menu-collapsed ms-2 text-truncate">Sản phẩm</span></a>
+        <a href="/admin/discount"
+          class="btn my-1 rounded-3 d-flex align-items-center {{menu==='khuyenmai'?' text-white bg-primary':''}}">
+          <span class="material-symbols-outlined text-{{menu==='khuyenmai'?'white':'primary'}}">
+            sell
+          </span><span class="menu-collapsed ms-2 text-truncate">Khuyến mãi</span></a>
+        <a href="/admin/bill-history"
+          class="btn my-1 rounded-3 d-flex align-items-center {{menu==='hoadon'?' text-white bg-primary':''}}">
+          <span class="material-symbols-outlined text-{{menu==='hoadon'?'white':'primary'}}">
+            receipt_long
+          </span><span class="menu-collapsed ms-2 text-truncate">Hóa đơn</span></a>
+        <a href="/admin/payment-history"
+          class="btn my-1 rounded-3 d-flex align-items-center {{menu==='thutien'?' text-white bg-primary':''}}">
+          <span class="material-symbols-outlined text-{{menu==='thutien'?'white':'primary'}}">
+            payments
+          </span><span class="menu-collapsed ms-2 text-truncate">Thu tiền</span>
+        </a>
+      </ul>
+    </div>
+
+    <li data-bs-toggle="collapse" data-bs-target="#inventory-collapse" aria-expanded="true"
+      class="text-muted mt-3 d-flex align-items-center ">
+      <small class="menu-collapsed me-auto text-truncate"><small>KHO BÃI</small></small>
+      <span class="material-symbols-outlined text-white">
+        expand_more
+      </span>
+    </li>
+    <div class="collapse show" id="inventory-collapse">
+      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+        <a href="/admin/import-product"
+          class="btn my-1 rounded-3 d-flex align-items-center {{menu==='nhaphang'?' text-white bg-primary':''}}">
+          <span class="material-symbols-outlined text-{{menu==='nhaphang'?'white':'primary'}}">
+            warehouse
+          </span><span class="menu-collapsed ms-2 text-truncate">Nhập hàng</span>
+        </a>
+        <a href="/admin/inventory-history"
+          class="btn my-1 rounded-3 d-flex align-items-center {{menu==='kiemkho'?' text-white bg-primary':''}}">
+          <span class="material-symbols-outlined text-{{menu==='kiemkho'?'white':'primary'}}">
+            assignment_turned_in
+          </span><span class="menu-collapsed ms-2 text-truncate">Kiểm kho</span>
+        </a>
+      </ul>
+    </div>
+
+    <li data-bs-toggle="collapse" data-bs-target="#person-collapse" aria-expanded="true"
+      class="text-muted mt-3 d-flex align-items-center ">
+      <small class="menu-collapsed me-auto text-truncate"><small>NHÂN SỰ</small></small>
+      <span class="material-symbols-outlined text-white">
+        expand_more
+      </span>
+    </li>
+    <div class="collapse show" id="person-collapse">
+      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+        <a href="/admin/employee"
+          class="btn my-1 rounded-3 d-flex align-items-center {{menu==='nhansu'?' text-white bg-primary':''}}">
+          <span class="material-symbols-outlined text-{{menu==='nhansu'?'white':'primary'}}">
+            groups
+          </span><span class="menu-collapsed ms-2 text-truncate">Nhân sự</span>
+        </a>
+      </ul>
+    </div>
+
   </ul>
+
   <div class="flex-grow-1"></div>
   <div class="account dropdown py-sm-4 px-3 border-top mt-auto">
     <a href="#" class="d-flex align-items-center text-black text-decoration-none dropdown-toggle" id="dropdownUser1"
@@ -136,7 +107,7 @@
       <img src="https://github.com/mdo.png" alt="hugenerd" width="28" height="28" class="rounded-circle">
       <span class="d-none d-sm-inline ms-2 text-truncate fw-bold">{{account.employeeName}}</span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+    <ul class="dropdown-menu dropdown-menu-light text-small shadow" aria-labelledby="dropdownUser1">
       <li><a class="dropdown-item" href="/sell">Bán hàng</a></li>
       <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
       <li><a class="dropdown-item" href="#">Hồ sơ cá nhân</a></li>

@@ -35,27 +35,31 @@ public class EmployeeService implements UserDetailsService {
 	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	public List<Employee> findAll() {
-		List<Employee> list = employeeJPA.findAll();
-		return list;
-	}
 	
+		return employeeJPA.findAll();
+	}
+
+	public Employee create(Employee employee) {
+		return employeeJPA.save(employee);
+	}
+
 	public List<Authority> findAllRoles() {
 		List<Authority> list = authorityJPA.findAll();
 		return list;
 	}
-	
 	// Cập nhật thông tin
-		private final String FOLDER_PATH = "C:\\bachhoaimg\\";
+	private final String FOLDER_PATH = "C:\\bachhoaimg\\";
 
-		public Employee updateInformation(Employee e){
-			employeeJPA.save(e);
-			return e;
-		}
+	public Employee updateInformation(Employee e) {
+		employeeJPA.save(e);
+		return e;
+	}
+
 	// Cập nhật ảnh
-		public void uploadImage(MultipartFile file) throws IllegalStateException, IOException {
-			String filePath = FOLDER_PATH + file.getOriginalFilename();
-			file.transferTo(new File(filePath));
-		}
+	public void uploadImage(MultipartFile file) throws IllegalStateException, IOException {
+		String filePath = FOLDER_PATH + file.getOriginalFilename();
+		file.transferTo(new File(filePath));
+	}
 
 	public Employee insert(Employee employee) {
 		// Gắn mã hóa vào chi tiết của 1 nhân viên (dùng cho những user mới được add sẽ
@@ -63,40 +67,46 @@ public class EmployeeService implements UserDetailsService {
 		employee.setPassword(passwordEncoder.encode(employee.getPassword()));
 		return employeeJPA.save(employee);
 	}
-	
+
 	public void updateRoles(String roleID, Integer EmpolyeeID) {
 		employeeJPA.updateRole(roleID, EmpolyeeID);
 		// return employeeJPA.updateRole(roleID, EmpolyeeID);
 	}
-	
+
 	public Authority insertAuth(Authority authority) {
 		return authorityJPA.save(authority);
 	}
-	
+
 	public void deleteAuth(String roleID, Integer employeeID) {
 		authorityJPA.deleteByRoleAndEmployeeID(roleID, employeeID);
 	}
 
-	/**
-	 * Xoa mot nhan vien
-	 * 
-	 * @param id Ma so nhan vien
-	 */
+	public List<Employee> getAllbyStoreID (Integer id) {
+		 return employeeJPA.getByStoreId(id);
+	  }
+	
 	public void detele(Integer id) {
 		employeeJPA.deleteById(id);
 	}
-	
+
 	public Employee update(Employee employee) {
 		return employeeJPA.save(employee);
 	}
-
-	/**
-	 * Lay 1 nhan vien
-	 * 
-	 * @param id Ma so nhan vien
-	 */
-	public Employee findByID(Integer id) {
-		Employee employee = employeeJPA.findById(id).get();
+	
+	public void DeleteWait(Integer id) {
+		employeeJPA.DeleteWait(id);
+	}
+	
+	public void accept(Integer id) {
+		employeeJPA.accept(id);
+	}
+	
+  public List<Employee> getRequest (Integer id) {
+	 return employeeJPA.getRequest(id);
+  }
+	
+	public Employee findByID(Integer emloyeeid) {
+		Employee employee = employeeJPA.findById(emloyeeid).get();
 		return employee;
 	}
 
@@ -170,6 +180,7 @@ public class EmployeeService implements UserDetailsService {
 		}
 	}
 	
+
 	public boolean CheckStore(String email) {
 		Employee employee = employeeJPA.findbyEmail(email);
 		if (employee == null) {

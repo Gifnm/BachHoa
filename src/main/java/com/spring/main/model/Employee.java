@@ -20,10 +20,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 @Entity
 @Table(name = "employees")
+@Data
 public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,9 +49,9 @@ public class Employee {
 	@ManyToOne
 	@JoinColumn(name = "storeID")
 	private Store store;
-	
-	@JsonIgnore
-	@OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
+
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "Id")
 	private List<Authority> authorities;
 
 	@Column(name = "active")
@@ -64,6 +65,7 @@ public class Employee {
 
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinTable(name = "authorities", joinColumns = @JoinColumn(name = "employeeID"), inverseJoinColumns = @JoinColumn(name = "roleID"))
+
 	private Set<Role> roles = new HashSet<>();
 
 	public boolean hasRole(String roleName) {
@@ -77,100 +79,29 @@ public class Employee {
 		return false;
 	}
 
-	public int getEmployeeID() {
-		return this.employeeID;
-	}
-
-	public void setEmployeeID(int employeeID) {
+	public Employee(int employeeID, String employeeName, Date age, String address, String pictureURL, Date firstWork,
+			Store store, List<Authority> authorities, boolean active, String email, String password,
+			Set<Role> roles) {
 		this.employeeID = employeeID;
-	}
-
-	public String getEmployeeName() {
-		return this.employeeName;
-	}
-
-	public void setEmployeeName(String employeeName) {
 		this.employeeName = employeeName;
-	}
-
-	public Date getAge() {
-		return this.age;
-	}
-
-	public void setAge(Date age) {
 		this.age = age;
-	}
-
-	public String getAddress() {
-		return this.address;
-	}
-
-	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public String getPictureURL() {
-		return this.pictureURL;
-	}
-
-	public void setPictureURL(String pictureURL) {
 		this.pictureURL = pictureURL;
-	}
-
-	public Date getFirstWork() {
-		return this.firstWork;
-	}
-
-	public void setFirstWork(Date firstWork) {
 		this.firstWork = firstWork;
-	}
-
-	public Store getStore() {
-		return this.store;
-	}
-
-	public void setStore(Store store) {
 		this.store = store;
-	}
-
-	public List<Authority> getAuthorities() {
-		return this.authorities;
-	}
-
-	public void setAuthorities(List<Authority> authorities) {
 		this.authorities = authorities;
-	}
-
-	public boolean isActive() {
-		return this.active;
-	}
-
-	public void setActive(boolean active) {
 		this.active = active;
-	}
-
-	public String getEmail() {
-		return this.email;
-	}
-
-	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getPassword() {
-		return this.password;
-	}
-
-	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public Set<Role> getRoles() {
-		return this.roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public Employee() {
+	}
+
+	public Employee(int employeeID) {
+
+		this.employeeID = employeeID;
 	}
 
 }

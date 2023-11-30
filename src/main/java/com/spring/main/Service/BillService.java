@@ -26,36 +26,40 @@ public class BillService {
 		return billJPA.findById(billID).get();
 	}
 
-	public Page<Bill> searchBetween(Timestamp fromDate, Timestamp toDate, Pageable page) {
-		return billJPA.SearchBetween2Date(fromDate, toDate, page);
+	public Page<Bill> searchBetween(Timestamp fromDate, Timestamp toDate, Integer storeID, Pageable page) {
+		return billJPA.SearchBetween2Date(fromDate, toDate, storeID, page);
 	}
-	
+
 	public List<Bill> findByEmployeeAndDate(Integer employeeID, Timestamp fromDate, Timestamp toDate) {
 		return billJPA.findByEmployeeAndDate(employeeID, fromDate, toDate);
 	}
 
-	public List<Bill> findAll() {
-		return billJPA.findAll();
+	public List<Bill> findAllByStoreID(Integer storeID) {
+		return billJPA.findAllByStoreID(storeID);
 	}
 
 	public void delete(String billID) {
 		billJPA.deleteById(billID);
 	}
 
-	public List<String> getBillID() {
-		return billJPA.getBillID();
+	public List<String> getBillID(Integer storeID) {
+		return billJPA.getBillID(storeID);
 	}
 
-	public List<Bill> findAllByTimeCreateBetween(String fromDate, String toDate) {
+	public List<Bill> findAllByTimeCreateBetween(String fromDate, String toDate, int storeId) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Timestamp stDate = null;
 		Timestamp enDate = null;
 		try {
 			stDate = new Timestamp(dateFormat.parse(fromDate).getTime());
 			enDate = new Timestamp(dateFormat.parse(toDate).getTime());
+			enDate.setHours(23);
+			enDate.setMinutes(59);
+			enDate.setSeconds(59);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		return billJPA.findAllByTimeCreateBetween(stDate, enDate);
+		return billJPA.findAllByTimeCreateBetween(stDate, enDate, storeId);
 	}
+
 }

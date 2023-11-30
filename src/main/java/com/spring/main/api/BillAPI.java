@@ -37,14 +37,14 @@ public class BillAPI {
 		billService.save(bill);
 	}
 
-	@GetMapping("bill/all")
-	public List<Bill> getAll() {
-		return billService.findAll();
+	@GetMapping("bill/all/{storeID}")
+	public List<Bill> getAll(@PathVariable("storeID") Integer storeID) {
+		return billService.findAllByStoreID(storeID);
 	}
 
-	@GetMapping("bill/getBillID")
-	public List<String> getBillID() {
-		return billService.getBillID();
+	@GetMapping("bill/getBillID/{storeID}")
+	public List<String> getBillID(@PathVariable("storeID") Integer storeID) {
+		return billService.getBillID(storeID);
 
 	}
 
@@ -55,9 +55,10 @@ public class BillAPI {
 
 	@GetMapping("bill/searchBetween/{fromDate}/{toDate}")
 	public Page<Bill> searchTimeCreate(@PathVariable("fromDate") Timestamp fromDate,
-			@PathVariable("toDate") Timestamp toDate, @RequestParam Optional<Integer> index) {
+			@PathVariable("toDate") Timestamp toDate, @RequestParam Optional<Integer> index,
+			@RequestParam("store-id") Integer storeID) {
 		Pageable page = PageRequest.of(index.orElse(0), 8);
-		return billService.searchBetween(fromDate, toDate, page);
+		return billService.searchBetween(fromDate, toDate, storeID, page);
 	}
 
 	@GetMapping("bill/findByEmployeeAndDate/{employeeID}/{fromDate}/{toDate}")
@@ -68,8 +69,8 @@ public class BillAPI {
 
 	@GetMapping("bills")
 	public List<Bill> getBillsBetween(@RequestParam("from-date") String fromDate,
-			@RequestParam("to-date") String toDate) {
-		return billService.findAllByTimeCreateBetween(fromDate, toDate);
+			@RequestParam("to-date") String toDate, @RequestParam("store-id") int storeId) {
+		return billService.findAllByTimeCreateBetween(fromDate, toDate, storeId);
 	}
 
 	@PutMapping("bill/update")

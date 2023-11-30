@@ -13,14 +13,14 @@
     </div>
     <div class="table-responsive rounded" style="max-height: 550px;
     overflow: auto;">
-        <table class="table table-hover table-striped">
+        <table class="table table-hover">
             <thead class="table-light sticky">
                 <tr>
-                    <td class="py-4 order-col"><small>#</small></td>
                     <td class="py-4  function-col">
                         <input type="checkbox" ng-model="selectAll" ng-change="toggleSelectAll()">
                         <small>Chọn tất cả</small>
                     </td>
+                    <td class="py-4 order-col"><small>#</small></td>
                     <td class="py-4 name-col"> <small>Sản phẩm</small></td>
                     <td class="py-4 "><small>Phân loại</small></td>
                     <td class="py-4 "><small>Đơn giá bán</small></td>
@@ -33,40 +33,40 @@
                 </tr>
             </thead>
             <tbody class="bg-white">
-                <tr ng-repeat="pro in items | startFrom:currentPage*pageSize | limitTo:pageSize">
-                    <td class="sticky order-col bg-white align-middle" scope="row">{{$index+1+currentPage*pageSize}}
-                    </td>
+                <tr ng-repeat="pro in items | startFrom:currentPage*pageSize | limitTo:pageSize"
+                    class="{{pro.status?'':'text-muted bg-light'}}">
                     <td class="align-middle">
                         <input type="checkbox" ng-model="pro.selected" ng-change="toggleProductSelection(pro)">
                     </td>
-                    <td class="align-middle">
-                        <div class="d-flex">
-                            <img src="{{pro.image==null?DEFAULT_PRODUCT_IMAGE:pro.image}}" alt="">
-                            <div class="">
+                    <td class="sticky order-col align-middle" scope="row">{{$index+1+currentPage*pageSize}}
+                    </td>
+                    <td class="d-flex align-middle">
+                        <div class="h-100">
+                            <!-- <img class="bg-secondary h-100 w-25"
+                                src="{{pro.image==null?DEFAULT_PRODUCT_IMAGE:pro.image}}" alt="..."> -->
+                            <span class="d-grid">
                                 <b>{{pro.productName}}</b>
-                                <p class="text-muted">{{pro.productID}}</p>
-                            </div>
+                                <span class="text-muted">{{pro.productID}}</span>
+                            </span>
                         </div>
                     </td>
                     <td class="align-middle">
-                        <p>{{pro.categories.categoriesName}}</p>
+                        <span>{{pro.categories.categoriesName}}</span>
                     </td>
                     <td class="align-middle">
-                        <p>{{pro.price}} VND</p>
+                        <span>{{pro.price}} VND</span>
                     </td>
                     <td class="align-middle">
-                        <p>{{pro.importPrice}} VND</p>
+                        <span>{{pro.importPrice}} VND</span>
                     </td>
                     <td class="align-middle">
-                        <p>{{pro.vat}} %</p>
+                        <span>{{pro.vat}} %</span>
                     </td>
                     <td class="align-middle">
-                        <p>{{pro.inventory}}</p>
+                        <span>{{pro.inventory}}</span>
                     </td>
                     <td class="align-middle">
-                        <div>
-                            <p>HSD: {{pro.nearestExpDate| date:'dd/MM/yyyy'}}</p>
-                        </div>
+                        <span>HSD: {{pro.nearestExpDate| date:'dd/MM/yyyy'}}</span>
                     </td>
                     <td class="align-middle">
                         <div class="badge rounded-pill text-bg-{{pro.status?'success':'warning'}}">{{pro.status?'Đang
@@ -75,15 +75,17 @@
                     </td>
                     <td class="sticky align-middle">
                         <div class="btn-group dropstart">
-                            <button class="btn rounded-pill" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn d-flex align-items-center rounded-pill" data-bs-toggle="dropdown"
+                                aria-expanded="false">
                                 <span class="material-symbols-outlined text-primary">
                                     more_vert
                                 </span>
                             </button>
                             <ul class="dropdown-menu rounded-4 bg-light">
                                 <li>
-                                    <a class="btn p-2 d-flex align-middle" data-bs-toggle="modal"
-                                        data-bs-target="#productModal" ng-click="edit(pro)">
+                                    <a class="btn p-2 d-flex align-middle" data-bs-toggle="offcanvas"
+                                        data-bs-target="#createForm" aria-controls="offcanvasExample"
+                                        ng-click="edit(pro)">
                                         <span class="material-symbols-outlined text-primary me-2">
                                             edit
                                         </span>
@@ -94,11 +96,11 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li>
-                                    <a class="btn p-2 d-flex align-middle" ng-click="delete(pro.productID)">
+                                    <a class="btn p-2 d-flex align-middle" ng-click="changeStatus(pro)">
                                         <span class="material-symbols-outlined text-primary me-2">
-                                            delete
+                                            {{pro.status?'archive':'unarchive'}}
                                         </span>
-                                        <small>Xóa sản phẩm</small>
+                                        <small>{{pro.status?'Ngừng kinh doanh':'Bán lại'}}</small>
                                     </a>
                                 </li>
                             </ul>

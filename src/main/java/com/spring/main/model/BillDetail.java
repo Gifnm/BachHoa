@@ -2,6 +2,8 @@ package com.spring.main.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -10,10 +12,12 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
 @IdClass(BillDetailID.class)
+@EqualsAndHashCode
 @Table(name = "bill_details")
 public class BillDetail {
 	@Id
@@ -34,7 +38,7 @@ public class BillDetail {
 
 	@Column(name = "quantity")
 	private int quantity;
-	
+
 	@Column(name = "quantityGift")
 	private int quantityGift;
 
@@ -97,35 +101,35 @@ public class BillDetail {
 	// super();
 	// }
 
-//	@Embeddable
-//	public class BillDetailID implements Serializable{
-//		@Column
-//		private String billID;
-//		@Column
-//		private String productID;
-//		
-//		public String getBillID() {
-//			return billID;
-//		}
-//		public void setBillID(String billID) {
-//			this.billID = billID;
-//		}
-//		public String getProductID() {
-//			return productID;
-//		}
-//		public void setProductID(String productID) {
-//			this.productID = productID;
-//		}
-//		public BillDetailID(String billID, String productID) {
-//			super();
-//			this.billID = billID;
-//			this.productID = productID;
-//		}
-//		public BillDetailID() {
-//			super();
-//		}
-//		
-//		
-//		
-//	}
+	// @Embeddable
+	// public class BillDetailID implements Serializable{
+	// @Column
+	// private String billID;
+	// @Column
+	// private String productID;
+	//
+	// public String getBillID() {
+	// return billID;
+	// }
+	// public void setBillID(String billID) {
+	// this.billID = billID;
+	// }
+	// public String getProductID() {
+	// return productID;
+	// }
+	// public void setProductID(String productID) {
+	// this.productID = productID;
+	// }
+	// public BillDetailID(String billID, String productID) {
+	// super();
+	// this.billID = billID;
+	// this.productID = productID;
+	// }
+	// public BillDetailID() {
+	// super();
+	// }
+	//
+	//
+	//
+	// }
 }

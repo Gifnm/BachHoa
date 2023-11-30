@@ -45,4 +45,17 @@ public class DisplayShelves {
 		this.store = store;
 	}
 
+	public DisplayShelves(int disSheID, String shelfName, Store store) {
+		this.disSheID = disSheID;
+		this.shelfName = shelfName;
+		this.store = store;
+	}
+
+	public DisplayShelves() {
+	}
+
+	public DisplayShelves(int disSheID) {
+		this.disSheID = disSheID;
+	}
+
 }

@@ -32,8 +32,8 @@ public class PaymentHistoryService {
 		return paymentHistoryJPA.findByDate(fromeDate, toDate, page);
 	}
 
-	public List<PaymentHistory> getAll() {
-		return paymentHistoryJPA.findAll();
+	public Page<PaymentHistory> getAllPayment(Integer storeID, Pageable page) {
+		return paymentHistoryJPA.getAllPayment(storeID, page);
 	}
 
 	public PaymentHistory findByID(Integer id) {

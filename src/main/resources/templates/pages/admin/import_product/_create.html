@@ -8,21 +8,21 @@
                     <p>{{currentDeliveryNote.id}}</p>
                     <p class="d-flex align-content-center"><span class="material-symbols-outlined">
                             person
-                        </span> Người lập phiếu :
+                        </span><span class="ms-2">Người lập phiếu :</span>
                         <b>{{currentDeliveryNote.employeeName}}</b>
                     </p>
                     <p class="d-flex align-content-center"><span class="material-symbols-outlined">
                             event
-                        </span> Ngày lập :
+                        </span><span class="ms-2">Ngày lập :</span>
                         <b>{{currentDeliveryNote.timeCreate| date:'dd/MM/yyyy'}}</b>
                     </p>
                 </div>
                 <div>
-                    <button class="btn btn-success" ng-click="createDeliveryNote()"
-                        ng-if="currentFeature==='createFeature'">
+                    <button class="btn btn-primary rounded-pill {{selectedProducts.length==0?'disabled':''}}"
+                        ng-click="createDeliveryNote()" ng-if="currentFeature==='createFeature'">
                         Tạo phiếu
                     </button>
-                    <button class="btn btn-success" ng-click="updateDetailDeliveryNote()"
+                    <button class="btn btn-primary rounded-pill" ng-click="updateDetailDeliveryNote()"
                         ng-if="currentFeature==='updateFeature'">
                         Lưu phiếu
                     </button>

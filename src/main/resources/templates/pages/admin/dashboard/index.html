@@ -1,21 +1,21 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/pages/admin/layout:: dynamic(~{::body})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/pages/admin/layout:: dynamic(~{::title},~{::body})}">
 
 <head>
-  <title>Dashboard</title>
+  <title>Thống kê - Bachhoa Admin</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 
 <body ng-app="app" ng-controller="ctrl">
-  <div class="d-sm-flex align-items-center justify-content-between align-items-start p-4 border-bottom"
+  <div class="d-sm-flex align-items-center justify-content-between align-items-start pb-3 border-bottom"
     style="border-radius: 1rem 1rem 0 0;">
     <div>
       <b class="fs-4">Thống kê</b>
     </div>
     <div class="form-check form-switch">
-      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+      <!-- <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked> -->
       <div class="input-group">
         <span class="input-group-text">Ngày bắt đầu & Ngày kết thúc</span>
         <input class="form-control" type="date" ng-model="startDateSelected" ng-change="updateDataRevenueChart()">
@@ -47,47 +47,45 @@
     <div class="py-3 d-flex">
       <div class="col">
         <div class=" rounded-4 p-4 bg-light">
-          <b>Tổng doanh thu</b>
-          <div class="d-sm-flex align-items-center justify-content-between">
+          <span>Tổng doanh thu</span>
+          <div class="d-sm-flex align-items-center justify-content-between mt-3">
             <h4 class="text-success fw-bold">{{totalRevenue | currency:'₫':'0'}}</h4>
-            <p class="text-success">(+1.37%)</p>
+            <!-- <p class="text-success">(+1.37%)</p> -->
           </div>
         </div>
       </div>
       <div class="col ms-3">
         <div class=" rounded-4 p-4 bg-light">
-          <b>Hóa đơn đã xuất</b>
-          <div class="d-sm-flex align-items-center justify-content-between">
-            <h2 class="fw-bold">{{billsAmount}}</h2>
-            <p class="text-danger"><span>-0.5%</span></p>
-            <a href="#" class="btn btn-primary rounded-pill"><small>Chi tiết</small></a>
+          <span>Hóa đơn đã xuất</span>
+          <div class="d-sm-flex align-items-center justify-content-between mt-3">
+            <h3 class="fw-bold">{{billsAmount}}</h3>
+            <!-- <p class="text-danger"><span>-0.5%</span></p> -->
+            <a href="/admin/bill-history" class="btn btn-primary rounded-pill"><small>Chi tiết</small></a>
           </div>
         </div>
       </div>
       <div class="col ms-3">
         <div class=" rounded-4 p-4 bg-light">
-          <b>Hóa đơn đã xuất</b>
-          <div class="d-sm-flex align-items-center justify-content-between">
-            <h2 class="fw-bold">{{billsAmount}}</h2>
-            <p class="text-danger"><span>-0.5%</span></p>
-            <a href="#" class="btn btn-primary rounded-pill"><small>Chi tiết</a></small>
+          <span>Lợi nhuận</span>
+          <div class="d-sm-flex align-items-center justify-content-between mt-3">
+            <h3 class="text-muted fw-bold">{{0 | currency:'₫':'0'}}</h3><small>(Đang phát triển)</small>
+            <!-- <p class="text-danger"><span>-0.5%</span></p> -->
           </div>
         </div>
       </div>
       <div class="col ms-3">
         <div class=" rounded-4 p-4 bg-light">
-          <b>Hóa đơn đã xuất</b>
-          <div class="d-sm-flex align-items-center justify-content-between">
-            <h2 class="fw-bold">{{billsAmount}}</h2>
-            <p class="text-danger"><span>-0.5%</span></p>
-            <a href="#" class="btn btn-primary rounded-pill"><small>Chi tiết</a></small>
+          <span>TỈ lệ tăng trưởng</span>
+          <div class="d-sm-flex align-items-center justify-content-between mt-3">
+            <h3 class="fw-bold">{{0}} % </h3><small>(Đang phát triển)</small>
+            <!-- <p class="text-danger"><span>-0.5%</span></p> -->
           </div>
         </div>
       </div>
     </div>
 
     <div class="d-flex">
-      <div class="col-9">
+      <div class="w-75">
         <div class=" rounded-4 p-4 bg-light">
           <div class="d-sm-flex justify-content-between align-items-start">
             <div>
@@ -104,7 +102,7 @@
           <canvas id="revenueChart"></canvas>
         </div>
       </div>
-      <div class="col-2 ms-3">
+      <div class=" ms-3">
         <div class=" rounded-4 p-4 bg-light">
           <b>Tỉ trọng doanh thu</b>
           <canvas id="pieChart"></canvas>
@@ -112,7 +110,7 @@
       </div>
     </div>
 
-    <table class="table">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -141,35 +139,6 @@
         </tr>
       </tbody>
     </table>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
-        </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td colspan="2">Larry the Bird</td>
-          <td>@twitter</td>
-        </tr>
-      </tbody>
-    </table>
   </main>
-  <script src="../js/dashboard-ctrl.js"></script>
+  <script src="../js/adminControllers/dashboard-ctrl.js"></script>
 </body>

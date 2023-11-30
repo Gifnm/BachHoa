@@ -3,6 +3,7 @@ package com.spring.main.model;
 import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -16,7 +17,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @Entity
 @IdClass(DiscountDetailID.class)
-@EqualsAndHashCode
 @Table(name = "discount_details")
 public class DiscountDetails {
 	@Id

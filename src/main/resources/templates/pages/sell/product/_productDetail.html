@@ -1,0 +1,43 @@
+<main>
+    <div class="row p-0 m-0" style="min-height: 600px;">
+        <div class="col-3 border" style="background-color: #F4F5F7; padding: 0px; height: 635px;">
+            <div class="p-3">
+                <label for="" class="mb-2">Nhập mã (hoặc tên) sản phẩm</label><br>
+                <div class="autocomplete d-flex">
+                    <input id="product" type="text" class="form-control" ng-model="value" list="datalistProductName">
+                    <datalist id="datalistProductName">
+                        <option ng-repeat="productName in listProductName" value="{{productName}}">
+                    </datalist>
+                    <button class="btn btn-info text-white ms-2 shadow-lg">
+                        <i class="bi bi-search"  ng-click="find(value)" title="Tìm sản phẩm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-9 p-4">
+            <div class="text-center">
+                <h5>THÔNG TIN SẢN PHẨM</h5>
+            </div>
+            <div class="p-5 pt-2 pb-2">
+                <div class="row">
+                    <div class="col-9">
+                        <label class="mb-2"><strong>Mã sản phẩm:</strong> {{product.productID}}</label><br>
+                        <label class="mb-2"><strong>Tên sản phẩm:</strong> {{product.productName}}</label><br>
+                        <label class="mb-2"><strong>Loại:</strong> {{product.categories.categoriesName}}</label><br>
+                        <label class="mb-2"><strong>Hạn sử dụng:</strong> {{product.nearestExpDate | date: 'dd/MM/yyyy'}}</label><br>
+                        <label class="mb-2"><strong>Trạng thái:</strong> {{product.status?'Đang kinh doanh':'Ngừng kinh doanh'}}</label><br>
+                        <label class="mb-2"><strong>Khuyến mãi:</strong> {{discountName}}</label><br>
+                        <label class="mb-2"><strong>Giá nhập:</strong> {{product.importPrice | number}}</label><br>
+                        <label class="mb-2"><strong>Giá bán:</strong> {{product.price | number}}</label><br>
+                        <label class="mb-2"><strong>VAT:</strong> {{product.vat}} %</label><br>
+                        <label class="mb-2"><strong>Tồn kho:</strong> {{product.inventory | number}}</label><br>
+                        <label class="mb-2"><strong>Cửa hàng:</strong> {{product.store.address}}</label><br>
+                    </div>
+                    <div class="col-3 text-end">
+                        <img src="{{product.image}}" alt="" height="200px">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -21,19 +21,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.main.Service.EmployeeService;
 import com.spring.main.model.Authority;
+import com.spring.main.jpa.EmployeeJPA;
 import com.spring.main.model.Employee;
 
+//import jakarta.websocket.server.PathParam;
+
 @CrossOrigin("*")
-@RestController()
+@RestController
 @RequestMapping("/bachhoa/api/")
 public class EmployeeAPI {
+	@Autowired
+	EmployeeJPA employeeJPA;
 	@Autowired
 	EmployeeService emService;
 
 	@GetMapping("employees/getAll")
 	public List<Employee> getAll() {
 		return emService.findAll();
-
 	}
 
 	@GetMapping("authorities")
@@ -54,7 +58,6 @@ public class EmployeeAPI {
 
 	@GetMapping("employee/findByEmail/{email}")
 	public Employee findByEmail(@PathVariable("email") String email) {
-		//System.out.println(email + " Đang được sử dụng");
 		return emService.findByEmail(email);
 
 	}
@@ -96,21 +99,19 @@ public class EmployeeAPI {
 	}
 
 	@GetMapping("login/{passW}/{user}")
-	private ResponseEntity<Employee> login(@PathVariable("passW") String pass, @PathVariable("user") int user) {
+	public Employee login(@PathVariable("passW") String pass, @PathVariable("user") int user) {
 		System.out.println("Login: " + user + " - " + pass);
 		Employee employee = emService.findByID(user);
-		System.out.println("-------");
-
 		if (employee == null) {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+
+			return null;
 		} else {
-			System.out.println("Tim thay nhan vien");
+			System.out.println("j");
 			if (employee.getPassword().equals(pass)) {
-				System.out.println("Password is correct");
-				return ResponseEntity.ok(employee);
-			} else {
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+				return employee;
 			}
+			return null;
+
 		}
 
 	}
@@ -127,4 +128,42 @@ public class EmployeeAPI {
 		}
 	}
 
+	@GetMapping("/bachhoa/api/employees/search")
+	public List<Employee> getByKeyword(String keyword, int storeId) {
+		System.out.println("[EmplooyeeService:getByKeyWord():59]\n> calling repo with keyword '" + keyword + "'...");
+		try {
+			Integer.parseInt(keyword);
+			System.out.println("[EmployeeService:getByKeyWord():62]\n> keyword after parse int: " + keyword);
+			return employeeJPA.findByKeyword(keyword, storeId);
+		} catch (Exception e) {
+			keyword = "%" + keyword + "%";
+			System.out.println("[EmployeeService:getByKeyWord():66]\n> keyword after makeup: " + keyword);
+			return employeeJPA.findByKeyword(keyword, storeId);
+		}
+	}
+
+	@GetMapping("employee/{storeID}")
+	public List<Employee> getAllByStoreId(@PathVariable("storeID") Integer id) {
+		return employeeJPA.getByStoreId(id);
+	}
+
+	@GetMapping("employee/Request/{storeID}")
+	public List<Employee> getRequest(@PathVariable("storeID") Integer id) {
+		return emService.getRequest(id);
+	}
+
+	@DeleteMapping("/bachhoa/api/employee/{id}")
+	public void delete(@PathVariable("id") Integer id) {
+		emService.detele(id);
+	}
+
+	@PutMapping("employeeAccept/{id}")
+	public void Accept(@PathVariable("id") Integer id) {
+		emService.accept(id);
+	}
+
+	@PutMapping("employeeDel/{id}")
+	public void DeleteWait(@PathVariable("id") Integer id) {
+		emService.DeleteWait(id);
+	}
 }

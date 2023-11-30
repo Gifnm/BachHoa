@@ -1,0 +1,61 @@
+<header>
+    <div class="px-3 py-2 d-flex">
+        <!-- <div class="p-3">
+            <button class="btn bg-light text-dark" onclick="exportData()">Xuất Excel</button>
+        </div> -->
+        <div class="ms-auto">
+            <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                <li class="d-flex align-items-center p-3">
+                    <label for="" class="w-100">Ngày kiểm: </label><br>
+                    <div class="ms-2">
+                        <input type="date" class="form-control" ng-model="date" ng-change="findByDate(date, 0)">
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="mt-5 border border-info rounded-2 m-auto" style="width: 85%;">
+    <table class="table table-responsive text-center table-hover mb-0 align-middle">
+        <thead class="bg-info text-white">
+            <tr>
+                <th scope="col">Mã sản phẩm</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Tồn kho trên hệ thống</th>
+                <th scope="col">Tồn kho thực tế</th>
+                <th scope="col">Mất mát</th>
+                <th scope="col">Người kiểm</th>
+                <th scope="col">Ngày kiểm</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-if="isNull">
+                <td colspan="7">Không có dữ liệu</td>
+            </tr>
+            <tr ng-repeat="item in items">
+                <td style="width: 10%;">{{item.product.productID}}</td>
+                <td style="width: 15%;">{{item.product.productName}}</td>
+                <td style="width: 15%;">{{item.sysInventory | number}}</td>
+                <td style="width: 15%;">{{item.inventoryCount | number}}</td>
+                <td style="width: 15%;">{{(item.sysInventory - item.inventoryCount)*item.product.importPrice
+                    | number}} VND</td>
+                <td style="width: 15%;">{{item.employee.employeeName}}</td>
+                <td style="width: 15%;">{{item.countingTime}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row w-75 m-auto mt-3" id="pagination">
+    <div class="col-2">
+        <b class="count">Tổng số sản phẩm: {{totalItem}}</b>
+    </div>
+    <div class="col-10 text-end">
+        <button ng-click="findByDate(fromDate,toDate,index - 1)"
+            class="btn btn-outline-primary {{index == 0 ? 'disabled':''}}">Trước</button>
+        <button ng-repeat="item in pages" ng-click="findByDate(fromDate,toDate,item - 1)"
+            class="btn btn-outline-primary {{index == item - 1? 'active':''}} m-1 mb-0 mt-0"><b>
+                {{item}}</b> </button>
+        <button ng-click="findByDate(fromDate,toDate,index + 1)"
+            class="btn btn-outline-primary {{index == maxPage - 1 ? 'disabled':''}}">Sau</button>
+    </div>
+</div>
