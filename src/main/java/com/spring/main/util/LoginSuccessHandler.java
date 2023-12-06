@@ -45,6 +45,8 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 			SessionAttr.USER_INFO = ES.findByEmail(authentication.getName());
 			redirectURL = "/business";
 		} else {
+			SessionAttr.USER_INFO = ES.findByEmail(authentication.getName());
+			System.out.println(SessionAttr.USER_INFO);
 			if (userDetails.hasRole("qlch")) {
 				redirectURL = "/admin/dashboard";
 			} else {

@@ -107,9 +107,7 @@ app.controller("register-ctrl", function ($scope, $http) {
                   console.log("Đã có auth.");
                 } else {
                   // Thêm auth mới
-                  alert("chuan bi ne")
                   $http.post(`/bachhoa/api/employee/insert/authorities`, $scope.authorities).then(() =>{
-                    alert("them roi ne")
                   });
                 }
                 // Update role lại
@@ -193,7 +191,7 @@ app.controller("register-ctrl", function ($scope, $http) {
             (a) => a.employeeID == $scope.employee.employeeID
           )
         ) {
-          console.log("Đã có auth.").then(() => {});
+          console.log("Đã có auth.");
         } else {
           // Thêm auth mới cho account
           $http.post(

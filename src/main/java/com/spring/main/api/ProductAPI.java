@@ -2,7 +2,6 @@ package com.spring.main.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-//import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.main.Service.ProductPosionService;
 import com.spring.main.Service.ProductService;
-import com.spring.main.model.DisplayShelves;
 import com.spring.main.model.Product;
 import com.spring.main.model.ProductPositioning;
 

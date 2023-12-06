@@ -1,5 +1,7 @@
 package com.spring.main.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,11 +43,12 @@ public class AccountController {
 		SessionAttr.Close = name + "__close";
 	}
 
+	// --------- Register to be a manager or staffs --------- //
 	@RequestMapping("/business")
 	public String showRegister(Model model) {
 		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
 		model.addAttribute("employee", SessionAttr.USER_INFO);
-		System.out.println(SessionAttr.USER_INFO);
+		// System.out.println(SessionAttr.USER_INFO);
 		return "pages/account/Register";
 	}
 
@@ -54,25 +57,32 @@ public class AccountController {
 		SessionAttr.USER_INFO = ES.findByEmail(authentication.getName());
 		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
 		model.addAttribute("employee", SessionAttr.USER_INFO);
-		// System.out.println(SessionAttr.USER_INFO);
 		return "redirect:/business";
 	}
 
+	@RequestMapping("/backToLogin")
+	public String backToLogin(Model model) {
+		SessionAttr.CURRENT_MESSAGE = "";
+		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
+		SessionAttr.Toast = "d-none";
+		model.addAttribute("Toast", SessionAttr.Toast);
+		return "redirect:/login";
+	}
+
+	// --------------- Login - Register a new account ------------ //
 	@RequestMapping("/register")
 	public String RegisterAccount() {
 		SessionAttr.CURRENT_MESSAGE = "Đăng ký thành công !";
 		callToast("success");
 		SessionAttr.Show_Icon = SessionAttr.Success_Show_Icon;
-		// Gắn lại account
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		SessionAttr.USER_INFO = ES.findByEmail(authentication.getName());
 		return "redirect:/login";
 	}
 
-	@GetMapping("/login")
+	@GetMapping({ "/login", "/" })
 	public String showlogin(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+		// System.out.println(SessionAttr.USER_INFO);
 		if (authentication == null || authentication instanceof AnonymousAuthenticationToken
 				|| SessionAttr.USER_INFO.isActive() == false) {
 			model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
@@ -83,17 +93,19 @@ public class AccountController {
 			model.addAttribute("Toast_title", SessionAttr.Title);
 			model.addAttribute("Toast_close", SessionAttr.Close);
 			return "pages/account/login";
-		}
-		// SessionAttr.USER_INFO = ES.findByEmail(authentication.getName());
+		} else {
+			// SessionAttr.USER_INFO = ES.findByEmail(authentication.getName());
 
-		SessionAttr.CURRENT_MESSAGE = "Đã đăng nhập rồi !";
-		// Toast - Thông báo
-		model.addAttribute("Toast", SessionAttr.Toast);
-		model.addAttribute("Toast_icon", SessionAttr.Icon);
-		model.addAttribute("Toast_show_icon", SessionAttr.Show_Icon);
-		model.addAttribute("Toast_title", SessionAttr.Title);
-		model.addAttribute("Toast_close", SessionAttr.Close);
-		return "redirect:/sell";
+			SessionAttr.CURRENT_MESSAGE = "Đã đăng nhập rồi !";
+			// Toast - Thông báo
+			model.addAttribute("Toast", SessionAttr.Toast);
+			model.addAttribute("Toast_icon", SessionAttr.Icon);
+			model.addAttribute("Toast_show_icon", SessionAttr.Show_Icon);
+			model.addAttribute("Toast_title", SessionAttr.Title);
+			model.addAttribute("Toast_close", SessionAttr.Close);
+			return "redirect:/sell";
+		}
+
 	}
 
 	@PostMapping("/login")
@@ -151,15 +163,18 @@ public class AccountController {
 		return "redirect:/login";
 	}
 
+	// -------------------- Check Error ----------------------------- //
+
 	@RequestMapping("/auth/access/denied")
-	public String denied(Model model) {
+	public String denied(Model model, HttpServletRequest request) {
 		SessionAttr.CURRENT_MESSAGE = "Bạn không có quyền truy xuất !";
-		// model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
+		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
 		callToast("warning");
 		SessionAttr.Show_Icon = SessionAttr.Warning_Show_Icon;
 		return "redirect:/sell";
 	}
 
+	// ------------------- Forget Password ------------------------- //
 	@RequestMapping("/regenerate-otp")
 	public String regenerateOTP(@RequestParam("R_Email") String email, Model model) {
 		Employee employee = ES.findByEmail(email);
@@ -173,13 +188,15 @@ public class AccountController {
 				Random_otp = OTP(8);
 				model.addAttribute("message", "Hãy check email để lấy mã OTP");
 				ES.verifyAccount(email, Random_otp);
+				callToast("success");
+				SessionAttr.Show_Icon = SessionAttr.Success_Show_Icon;
+				sessionService.set("email", email);
 			}
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
+			callToast("error");
+			SessionAttr.Show_Icon = SessionAttr.Error_Show_Icon;
 		}
-		callToast("success");
-		SessionAttr.Show_Icon = SessionAttr.Success_Show_Icon;
-		sessionService.set("email", email);
 		return "pages/account/vertifyOTP";
 	}
 
@@ -202,6 +219,12 @@ public class AccountController {
 		model.addAttribute("message", "Đừng quên mật khẩu của bạn nữa nhé.");
 		callToast("warning");
 		SessionAttr.Show_Icon = SessionAttr.Warning_Show_Icon;
+		// Toast - Thông báo
+		model.addAttribute("Toast", SessionAttr.Toast);
+		model.addAttribute("Toast_icon", SessionAttr.Icon);
+		model.addAttribute("Toast_show_icon", SessionAttr.Show_Icon);
+		model.addAttribute("Toast_title", SessionAttr.Title);
+		model.addAttribute("Toast_close", SessionAttr.Close);
 		return "pages/account/newPass";
 	}
 
