@@ -346,15 +346,48 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
                 $scope.listEmployee.push(employee);
             })
             console.log($scope.listEmployee);
+
         }).catch(error => {
             console.log('Error', error)
         });
+    }
+
+
+    $scope.showRequest = function () {
+        $http.get(`/bachhoa/api/employee/Request/${$scope.account.store.storeID}`).then(resp => {
+            console.log(`/bachhoa/api/employee/Request/${$scope.account.store.storeID}`)
+            $scope.emRequest = resp.data;
+            $scope.badge = $scope.emRequest.length;
+
+        })
+    };
+    $scope.Denied = function (id) {
+        $http.put(`/bachhoa/api/employeeDel/${id}`).then(resp => {
+            toastMixin.fire({
+                title: 'Đã từ chối nhân viên.',
+                icon: 'success'
+            })
+            $scope.showRequest();
+        })
+
+    }
+
+    $scope.acceptNV = function (id) {
+        $http.put(`/bachhoa/api/employeeAccept/${id}`).then(resp => {
+            toastMixin.fire({
+                title: 'Nhân viên đã được chấp nhận!',
+                icon: 'success'
+            })
+            $scope.showRequest();
+        })
+
     }
     //--------------------------------------------//
 
     // Tìm nhân viên theo email
     let email = document.getElementById('accountEmail').innerText;
     $scope.findEmployee(email)
+
     // chọn mặc định ngày hôm nay
     SetDefaultDate();
     // lấy danh sách lịch sử nộp tiền

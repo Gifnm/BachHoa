@@ -1,19 +1,33 @@
-<div class="topbar bg-light d-flex align-middle justify-content-between">
-    <button id="sidebarCollapse" class="btn d-flex align-items-center">
-        <span class="material-symbols-outlined text-primary">
-            left_panel_close
-        </span>
-    </button>
+<div class="topbar bg-light d-flex align-middle justify-content-between border border-bottom">
+    <div class="d-flex align-items-center">
+        <button id="sidebarCollapse" class="btn d-flex align-items-center" data-bs-toggle="tooltip"
+            data-bs-placement="right" data-bs-title="Thu gọn thanh bên">
+            <span class="material-symbols-outlined text-primary">
+                left_panel_close
+            </span>
+        </button>
+        <!-- <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb my-auto">
+                <li class="breadcrumb-item"><b class="my-auto text-muted">{{account.store.storeName}}</b></li>
+                <li class="breadcrumb-item active fw-bold text-black" aria-current="page">Sản phẩm</li>
+            </ol>
+        </nav> -->
+    </div>
     <b class="my-auto text-muted">{{account.store.storeName}}</b>
-    <a class="btn position-relative d-flex align-items-center rounded m-3 me-0" title="Nhấn để kiểm tra đơn xin việc"
-        data-bs-toggle="modal" data-bs-target="#DonXinViec">
-        <span class="material-symbols-outlined text-primary">
-            inbox
-        </span> <small class="position-absolute top-0 start-25 translate-middle badge rounded-pill bg-danger">
-            {{emRequest.length}}
-        </small>
-    </a>
-</div>
 
-<div th:replace="~{/pages/admin/employee/_formAcceptRequest}"></div>
-<!-- <script src="../js/adminControllers/common-ctrl.js"></script> -->
+    <div class="d-flex align-middle py-2">
+        <!-- <a href="#" class="btn d-flex align-items-center ms-3">
+            <span class="material-symbols-outlined text-primary me-2">
+                file_save
+            </span>
+        </a>
+        <div class="vr my-2"></div> -->
+
+        <div th:replace="~{/pages/admin/employee/_formAcceptRequest}"></div>
+        <!-- <a class="btn d-flex align-items-center rounded" title="Trợ giúp" data-bs-toggle="modal">
+            <span class=" material-symbols-outlined text-primary">
+                help
+            </span>
+        </a> -->
+    </div>
+</div>

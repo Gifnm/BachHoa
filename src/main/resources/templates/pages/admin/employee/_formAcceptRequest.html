@@ -1,70 +1,57 @@
-<!-- Modal -->
-<div class="modal fade" id="DonXinViec" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-bold d-flex align-items-center" id="exampleModalLabel">
-                    <span class="material-symbols-outlined text-primary me-2">
-                        group_add
-                    </span>
-                    <span>Yêu cầu tham gia cửa hàng</span>
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="list - employee" class="table-responsive  mt-1">
-                    <table class="table select-table">
-                        <thead>
-                            <tr>
-                                <th class="sticky  bg-white">Hình Ảnh</th>
-                                <th class="sticky  bg-white">Mã Nhân Viên</th>
-                                <th class="sticky bg-white">Tên Nhân Viên</th>
-                                <th class="sticky bg-white">Ngày xin việc</th>
-                                <th class="sticky bg-white">Email</th>
-                                <th class="sticky bg-white">Trạng thái chờ</th>
-                                <th class="sticky function-col bg-white"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
+<div class="dropdown">
 
-                            <tr ng-repeat="e in emRequest">
-                                <!-- <td class="sticky order-col bg-white" scope="row">{{$index+1+currentPage*pageSize}}</td> -->
-                                <td class="sticky name-col bg-white">
-                                    <div class="d-flex">
-                                        <img src="{{e.image==null?DEFAULT_EMPLOYEE_IMAGE:e.image}}" alt="">
-
-                                    </div>
-                                </td>
-                                <td class="sticky  bg-white">
-                                    <h6>{{e.employeeID}}</h6>
-                                </td>
-                                <td>
-                                    <h6>{{e.employeeName}}</h6>
-                                </td>
-                                <td>
-                                    <h6>{{e.firstWork}}</h6>
-                                </td>
-                                <td>
-                                    <h6>{{e.email}}</h6>
-                                </td>
-                                <td>
-                                    <h6>Đang chờ duyệt</h6>
-                                </td>
-
-                                <td class="sticky function-col bg-white">
-                                    <button class="btn" ng-click="acceptNV(e.employeeID)" data-bs-toggle="modal"
-                                        data-bs-target="#employeeModal"><i class="bi bi-check"></i>
-                                    </button>
-                                    <button class="btn" ng-click="Denied(e.employeeID)">
-                                        <i class="bi bi-person-x"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+    <a class="btn position-relative d-flex align-items-center rounded ms-3" title="Yêu cầu tham gia cửa hàng"
+        data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="material-symbols-outlined text-primary">
+            inbox
+        </span>
+        <small
+            class="position-absolute top-0 start-25 translate-middle badge rounded-pill bg-danger border border-3 border-light my-2">
+            {{badge}}
+        </small>
+    </a>
+    <div class="dropdown-menu p-0 rounded-4 shadow border">
+        <div class="p-3 bg-light rounded-bottom rounded-4">
+            <h6 class="modal-title fw-bold d-flex align-items-center" id="exampleModalLabel">
+                <span class="material-symbols-outlined me-2">
+                    group_add
+                </span>
+                <span>Yêu cầu tham gia cửa hàng</span>
+            </h6>
+        </div>
+        <div class="rounded-top rounded-4" style="max-height: 500px;">
+            <div class="card border-0 border-bottom rounded-4" style="width: 500px;" ng-repeat="e in emRequest">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex mx-3">
+                        <div class=" d-flex align-items-center">
+                            <img src="{{e.pictureURL}}" class="img-fluid  bg-secondary rounded-circle" alt="..."
+                                style="height:60px; width: 60px;">
+                        </div>
+                        <div class="">
+                            <div class="card-body">
+                                <span class="fw-bold">{{e.employeeName}}</span>
+                                <p class="card-text">{{e.email}}</p>
+                                <p class="card-text"><small class="text-muted">{{e.firstWork}}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pe-3 d-flex align-items-center justify-content-end">
+                        <button class="btn bg-light rounded-circle ms-2 d-flex align-items-center" title="Chấp nhận"
+                            style="height:45px; width: 45px;" ng-click="acceptNV(e.employeeID)">
+                            <span class="material-symbols-outlined text-primary">
+                                done
+                            </span>
+                        </button>
+                        <button class="btn bg-light rounded-circle ms-2 d-flex align-items-center" title="Từ chối"
+                            style="height: 45px; width: 45px;" ng-click="Denied(e.employeeID)">
+                            <span class="material-symbols-outlined text-primary">
+                                person_cancel
+                            </span>
+                        </button>
+                    </div>
                 </div>
-
             </div>
+
         </div>
     </div>
 </div>

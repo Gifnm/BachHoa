@@ -322,7 +322,7 @@ app.controller("ctrl", function ($scope, $http) {
                 title: 'Nhân viên đã được chấp nhận!',
                 icon: 'success'
             })
-            $scope.initialize();
+            $scope.showRequest();
         })
 
     }
