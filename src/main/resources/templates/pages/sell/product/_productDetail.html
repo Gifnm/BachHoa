@@ -20,7 +20,7 @@
             </div>
             <div class="p-5 pt-2 pb-2">
                 <div class="row">
-                    <div class="col-9">
+                    <div class="col-6">
                         <label class="mb-2"><strong>Mã sản phẩm:</strong> {{product.productID}}</label><br>
                         <label class="mb-2"><strong>Tên sản phẩm:</strong> {{product.productName}}</label><br>
                         <label class="mb-2"><strong>Loại:</strong> {{product.categories.categoriesName}}</label><br>
@@ -33,8 +33,8 @@
                         <label class="mb-2"><strong>Tồn kho:</strong> {{product.inventory | number}}</label><br>
                         <label class="mb-2"><strong>Cửa hàng:</strong> {{product.store.address}}</label><br>
                     </div>
-                    <div class="col-3 text-end">
-                        <img src="{{product.image}}" alt="" height="200px">
+                    <div class="col-6 text-end">
+                        <img src="{{product.image}}" alt="" width="100%" style="object-fit: cover;">
                     </div>
                 </div>
             </div>

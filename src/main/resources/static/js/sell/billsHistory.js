@@ -511,11 +511,16 @@ app_bill.controller("bill-ctrl", function ($scope, $http) {
 			paymentDetail.paymentHistory = resp.data;
 			console.log(paymentDetail)
 			$http.post(createPD, paymentDetail).then(() => {
-				toastMixin.fire({
-					title: "Nộp tiền thành công, hãy đợi quản lý duyệt nhé!",
-					icon: "success",
-				});
-				window.location = "/logout";
+				Swal.fire({
+                    title: "Nộp tiền thành công, hãy đợi quản lý duyệt nhé!",
+                    icon: "success",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "OK"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location = "/logout";
+                    }
+                });
 			}).catch((error) => {
 				alert("Lỗi thêm chi tiết!");
 				console.log("Error", error);
