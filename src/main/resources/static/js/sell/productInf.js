@@ -7,6 +7,27 @@ app_product.controller("product-ctrl", function ($scope, $http) {
     $scope.discountName = "Không";
     $scope.employee = {};
 
+    // SweetAlert 2
+    var toastMixin = Swal.mixin({
+        toast: true,
+        icon: "success",
+        title: "General Title",
+        animation: false,
+        position: "top-right",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        customClass: {
+            confirmButton: "btn btn-outline-warning rounded-5 cursor",
+            cancelButton: "btn btn-outline-danger rounded-5 cursor",
+        },
+        buttonsStyling: false,
+        didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
+
     // gợi ý sản phẩm
     let initAutoComplete = function () {
         $http.get(`/product/getProductName?storeID=${$scope.employee.store.storeID}`).then(resp => {
@@ -67,7 +88,7 @@ app_product.controller("product-ctrl", function ($scope, $http) {
         const ThisYear = new Date();
         const EmployeeBorn = new Date(AGE);
         const Timelines = ThisYear - EmployeeBorn;
-        if ($scope.dataEmployee.email == null || $scope.form.email == "") {
+        if ($scope.dataEmployee.email == null || $scope.dataEmployee.email == "") {
             toastMixin.fire({
                 title: "Vui lòng nhập email của bạn, hãy kiểm tra lại !",
                 icon: "warning",
