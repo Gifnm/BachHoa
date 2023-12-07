@@ -90,8 +90,11 @@
                         <i class="ri-archive-line text-primary fs-4"></i>
                     </span>
                     <input type="text" name="size" ng-model="info.size" id="storeSize"
-                        placeholder="Chi phí đầu tư của cửa hàng ... (500tr, 2 tỷ, 5 tỷ, ...)" 
+                        placeholder="Chi phí đầu tư của cửa hàng ... (500tr, 2 tỷ, 5 tỷ, ...)" list="investmentCosts"
                         class="shadow-lg w-100 border border-2 border-start-0 border-secondary" required>
+                       <datalist id="investmentCosts">
+                        <option ng-repeat="example in investmentCosts" value="{{example}}">
+                    </datalist>
                 </div>
                 <button type="button" class="submit mt-4 button " ng-click="createStore()">
                     Đăng ký cửa hàng

@@ -92,7 +92,7 @@ html {
 .button {
     display: inline-block;
     padding: 12px 24px;
-    border: 2px solid #4f4f4f;
+    border: 1px solid #4f4f4f;
     border-radius: 18px;
     transition: all 0.2s ease-in;
     position: relative;
@@ -134,7 +134,7 @@ html {
 
 .button:hover {
     color: #ffffff;
-    border: 2px solid rgb(0, 0, 66);
+    border: 1px solid rgb(0, 0, 66);
 }
 
 .button:hover:before {

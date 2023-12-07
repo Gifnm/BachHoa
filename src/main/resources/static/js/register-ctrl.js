@@ -3,6 +3,7 @@ app.controller("register-ctrl", function ($scope, $http) {
   $scope.stores = [];
   $scope.sessionStore = {};
   $scope.storeToJoin = {};
+  $scope.investmentCosts = ['500 triệu','1 tỷ','5 tỷ'];
   // Employees
   $scope.info = {};
   $scope.employees = [];
@@ -208,7 +209,7 @@ app.controller("register-ctrl", function ($scope, $http) {
         $scope.employee.active = 0;
         console.log($scope.employee);
         $http
-          .put(`/bachhoa/api/employee/update/${employeeID}`, $scope.employee)
+          .put(`/bachhoa/api/employee/update`, $scope.employee)
           .then((resp) => {
             $scope.employeeInfo = resp.data;
             // console.log($scope.employeeInfo);
@@ -292,7 +293,7 @@ app.controller("register-ctrl", function ($scope, $http) {
                 console.log($scope.employee);
                 $http
                   .put(
-                    `/bachhoa/api/employee/update/${employeeID}`,
+                    `/bachhoa/api/employee/update`,
                     $scope.employee
                   )
                   .then(() => {

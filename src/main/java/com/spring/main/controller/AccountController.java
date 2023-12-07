@@ -197,6 +197,12 @@ public class AccountController {
 			callToast("error");
 			SessionAttr.Show_Icon = SessionAttr.Error_Show_Icon;
 		}
+		/* Toast - Thông báo */
+		model.addAttribute("Toast", SessionAttr.Toast);
+		model.addAttribute("Toast_icon", SessionAttr.Icon);
+		model.addAttribute("Toast_show_icon", SessionAttr.Show_Icon);
+		model.addAttribute("Toast_title", SessionAttr.Title);
+		model.addAttribute("Toast_close", SessionAttr.Close);
 		return "pages/account/vertifyOTP";
 	}
 

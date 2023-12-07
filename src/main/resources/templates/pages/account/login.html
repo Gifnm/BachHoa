@@ -55,14 +55,16 @@
                         <span class="input-group-text bg-white border-secondary border border-2">
                             <i class="bi bi-envelope-check-fill"></i>
                         </span>
-                        <input type="email" placeholder="Thư điện tử (Email) ..."
+                        <input type="email" placeholder="Thư điện tử (Email) ..."  onchange="this.setCustomValidity('')"
+                        	oninvalid="this.setCustomValidity('Vui lòng điền email của bạn !')"
                             class="shadow border border-2 border-secondary border-start-0" name="email" required>
                     </div>
                     <div class="input-container input-group flex-nowrap mt-3">
                         <span class="input-group-text bg-white border-secondary border border-2">
                             <i class="bi bi-shield-fill-check"></i>
                         </span>
-                        <input type="password" placeholder="Mật khẩu ..."
+                        <input type="password" placeholder="Mật khẩu ..."  onchange="this.setCustomValidity('')"
+                        	oninvalid="this.setCustomValidity('Vui lòng điền password của bạn !')"
                             class="shadow border border-2 border-secondary border-start-0" name="password" required>
                     </div>
                     <button type="submit" class="submit mt-4 button shadow-lg border border-1 border-dark">
@@ -87,6 +89,7 @@
                             <i class="bi bi-envelope-exclamation-fill"></i>
                         </span>
                         <input type="email" name="R_Email" placeholder="Thư điện tử (Email) ..."
+                        	oninvalid="this.setCustomValidity('Vui lòng điền email cần tìm lại mật khẩu !')"
                             class="shadow border border-2 border-secondary border-start-0" autofocus required>
                     </div>
                     <button type="submit" class="submit mt-5 button" value="Send">
