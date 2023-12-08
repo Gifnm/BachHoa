@@ -126,6 +126,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
                 icon: "success",
             });
             $scope.findByDate($scope.fromDate, $scope.toDate, 0);
+            initAutoComplete();
         }).catch(error => {
             //alert("Hiện không thể xóa hóa đơn!");
             console.log("Error", error);

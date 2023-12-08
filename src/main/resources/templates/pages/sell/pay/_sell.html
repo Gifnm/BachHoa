@@ -39,10 +39,10 @@
                                                     {{item.billDetail.product.productName}}</td>
                                                 <td style="width: 10%;">
                                                     <div class="number-control">
-                                                        <div class="number-left"
+                                                        <button class="number-left" ng-disabled="item.billDetail.quantity == 1"
                                                             ng-click="reduce(item.billDetail.product.productID, item.billDetail.quantity, invoice.bill.billID) ">
                                                             <i class="bi bi-dash fs-5"></i>
-                                                        </div>
+                                                        </button>
                                                         <input name="number" class="number-quantity text-center"
                                                             ng-change="updateBillDetailFromInput(item.billDetail.product.productID, item.billDetail.quantity, invoice.bill.billID)"
                                                             ng-model="item.billDetail.quantity" type="number" min="1"

@@ -361,7 +361,6 @@ app_pay.controller("pay-ctrl", function ($scope, $http) {
     $scope.addProductToBillDetail = function (productID) {
         let item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == $scope.invoiceID);
         //var billID = $scope.invoiceID;
-
         if (item) {
             updateBillDetail(productID, $scope.invoiceID);
             saveBillDetailToSessionStorage($scope.billDetails);
@@ -425,6 +424,7 @@ app_pay.controller("pay-ctrl", function ($scope, $http) {
                             //console.log($scope.billDetails);
                             loadToBillDetail($scope.invoiceID);
                             //$scope.productCode = '';
+
                         }).catch(error => {
                             console.log(error);
                         });
