@@ -6,7 +6,7 @@ app.controller("ctrl", function ($scope, $http) {
     //Variables
     $scope.today = new Date();
     $scope.feature = 'create'
-    const formImageElement = document.getElementById('blah'); //Element image to preview image when create or update product
+    // const formImageElement = document.getElementById('blah'); //Element image to preview image when create or update product
     $scope.items = [] //List products to manage
     $scope.form = {} //Form data
     let formData = new FormData();
@@ -62,7 +62,11 @@ app.controller("ctrl", function ($scope, $http) {
             // Load categories onto form's comboboxes
             url = `${host}/categories`;
             $http.get(url).then(resp => {
-                $scope.categories = resp.data;
+                let categories = resp.data;
+                categories.forEach(category => {
+                    let categoryItem = { category, editing: false };
+                    $scope.categories.push(categoryItem);
+                });
             });
             // Set default value in form
             $scope.form.store = $scope.account.store;
@@ -200,17 +204,25 @@ app.controller("ctrl", function ($scope, $http) {
             status: true,
             store: $scope.account.store
         }
-        formImageElement.src = $scope.DEFAULT_PRODUCT_IMAGE;
+        // formImageElement.src = $scope.DEFAULT_PRODUCT_IMAGE;
     }
 
     //Show detail product in form
     $scope.edit = function (item) {
         $scope.feature = 'update'
         $scope.form = angular.copy(item);
-        if ($scope.item.image == null) {
-            formImageElement.src = $scope.DEFAULT_PRODUCT_IMAGE;
-        }
-        formImageElement.src = $scope.form.image;
+        // if ($scope.item.image == null) {
+        //     formImageElement.src = $scope.DEFAULT_PRODUCT_IMAGE;
+        // }
+        // formImageElement.src = $scope.form.image;
+    }
+
+    $scope.calculateDaysRemaining = function (nearestExpDate) {
+        const currentDate = new Date();
+        const expDate = new Date(nearestExpDate);
+        const timeDiff = expDate.getTime() - currentDate.getTime();
+        const daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        return daysRemaining;
     }
 
 
@@ -244,9 +256,9 @@ app.controller("ctrl", function ($scope, $http) {
         // })
     }
 
+    //Start: Pagination
     $scope.currentPage = 0;
     $scope.pageSize = 20;
-    // $scope.sortingOrder = sortingOrder;
     $scope.reverse = false;
 
     $scope.numberOfPages = function () {
@@ -282,21 +294,88 @@ app.controller("ctrl", function ($scope, $http) {
     $scope.setPage = function (page) {
         $scope.currentPage = page;
     }
-
+    //End: Pagination
     $scope.initialize();
     const input = document.getElementById('uploadImage');
     const image = document.getElementById('img-preview');
 
-    input.addEventListener('change', (e) => {
-        if (e.target.files.length) {
-            const src = URL.createObjectURL(e.target.files[0]);
-            image.src = src;
-            console.log(e.target.files[0].name)
+    // input.addEventListener('change', (e) => {
+    //     if (e.target.files.length) {
+    //         const src = URL.createObjectURL(e.target.files[0]);
+    //         image.src = src;
+    //         console.log(e.target.files[0].name)
+    //     }
+
+    // });
+
+    //Start: CRUD Category
+    $scope.selectedOption = '';
+
+    $scope.selectOption = function (option) {
+        $scope.form.categories = option.category;
+    };
+
+    $scope.editOption = function (option) {
+        option.editing = true;
+    };
+
+    $scope.saveOption = function (option) {
+        let categoryId = option.category.categoriesID;
+        let url = `${host}/categories/${categoryId}`;
+        $http.put(url, option.category).then(resp => {
+            option.editing = false;
+        }).catch(error => {
+            console.log("[product-ctrl.js:saveOption():320]\n> Error", error);
+        });
+    };
+
+    $scope.deleteOption = function (option) {
+        let index = $scope.categories.indexOf(option);
+        if (index > -1) {
+            let categoryId = option.category.categoriesID;
+            let url = `${host}/categories/${categoryId}`;
+            $http.delete(url).then(resp => {
+                $scope.categories.splice(index, 1);
+                toastMixin.fire({
+                    title: 'Đã xóa loại hàng \"' + option.category.categoriesName + '\" thành công!',
+                    icon: 'success'
+                })
+            }).catch(error => {
+                console.log("[product-ctrl.js:deleteOption():326]\n> Error", error);
+                toastMixin.fire({
+                    title: 'Không thể xóa vì loại hàng này vẫn còn sản phẩm đang kinh doanh!',
+                    icon: 'error'
+                })
+            });
         }
+    };
 
-    });
+    $scope.addOption = function () {
+        if ($scope.newOption) {
+            let existingOption = $scope.categories.find(function (option) {
+                return option.category.categoriesName === $scope.newOption;
+            });
+            if (!existingOption) {
+                let url = `${host}/categories`;
+                let item = { categoriesName: $scope.newOption };
+                $http.post(url, item).then(resp => {
+                    $scope.categories.push({ category: resp.data, editing: false });
+                }).catch(error => {
+                    console.log("[product-ctrl.js:addOption():336]\n> Error", error);
+                });
+            }
+            $scope.newOption = '';
+        }
+    };
 
+    $scope.isOptionExists = function (newOption) {
+        return $scope.categories.some(function (option) {
+            return option.category.categoriesName === newOption;
+        });
+    };
+    //End: CRUD Category
 
+    //Start: Employee request
     $scope.showRequest = function () {
         $http.get(`/bachhoa/api/employee/Request/${$scope.account.store.storeID}`).then(resp => {
             console.log(`/bachhoa/api/employee/Request/${$scope.account.store.storeID}`)
@@ -326,6 +405,7 @@ app.controller("ctrl", function ($scope, $http) {
         })
 
     }
+    //End: Employee request
 });
 // ctrl.$inject = ['$scope', '$filter'];
 //We already have a limitTo filter built-in to angular,
