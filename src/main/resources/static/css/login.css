@@ -1,6 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
+
 body,
 html {
     height: 100%;
+    font-family: "Manrope", sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 .form,
@@ -22,6 +26,17 @@ html {
     font-weight: 600;
     text-align: center;
     color: #000;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: #ECF1FD;
+  box-shadow: 0px 0.5px 0.5px #EFEFEF, 0px 1px 0.5px rgba(239, 239, 239, 0.5);
+  border-radius: 5px;
 }
 
 /* Toggle Switch */
@@ -525,7 +540,7 @@ html {
 }
 
 .message {
-    color: rgb(102 95 95 / 82%);
+    color: rgb(66 62 62 / 82%);
     font-size: 14px;
 }
 

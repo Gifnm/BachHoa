@@ -112,7 +112,9 @@ public class DeliveryNoteService {
 		// Generate custom ID
 		String customId = IdGenerator.generateId();
 		deliveryNote.setId(customId);
-		deliveryNote.setTimeCreate(new Date());
+		Date date = new Date();
+		Timestamp ts = new Timestamp(date.getTime());
+		deliveryNote.setTimeCreate(ts);
 
 		// Set store and employee (you may need to fetch them from the database using
 		// storeID and employeeID)
