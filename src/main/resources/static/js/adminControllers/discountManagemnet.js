@@ -34,20 +34,30 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
     $scope.findEmployee = function (email) {
         $http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
             $scope.account = resp.data;
-            $scope.loadAll();
+            $scope.loadAll(0);
             initAutoComplete();
         });
     }
 
     //-----------------------------------------------//
-    $scope.loadAll = function () {
-        $http.get(`/bachhoa/api/discount/findByStoreID/${$scope.account.store.storeID}`).then(resp => {
-            $scope.items = resp.data;
+    $scope.loadAll = function (index) {
+        $http.get(`/bachhoa/api/discount/findByStoreID/${$scope.account.store.storeID}?index=${index}`).then(resp => {
+            $scope.items = resp.data.content;
+            $scope.isFindAll = true;
+            $scope.isFindByDate = false;
             if (resp.data.length == 0) {
                 $scope.isNull = true;
             } else {
                 $scope.isNull = false;
+                $scope.isPagination = true;
             }
+            $scope.totalDiscount = resp.data.totalElements;
+            if ($scope.totalDiscount >= 0 && $scope.totalDiscount <= 5) {
+                $scope.maxPage = 1;
+            } else {
+                $scope.maxPage = Math.ceil($scope.totalDiscount / 5);
+            }
+            $scope.index = index;
             $scope.showRequest();
         }).catch(error => {
             console.log(error);
@@ -57,11 +67,12 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
     //-----------------------------------------------//
     $scope.findByProductID = function (id) {
         if (id == "" || id == null) {
-            $scope.loadAll();
+            $scope.loadAll(0);
         } else {
             let productID = id.substr(0, 13);
             $http.get(`/bachhoa/api/discount/findByStoreIDAndProductID/${$scope.account.store.storeID}/${productID}`).then(resp => {
                 $scope.items = resp.data;
+                $scope.isPagination = false;
                 if (resp.data.length == 0) {
                     $scope.isNull = true;
                 } else {
@@ -73,7 +84,7 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
         }
     }
 
-    $scope.findByDate = function (fromDate, toDate) {
+    $scope.findByDate = function (fromDate, toDate, index) {
         if (fromDate > toDate) {
             alert("Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc!");
             let date = new Date();
@@ -83,14 +94,24 @@ app.controller("discountManagement-ctrl", function ($scope, $http) {
         }
         let TD = dateFormat(fromDate);
         let ED = dateFormat(toDate);
-        $http.get(`/bachhoa/api/discount/findByDate/${$scope.account.store.storeID}/${TD}/${ED}`).then(resp => {
-            $scope.items = resp.data;
+        $http.get(`/bachhoa/api/discount/findByDate/${$scope.account.store.storeID}/${TD}/${ED}?index=${index}`).then(resp => {
+            $scope.items = resp.data.content;
+            $scope.isFindAll = false;
+            $scope.isFindByDate = true;
             console.log($scope.items)
             if (resp.data.length == 0) {
                 $scope.isNull = true;
             } else {
                 $scope.isNull = false;
+                $scope.isPagination = true;
             }
+            $scope.totalDiscount = resp.data.totalElements;
+            if ($scope.totalDiscount >= 0 && $scope.totalDiscount <= 5) {
+                $scope.maxPage = 1;
+            } else {
+                $scope.maxPage = Math.ceil($scope.totalDiscount / 5);
+            }
+            $scope.index = index;
         }).catch(error => {
             console.log(error);
         })

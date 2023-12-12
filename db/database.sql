@@ -16,6 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `stores`
+--
+
+DROP TABLE IF EXISTS `stores`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `stores` (
+  `storeID` int NOT NULL AUTO_INCREMENT,
+  `storeName` varchar(100) NOT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `size` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`storeID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `stores`
+--
+
+LOCK TABLES `stores` WRITE;
+/*!40000 ALTER TABLE `stores` DISABLE KEYS */;
+INSERT INTO `stores` VALUES (1,'BACHHOA','Quận 12, TP.HCM','5 tỷ'),(2,'ND Farm','Bình Định','500 tỷ');
+/*!40000 ALTER TABLE `stores` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `authorities`
 --
 
@@ -507,15 +533,22 @@ LOCK TABLES `need_inventories` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `payment_detail`
+-- Table structure for table `payment_history`
 --
 
-DROP TABLE IF EXISTS `payment_detail`;
+DROP TABLE IF EXISTS `payment_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `payment_detail` (
+CREATE TABLE `payment_history` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `paymentId` int NOT NULL,
+  `storeID` int NOT NULL,
+  `employeeId` int NOT NULL,
+  `adminID` int DEFAULT NULL,
+  `time_pay` datetime DEFAULT NULL,
+  `time_received` datetime DEFAULT NULL,
+  `totalAmount` float DEFAULT NULL,
+  `totalReceived` float DEFAULT NULL,
+  `paied` int DEFAULT '0',
   `500k` int DEFAULT '0',
   `200k` int DEFAULT '0',
   `100k` int DEFAULT '0',
@@ -526,43 +559,12 @@ CREATE TABLE `payment_detail` (
   `2k` int DEFAULT '0',
   `1k` int DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `paymentId` (`paymentId`),
-  CONSTRAINT `payment_detail_ibfk_1` FOREIGN KEY (`paymentId`) REFERENCES `payment_history` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3010 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `payment_detail`
---
-
-LOCK TABLES `payment_detail` WRITE;
-/*!40000 ALTER TABLE `payment_detail` DISABLE KEYS */;
-INSERT INTO `payment_detail` VALUES (3005,3005,18,0,0,1,0,0,0,0,0),(3006,3006,26,1,0,0,2,0,0,2,0),(3007,3007,26,1,0,0,2,0,0,2,0),(3008,3008,0,0,0,1,2,0,1,1,0),(3009,3009,0,0,0,1,2,0,1,1,0);
-/*!40000 ALTER TABLE `payment_detail` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `payment_history`
---
-
-DROP TABLE IF EXISTS `payment_history`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `payment_history` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `employeeId` int NOT NULL,
-  `adminID` int DEFAULT NULL,
-  `time_pay` datetime DEFAULT NULL,
-  `time_received` datetime DEFAULT NULL,
-  `totalAmount` float DEFAULT NULL,
-  `totalReceived` float DEFAULT NULL,
-  `paied` int DEFAULT '0',
-  PRIMARY KEY (`id`),
   KEY `employeeId` (`employeeId`),
-  KEY `adminID` (`employeeId`),
-  KEY `payment_history_ibfk_2` (`adminID`),
+  KEY `adminID` (`adminID`),
+  KEY `storeID` (`storeID`),
   CONSTRAINT `payment_history_ibfk_1` FOREIGN KEY (`employeeId`) REFERENCES `employees` (`employeeID`),
-  CONSTRAINT `payment_history_ibfk_2` FOREIGN KEY (`adminID`) REFERENCES `employees` (`employeeID`)
+  CONSTRAINT `payment_history_ibfk_2` FOREIGN KEY (`adminID`) REFERENCES `employees` (`employeeID`),
+  CONSTRAINT `payment_history_ibfk_3` FOREIGN KEY (`storeID`) REFERENCES `stores` (`storeID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3010 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -572,7 +574,12 @@ CREATE TABLE `payment_history` (
 
 LOCK TABLES `payment_history` WRITE;
 /*!40000 ALTER TABLE `payment_history` DISABLE KEYS */;
-INSERT INTO `payment_history` VALUES (3005,3,3,'2023-11-22 17:19:57','2023-11-22 22:13:58',9050000,9050000,2),(3006,3,3,'2023-11-22 22:11:12','2023-11-22 22:12:41',13244000,13244000,2),(3007,3,3,'2023-11-22 22:19:24','2023-11-25 10:52:37',13244000,13244000,2),(3008,3,3,'2023-11-25 18:31:11','2023-11-25 18:35:06',97000,97000,2),(3009,3,3,'2023-11-25 18:42:07','2023-11-25 18:54:49',97000,97000,2);
+INSERT INTO `payment_history` VALUES 
+(3005,1,3,3,'2023-11-22 17:19:57','2023-11-22 22:13:58',9050000,9050000,2,0,0,0,0,0,0,0,0,0),
+(3006,1,3,3,'2023-11-22 22:11:12','2023-11-22 22:12:41',13244000,13244000,2,0,0,0,0,0,0,0,0,0),
+(3007,1,3,3,'2023-11-22 22:19:24','2023-11-25 10:52:37',13244000,13244000,2,0,0,0,0,0,0,0,0,0),
+(3008,1,3,3,'2023-11-25 18:31:11','2023-11-25 18:35:06',97000,97000,2,0,0,0,0,0,0,0,0,0),
+(3009,1,3,3,'2023-11-25 18:42:07','2023-11-25 18:54:49',97000,97000,2,0,0,0,0,0,0,0,0,0);
 /*!40000 ALTER TABLE `payment_history` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -781,32 +788,6 @@ LOCK TABLES `shipment_batchs` WRITE;
 /*!40000 ALTER TABLE `shipment_batchs` DISABLE KEYS */;
 INSERT INTO `shipment_batchs` VALUES ('004',1,1,NULL,NULL,_binary '\0'),('033',1,1,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `shipment_batchs` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `stores`
---
-
-DROP TABLE IF EXISTS `stores`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `stores` (
-  `storeID` int NOT NULL AUTO_INCREMENT,
-  `storeName` varchar(100) NOT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `size` varchar(25) DEFAULT NULL,
-  PRIMARY KEY (`storeID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `stores`
---
-
-LOCK TABLES `stores` WRITE;
-/*!40000 ALTER TABLE `stores` DISABLE KEYS */;
-INSERT INTO `stores` VALUES (1,'BACHHOA','Quận 12, TP.HCM','5 tỷ'),(2,'ND Farm','Bình Định','500 tỷ');
-/*!40000 ALTER TABLE `stores` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

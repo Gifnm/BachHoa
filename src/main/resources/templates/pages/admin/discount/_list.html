@@ -22,21 +22,21 @@
                     <label for="" class="w-100">Từ ngày: </label><br>
                     <div class="ms-2">
                         <input id="from_Date" type="date" class="form-control" ng-model="fromDate"
-                            ng-change="findByDate(fromDate, toDate)">
+                            ng-change="findByDate(fromDate, toDate, 0)">
                     </div>
                 </li>
                 <li class="d-flex align-items-center p-3">
                     <label for="" class="w-100">Đến ngày: </label><br>
                     <div class="ms-2">
                         <input id="to_Date" type="date" class="form-control" ng-model="toDate"
-                            ng-change="findByDate(fromDate, toDate)">
+                            ng-change="findByDate(fromDate, toDate, 0)">
                     </div>
                 </li>
             </ul>
         </div>
     </div>
 </header>
-<div class="mt-2 border border-info rounded-2 m-auto" style="width: 85%;">
+<div class="mt-2 border border-info rounded-2 m-auto" style="width: 95%;">
     <table class="table table-responsive text-center table-hover mb-0 align-middle">
         <thead class="bg-info text-white">
             <tr>
@@ -76,17 +76,22 @@
         </tbody>
     </table>
 </div>
-<!-- <div class="row w-75 m-auto mt-3" id="pagination">
-    <div class="col-4">
-        <b class="count">Hiện có {{totalReceived}} khuyến mãi.</b>
+<div class="row w-75 m-auto mt-3 mb-3 align-items-center" id="pagination" ng-if="!isNull && isPagination">
+    <div class="col-8">
+        <b class="count">Hiện có {{totalDiscount}} khuyến mãi.</b>
     </div>
-    <div class="col-8 text-end">
+    <div class="col-4 text-end" ng-if="isFindByDate">
         <button ng-click="findByDate(fromDate,toDate,index - 1)"
             class="btn btn-outline-primary {{index == 0 ? 'disabled':''}}">Trước</button>
-        <button ng-repeat="item in pages" ng-click="findByDate(fromDate,toDate,item - 1)"
-            class="btn btn-outline-primary {{index == item - 1? 'active':''}} m-1 mb-0 mt-0"><b>
-                {{item}}</b> </button>
+        <button class="btn btn-info" disabled>{{index + 1}} / {{maxPage}}</button>
         <button ng-click="findByDate(fromDate,toDate,index + 1)"
             class="btn btn-outline-primary {{index == maxPage - 1 ? 'disabled':''}}">Sau</button>
     </div>
-</div> -->
+    <div class="col-4 text-end" ng-if="isFindAll">
+        <button ng-click="loadAll(index - 1)"
+            class="btn btn-outline-primary {{index == 0 ? 'disabled':''}}">Trước</button>
+        <button class="btn btn-info" disabled>{{index + 1}} / {{maxPage}}</button>
+        <button ng-click="loadAll(index + 1)"
+            class="btn btn-outline-primary {{index == maxPage - 1 ? 'disabled':''}}">Sau</button>
+    </div>
+</div>

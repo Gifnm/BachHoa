@@ -30,6 +30,10 @@ public class PaymentHistory {
 	@JoinColumn(name = "adminID")
 	private Employee admin;
 
+	@ManyToOne
+	@JoinColumn(name = "storeID")
+	private Store store;
+
 	@Column(name = "time_pay")
 	private Timestamp timePay;
 
@@ -44,4 +48,31 @@ public class PaymentHistory {
 
 	@Column(name = "paied")
 	private int paied;
+
+	@Column(name = "500k")
+	private int vnd500;
+
+	@Column(name = "200k")
+	private int vnd200;
+
+	@Column(name = "100k")
+	private int vnd100;
+
+	@Column(name = "50k")
+	private int vnd50;
+
+	@Column(name = "20k")
+	private int vnd20;
+
+	@Column(name = "10k")
+	private int vnd10;
+	
+	@Column(name = "5k")
+	private int vnd5;
+	
+	@Column(name = "2k")
+	private int vnd2;
+	
+	@Column(name = "1k")
+	private int vnd1;
 }

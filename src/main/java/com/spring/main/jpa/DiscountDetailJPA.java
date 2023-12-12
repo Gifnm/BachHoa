@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,10 +18,10 @@ public interface DiscountDetailJPA extends JpaRepository<DiscountDetails, String
 	DiscountDetails findDiscountIsActive(String productID, Integer storeID);
 
 	@Query("SELECT o FROM DiscountDetails o WHERE o.storeID LIKE ?1")
-	List<DiscountDetails> findByStoreID(Integer storeID);
+	Page<DiscountDetails> findByStoreID(Integer storeID, Pageable page);
 	
 	@Query("SELECT o FROM DiscountDetails o WHERE o.storeID LIKE ?1 AND o.startTime <= ?2 AND o.endTime >= ?3")
-	List<DiscountDetails> findByDate(Integer storeID, Date startTime, Date endTime);
+	Page<DiscountDetails> findByDate(Integer storeID, Date startTime, Date endTime, Pageable page);
 	
 	@Query("SELECT o FROM DiscountDetails o WHERE o.storeID LIKE ?1 AND o.productID LIKE ?2")
 	List<DiscountDetails> findByStoreIDAndProductID(Integer storeID, String productID);

@@ -20,8 +20,8 @@ public class PaymentHistoryService {
 		paymentHistoryJPA.save(paymentHistory);
 	}
 	
-	public Page<PaymentHistory> getPayment(Pageable page) {
-		return paymentHistoryJPA.getPayment(page);
+	public List<PaymentHistory> getPayment(Integer storeID) {
+		return paymentHistoryJPA.getPayment(storeID);
 	}
 
 	public Page<PaymentHistory> findByEmployee(Integer employeeID, Pageable page) {

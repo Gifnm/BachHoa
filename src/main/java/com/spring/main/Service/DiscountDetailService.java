@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.spring.main.jpa.DiscountDetailJPA;
@@ -18,12 +20,12 @@ public class DiscountDetailService {
 		return discountDetaileJPA.findDiscountIsActive(productID, storeID);
 	}
 	
-	public List<DiscountDetails> findByStoreID(Integer storeID) {
-		return discountDetaileJPA.findByStoreID(storeID);
+	public Page<DiscountDetails> findByStoreID(Integer storeID, Pageable page) {
+		return discountDetaileJPA.findByStoreID(storeID, page);
 	}
 	
-	public List<DiscountDetails> findByDate(Integer storeID,  Date startTime, Date endTime) {
-		return discountDetaileJPA.findByDate(storeID, startTime, endTime);
+	public Page<DiscountDetails> findByDate(Integer storeID,  Date startTime, Date endTime, Pageable page) {
+		return discountDetaileJPA.findByDate(storeID, startTime, endTime, page);
 	}
 	
 	public List<DiscountDetails> findByStoreIDAndProductID(Integer storeID, String productID) {

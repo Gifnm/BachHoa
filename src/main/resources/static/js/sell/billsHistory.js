@@ -40,10 +40,13 @@ app_bill.controller("bill-ctrl", function ($scope, $http) {
 		$scope.findByDate(startDate, endDate, 0);
 	};
 
-	$scope.initialize = function () {
+	$scope.initialize = function (index) {
 		// load hóa đơn
-		$http.get(`/bachhoa/api/bill/all/${$scope.employee.store.storeID}`).then(resp => {
-			$scope.bills = resp.data;
+		$http.get(`/bachhoa/api/bill/all/${$scope.employee.store.storeID}?index=${index}`).then(resp => {
+			$scope.bills = resp.data.content;
+			$scope.isFindByDate = false;
+			$scope.isFindAll = true;
+			$scope.items = [];
 			angular.forEach($scope.bills, function (item) {
 				item.timeCreate = dateFormat(item.timeCreate);
 				let data = {
@@ -51,13 +54,21 @@ app_bill.controller("bill-ctrl", function ($scope, $http) {
 					amountReceivable: Math.round((item.totalAmount - item.reduced) / 1000) * 1000
 				}
 				$scope.items.push(data);
-
 			})
 			if (resp.data.length == 0) {
 				$scope.isNull = true;
+				$scope.isPagination = false;
 			} else {
 				$scope.isNull = false;
+				$scope.isPagination = true;
 			}
+			$scope.totalBill = resp.data.totalElements;
+			if ($scope.totalBill >= 0 && $scope.totalBill <= 8) {
+				$scope.maxPage = 1;
+			} else {
+				$scope.maxPage = Math.ceil($scope.totalBill / 8);
+			}
+			$scope.index = index;
 			Calc();
 		});
 
@@ -171,11 +182,12 @@ app_bill.controller("bill-ctrl", function ($scope, $http) {
 	//Tìm hóa đơn
 	$scope.find = function (billID) {
 		if (billID == null || billID == undefined || billID == '') {
-			$scope.initialize();
+			$scope.initialize(0);
 		} else {
 			let item = $scope.listBillID.find(item => item == billID);
 			if (item) {
 				$scope.isNull = false;
+				$scope.isPagination = false;
 				$scope.items = [];
 				$http.get(`/bachhoa/api/bill/findBill/${billID}`).then(resp => {
 					let bill = resp.data;
@@ -222,11 +234,15 @@ app_bill.controller("bill-ctrl", function ($scope, $http) {
 		$http.get(`/bachhoa/api/bill/searchBetween/${fromD}/${toD}?index=${index}&store-id=${$scope.employee.store.storeID}`).then(resp => {
 			if (resp.data.content.length == 0) {
 				$scope.isNull = true;
+				$scope.isPagination = false;
 			} else {
 				$scope.isNull = false;
+				$scope.isPagination = true;
 			}
 			$scope.items = [];
 			$scope.bills = resp.data.content;
+			$scope.isFindByDate = true;
+			$scope.isFindAll = false;
 			angular.forEach($scope.bills, function (item) {
 				item.timeCreate = dateFormat(item.timeCreate);
 				let data = {

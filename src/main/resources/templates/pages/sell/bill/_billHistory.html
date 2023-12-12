@@ -76,18 +76,38 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row">
-                <div class="col-2">
+            <div class="d-flex" ng-if="!isNull && isPagination">
+                <div class="">
                     <b class="count">{{totalBill}} Hóa đơn</b>
                 </div>
-                <div class="col-10 text-end">
-                    <button ng-click="findByDate(fromDate,toDate,index - 1)"
+                <div class="ms-auto">
+                    <!-- <button ng-click="findByDate(fromDate,toDate,index - 1)"
                         class="btn btn-outline-primary {{index == 0 ? 'disabled':''}}">Trước</button>
-                    <button ng-repeat="item in pages" ng-click="findByDate(fromDate,toDate,item - 1)"
-                        class="btn btn-outline-primary {{index == item - 1? 'active':''}} m-1 mb-0 mt-0"><b>
-                            {{item}}</b> </button>
+                    <button class="btn btn-info" disabled>{{index + 1}} / {{maxPage}}</button>
                     <button ng-click="findByDate(fromDate,toDate,index + 1)"
-                        class="btn btn-outline-primary {{index == maxPage - 1 ? 'disabled':''}}">Sau</button>
+                        class="btn btn-outline-primary {{index == maxPage - 1 ? 'disabled':''}}">Sau</button> -->
+                    <nav aria-label="Page navigation example" ng-if="!isNull && isFindByDate">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link {{index == 0 ? 'disabled':''}}"
+                                    ng-click="findByDate(fromDate,toDate,index - 1)" style="cursor: pointer;">Trước</a>
+                            </li>
+                            <li class="page-item"><a class="page-link disabled">{{index + 1}} / {{maxPage}}</a></li>
+                            <li class="page-item"><a class="page-link {{index == maxPage - 1 ? 'disabled':''}}"
+                                    ng-click="findByDate(fromDate,toDate,index + 1)" style="cursor: pointer;">Sau</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <nav aria-label="Page navigation example" ng-if="!isNull && isFindAll">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link {{index == 0 ? 'disabled':''}}"
+                                    ng-click="initialize(index - 1)" style="cursor: pointer;">Trước</a>
+                            </li>
+                            <li class="page-item"><a class="page-link disabled">{{index + 1}} / {{maxPage}}</a></li>
+                            <li class="page-item"><a class="page-link {{index == maxPage - 1 ? 'disabled':''}}"
+                                    ng-click="initialize(index + 1)" style="cursor: pointer;">Sau</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
             <!-- Modal -->
