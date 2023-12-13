@@ -1,7 +1,7 @@
 <main>
     <div class="row p-0 m-0">
         <div class="col-9 p-4">
-            <tabset style="height: 550px;">
+            <tabset style="height: 530px;">
                 <tab ng-repeat="invoice in bills track by $index" active=invoice.active
                     heading="Hóa đơn {{invoice.stt}}" class="nav-item">
                     <tab-heading ng-click="selectBill(invoice.bill.billID)"
@@ -83,7 +83,7 @@
                 </tab>
             </tabset>
         </div>
-        <div class="col-3 border" style="background-color: #F4F5F7; padding: 0px; height: 638px;">
+        <div class="col-3 border" style="background-color: #F4F5F7; padding: 0px; height: 605px;">
             <div class="p-3 border-bottom border-3">
                 <label class="mb-2">Nhập mã sản phẩm</label><br>
                 <div class="autocomplete">

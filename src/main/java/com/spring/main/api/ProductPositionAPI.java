@@ -17,7 +17,6 @@ import com.spring.main.EntityDTO.PriceTag;
 import com.spring.main.Service.DiscountDetailService;
 import com.spring.main.Service.ProductPosionService;
 import com.spring.main.Service.ProductService;
-import com.spring.main.model.DiscountDetails;
 import com.spring.main.model.Product;
 import com.spring.main.model.ProductPositioning;
 

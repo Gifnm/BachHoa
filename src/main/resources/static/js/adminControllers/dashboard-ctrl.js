@@ -16,7 +16,12 @@ app.controller("ctrl", function ($scope, $http, $filter) {
         revenue: [],
         labels: [],
     };
-
+    $scope.costData = {
+		increaseCost: [],
+		cost: [], labels: [],
+	}
+	
+	$scope.totalCost = $scope.costData.increaseCost[$scope.costData.increaseCost.length - 1]
     $scope.totalRevenue = $scope.revenueData.increaseRevenue[$scope.revenueData.increaseRevenue.length - 1]
     $scope.billsAmount = 0
 
@@ -164,6 +169,44 @@ app.controller("ctrl", function ($scope, $http, $filter) {
                     $scope.totalRevenue = $scope.revenueData.increaseRevenue[$scope.revenueData.increaseRevenue.length - 1]
                     $scope.totalBills();
                     console.log($scope.billsAmount)
+                });
+            })
+        });
+        $http.get(`${host}/statistic/increase-cost`, {
+            params: {
+                'start-date': $scope.startDate,
+                'end-date': $scope.endDate,
+                'mile-stone': $scope.mileStone,
+                'store-id': $scope.account.store.storeID
+            }
+        }).then(resp => {
+            $scope.costData.increaseCost = resp.data;
+
+            $http.get(`${host}/statistic/cost`, {
+                params: {
+                    'start-date': $scope.startDate,
+                    'end-date': $scope.endDate,
+                    'mile-stone': $scope.mileStone,
+                    'store-id': $scope.account.store.storeID
+                }
+            }).then(resp => {
+                $scope.costData.cost = resp.data;
+
+                $http.get(`${host}/statistic/revenue/mile-stone-type`, {
+                    params: {
+                        'start-date': $scope.startDate,
+                        'end-date': $scope.endDate,
+                        'mile-stone': $scope.mileStone,
+                        'store-id': $scope.account.store.storeID
+                    }
+                }).then(resp => {
+                    $scope.costData.labels = resp.data;
+                    /*revenueChart.data.labels = $scope.revenueData.labels
+                    revenueChart.data.datasets[0].data = $scope.revenueData.increaseRevenue
+                    revenueChart.data.datasets[1].data = $scope.revenueData.revenue
+                    revenueChart.update();*/
+                    $scope.totalCost = $scope.costData.increaseCost[$scope.costData.increaseCost.length - 1]
+                  	console.log($scope.totalCost)
                 });
             })
         });

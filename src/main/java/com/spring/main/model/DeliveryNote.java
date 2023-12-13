@@ -3,8 +3,7 @@ package com.spring.main.model;
 import javax.persistence.*;
 
 import lombok.Data;
-
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -15,12 +14,10 @@ public class DeliveryNote {
 	private String id;
 
 	@Column(name = "timeCreate")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date timeCreate;
+	private Timestamp timeCreate;
 
 	@Column(name = "timeCompleted")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date timeCompleted;
+	private Timestamp timeCompleted;
 
 	@ManyToOne
 	@JoinColumn(name = "storeID")

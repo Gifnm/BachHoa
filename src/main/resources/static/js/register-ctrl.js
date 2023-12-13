@@ -3,6 +3,7 @@ app.controller("register-ctrl", function ($scope, $http) {
   $scope.stores = [];
   $scope.sessionStore = {};
   $scope.storeToJoin = {};
+  $scope.investmentCosts = ['500 triệu','1 tỷ','5 tỷ'];
   // Employees
   $scope.info = {};
   $scope.employees = [];
