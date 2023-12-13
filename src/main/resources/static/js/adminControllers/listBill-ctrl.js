@@ -51,8 +51,8 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
     $scope.initialize = function () {
         // load hóa đơn
         $http.get(`/bachhoa/api/bill/all/${$scope.account.store.storeID}`).then(resp => {
-            $scope.bills = resp.data;
-            $scope.allBills = resp.data.length;
+            $scope.bills = resp.data.content;
+            $scope.allBills = resp.data.content.length;
             $scope.items = [];
             angular.forEach($scope.bills, function (item) {
                 item.timeCreate = dateFormat(item.timeCreate);
@@ -184,6 +184,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
     $scope.find = function (billID) {
         if (billID == null || billID == undefined || billID == '') {
             //$scope.initialize();
+            $scope.items = [];
             $scope.isNull = true;
             $scope.isPagination = false;
         } else {

@@ -36,7 +36,7 @@
         </div>
     </div>
 </header>
-<div class="mt-5 border border-info rounded-2 m-auto" style="width: 85%;">
+<div class="mt-5 border border-info rounded-2 m-auto" style="width: 95%;">
     <table class="table table-responsive text-center table-hover mb-0 align-middle">
         <thead class="bg-info text-white">
             <tr>
@@ -57,15 +57,15 @@
             <tr ng-repeat="item in items" style="cursor: pointer;" data-bs-toggle="modal"
                 data-bs-target="#paymentDetail" ng-click="showPaymentDetail(item.id)">
                 <td style="width: 15%;">{{item.employee.employeeName}}</td>
-                <td style="width: 15%;">
+                <td style="width: 10%;">
                     {{item.timePay}}</td>
-                <td style="width: 10%;">{{item.totalAmount | number}} VND</td>
-                <td style="width: 10%;">{{item.totalReceived | number}} VND</td>
+                <td style="width: 13%;">{{item.totalAmount | number}} VND</td>
+                <td style="width: 12%;">{{item.totalReceived | number}} VND</td>
                 <td style="width: 10%;">{{item.totalAmount - item.totalReceived | number}} VND</td>
-                <td style="width: 15%;">
+                <td style="width: 10%;">
                     {{item.timeReceived}}</td>
                 <td style="width: 15%;">{{item.admin.employeeName}}</td>
-                <td style="width: 10%;">
+                <td style="width: 15%;">
                     <button ng-show="{{item.paied == 0 || item.paied == 2}}" ng-click="pay(item.id)"
                         class="btn {{item.paied == 2?'disabled btn-primary':'btn-danger'}}">
                         {{item.status}}

@@ -434,117 +434,119 @@ app_bill.controller("bill-ctrl", function ($scope, $http) {
 
 	// --------- Kết thúc ca làm ----------- //
 
-	// Tính tiền nộp (thay đổi dựa trên giá trị các mệnh giá)
-	$scope.updateTotalMoney = function () {
-		// Lấy số lượng
-		const SL500 = document.getElementById("500").value;
-		const SL200 = document.getElementById("200").value;
-		const SL100 = document.getElementById("100").value;
-		const SL50 = document.getElementById("50").value;
-		const SL20 = document.getElementById("20").value;
-		const SL10 = document.getElementById("10").value;
-		const SL5 = document.getElementById("5").value;
-		const SL2 = document.getElementById("2").value;
-		const SL1 = document.getElementById("1").value;
+    // Tính tiền nộp (thay đổi dựa trên giá trị các mệnh giá)
+    $scope.updateTotalMoney = function () {
+        // Lấy số lượng
+        const SL500 = document.getElementById("500").value;
+        const SL200 = document.getElementById("200").value;
+        const SL100 = document.getElementById("100").value;
+        const SL50 = document.getElementById("50").value;
+        const SL20 = document.getElementById("20").value;
+        const SL10 = document.getElementById("10").value;
+        const SL5 = document.getElementById("5").value;
+        const SL2 = document.getElementById("2").value;
+        const SL1 = document.getElementById("1").value;
 
-		let moneyInput =
-			500000 * SL500 +
-			200000 * SL200 +
-			100000 * SL100 +
-			50000 * SL50 +
-			20000 * SL20 +
-			10000 * SL10 +
-			5000 * SL5 +
-			2000 * SL2 +
-			1000 * SL1;
+        let moneyInput =
+            500000 * SL500 +
+            200000 * SL200 +
+            100000 * SL100 +
+            50000 * SL50 +
+            20000 * SL20 +
+            10000 * SL10 +
+            5000 * SL5 +
+            2000 * SL2 +
+            1000 * SL1;
 
-		console.log(moneyInput);
-		$scope.totalMoneyYouPay = moneyInput;
-		console.log($scope.totalMoneyYouPay);
-	};
+        console.log(moneyInput);
+        $scope.totalMoneyYouPay = moneyInput;
+        console.log($scope.totalMoneyYouPay);
+    };
 
-	//Tính tổng tiền phải thu
+    //Tính tổng tiền phải thu
 
-	$scope.tinhTongTienThu = function () {
-		let employeeID = $scope.employee.employeeID;
-		let time = new Date();
-		let startDate = startDateFormat(time);
-		let endDate = endDateFormat(time);
-		$scope.formMoney = {
-			vnd500: 0,
-			vnd200: 0,
-			vnd100: 0,
-			vnd50: 0,
-			vnd20: 0,
-			vnd10: 0,
-			vnd5: 0,
-			vnd2: 0,
-			vnd1: 0
-		}
-		$http.get(`/bachhoa/api/bill/findByEmployeeAndDate/${employeeID}/${startDate}/${endDate}`).then((resp) => {
-			let listbill = resp.data;
-			$scope.TotalMoneytoPay = 0;
-			angular.forEach(listbill, function (item) {
-				let amountReceivable = Math.round((item.totalAmount - item.reduced) / 1000) * 1000;
-				$scope.TotalMoneytoPay += amountReceivable;
-			});
-		}).catch((error) => {
-			alert("Lỗi tính tổng tiền!");
-			console.log("Error", error);
-		});
-	}
+    $scope.tinhTongTienThu = function () {
+        let employeeID = $scope.employee.employeeID;
+        let time = new Date();
+        let startDate = startDateFormat(time);
+        let endDate = endDateFormat(time);
+        $scope.formMoney = {
+            vnd500: 0,
+            vnd200: 0,
+            vnd100: 0,
+            vnd50: 0,
+            vnd20: 0,
+            vnd10: 0,
+            vnd5: 0,
+            vnd2: 0,
+            vnd1: 0
+        }
+        $http.get(`/bachhoa/api/bill/findByEmployeeAndDate/${employeeID}/${startDate}/${endDate}`).then((resp) => {
+            let listbill = resp.data;
+            $scope.TotalMoneytoPay = 0;
+            angular.forEach(listbill, function (item) {
+                let amountReceivable = Math.round((item.totalAmount - item.reduced) / 1000) * 1000;
+                $scope.TotalMoneytoPay += amountReceivable;
+            });
+        }).catch((error) => {
+            alert("Lỗi tính tổng tiền!");
+            console.log("Error", error);
+        });
+    }
 
-	// Nút nộp tiền - Bấm là gửi trạng thái qua cho admin duyệt
-	$scope.sendMoney = function () {
-		if ($scope.TotalMoneytoPay < $scope.totalMoneyYouPay) {
-			toastMixin.fire({
-				title: "Số tiền bạn nộp phải bằng hoặc nhỏ hơn số tiền bạn phải nộp hôm nay!",
-				icon: "warning",
-			});
-			return;
-		}
-		if (!confirm('Bạn xác nhận nộp: ' + $scope.totalMoneyYouPay + ' VND')) return;
-		// Tính tổng tiền phải nộp (tổng thu các bill trong ngày)
-		// Lịch sử nộp
-		let createPH = `/bachhoa/api/paymentHistory/create`;
-		// Chi tiết số tiền nộp
-		let createPD = `/bachhoa/api/paymentDetail/create`;
+    // Nút nộp tiền - Bấm là gửi trạng thái qua cho admin duyệt
+    $scope.sendMoney = function () {
+        if ($scope.TotalMoneytoPay < $scope.totalMoneyYouPay) {
+            toastMixin.fire({
+                title: "Số tiền bạn nộp phải bằng hoặc nhỏ hơn số tiền bạn phải nộp hôm nay!",
+                icon: "warning",
+            });
+            return;
+        }
+        if (!confirm('Bạn xác nhận nộp: ' + $scope.totalMoneyYouPay + ' VND')) return;
+        // Tính tổng tiền phải nộp (tổng thu các bill trong ngày)
+        // Lịch sử nộp
+        let createPH = `/bachhoa/api/paymentHistory/create`;
+        let paymentDetail = angular.copy($scope.formMoney);
+        let data = {
+            employee: $scope.employee,
+            admin: null,
+            store: $scope.employee.store,
+            timePay: new Date().getTime(),
+            timeReceived: null,
+            totalAmount: parseFloat($scope.TotalMoneytoPay),
+            totalReceived: parseFloat($scope.totalMoneyYouPay),
+            // 0 - Chưa duyệt, thu chưa đủ 1 và đã thu 2
+            paied: 0,
+            vnd500: paymentDetail.vnd500,
+            vnd200: paymentDetail.vnd200,
+            vnd100: paymentDetail.vnd100,
+            vnd50: paymentDetail.vnd50,
+            vnd20: paymentDetail.vnd20,
+            vnd10: paymentDetail.vnd10,
+            vnd5: paymentDetail.vnd5,
+            vnd2: paymentDetail.vnd2,
+            vnd1: paymentDetail.vnd1
+        };
+        // create payment history
+        $http.post(createPH, data).then((resp) => {
+            Swal.fire({
+                title: "Nộp tiền thành công, hãy đợi quản lý duyệt nhé!",
+                icon: "success",
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "OK"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = "/logout";
+                }
+            });
+        }).catch((error) => {
+            alert("Lỗi nộp tiền!");
+            console.log("Error", error);
+        });
+    };
 
-		let data = {
-			employee: $scope.employee,
-			admin: null,
-			timePay: new Date().getTime(),
-			timeReceived: null,
-			totalAmount: parseFloat($scope.TotalMoneytoPay),
-			totalReceived: parseFloat($scope.totalMoneyYouPay),
-			// 0 - Chưa duyệt, thu chưa đủ 1 và đã thu 2
-			paied: 0,
-		};
-		// create payment history
-		$http.post(createPH, data).then((resp) => {
-			// create payment detail
-			let paymentDetail = angular.copy($scope.formMoney);
-			paymentDetail.paymentHistory = resp.data;
-			console.log(paymentDetail)
-			$http.post(createPD, paymentDetail).then(() => {
-				Swal.fire({
-                    title: "Nộp tiền thành công, hãy đợi quản lý duyệt nhé!",
-                    icon: "success",
-                    confirmButtonColor: "#3085d6",
-                    confirmButtonText: "OK"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location = "/logout";
-                    }
-                });
-			}).catch((error) => {
-				alert("Lỗi thêm chi tiết!");
-				console.log("Error", error);
-			});
-		});
-	};
-
-	//-----------------------------------------------//
+    //------------------------------------------------//
 	// khởi động
 	$scope.SetDefaultDate();
 

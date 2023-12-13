@@ -81,19 +81,30 @@ public class StatisticService {
 		List<PurchaseHistory> PH = PHJpa.findAllByTimeCreateBetween(stDate, enDate, storeId);
 		List<BillDetail> billDetails;
 		Map<String, Float> costMap = new HashMap<>();
-
-		for (PurchaseHistory ph : PH) {
-			float totalCost = 0;
-			String mileStone = getMileStone(ph.getDeliveryNote().getTimeCompleted(), typeMileStone);
-			for (Bill bill : bills) {
-				billDetails = bill.getBillDetail();
-				for (BillDetail billDetail : billDetails) {
-					// chi phí = giá nhập * số lượng sp bán được
-					totalCost = (ph.getTotalAmount() / ph.getConfirmedQuantity()) * billDetail.getQuantity();
-				}
-				costMap.merge(mileStone, totalCost, Float::sum);
+		float totalCost = 0;
+		for (Bill bill : bills) {
+			String mileStone = getMileStone(bill.getTimeCreate(), typeMileStone);
+			billDetails = bill.getBillDetail();
+			for (BillDetail billDetail : billDetails) {
+				// chi phí = giá nhập * số lượng sp bán được
+				totalCost = billDetail.getProduct().getImportPrice() * billDetail.getQuantity();
 			}
+			costMap.merge(mileStone, totalCost, Float::sum);
 		}
+
+//		for (PurchaseHistory ph : PH) {
+//			float totalCost = 0;
+//			String mileStone = getMileStone(ph.getDeliveryNote().getTimeCompleted(), typeMileStone);
+//			for (Bill bill : bills) {
+//				billDetails = bill.getBillDetail();
+//				for (BillDetail billDetail : billDetails) {
+//					// chi phí = giá nhập * số lượng sp bán được
+//					totalCost = (ph.getTotalAmount() / ph.getConfirmedQuantity()) * billDetail.getQuantity();
+//					
+//				}
+//				costMap.merge(mileStone, totalCost, Float::sum);
+//			}
+//		}
 		// Convert to TreeMap to automatically sort by keys
 		Map<String, Float> sortedCostMap = new TreeMap<>(costMap);
 		return sortedCostMap;

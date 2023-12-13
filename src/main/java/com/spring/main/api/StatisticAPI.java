@@ -32,7 +32,7 @@ public class StatisticAPI {
             @RequestParam(value = "mile-stone") String mileStoneType,
             @RequestParam(value = "store-id") int storeId) {
         System.out.println("+ ICost:" + startDate + " - " + endDate + " - " + mileStoneType);
-        return this.statisticService.getListIncreaseRevenue(startDate, endDate, mileStoneType, storeId);
+        return this.statisticService.getListIncreaseCost(startDate, endDate, mileStoneType, storeId);
     }
 
     @GetMapping("revenue")

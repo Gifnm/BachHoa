@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "bills")
 public class Bill {
@@ -37,6 +39,7 @@ public class Bill {
 	@Column(name = "reduced")
 	private float reduced;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "bill")
 	private List<BillDetail> billDetail;
 
