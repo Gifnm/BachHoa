@@ -1,7 +1,7 @@
 const api_host = "/bachhoa/api";
 const app = angular.module("app", []);
 app.controller("ctrl", function ($scope, $http) {
-    $scope.dev_img_host_url = "http://localhost:8081/bachhoaimg/";
+    $scope.dev_img_host_url = "/bachhoaimg/";
     $scope.product_host_url = "http://192.168.1.5:8083/bachhoaimg/";
     $scope.menu = 'sanpham'
     //Variables
@@ -387,7 +387,7 @@ app.controller("ctrl", function ($scope, $http) {
 
         })
     };
-    
+
     $scope.Denied = function (id) {
         $http.put(`/bachhoa/api/employeeDel/${id}`).then(resp => {
             toastMixin.fire({
