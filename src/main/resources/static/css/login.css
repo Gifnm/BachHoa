@@ -4,7 +4,7 @@ body,
 html {
     height: 100%;
     font-family: "Manrope", sans-serif;
-  -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
 }
 
 .form,
@@ -29,14 +29,14 @@ html {
 }
 
 .icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  background: #ECF1FD;
-  box-shadow: 0px 0.5px 0.5px #EFEFEF, 0px 1px 0.5px rgba(239, 239, 239, 0.5);
-  border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: #ECF1FD;
+    box-shadow: 0px 0.5px 0.5px #EFEFEF, 0px 1px 0.5px rgba(239, 239, 239, 0.5);
+    border-radius: 5px;
 }
 
 /* Toggle Switch */
@@ -84,9 +84,9 @@ html {
 
 /* Background behind the login form */
 .background-img {
-    background: url("../images/auth/login-bg.jpg");
+    background: url("../images/auth/supermarket_backgound2.jpg");
     background-size: cover;
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(6px);
 }
 
 /* Button */

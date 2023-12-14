@@ -364,8 +364,8 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
                 let employee = item.employeeID + " - " + item.employeeName;
                 $scope.listEmployee.push(employee);
             })
-            console.log($scope.listEmployee);
-
+            //show yêu cầu nhân viên
+            $scope.showRequest();
         }).catch(error => {
             console.log('Error', error)
         });
@@ -409,5 +409,8 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
 
     // chọn mặc định ngày hôm nay
     SetDefaultDate();
-
+    // lấy danh sách lịch sử nộp tiền
+    loadPayment();
+    //giợ ý nhân viên
+    initAutoComplete();
 })

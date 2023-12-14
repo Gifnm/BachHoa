@@ -21,7 +21,7 @@
                         <small>Chọn tất cả</small>
                     </td>
                     <td class="py-4 order-col"><small>#</small></td>
-                    <td class="py-4 name-col"> <small>Sản phẩm</small></td>
+                    <td class="py-4 name-col text-center"> <small>Sản phẩm</small></td>
                     <td class="py-4 "><small>Phân loại</small></td>
                     <td class="py-4 "><small>Đơn giá bán</small></td>
                     <td class="py-4 "><small>Đơn giá nhập</small></td>
@@ -40,12 +40,12 @@
                     </td>
                     <td class="sticky order-col align-middle" scope="row">{{$index+1+currentPage*pageSize}}
                     </td>
-                    <td class="d-flex align-middle">
-                        <div class="h-100">
-                            <!-- <img class="bg-secondary h-100 w-25"
-                                src="{{pro.image==null?DEFAULT_PRODUCT_IMAGE:pro.image}}" alt="..."> -->
+                    <td class="align-middle">
+                        <div class="h-100 d-flex ">
+                            <img class="bg-light border rounded mx-2" style="height: 50px; width: 50px;"
+                                src="{{pro.image==null?DEFAULT_PRODUCT_IMAGE:getImage(pro.image)}}" alt="...">
                             <span class="d-grid">
-                                <b>{{pro.productName}}</b>
+                                <b class="text-truncate" title="{{pro.productName}}">{{pro.productName}}</b>
                                 <span class="text-muted">{{pro.productID}}</span>
                             </span>
                         </div>
@@ -66,7 +66,14 @@
                         <span>{{pro.inventory}}</span>
                     </td>
                     <td class="align-middle">
-                        <span>HSD: {{pro.nearestExpDate| date:'dd/MM/yyyy'}}</span>
+                        <div class="d-grid text-center">
+                            <span>{{(pro.nearestExpDate | date:'dd-MM-yyyy')}}</span>
+                            <span
+                                class=" text-{{(
+                                calculateDaysRemaining(pro.nearestExpDate) <= 0 ? 'dark' : calculateDaysRemaining(pro.nearestExpDate) > 30 ? 'success': 'warning')}}">
+                                {{calculateDaysRemaining(pro.nearestExpDate) <= 0 ? 'Đã hết hạn' : "Còn " +
+                                    calculateDaysRemaining(pro.nearestExpDate)+" ngày" }} </span>
+                        </div>
                     </td>
                     <td class="align-middle">
                         <div class="badge rounded-pill text-bg-{{pro.status?'success':'warning'}}">{{pro.status?'Đang

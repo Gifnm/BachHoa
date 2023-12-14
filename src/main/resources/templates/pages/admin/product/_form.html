@@ -14,19 +14,9 @@
             bán':'Ngừng
             kinh
             doanh'}}</label>
-        <!-- <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button> -->
     </div>
     <div class="offcanvas-body bg-light p-4 rounded">
         <form enctype="multipart/form-data">
-            <div class="row g-3">
-                <div class="rounded bg-white col">
-                    <img src="{{employee.pictureURL}}" class="mt-2 card-img-top" alt="..." id="img-preview">
-                    <input id="uploadImage" type="file" name="file" accept="image/*" hidden>
-                    <label for="uploadImage" class="d-flex justify-content-center"><i
-                            class="bi bi-camera fs-3"></i></label>
-                </div>
-                <div class="col"></div>
-            </div>
             <div class="my-3">
                 <label for="inputEmail4" class="form-label disabled">Mã sản phẩm</label>
                 <input ng-model="form.productID" class="form-control">
@@ -35,12 +25,100 @@
                 <label for="inputPassword4" class="form-label">Tên sản phẩm</label>
                 <input ng-model="form.productName" class="form-control">
             </div>
+            <div class="row g-3">
+                <div class="rounded bg-white col-12">
+                    <img src="{{form.image==null?DEFAULT_PRODUCT_IMAGE:getImage(form.image)}}" class="mt-2 card-img-top"
+                        alt="..." id="img-preview">
+                    <input id="uploadImage" type="file" hidden>
+                    <label for="uploadImage" class="d-flex justify-content-center"><i
+                            class="bi bi-camera fs-3"></i></label>
+                </div>
+                <div class="col"></div>
+            </div>
             <div class="my-3">
                 <label for="inputAddress" class="form-label">Phân loại</label>
-                <select ng-model="form.categories.categoriesID" class="form-select">
-                    <option ng-repeat="c in categories" ng-value="c.categoriesID">{{c.categoriesName}}
-                    </option>
-                </select>
+
+                <button class="border-2 form-control text-start d-flex align-items-center justify-content-between"
+                    id="categories" type="text" data-bs-toggle="dropdown" ng-model="form.categories.categoriesID">
+                    {{form.categories.categoriesID==null?'Chọn loại hàng':form.categories.categoriesName}}
+                    <span class="material-symbols-outlined">
+                        arrow_drop_down
+                    </span>
+                </button>
+                <ul class="dropdown-menu p-0 shadow">
+                    <div class="list-group">
+                        <li class="list-group-item border-0 border-bottom px-2">
+                            <div class="d-flex justify-content-between">
+                                <small class="mb-0 fw-bold">Danh sách loại hàng</small>
+                                <span class="badge rounded-pill bg-light text-dark border">
+                                    {{categories.length}}
+                                </span>
+                            </div>
+                        </li>
+                        <div style=" max-height: 300px; max-width: 300px; overflow-y: auto;">
+                            <li class="list-group-item list-group-item-action border-0 px-2 w-100"
+                                ng-repeat="option in categories" ng-mouseenter="option.hover = true"
+                                ng-mouseleave="option.hover = false">
+                                <div ng-if="!option.editing" class="d-flex align-items-center">
+                                    <div style="width: 25px;">
+                                        <span class="material-symbols-outlined"
+                                            ng-show="form.categories === option.category">
+                                            check
+                                        </span>
+                                    </div>
+                                    <button class="btn border-0 flex-grow-1 text-start text-truncate"
+                                        ng-click="selectOption(option)" data-bs-toggle="tooltip"
+                                        title="{{option.category.categoriesName}}">
+                                        {{option.category.categoriesName}}
+                                    </button>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" ng-click="editOption(option); $event.stopPropagation();"
+                                            ng-show="option.hover" class="btn btn-sm bg-white border text-muted">
+                                            Sửa
+                                        </button>
+                                        <button type="button"
+                                            ng-click="deleteOption(option); $event.stopPropagation(); "
+                                            ng-show="option.hover" class="btn btn-sm bg-white border text-danger">
+                                            Xóa
+                                        </button>
+                                    </div>
+                                </div>
+                                <div ng-if="option.editing">
+                                    <div class="d-flex">
+                                        <input type="text" ng-model="option.category.categoriesName"
+                                            class="form-control flex-grow-1">
+                                        <button type="button" class="btn btn-primary ms-2"
+                                            ng-click="saveOption(option); $event.stopPropagation();"
+                                            ng-disabled="!option.category.categoriesName">
+                                            Lưu
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        </div>
+                        <li class="list-group-item  border-0 border-top bg-light py-0 px-2">
+                            <div class="d-flex align-items-center">
+                                <span class="material-symbols-outlined" ng-show="!newOption">
+                                    add
+                                </span>
+                                <button class="btn btn-primary btn-sm d-flex align-items-center"
+                                    ng-show="!isOptionExists(newOption)&&newOption"
+                                    ng-click="addOption(); $event.stopPropagation();" data-bs-toggle="tooltip"
+                                    title="Thêm">
+                                    <span class="material-symbols-outlined">
+                                        add
+                                    </span>
+                                </button>
+                                <input type="text" ng-model="newOption"
+                                    class="form-control bg-light border-0 flex-grow-1 my-2" placeholder="Tạo mới"
+                                    ng-keyup="$event.keyCode === 13 && addOption()">
+                            </div>
+                            <div class="text-danger ms-4" ng-if="isOptionExists(newOption)">Loại hàng này đã tồn tại!
+                            </div>
+                        </li>
+                    </div>
+                </ul>
+
             </div>
             <div class="my-3">
                 <label for="inputAddress2" class="form-label">Đơn giá bán</label>
@@ -60,10 +138,13 @@
             </div>
             <div class="my-3">
                 <label for="inputZip" class="form-label">Ngày hết hạn gần nhất</label>
-                <input ng-model="form.nearestExpDate" class="form-control" type="date">
+                <div class="d-flex align-items-center">
+                    <input ng-model="form.nearestExpDate" class="form-control" type="date">
+                    <label class="ms-2">{{ calculateDaysRemaining(form.nearestExpDate) }} ngày còn lại</label>
+                </div>
             </div>
             <div class="vstack gap-2 col-md-5 w-100">
-                <button ng-if="feature==='create'" ng-click="create()" class="btn btn-primary rounded-3"
+                <button ng-if="feature==='create'" ng-click="create();uploadImage()" class="btn btn-primary rounded-3"
                     data-bs-dismiss="offcanvas">
                     <i class="fas fa-plus"></i> Thêm
                 </button>

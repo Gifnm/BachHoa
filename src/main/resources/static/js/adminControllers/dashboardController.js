@@ -1,7 +1,7 @@
 const ctx = document.getElementById('revenueChart');
 const ctx2 = document.getElementById('myChart2');
 const pieChart = document.getElementById('pieChart');
-const host = "http://localhost:8081/bachhoa/api";
+const host = "/bachhoa/api";
 
 app.controller("dashboard-ctrl", function ($scope, $http, $filter) {
     $scope.startDateSelected = new Date('2021-01-01')

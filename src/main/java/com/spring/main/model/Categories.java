@@ -18,6 +18,9 @@ public class Categories {
 	@Column(name = "categoriesName", nullable = false)
 	private String categoriesName;
 
+	@Column(name = "storeID", nullable = false)
+	private String storeID;
+
 	public int getCategoriesID() {
 		return categoriesID;
 	}
@@ -32,6 +35,14 @@ public class Categories {
 
 	public void setCategoriesName(String categoriesName) {
 		this.categoriesName = categoriesName;
+	}
+
+	public String getStoreID() {
+		return storeID;
+	}
+
+	public void setStoreID(String storeID) {
+		this.storeID = storeID;
 	}
 
 }
