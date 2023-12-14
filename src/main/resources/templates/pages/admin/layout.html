@@ -26,6 +26,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- css -->
     <!-- <link rel="stylesheet" href="../css/templateStyle.css"> -->
+    <link rel="stylesheet" href="../css/loading.css">
     <link rel="stylesheet" href="../css/layoutAdminStyle.css">
     <link rel="stylesheet" href="../css/tableAdminStyle.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,6 +39,9 @@
 </head>
 
 <body class="bg-dark overflow-hidden">
+    <div class="loader">
+        <img src="../bachhoaimg/loading.gif" alt="Loading...">
+    </div>
     <p id="accountEmail" class="visually-hidden">[[${#httpServletRequest.remoteUser}]]</p>
     <div class="position-absolute w-100 vh-100 d-flex align-items-center justify-content-center text-white"
         style="z-index: -1;">
@@ -70,6 +74,12 @@
     <script>
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>
+    <script>
+        $(window).on("load", function () {
+            const loader = document.querySelector(".loader");
+            loader.className += " hidden";
+        });
     </script>
 </body>
 

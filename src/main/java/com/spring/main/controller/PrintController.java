@@ -32,6 +32,7 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
@@ -50,9 +51,9 @@ public class PrintController {
 		SessionAttr.Title = name + "__title";
 		SessionAttr.Close = name + "__close";
 	}
-
+//	ResponseEntity<byte[]>
 	@GetMapping("/print/{billID}")
-	public ResponseEntity<byte[]> print(Model model, @PathVariable("billID") String billID)
+	public String print(Model model, @PathVariable("billID") String billID)
 			throws FileNotFoundException, JRException {
 		Bill bill = billService.findByID(billID);
 		List<BillDetail> billDetail = billDetailService.findByBillID(bill.getBillID());
@@ -95,17 +96,22 @@ public class PrintController {
 		JasperPrint report = JasperFillManager.fillReport(compileReport, map, beanCollectionDataSource);
 
 		// JasperExportManager.exportReportToPdfFile(report, "invoice.pdf");
-		byte[] data = JasperExportManager.exportReportToPdf(report);
-		HttpHeaders headers = new HttpHeaders();
-		headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=invoice.pdf");
+//		byte[] data = JasperExportManager.exportReportToPdf(report);
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=invoice.pdf");
+		
+		//JasperPrint p = JasperFillManager.fillReport(compileReport, map, conn);
+        //JasperViewer.viewReport(p, false);
+        JasperPrintManager.printReport(report, false);
 		
 		// Thông báo
 		SessionAttr.CURRENT_MESSAGE = "Xuất hóa đơn thành công !";
 		callToast("success");
 		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
 		
-		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
+//		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
 		// return "ok";
+		return "redirect:/sell";
 	}
 
 	public static int roundToThousand(float value) {

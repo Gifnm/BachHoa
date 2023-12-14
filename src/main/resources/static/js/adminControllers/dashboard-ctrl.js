@@ -1,7 +1,7 @@
 const ctx = document.getElementById('revenueChart');
 const ctx2 = document.getElementById('myChart2');
 const pieChart = document.getElementById('pieChart');
-const host = "http://localhost:8081/bachhoa/api";
+const host = "http://localhost:8083/bachhoa/api";
 
 const app = angular.module("app", []);
 app.controller("ctrl", function ($scope, $http, $filter) {
