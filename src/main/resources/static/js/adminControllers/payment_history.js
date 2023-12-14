@@ -409,8 +409,5 @@ app.controller("paymentHistory-ctrl", function ($scope, $http) {
 
     // chọn mặc định ngày hôm nay
     SetDefaultDate();
-    // lấy danh sách lịch sử nộp tiền
-    loadPayment();
-    //giợ ý nhân viên
-    initAutoComplete();
+    
 })
