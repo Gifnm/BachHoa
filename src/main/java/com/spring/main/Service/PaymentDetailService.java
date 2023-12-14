@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.main.jpa.PaymentDetailJPA;
-import com.spring.main.jpa.PaymentHistoryJPA;
 import com.spring.main.model.PaymentDetail;
 import com.spring.main.model.PaymentHistory;
 
@@ -20,7 +19,7 @@ public class PaymentDetailService {
 		return paymentDetail;
 	}
 
-	public PaymentDetail findByPaymentID(Integer id) {
+	public PaymentHistory findByPaymentID(Integer id) {
 		return paymentDetailJPA.findByPaymentID(id);
 	}
 

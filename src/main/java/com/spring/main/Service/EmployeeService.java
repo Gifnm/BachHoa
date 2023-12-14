@@ -47,7 +47,6 @@ public class EmployeeService implements UserDetailsService {
 		List<Authority> list = authorityJPA.findAll();
 		return list;
 	}
-
 	// Cập nhật thông tin
 	private final String FOLDER_PATH = "C:\\bachhoaimg\\";
 

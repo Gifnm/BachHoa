@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.google.protobuf.TextFormat.Printer;
 import com.spring.main.jpa.PrinterJPA;
 import com.spring.main.model.Printers;
 

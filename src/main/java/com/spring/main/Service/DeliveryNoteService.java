@@ -1,10 +1,7 @@
 package com.spring.main.Service;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -63,7 +60,7 @@ public class DeliveryNoteService {
 
 	public void setFinish(String id) {
 		long yourmilliseconds = System.currentTimeMillis();
-		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+		// SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
 		Date resultdate = new Date(yourmilliseconds);
 		deliveryNoteJPA.setFinish(resultdate, id);
 
@@ -115,7 +112,9 @@ public class DeliveryNoteService {
 		// Generate custom ID
 		String customId = IdGenerator.generateId();
 		deliveryNote.setId(customId);
-		deliveryNote.setTimeCreate(new Date());
+		Date date = new Date();
+		Timestamp ts = new Timestamp(date.getTime());
+		deliveryNote.setTimeCreate(ts);
 
 		// Set store and employee (you may need to fetch them from the database using
 		// storeID and employeeID)

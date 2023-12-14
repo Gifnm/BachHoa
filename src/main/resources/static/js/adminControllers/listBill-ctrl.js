@@ -51,8 +51,8 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
     $scope.initialize = function () {
         // load hóa đơn
         $http.get(`/bachhoa/api/bill/all/${$scope.account.store.storeID}`).then(resp => {
-            $scope.bills = resp.data;
-            $scope.allBills = resp.data.length;
+            $scope.bills = resp.data.content;
+            $scope.allBills = resp.data.content.length;
             $scope.items = [];
             angular.forEach($scope.bills, function (item) {
                 item.timeCreate = dateFormat(item.timeCreate);
@@ -126,6 +126,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
                 icon: "success",
             });
             $scope.findByDate($scope.fromDate, $scope.toDate, 0);
+            initAutoComplete();
         }).catch(error => {
             //alert("Hiện không thể xóa hóa đơn!");
             console.log("Error", error);
@@ -182,11 +183,15 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
     //Tìm hóa đơn
     $scope.find = function (billID) {
         if (billID == null || billID == undefined || billID == '') {
-            $scope.initialize();
+            //$scope.initialize();
+            $scope.items = [];
+            $scope.isNull = true;
+            $scope.isPagination = false;
         } else {
             let item = $scope.listBillID.find(item => item == billID);
             if (item) {
                 $scope.isNull = false;
+                $scope.isPagination = false;
                 $scope.items = [];
                 $http.get(`/bachhoa/api/bill/findBill/${billID}?store-id=${$scope.account.store.storeID}`).then(resp => {
                     let bill = resp.data;
@@ -235,6 +240,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
                 $scope.isNull = true;
             } else {
                 $scope.isNull = false;
+                $scope.isPagination = true;
             }
             $scope.items = [];
             $scope.bills = resp.data.content;
@@ -276,7 +282,7 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
         var minutes = String(date.getMinutes()).padStart(2, '0');
         var seconds = String(date.getSeconds()).padStart(2, '0');
 
-        return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
     }
 
     let startDateFormat = function (value) {

@@ -1,48 +1,56 @@
+@import
+	url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap")
+	;
+
+body, html {
+	font-family: "Manrope", sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
 header {
-  background-color: #F4F5F7;
-  padding: 0 2%;
+	background-color: #F4F5F7;
+	padding: 0 2%;
 }
 
 .menuHidden {
-  display: none;
+	display: none;
 }
 
 .logo a {
-  color: rgb(7, 31, 137);
+	color: rgb(7, 31, 137);
 }
 
 .tab-content {
-  border: 1px solid #dee2e6;
-  border-top: 0;
-  padding: 0.75rem 1rem;
-  text-align: justify;
-  height: 100%;
+	border: 1px solid #dee2e6;
+	border-top: 0;
+	padding: 0.75rem 1rem;
+	text-align: justify;
+	height: 100%;
 }
 
 .tab-pane {
-  height: 490px;
+	height: 480px;
 }
 
 a {
-  text-decoration: none;
+	text-decoration: none;
 }
 
 .number-control {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
 
-.number-left,
-.number-right{
-  background-color: rgb(122, 231, 255);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2px;
-  color: black;
-  transition: background-color 0.3s;
-  cursor: pointer;
-  height: 1.5rem;
+.number-left, .number-right {
+	background-color: rgb(122, 231, 255);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2px;
+	color: black;
+	transition: background-color 0.3s;
+	cursor: pointer;
+	height: 1.5rem;
 }
 /* 
 .number-left::before {
@@ -52,47 +60,38 @@ a {
 .number-right::after {
   content: "+";
 } */
-
 .number-quantity {
-  border: 0;
-  width: 50px;
-  -moz-appearance: textfield;
-  /* border-top: 1px solid black;
+	border: 0;
+	width: 50px;
+	-moz-appearance: textfield;
+	/* border-top: 1px solid black;
   border-bottom: 1px solid black; */
 }
 
-.number-left:hover,
-.number-right:hover {
-  background-color: #666666;
-  color: white;
+.number-left:hover, .number-right:hover {
+	background-color: #666666;
+	color: white;
 }
 
-#slsp::-webkit-outer-spin-button,
-#slsp::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+#slsp::-webkit-outer-spin-button, #slsp::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
 }
 
-@media (max-width: 700px) {
-
-  .username,
-  .logo,
-  .storeAddress,
-  .menu {
-    display: none;
-  }
-
-  .account {
-    display: flex;
-    justify-content: end;
-  }
-
-  .menuHidden {
-    display: block;
-  }
+@media ( max-width : 700px) {
+	.username, .logo, .storeAddress, .menu {
+		display: none;
+	}
+	.account {
+		display: flex;
+		justify-content: end;
+	}
+	.menuHidden {
+		display: block;
+	}
 }
 
 .swal2-popup>#swal2-title {
-  text-align: center;
-  margin: 0.6rem;
+	text-align: center;
+	margin: 0.6rem;
 }

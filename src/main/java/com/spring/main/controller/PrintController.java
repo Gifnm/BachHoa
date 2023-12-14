@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,11 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -26,6 +25,7 @@ import com.spring.main.Service.BillService;
 import com.spring.main.model.Bill;
 import com.spring.main.model.BillDetail;
 import com.spring.main.model.Invoice;
+import com.spring.main.util.SessionAttr;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -42,8 +42,17 @@ public class PrintController {
 	@Autowired
 	BillService billService;
 
+	// Custom Toast
+	static void callToast(String name) {
+		// Tự gọi icon hiển thị
+		SessionAttr.Toast = name;
+		SessionAttr.Icon = name + "__icon";
+		SessionAttr.Title = name + "__title";
+		SessionAttr.Close = name + "__close";
+	}
+
 	@GetMapping("/print/{billID}")
-	public ResponseEntity<byte[]> print(@PathVariable("billID") String billID)
+	public ResponseEntity<byte[]> print(Model model, @PathVariable("billID") String billID)
 			throws FileNotFoundException, JRException {
 		Bill bill = billService.findByID(billID);
 		List<BillDetail> billDetail = billDetailService.findByBillID(bill.getBillID());
@@ -89,6 +98,12 @@ public class PrintController {
 		byte[] data = JasperExportManager.exportReportToPdf(report);
 		HttpHeaders headers = new HttpHeaders();
 		headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=invoice.pdf");
+		
+		// Thông báo
+		SessionAttr.CURRENT_MESSAGE = "Xuất hóa đơn thành công !";
+		callToast("success");
+		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
+		
 		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
 		// return "ok";
 	}

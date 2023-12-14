@@ -387,6 +387,7 @@ app.controller("ctrl", function ($scope, $http) {
 
         })
     };
+    
     $scope.Denied = function (id) {
         $http.put(`/bachhoa/api/employeeDel/${id}`).then(resp => {
             toastMixin.fire({

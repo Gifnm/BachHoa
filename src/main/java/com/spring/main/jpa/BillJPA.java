@@ -19,7 +19,7 @@ public interface BillJPA extends JpaRepository<Bill, String> {
 	List<String> getBillID(Integer storeID);
 
 	@Query("SELECT o FROM Bill o WHERE o.store.storeID = ?1")
-	List<Bill> findAllByStoreID(Integer storeID);
+	Page<Bill> findAllByStoreID(Integer storeID, Pageable page);
 
 	@Query("SELECT o FROM Bill o WHERE o.timeCreate >= ?1 AND o.timeCreate <= ?2 AND o.store.storeID = ?3 ORDER BY timeCreate DESC")
 	Page<Bill> SearchBetween2Date(Timestamp fromDate, Timestamp toDate, Integer storeID, Pageable page);

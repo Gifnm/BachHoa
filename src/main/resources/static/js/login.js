@@ -128,6 +128,11 @@ app.controller("register-ctrl", function ($scope, $http) {
   $scope.form = {};
   $scope.employee = {};
 
+  function isEmail(value) {
+    var regExp = /^[A-Za-z][\w$.]+@[\w]+\.\w+$/;
+    return regExp.test(value)
+  }
+
   // SweetAler 2
   var toastMixin = Swal.mixin({
     toast: true,
@@ -163,9 +168,40 @@ app.controller("register-ctrl", function ($scope, $http) {
     item.roleID = "";
     item.firstWork = new Date();
     item.active = 0;
-    if ($scope.items.find((p) => p.email == item.email)) {
+    if (item.employeeName == "" || item.employeeName == null) {
       Swal.fire({
-        title: "Tài khoản đã tồn tại.",
+        title: "Hãy điền họ và tên của bạn !",
+        icon: "warning",
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+      $event.preventDefault();
+    } else if (item.email == "" || item.email == null) {
+      // Bắt lỗi rỗng
+      Swal.fire({
+        title: "Đề nghị nhập Email của bạn !",
+        icon: "warning",
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+      $event.preventDefault();
+    } else if (!isEmail(item.email)) {
+      // Bắt lỗi không đúng định dạng
+      Swal.fire({
+        title: "Email không đúng !",
+        text: "Bạn đang nhập sai định email, hãy kiểm tra lại !",
+        icon: "warning",
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+      $event.preventDefault();
+    }
+    else if ($scope.items.find((p) => p.email == item.email)) {
+      Swal.fire({
+        title: "Tài khoản này đã tồn tại.",
         icon: "warning",
         timer: 2000,
         timerProgressBar: true,
@@ -187,7 +223,7 @@ app.controller("register-ctrl", function ($scope, $http) {
         .post(`/bachhoa/api/employee/insert`, item)
         .then((resp) => {
           $scope.employee = resp.data;
-          location.href = current_host + "/register";
+          location.href = "http://localhost:8081/register";
           // $event.preventDefault();
         })
         .catch((error) => {

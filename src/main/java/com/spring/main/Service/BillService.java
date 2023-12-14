@@ -34,8 +34,8 @@ public class BillService {
 		return billJPA.findByEmployeeAndDate(employeeID, fromDate, toDate);
 	}
 
-	public List<Bill> findAllByStoreID(Integer storeID) {
-		return billJPA.findAllByStoreID(storeID);
+	public Page<Bill> findAllByStoreID(Integer storeID, Pageable page) {
+		return billJPA.findAllByStoreID(storeID, page);
 	}
 
 	public void delete(String billID) {

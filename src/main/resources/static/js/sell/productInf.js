@@ -7,6 +7,27 @@ app_product.controller("product-ctrl", function ($scope, $http) {
     $scope.discountName = "Không";
     $scope.employee = {};
 
+    // SweetAlert 2
+    var toastMixin = Swal.mixin({
+        toast: true,
+        icon: "success",
+        title: "General Title",
+        animation: false,
+        position: "top-right",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        customClass: {
+            confirmButton: "btn btn-outline-warning rounded-5 cursor",
+            cancelButton: "btn btn-outline-danger rounded-5 cursor",
+        },
+        buttonsStyling: false,
+        didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
+
     // gợi ý sản phẩm
     let initAutoComplete = function () {
         $http.get(`/product/getProductName?storeID=${$scope.employee.store.storeID}`).then(resp => {
@@ -67,7 +88,7 @@ app_product.controller("product-ctrl", function ($scope, $http) {
         const ThisYear = new Date();
         const EmployeeBorn = new Date(AGE);
         const Timelines = ThisYear - EmployeeBorn;
-        if ($scope.dataEmployee.email == null || $scope.form.email == "") {
+        if ($scope.dataEmployee.email == null || $scope.dataEmployee.email == "") {
             toastMixin.fire({
                 title: "Vui lòng nhập email của bạn, hãy kiểm tra lại !",
                 icon: "warning",
@@ -232,39 +253,46 @@ app_product.controller("product-ctrl", function ($scope, $http) {
         // Tính tổng tiền phải nộp (tổng thu các bill trong ngày)
         // Lịch sử nộp
         let createPH = `/bachhoa/api/paymentHistory/create`;
-        // Chi tiết số tiền nộp
-        let createPD = `/bachhoa/api/paymentDetail/create`;
-
+        let paymentDetail = angular.copy($scope.formMoney);
         let data = {
             employee: $scope.employee,
             admin: null,
+            store: $scope.employee.store,
             timePay: new Date().getTime(),
             timeReceived: null,
             totalAmount: parseFloat($scope.TotalMoneytoPay),
             totalReceived: parseFloat($scope.totalMoneyYouPay),
             // 0 - Chưa duyệt, thu chưa đủ 1 và đã thu 2
             paied: 0,
+            vnd500: paymentDetail.vnd500,
+            vnd200: paymentDetail.vnd200,
+            vnd100: paymentDetail.vnd100,
+            vnd50: paymentDetail.vnd50,
+            vnd20: paymentDetail.vnd20,
+            vnd10: paymentDetail.vnd10,
+            vnd5: paymentDetail.vnd5,
+            vnd2: paymentDetail.vnd2,
+            vnd1: paymentDetail.vnd1
         };
         // create payment history
         $http.post(createPH, data).then((resp) => {
-            // create payment detail
-            let paymentDetail = angular.copy($scope.formMoney);
-            paymentDetail.paymentHistory = resp.data;
-            console.log(paymentDetail)
-            $http.post(createPD, paymentDetail).then(() => {
-                toastMixin.fire({
-                    title: "Nộp tiền thành công, hãy đợi quản lý duyệt nhé!",
-                    icon: "success",
-                });
-                window.location = "/logout";
-            }).catch((error) => {
-                alert("Lỗi thêm chi tiết!");
-                console.log("Error", error);
+            Swal.fire({
+                title: "Nộp tiền thành công, hãy đợi quản lý duyệt nhé!",
+                icon: "success",
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "OK"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = "/logout";
+                }
             });
+        }).catch((error) => {
+            alert("Lỗi nộp tiền!");
+            console.log("Error", error);
         });
     };
 
-    //-----------------------------------------------//
+    //------------------------------------------------//
 
     //-----------------------------------------------//
     //  Tìm Nhân viên

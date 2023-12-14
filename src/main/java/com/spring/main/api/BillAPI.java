@@ -38,8 +38,9 @@ public class BillAPI {
 	}
 
 	@GetMapping("bill/all/{storeID}")
-	public List<Bill> getAll(@PathVariable("storeID") Integer storeID) {
-		return billService.findAllByStoreID(storeID);
+	public Page<Bill> getAll(@PathVariable("storeID") Integer storeID, @RequestParam("index") Optional<Integer> index) {
+		Pageable page = PageRequest.of(index.orElse(0), 8);
+		return billService.findAllByStoreID(storeID, page);
 	}
 
 	@GetMapping("bill/getBillID/{storeID}")
