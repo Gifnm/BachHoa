@@ -4,7 +4,7 @@ const pieChart = document.getElementById('pieChart');
 const host = "/bachhoa/api";
 
 const app = angular.module("app", []);
-app.controller("ctrl", function($scope, $http) {
+app.controller("ctrl", function ($scope, $http) {
 	$scope.menu = 'thongke'
 	$scope.startDateSelected = new Date('2021-01-01')
 	$scope.endDateSelected = new Date()
@@ -30,7 +30,7 @@ app.controller("ctrl", function($scope, $http) {
 
 	$scope.billsAmount = 0
 
-	$scope.translateTypeMileStone = function() {
+	$scope.translateTypeMileStone = function () {
 		if ($scope.mileStone == 'day') {
 			return 'ngày';
 		} else if ($scope.mileStone == 'month') {
@@ -119,7 +119,7 @@ app.controller("ctrl", function($scope, $http) {
 	});
 
 	$scope.account = {} //Account of login employee
-	$scope.getAccount = function() {
+	$scope.getAccount = function () {
 		let email = document.getElementById('accountEmail').innerText;
 		return $http.get(`${host}/employee/findByEmail/${email}`).then(resp => {
 			$scope.account = resp.data;
@@ -130,11 +130,11 @@ app.controller("ctrl", function($scope, $http) {
 		});
 	}
 
-	$scope.initChart = function() {
+	$scope.initChart = function () {
 		$scope.updateDataRevenueChart();
 	}
 
-	$scope.updateDataRevenueChart = function() {
+	$scope.updateDataRevenueChart = function () {
 		$scope.startDate = formatDate($scope.startDateSelected)
 		$scope.endDate = formatDate($scope.endDateSelected)
 		console.log($scope.startDate + ' - ' + $scope.endDate + ' - ' + $scope.mileStone);
@@ -184,7 +184,10 @@ app.controller("ctrl", function($scope, $http) {
 						}
 					}).then(resp => {
 						$scope.costData.increaseCost = resp.data;
-
+						$scope.totalCost = $scope.costData.increaseCost[$scope.costData.increaseCost.length - 1]
+						// Tính lợi nhuận
+						$scope.totalProfit = $scope.totalRevenue - $scope.totalCost;
+						console.log($scope.totalCost)
 						$http.get(`${host}/statistic/cost`, {
 							params: {
 								'start-date': $scope.startDate,
@@ -204,10 +207,10 @@ app.controller("ctrl", function($scope, $http) {
 								}
 							}).then(resp => {
 								$scope.costData.labels = resp.data;
-								$scope.totalCost = $scope.costData.increaseCost[$scope.costData.increaseCost.length - 1]
-								// Tính lợi nhuận
-								$scope.totalProfit = $scope.totalRevenue - $scope.totalCost;
-								console.log($scope.totalCost)
+								// $scope.totalCost = $scope.costData.increaseCost[$scope.costData.increaseCost.length - 1]
+								// // Tính lợi nhuận
+								// $scope.totalProfit = $scope.totalRevenue - $scope.totalCost;
+								// console.log($scope.totalCost)
 							});
 						})
 					});
@@ -217,7 +220,7 @@ app.controller("ctrl", function($scope, $http) {
 	}
 
 
-	$scope.totalBills = function() {
+	$scope.totalBills = function () {
 		let listBill = [];
 		$http.get(`${host}/bills`, {
 			params: {
@@ -231,7 +234,7 @@ app.controller("ctrl", function($scope, $http) {
 		});
 	}
 
-	$scope.initialize = function() {
+	$scope.initialize = function () {
 		$scope.getAccount().then(() => {
 			$scope.showRequest();
 			$scope.initChart();
@@ -239,14 +242,14 @@ app.controller("ctrl", function($scope, $http) {
 		});
 	}
 
-	$scope.showRequest = function() {
+	$scope.showRequest = function () {
 		$http.get(`/bachhoa/api/employee/Request/${$scope.account.store.storeID}`).then(resp => {
 			$scope.emRequest = resp.data;
 			$scope.badge = $scope.emRequest.length;
 
 		})
 	};
-	$scope.Denied = function(id) {
+	$scope.Denied = function (id) {
 		$http.put(`/bachhoa/api/employeeDel/${id}`).then(resp => {
 			alert("Thao tác đã hoàn thành!!!!");
 			$scope.showRequest();
@@ -254,7 +257,7 @@ app.controller("ctrl", function($scope, $http) {
 
 	}
 
-	$scope.acceptNV = function(id) {
+	$scope.acceptNV = function (id) {
 		$http.put(`/bachhoa/api/employeeAccept/${id}`).then(resp => {
 			alert("Nhân viên đã được chấp nhận");
 			$scope.initialize();
