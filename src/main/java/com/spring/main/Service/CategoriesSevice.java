@@ -15,8 +15,11 @@ public class CategoriesSevice {
 	CategoriesJPA categoriesJPA;
 
 	public List<Categories> findALL() {
-		List<Categories> categories = categoriesJPA.findAll();
-		return categories;
+		return categoriesJPA.findAll();
+	}
+
+	public List<Categories> findALLByStoreId(int storeId) {
+		return categoriesJPA.findByStoreId(storeId);
 	}
 
 	public Categories findById(int id) {

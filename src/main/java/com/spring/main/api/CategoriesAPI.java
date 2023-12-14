@@ -20,6 +20,11 @@ public class CategoriesAPI {
 		return categoriesSevice.findALL();
 	}
 
+	@GetMapping("{storeId}/categories")
+	public List<Categories> getAllByStoreId(@PathVariable("storeId") int storeId) {
+		return categoriesSevice.findALLByStoreId(storeId);
+	}
+
 	@PostMapping("categories")
 	public Categories addCategory(@RequestBody Categories entity) {
 		return categoriesSevice.save(entity);

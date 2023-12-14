@@ -1,7 +1,8 @@
-const host = "http://localhost:8081/bachhoa/api";
-
+const api_host = "/bachhoa/api";
 const app = angular.module("app", []);
 app.controller("ctrl", function ($scope, $http) {
+    $scope.dev_img_host_url = "http://localhost:8081/bachhoaimg/";
+    $scope.product_host_url = "http://192.168.1.5:8083/bachhoaimg/";
     $scope.menu = 'sanpham'
     //Variables
     $scope.today = new Date();
@@ -37,7 +38,7 @@ app.controller("ctrl", function ($scope, $http) {
 
     $scope.getAccount = function () {
         let email = document.getElementById('accountEmail').innerText;
-        return $http.get(`${host}/employee/findByEmail/${email}`).then(resp => {
+        return $http.get(`${api_host}/employee/findByEmail/${email}`).then(resp => {
             $scope.account = resp.data;
             console.log("[ProductCtrl:getAccount():21]\n> Account: " + $scope.account);
         }).catch(error => {
@@ -52,7 +53,7 @@ app.controller("ctrl", function ($scope, $http) {
             // Load products into table
             storeId = $scope.account.store.storeID;
             console.log("[ProductCtrl:initialize():28]\n> Store Id: " + storeId + " account name: " + $scope.account.employeeName);
-            let url = `${host}/products/${storeId}`;
+            let url = `${api_host}/products/${storeId}`;
             $http.get(url).then(resp => {
                 $scope.items = resp.data;
                 $scope.items.forEach(item => {
@@ -60,7 +61,7 @@ app.controller("ctrl", function ($scope, $http) {
                 })
             });
             // Load categories onto form's comboboxes
-            url = `${host}/categories`;
+            url = `${api_host}/${storeId}/categories`;
             $http.get(url).then(resp => {
                 let categories = resp.data;
                 categories.forEach(category => {
@@ -78,13 +79,16 @@ app.controller("ctrl", function ($scope, $http) {
     //Save new product
     $scope.create = function () {
         let item = angular.copy($scope.form);
+        const fileName = document.getElementById('uploadImage').files[0].name;
+        //append the host url default to sync
+        item.image = $scope.product_host_url + fileName;
         // Cal api
-        let url = `${host}/products`;
+        let url = `${api_host}/products`;
         $http.post(url, item).then(resp => {
             $scope.reset();
             $scope.initialize();
             let defaultShelve;
-            $http.get(`${host}/shelve/0`).then(resp => {
+            $http.get(`${api_host}/shelve/0`).then(resp => {
                 defaultShelve = resp.data;
             })
             let defaultProductPosition = {
@@ -95,7 +99,7 @@ app.controller("ctrl", function ($scope, $http) {
                 store: $scope.account.store,
                 form: 0
             }
-            $http.post(`${host}/productPosition/insert`, defaultProductPosition).then(resp => {
+            $http.post(`${api_host}/productPosition/insert`, defaultProductPosition).then(resp => {
                 console.log('Create default position successfully: ' + resp.data);
             }).catch((error) => {
                 console.log('Create fail: ' + error);
@@ -111,40 +115,19 @@ app.controller("ctrl", function ($scope, $http) {
                 icon: "error",
             })
         })
-        //create product with image
-        // Collect product info and image in form into formData
-        // formData = new FormData();
-        // formData.append('product', JSON.stringify(angular.copy($scope.form)));
-        // formData.append('image', $scope.image);
-
-        // console.log("[product-ctrl.js:imageChanged():53]\n> Form data: " + $scope.formData);
-
-        // Call api
-        // let url = `${host}/upload`;
-        // $http
-        //     .post(url, formData, {
-        //         transformRequest: angular.identity,
-        //         headers: { 'Content-type': 'multipart/form-data; boundary=--WebKitFormBoundary7MA4YWxkTrZu0gW' },
-        //     })
-        //     .then(resp => {
-        //         console.log("[product-ctrl.js:create():60]\n> POST SUCCESS");
-        //         resp.data.nearestExpDate = new Date(resp.data.nearestExpDate);
-        //         $scope.items.push(resp.data);
-        //         $scope.reset();
-        //         alert("[product-ctrl.js:create():68]\n> Them moi thanh cong!");
-        //     })
-        //     .catch(error => {
-        //         alert("[product-ctrl.js:create():71]\n>Loi them moi san pham!");
-        //         console.log("Error: " + error);
-        //     });
     };
 
 
     $scope.update = function () {
-
         let item = angular.copy($scope.form);
+        const fileName = document.getElementById('uploadImage').files[0].name;
+        if (fileName != null) {
+            //append the host url default to sync
+            item.image = $scope.product_host_url + fileName;
+            $scope.uploadImage();
+        }
         // Cal api
-        let url = `${host}/products/${item.productID}`;
+        let url = `${api_host}/products/${item.productID}`;
         $http.put(url, item).then(resp => {
             let index = $scope.items.findIndex(p => p.productID == item.productID);
             $scope.items[index] = item;
@@ -164,7 +147,7 @@ app.controller("ctrl", function ($scope, $http) {
 
     $scope.delete = function (id) {
         if (confirm("THIS ACTION CAN'T UNDO!\nAre you sure to delete this product?") == true) {
-            let url = `${host}/products/${id}`;
+            let url = `${api_host}/products/${id}`;
             $http.delete(url).then(resp => {
                 let index = $scope.items.findIndex(item => item.productID == $scope.form.productID);
                 $scope.items.splice(index, 1);
@@ -179,7 +162,7 @@ app.controller("ctrl", function ($scope, $http) {
 
     $scope.changeStatus = function (product) {
         product.status = !product.status;
-        $http.put(`${host}/products/update`, product).then(resp => {
+        $http.put(`${api_host}/products/update`, product).then(resp => {
             $scope.initialize();
             toastMixin.fire({
                 title: "Cập nhật trạng thái thành công!",
@@ -226,35 +209,66 @@ app.controller("ctrl", function ($scope, $http) {
     }
 
 
+    //Start: Image
     //Preview image when change (NOT DONE)
-    $scope.imageChanged = function (e, files) {
-        // Check if the user has selected a file.
-        if (files) {
-            //Show image choosing on element with id 'blah'
-            formImageElement.src = e
-            //Save name of image file choosing
-            let fileName = files.name;
-            $scope.form.image = "http://192.168.1.5:8083/bachhoaimg//" + fileName;
-            console.log("[product-ctrl.js:imageChanged():130] - Form image file name: " + $scope.form.image);
-        } else {
-            // The user has not selected a file.
-            alert('[product-ctrl.js:imageChanged():141]\n> Please select an image file.');
+    // $scope.imageChanged = function (e, files) {
+    //     // Check if the user has selected a file.
+    //     if (files) {
+    //         //Show image choosing on element with id 'blah'
+    //         formImageElement.src = e
+    //         //Save name of image file choosing
+    //         let fileName = files.name;
+    //         $scope.form.image = $scope.product_host_url + fileName;
+    //         console.log("[product-ctrl.js:imageChanged():130] - Form image file name: " + $scope.form.image);
+    //     } else {
+    //         // The user has not selected a file.
+    //         alert('[product-ctrl.js:imageChanged():141]\n> Please select an image file.');
+    //     }
+    // }
+
+    $scope.uploadImage = function () {
+        alert("Uploading image...");
+        let fileInput = document.getElementById('uploadImage');
+        let file = fileInput.files[0];
+
+        if (!file) {
+            alert("Please select an image to upload.");
+            return;
         }
 
-        // let data = new FormData();
-        // data.append('file', files[0]);
-        // let url = `${host}/upload/images`;
-        // $http.post(url, data, {
-        //     transformRequest: angular.identify,
-        //     headers: {'Content-Type': undefined}
-        // }).then(resp => {
-        //     alert(resp.data.path)
-        //     $scope.form.image = resp.data.name;
-        // }).catch(error => {
-        //     alert("Loi upload anh");
-        //     console.log("Error: ", error);
-        // })
+        let formData = new FormData();
+        formData.append('file', file);
+
+        $http.post(api_host + '/image/upload', formData, {
+            transformRequest: angular.identity,
+            headers: { 'Content-Type': undefined }
+        }).then(resp => {
+            console.log("Upload image successfully!\n> Image path: " + resp.data.path);
+            document.getElementById('uploadImage').value = null;
+        }).catch(error => {
+            console.log("Error: ", error);
+        });
+    };
+
+    //Get image of product by image name
+    $scope.getImage = function (imageName) {
+        const lastIndex = imageName.lastIndexOf("/");
+        const substring = imageName.substring(lastIndex + 1);
+        return $scope.dev_img_host_url + substring;
     }
+
+    const input = document.getElementById('uploadImage');
+    const image = document.getElementById('img-preview');
+
+    input.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+            const src = URL.createObjectURL(e.target.files[0]);
+            image.src = src;
+            console.log(e.target.files[0].name)
+        }
+
+    });
+    //End: Image
 
     //Start: Pagination
     $scope.currentPage = 0;
@@ -280,7 +294,7 @@ app.controller("ctrl", function ($scope, $http) {
     $scope.search = function (query) {
         let keyword = encodeURI(query)
         console.log("[product-ctrl.js:search():195]\n> Search keyword: " + keyword)
-        let url = `${host}/products/search?q=${keyword}&storeid=${storeId}`;
+        let url = `${api_host}/products/search?q=${keyword}&storeid=${storeId}`;
         console.log("[product-ctrl.js:search():197]\n> Search path: " + url)
         $http.get(url).then(resp => {
             $scope.items = resp.data;
@@ -296,17 +310,6 @@ app.controller("ctrl", function ($scope, $http) {
     }
     //End: Pagination
     $scope.initialize();
-    const input = document.getElementById('uploadImage');
-    const image = document.getElementById('img-preview');
-
-    // input.addEventListener('change', (e) => {
-    //     if (e.target.files.length) {
-    //         const src = URL.createObjectURL(e.target.files[0]);
-    //         image.src = src;
-    //         console.log(e.target.files[0].name)
-    //     }
-
-    // });
 
     //Start: CRUD Category
     $scope.selectedOption = '';
@@ -321,7 +324,7 @@ app.controller("ctrl", function ($scope, $http) {
 
     $scope.saveOption = function (option) {
         let categoryId = option.category.categoriesID;
-        let url = `${host}/categories/${categoryId}`;
+        let url = `${api_host}/categories/${categoryId}`;
         $http.put(url, option.category).then(resp => {
             option.editing = false;
         }).catch(error => {
@@ -333,7 +336,7 @@ app.controller("ctrl", function ($scope, $http) {
         let index = $scope.categories.indexOf(option);
         if (index > -1) {
             let categoryId = option.category.categoriesID;
-            let url = `${host}/categories/${categoryId}`;
+            let url = `${api_host}/categories/${categoryId}`;
             $http.delete(url).then(resp => {
                 $scope.categories.splice(index, 1);
                 toastMixin.fire({
@@ -356,8 +359,8 @@ app.controller("ctrl", function ($scope, $http) {
                 return option.category.categoriesName === $scope.newOption;
             });
             if (!existingOption) {
-                let url = `${host}/categories`;
-                let item = { categoriesName: $scope.newOption };
+                let url = `${api_host}/categories`;
+                let item = { categoriesName: $scope.newOption, storeID: $scope.account.store.storeID }
                 $http.post(url, item).then(resp => {
                     $scope.categories.push({ category: resp.data, editing: false });
                 }).catch(error => {

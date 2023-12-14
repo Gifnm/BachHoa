@@ -1,6 +1,9 @@
 package com.spring.main.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 //import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -28,6 +31,9 @@ public class ProductAPI {
 	ProductService productService;
 	@Autowired
 	ProductPosionService posionService;
+	// Specify the directory to save the file
+	@Value("${file.upload.directory}")
+	private String uploadDirectory;
 
 	// Su dung khi tao san pham moi
 	@PostMapping("/bachhoa/api/upload")
@@ -95,7 +101,7 @@ public class ProductAPI {
 		return productService.getByIDOrName(value);
 	}
 
-	// Start API thanhdq
+	// Start API admin
 	// Return all product in database
 	@GetMapping("/bachhoa/api/products")
 	public List<Product> getAll() {
@@ -117,10 +123,49 @@ public class ProductAPI {
 		return productService.getByKeyword(keyWord, storeId);
 	}
 
+	// Get product image in server
+	@GetMapping("/bachhoaimg/{imageName}")
+	public ResponseEntity<Resource> serveImage(@PathVariable String imageName) throws IOException {
+		// Get the image path from a customizable parameter
+		String imagePath = getImagePath(imageName);
+
+		// Create a FileSystemResource from the image path
+		try {
+			Resource resource = new FileSystemResource(imagePath);
+			// Set up the response headers
+			return ResponseEntity.ok()
+					.contentType(MediaType.IMAGE_JPEG)
+					.body(resource);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(500).body(null);
+		}
+
+	}
+
+	// Helper method to get the image path based on the image name
+	private String getImagePath(String imageName) {
+		// If the image name starts with http, then it's a URL
+		if (imageName.startsWith("http://")) {
+			imageName = imageName.substring(imageName.lastIndexOf("/") + 1);
+		}
+		return uploadDirectory + imageName;
+	}
+
 	// Save new product
 	@PostMapping("/bachhoa/api/products")
 	public Product create(@RequestBody Product product) {
 		return productService.create(product);
+	}
+
+	@PostMapping("/bachhoa/api/image/upload")
+	public ResponseEntity<String> postMethodName(@RequestParam("file") MultipartFile file) {
+		String result = productService.uploadImage(file);
+		if (result.startsWith("Error")) {
+			return ResponseEntity.ok("Image uploaded successfully" + result);
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
+		}
 	}
 
 	// Update product
@@ -140,6 +185,6 @@ public class ProductAPI {
 		productService.delete(id);
 	}
 
-	// End api thanhdq
+	// End api admin
 
 }

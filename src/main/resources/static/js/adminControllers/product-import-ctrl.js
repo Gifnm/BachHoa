@@ -1,4 +1,4 @@
-const host = "http://localhost:8081/bachhoa/api";
+const host = "/bachhoa/api";
 
 const app = angular.module("app", []);
 app.controller("ctrl", function ($scope, $http, $filter) {
@@ -456,6 +456,7 @@ app.controller("ctrl", function ($scope, $http, $filter) {
             $scope.products = resp.data;
         });
         $scope.getDeliveryNotes();
+        $scope.showRequest();
     });
 
     $scope.currentView = 'listView';
@@ -485,4 +486,36 @@ app.controller("ctrl", function ($scope, $http, $filter) {
     $scope.toggleProductSelection = function (product) {
         // Your individual product selection logic here
     };
+
+    //Start: Employee request
+    $scope.showRequest = function () {
+        $http.get(`/bachhoa/api/employee/Request/${$scope.account.store.storeID}`).then(resp => {
+            console.log(`/bachhoa/api/employee/Request/${$scope.account.store.storeID}`)
+            $scope.emRequest = resp.data;
+            $scope.badge = $scope.emRequest.length;
+
+        })
+    };
+    $scope.Denied = function (id) {
+        $http.put(`/bachhoa/api/employeeDel/${id}`).then(resp => {
+            toastMixin.fire({
+                title: 'Đã từ chối nhân viên.',
+                icon: 'success'
+            })
+            $scope.showRequest();
+        })
+
+    }
+
+    $scope.acceptNV = function (id) {
+        $http.put(`/bachhoa/api/employeeAccept/${id}`).then(resp => {
+            toastMixin.fire({
+                title: 'Nhân viên đã được chấp nhận!',
+                icon: 'success'
+            })
+            $scope.showRequest();
+        })
+
+    }
+    //End: Employee request
 });

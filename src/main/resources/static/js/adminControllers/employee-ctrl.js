@@ -1,4 +1,3 @@
-//const host = "http://localhost:8081/bachhoa/api";
 const app = angular.module("app", []);
 
 app.controller("employee-ctrl", function ($scope, $http) {

@@ -14,19 +14,9 @@
             bán':'Ngừng
             kinh
             doanh'}}</label>
-        <!-- <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button> -->
     </div>
     <div class="offcanvas-body bg-light p-4 rounded">
         <form enctype="multipart/form-data">
-            <!-- <div class="row g-3">
-                <div class="rounded bg-white col">
-                    <img src="{{employee.pictureURL}}" class="mt-2 card-img-top" alt="..." id="img-preview">
-                    <input id="uploadImage" type="file" name="file" accept="image/*" hidden>
-                    <label for="uploadImage" class="d-flex justify-content-center"><i
-                            class="bi bi-camera fs-3"></i></label>
-                </div>
-                <div class="col"></div>
-            </div> -->
             <div class="my-3">
                 <label for="inputEmail4" class="form-label disabled">Mã sản phẩm</label>
                 <input ng-model="form.productID" class="form-control">
@@ -34,6 +24,16 @@
             <div class="my-3">
                 <label for="inputPassword4" class="form-label">Tên sản phẩm</label>
                 <input ng-model="form.productName" class="form-control">
+            </div>
+            <div class="row g-3">
+                <div class="rounded bg-white col-12">
+                    <img src="{{form.image==null?DEFAULT_PRODUCT_IMAGE:getImage(form.image)}}" class="mt-2 card-img-top"
+                        alt="..." id="img-preview">
+                    <input id="uploadImage" type="file" hidden>
+                    <label for="uploadImage" class="d-flex justify-content-center"><i
+                            class="bi bi-camera fs-3"></i></label>
+                </div>
+                <div class="col"></div>
             </div>
             <div class="my-3">
                 <label for="inputAddress" class="form-label">Phân loại</label>
@@ -144,7 +144,7 @@
                 </div>
             </div>
             <div class="vstack gap-2 col-md-5 w-100">
-                <button ng-if="feature==='create'" ng-click="create()" class="btn btn-primary rounded-3"
+                <button ng-if="feature==='create'" ng-click="create();uploadImage()" class="btn btn-primary rounded-3"
                     data-bs-dismiss="offcanvas">
                     <i class="fas fa-plus"></i> Thêm
                 </button>

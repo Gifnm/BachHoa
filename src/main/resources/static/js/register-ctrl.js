@@ -1,3 +1,4 @@
+let current_host = window.location.host;
 app.controller("register-ctrl", function ($scope, $http) {
   // Stores
   $scope.stores = [];
@@ -34,6 +35,7 @@ app.controller("register-ctrl", function ($scope, $http) {
   });
 
   $scope.getAllStores = function () {
+    console.log(current_host);
     // load stores
     $http.get("/bachhoa/api/stores").then((resp) => {
       $scope.stores = resp.data;
@@ -67,7 +69,7 @@ app.controller("register-ctrl", function ($scope, $http) {
     var storeN = document.getElementById("storeName").value;
     var storeA = document.getElementById("storeAddress").value;
     var storeS = document.getElementById("storeSize").value;
-    if(storeN == "" || storeN == null) {
+    if (storeN == "" || storeN == null) {
       toastMixin.fire({
         title: "Hãy đặt tên cửa hàng của bạn !",
         icon: "warning",
@@ -92,72 +94,73 @@ app.controller("register-ctrl", function ($scope, $http) {
         $event.preventDefault();
       } else {
         $http.post(`/bachhoa/api/store/insert`, storeInfo).then(resp => {
-            var addStore = resp.data;
-            console.log(addStore);
-            $scope.stores.push(resp.data);
-            // Tìm nhân viên theo ID
-            var employeeID = document.getElementById("employeeID").innerText;
-            $http.get(`/bachhoa/api/employee/findByID/${employeeID}`).then(responese => {
-                $scope.employee = responese.data;
-                $scope.authorities = {
-                  employee: $scope.employee,
-                  role: { roleID: "qlch", workRole: "Quản lý cửa hàng" }
-                };
-                if ($scope.authority.find(a => a.employeeID == $scope.employee.employeeID)) {
-                  console.log("Đã có auth.");
-                } else {
-                  // Thêm auth mới
-                  alert("chuan bi ne")
-                  $http.post(`/bachhoa/api/employee/insert/authorities`, $scope.authorities).then(() =>{
-                    alert("them roi ne")
-                  });
-                }
-                // Update role lại
-                var role = "qlch";
-                $http.put(`/bachhoa/api/employee/updateRoles/${role}/${employeeID}`).then(resp => {console.log(resp.data)});
-                $scope.employee.store = addStore;
-                $scope.employee.active = 1;
-                // console.log($scope.employee);
-                $http
-                  .put(
-                    `/bachhoa/api/employee/update`,
-                    $scope.employee
-                  )
-                  .then(() => {
-                    Swal.fire({
-                      title: "Đăng ký cửa hàng thành công, xin chúc mừng !",
-                      html: "Tự động đăng nhau sau <b></b> mili giây.",
-                      icon: "success",
-                      timer: 3000,
-                      timerProgressBar: true,
-                      confirmButtonText: "Đăng nhập ngay",
-                      didOpen: () => {
-                        Swal.showLoading();
-                        const timer = Swal.getPopup().querySelector("b");
-                        timerInterval = setInterval(() => {
-                          timer.textContent = `${Swal.getTimerLeft()}`;
-                        }, 100);
-                      },
-                      willClose: () => {
-                        clearInterval(timerInterval);
-                      },
-                    }).then((result) => {
-                      if (result.isConfirmed) {
-                        location.href = "http://localhost:8081/login";
-                      } else if (result.dismiss === Swal.DismissReason.timer) {
-                        location.href = "http://localhost:8081/login";
-                      }
-                    });
-                  })
-                  .catch((error) => {
-                    toastMixin.fire({
-                      title: "Đã có lỗi xảy ra, hãy kiểm tra lại thông tin.",
-                      icon: "error",
-                    });
-                    console.log("Error", error);
-                  });
+          var addStore = resp.data;
+          console.log(addStore);
+          $scope.stores.push(resp.data);
+          // Tìm nhân viên theo ID
+          var employeeID = document.getElementById("employeeID").innerText;
+          $http.get(`/bachhoa/api/employee/findByID/${employeeID}`).then(responese => {
+            $scope.employee = responese.data;
+            $scope.authorities = {
+              employee: $scope.employee,
+              role: { roleID: "qlch", workRole: "Quản lý cửa hàng" }
+            };
+            if ($scope.authority.find(a => a.employeeID == $scope.employee.employeeID)) {
+              console.log("Đã có auth.");
+            } else {
+              // Thêm auth mới
+              alert("chuan bi ne")
+              $http.post(`/bachhoa/api/employee/insert/authorities`, $scope.authorities).then(() => {
+                alert("them roi ne")
               });
-          })
+            }
+            // Update role lại
+            var role = "qlch";
+            $http.put(`/bachhoa/api/employee/updateRoles/${role}/${employeeID}`).then(resp => { console.log(resp.data) });
+            $scope.employee.store = addStore;
+            $scope.employee.active = 1;
+            // console.log($scope.employee);
+            $http
+              .put(
+                `/bachhoa/api/employee/update`,
+                $scope.employee
+              )
+              .then(() => {
+                Swal.fire({
+                  title: "Đăng ký cửa hàng thành công, xin chúc mừng !",
+                  html: "Tự động đăng nhau sau <b></b> mili giây.",
+                  icon: "success",
+                  timer: 3000,
+                  timerProgressBar: true,
+                  confirmButtonText: "Đăng nhập ngay",
+                  didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                      timer.textContent = `${Swal.getTimerLeft()}`;
+                    }, 100);
+                  },
+                  willClose: () => {
+                    clearInterval(timerInterval);
+                  },
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    location.href = "/login";
+                  } else if (result.dismiss === Swal.DismissReason.timer) {
+                    location.href = current_host + "/login";
+
+                  }
+                });
+              })
+              .catch((error) => {
+                toastMixin.fire({
+                  title: "Đã có lỗi xảy ra, hãy kiểm tra lại thông tin.",
+                  icon: "error",
+                });
+                console.log("Error", error);
+              });
+          });
+        })
           .catch((error) => {
             toastMixin.fire({
               title: "Không thể đăng ký cửa hàng !",
@@ -193,7 +196,7 @@ app.controller("register-ctrl", function ($scope, $http) {
             (a) => a.employeeID == $scope.employee.employeeID
           )
         ) {
-          console.log("Đã có auth.").then(() => {});
+          console.log("Đã có auth.").then(() => { });
         } else {
           // Thêm auth mới cho account
           $http.post(
@@ -205,7 +208,7 @@ app.controller("register-ctrl", function ($scope, $http) {
         var role = "bhoa";
         $http
           .put(`/bachhoa/api/employee/updateRoles/${role}/${employeeID}`)
-          .then(() => {});
+          .then(() => { });
         $scope.employee.store = $scope.sessionStore;
         $scope.employee.active = 0;
         console.log($scope.employee);
@@ -222,7 +225,7 @@ app.controller("register-ctrl", function ($scope, $http) {
               showConfirmButton: false,
             }).then((result) => {
               if (result.dismiss === Swal.DismissReason.timer) {
-                location.href = "http://localhost:8081/business/load";
+                location.href = current_host + "/business/load";
               }
             });
           })
@@ -306,7 +309,7 @@ app.controller("register-ctrl", function ($scope, $http) {
                       showConfirmButton: false,
                     }).then((result) => {
                       if (result.dismiss === Swal.DismissReason.timer) {
-                        location.href = "http://localhost:8081/business/load";
+                        location.href = current_host + "/business/load";
                       }
                     });
                   })
