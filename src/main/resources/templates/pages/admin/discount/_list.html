@@ -57,16 +57,16 @@
             <tr ng-repeat="item in items track by $index">
                 <td style="width: 10%;">{{item.productID}}</td>
                 <td style="width: 15%;">{{item.product.productName}}</td>
-                <td style="width: 10%;">{{item.discount.discountType}}</td>
-                <td style="width: 10%;">{{item.activity?'Đang áp dụng':'Đã kết thúc'}}</td>
-                <td style="width: 15%;">{{item.startTime | date:'dd/MM/yyyy'}}</td>
-                <td style="width: 15%;">{{item.endTime | date:'dd/MM/yyyy'}}</td>
+                <td style="width: 10%;"><span class="{{item.discount.discountType == 'Mua 2 tặng 1'?'badge bg-primary':item.discount.discountType == 'Giảm giá 25%'?'badge bg-success':'badge bg-warning'}}">{{item.discount.discountType}}</span></td>
+                <td style="width: 15%;">{{item.activity?'Đang áp dụng':'Đã kết thúc'}}</td>
+                <td style="width: 13%;">{{item.startTime | date:'dd/MM/yyyy'}}</td>
+                <td style="width: 13%;">{{item.endTime | date:'dd/MM/yyyy'}}</td>
                 <td style="width: 10%;">
                     <button ng-click="stop(item.productID)" ng-if="item.activity" class="btn btn-primary">
                         Kết thúc
                     </button>
                 </td>
-                <td style="width: 15%;">
+                <td style="width: 14%;">
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editDiscount"
                         ng-click="edit(item.productID)">
                         Điều chỉnh
