@@ -14,21 +14,21 @@ public class PaymentDetailService {
 	@Autowired
 	PaymentDetailJPA paymentDetailJPA;
 
-	public PaymentDetail save(PaymentDetail paymentDetail) {
-		paymentDetailJPA.save(paymentDetail);
-		return paymentDetail;
-	}
+//	public PaymentDetail save(PaymentDetail paymentDetail) {
+//		paymentDetailJPA.save(paymentDetail);
+//		return paymentDetail;
+//	}
 
 	public PaymentHistory findByPaymentID(Integer id) {
 		return paymentDetailJPA.findByPaymentID(id);
 	}
 
-	public List<PaymentDetail> findAll() {
-		return paymentDetailJPA.findAll();
-	}
-	
-	public PaymentDetail findByID(Integer id) {
-		return paymentDetailJPA.findById(id).get();
-	}
+//	public List<PaymentDetail> findAll() {
+//		return paymentDetailJPA.findAll();
+//	}
+//	
+//	public PaymentDetail findByID(Integer id) {
+//		return paymentDetailJPA.findById(id).get();
+//	}
 
 }

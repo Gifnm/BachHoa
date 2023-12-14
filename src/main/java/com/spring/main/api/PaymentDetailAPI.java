@@ -26,20 +26,20 @@ public class PaymentDetailAPI {
 		return paymentDetailService.findByPaymentID(id);
 	}
 	
-	@GetMapping("paymentDetail/findByID/{id}")
-	public PaymentDetail findByID(@PathVariable("id") Integer id) {
-		return paymentDetailService.findByID(id);
-	}
-	
-	@PostMapping("paymentDetail/create")
-	public PaymentDetail create(@RequestBody PaymentDetail paymentDetail) {
-		paymentDetailService.save(paymentDetail);
-		return paymentDetail;
-	}
-	
-	@PutMapping("paymentDetail/update")
-	public PaymentDetail update(@RequestBody PaymentDetail paymentDetail) {
-		paymentDetailService.save(paymentDetail);
-		return paymentDetail;
-	}
+//	@GetMapping("paymentDetail/findByID/{id}")
+//	public PaymentDetail findByID(@PathVariable("id") Integer id) {
+//		return paymentDetailService.findByID(id);
+//	}
+//	
+//	@PostMapping("paymentDetail/create")
+//	public PaymentDetail create(@RequestBody PaymentDetail paymentDetail) {
+//		paymentDetailService.save(paymentDetail);
+//		return paymentDetail;
+//	}
+//	
+//	@PutMapping("paymentDetail/update")
+//	public PaymentDetail update(@RequestBody PaymentDetail paymentDetail) {
+//		paymentDetailService.save(paymentDetail);
+//		return paymentDetail;
+//	}
 }
