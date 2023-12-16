@@ -1,4 +1,3 @@
-let current_host = window.location.host;
 // Của trang đăng nhập
 $(document).ready(function () {
   $(".message a").click(function () {
@@ -223,7 +222,7 @@ app.controller("register-ctrl", function ($scope, $http) {
         .post(`/bachhoa/api/employee/insert`, item)
         .then((resp) => {
           $scope.employee = resp.data;
-          location.href = current_host + "/register";
+          location.href = "/register";
           // $event.preventDefault();
         })
         .catch((error) => {

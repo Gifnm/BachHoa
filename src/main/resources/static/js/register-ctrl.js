@@ -35,7 +35,6 @@ app.controller("register-ctrl", function ($scope, $http) {
   });
 
   $scope.getAllStores = function () {
-    console.log(current_host);
     // load stores
     $http.get("/bachhoa/api/stores").then((resp) => {
       $scope.stores = resp.data;
@@ -146,7 +145,7 @@ app.controller("register-ctrl", function ($scope, $http) {
                   if (result.isConfirmed) {
                     location.href = "/login";
                   } else if (result.dismiss === Swal.DismissReason.timer) {
-                    location.href = current_host + "/login";
+                    location.href = "/login";
 
                   }
                 });
@@ -224,7 +223,7 @@ app.controller("register-ctrl", function ($scope, $http) {
               showConfirmButton: false,
             }).then((result) => {
               if (result.dismiss === Swal.DismissReason.timer) {
-                location.href = current_host + "/business/load";
+                location.href = "/business/load";
               }
             });
           })
@@ -308,7 +307,7 @@ app.controller("register-ctrl", function ($scope, $http) {
                       showConfirmButton: false,
                     }).then((result) => {
                       if (result.dismiss === Swal.DismissReason.timer) {
-                        location.href = current_host + "/business/load";
+                        location.href = "/business/load";
                       }
                     });
                   })
