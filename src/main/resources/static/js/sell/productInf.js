@@ -41,13 +41,22 @@ app_product.controller("product-ctrl", function ($scope, $http) {
     $scope.find = function (value) {
         $http.get(`/product/findByIDOrName/${value}`).then(resp => {
             $scope.product = resp.data;
+            $http.get(`/bachhoa/api/productPosition/findByID/${$scope.product.productID}/${$scope.employee.store.storeID}`).then(resp => {
+                $scope.position = resp.data;
+            }).catch(error => {
+                console.log('Error', error)
+            });
             //$scope.product.nearestExpDate = dateFormat($scope.product.nearestExpDate);
-            $http.get(`/discount/findByProductIDAndStoreID/${$scope.product.productID}/${$scope.employee.store.storeID}`).then(resp => {
+            $http.get(`/bachhoa/api/discount/findByStoreIDAndProductID/${$scope.employee.store.storeID}/${$scope.product.productID}`).then(resp => {
                 $scope.discount = resp.data;
-                if ($scope.discount.disID == "S25") {
-                    $scope.discountName = "Giảm giá 25%";
-                } else if ($scope.discount.disID == "S25") {
-                    $scope.discountName = "Giảm giá 50%";
+                if ($scope.discount.length != 0) {
+                    if ($scope.discount[0].disID == "S25") {
+                        $scope.discountName = "Giảm giá 25%";
+                    } else if ($scope.discount[0].disID == "S50") {
+                        $scope.discountName = "Giảm giá 50%";
+                    } else {
+                        $scope.discountName = "Mua 2 tặng 1";
+                    }
                 } else {
                     $scope.discountName = "Không";
                 }
