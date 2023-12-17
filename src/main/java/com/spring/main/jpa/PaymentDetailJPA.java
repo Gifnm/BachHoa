@@ -2,8 +2,6 @@ package com.spring.main.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import com.spring.main.model.PaymentDetail;
 import com.spring.main.model.PaymentHistory;
 
 public interface PaymentDetailJPA extends JpaRepository<PaymentHistory, Integer>{
