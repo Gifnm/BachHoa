@@ -80,6 +80,11 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
 
     //Cập nhật sản phẩm
     $scope.update = function (productID, quantity) {
+        $http.get(`/product/findByID/${productID}`).then(resp => {
+            let product = resp.data;
+            product.inventory = product.inventory + 1;
+            $http.put(`/bachhoa/api/products/update`, product)
+        })
         let item = $scope.billDetails.find(item => item.productID == productID);
         let index = $scope.billDetails.findIndex(item => item.productID == productID);
         item.quantity = quantity;
@@ -120,23 +125,47 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
     // Xóa hóa đơn
     $scope.delete = function (billID) {
         if (!confirm('Bạn sẽ xóa hóa đơn này?')) return;
-        $http.delete(`/bachhoa/api/bill/delete/${billID}`).then(() => {
-            toastMixin.fire({
-                title: "Đã xóa hóa đơn!",
-                icon: "success",
+        $http.get(`/bachhoa/api/billDetail/findByBillID/${billID}`).then(resp => {
+            let listBillDetail = resp.data;
+            angular.forEach(listBillDetail, function (item) {
+                $http.get(`/product/findByID/${item.productID}`).then(resp => {
+                    let product = resp.data;
+                    product.inventory = product.inventory + item.quantity;
+                    $http.put(`/bachhoa/api/products/update`, product).catch(error => {
+                        console.log("Error", error);
+                    });
+                }).catch(error => {
+                    console.log("Error", error);
+                });
             });
-            $scope.findByDate($scope.fromDate, $scope.toDate, 0);
-            initAutoComplete();
+            $http.delete(`/bachhoa/api/bill/delete/${billID}`).then(() => {
+                toastMixin.fire({
+                    title: "Đã xóa hóa đơn!",
+                    icon: "success",
+                });
+                $scope.findByDate($scope.fromDate, $scope.toDate, 0);
+                initAutoComplete();
+            }).catch(error => {
+                //alert("Hiện không thể xóa hóa đơn!");
+                console.log("Error", error);
+            });
         }).catch(error => {
-            //alert("Hiện không thể xóa hóa đơn!");
             console.log("Error", error);
         });
+
     }
 
     // Xóa sản phẩm trong billDetail
-    $scope.deleteItem = function (billID, productID) {
+    $scope.deleteItem = function (billID, productID, quantity) {
         if (!confirm('Bạn sẽ xóa sản phẩm này?')) return;
         $http.delete(`/bachhoa/api/billDetail/delete/${billID}/${productID}`).then(() => {
+            $http.get(`/product/findByID/${productID}`).then(resp => {
+                let product = resp.data;
+                product.inventory = product.inventory + quantity;
+                $http.put(`/bachhoa/api/products/update`, product)
+            }).catch(error => {
+                console.log("Error", error);
+            });
             console.log("Xóa thành công");
             let index = $scope.billDetails.findIndex(item => item.productID == productID);
             $scope.billDetails.splice(index, 1);
@@ -151,8 +180,9 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
             $scope.bill = resp.data;
             $scope.bill.timeCreate = dateFormat($scope.bill.timeCreate);
             $scope.bill.amountReceivable = Math.round(($scope.bill.totalAmount - $scope.bill.reduced) / 1000) * 1000;
-        }
-        )
+        }).catch(error => {
+            console.log("Error", error);
+        });
         $http.get(`/bachhoa/api/billDetail/findByBillID/${billID}`).then(resp => {
             $scope.billDetails = resp.data;
             // angular.forEach($scope.billDetails, function (item) {
@@ -168,8 +198,9 @@ app.controller("billsHistory-ctrl", function ($scope, $http) {
             //     })
             // })
 
-        }
-        )
+        }).catch(error => {
+            console.log("Error", error);
+        });
     }
 
     /* Tính tổng thu */

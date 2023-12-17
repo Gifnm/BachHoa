@@ -58,7 +58,7 @@
                                     (item.product.vat/100) | number}}</td>
                                 <!-- <td style="width: 15%;">{{item.discountName}}</td> -->
                                 <td style="width: 15%;">{{item.totalAmount | number}}</td>
-                                <td style="width: 1%;"><button ng-click="deleteItem(item.billID, item.productID)"
+                                <td style="width: 1%;"><button ng-click="deleteItem(item.billID, item.productID, item.quantity)"
                                         type="button" class="btn-close"></td>
                             </tr>
                         </tbody>
