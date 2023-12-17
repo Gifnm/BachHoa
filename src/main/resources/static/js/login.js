@@ -223,7 +223,7 @@ app.controller("register-ctrl", function ($scope, $http) {
         .post(`/bachhoa/api/employee/insert`, item)
         .then((resp) => {
           $scope.employee = resp.data;
-          location.href = current_host + "/register";
+          location.href = "/register";
           // $event.preventDefault();
         })
         .catch((error) => {
