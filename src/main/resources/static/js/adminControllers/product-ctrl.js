@@ -11,7 +11,7 @@ app.controller("ctrl", function ($scope, $http) {
     $scope.items = [] //List products to manage
     $scope.form = {} //Form data
     let formData = new FormData();
-    $scope.DEFAULT_PRODUCT_IMAGE = '/images/image_upload_icon.png';
+    $scope.DEFAULT_PRODUCT_IMAGE = '/images/placeholder-generic_0.png';
     $scope.categories = [] //List categories to create new product in form
     $scope.account = {} //Account of login employee
     let storeId;
@@ -79,9 +79,14 @@ app.controller("ctrl", function ($scope, $http) {
     //Save new product
     $scope.create = function () {
         let item = angular.copy($scope.form);
-        const fileName = document.getElementById('uploadImage').files[0].name;
-        //append the host url default to sync
-        item.image = $scope.product_host_url + fileName;
+        //get image file
+        const fileInput = document.getElementById('uploadImage');
+        if (fileInput.files.length > 0) {
+            const fileName = fileInput.files[0].name;
+            //append the host url default to sync
+            item.image = $scope.product_host_url + fileName;
+            $scope.uploadImage();
+        }
         // Cal api
         let url = `${api_host}/products`;
         $http.post(url, item).then(resp => {
@@ -120,10 +125,11 @@ app.controller("ctrl", function ($scope, $http) {
 
     $scope.update = function () {
         let item = angular.copy($scope.form);
-        const fileName = document.getElementById('uploadImage').files[0].name;
-        if (fileName != null) {
+        //get image file
+        const fileInput = document.getElementById('uploadImage');
+        if (fileInput.files.length > 0) {
             //append the host url default to sync
-            item.image = $scope.product_host_url + fileName;
+            item.image = $scope.product_host_url + fileInput.files[0].name;
             $scope.uploadImage();
         }
         // Cal api
@@ -185,6 +191,7 @@ app.controller("ctrl", function ($scope, $http) {
             nearestExpDate: new Date(),
             image: null,
             status: true,
+            vat: 5,
             store: $scope.account.store
         }
         // formImageElement.src = $scope.DEFAULT_PRODUCT_IMAGE;
@@ -210,32 +217,14 @@ app.controller("ctrl", function ($scope, $http) {
 
 
     //Start: Image
-    //Preview image when change (NOT DONE)
-    // $scope.imageChanged = function (e, files) {
-    //     // Check if the user has selected a file.
-    //     if (files) {
-    //         //Show image choosing on element with id 'blah'
-    //         formImageElement.src = e
-    //         //Save name of image file choosing
-    //         let fileName = files.name;
-    //         $scope.form.image = $scope.product_host_url + fileName;
-    //         console.log("[product-ctrl.js:imageChanged():130] - Form image file name: " + $scope.form.image);
-    //     } else {
-    //         // The user has not selected a file.
-    //         alert('[product-ctrl.js:imageChanged():141]\n> Please select an image file.');
-    //     }
-    // }
-
     $scope.uploadImage = function () {
-        alert("Uploading image...");
-        let fileInput = document.getElementById('uploadImage');
-        let file = fileInput.files[0];
-
+        //get image file
+        let file = document.getElementById('uploadImage').files[0];
         if (!file) {
             alert("Please select an image to upload.");
             return;
         }
-
+        //Add file to request
         let formData = new FormData();
         formData.append('file', file);
 

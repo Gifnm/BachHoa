@@ -56,16 +56,6 @@
       </div>
       <div class="col ms-3">
         <div class=" rounded-4 p-4 bg-light">
-          <span>Hóa đơn đã xuất</span>
-          <div class="d-sm-flex align-items-center justify-content-between mt-3">
-            <h3 class="fw-bold">{{billsAmount}}</h3>
-            <!-- <p class="text-danger"><span>-0.5%</span></p> -->
-            <a href="/admin/bill-history" class="btn btn-primary rounded-pill"><small>Chi tiết</small></a>
-          </div>
-        </div>
-      </div>
-      <div class="col ms-3">
-        <div class=" rounded-4 p-4 bg-light">
           <span>Lợi nhuận</span>
           <div class="d-sm-flex align-items-center justify-content-between mt-3">
             <h4 class="text-primary fw-bold">{{totalProfit | currency:'₫ ':'0'}}</h4>
@@ -75,10 +65,20 @@
       </div>
       <div class="col ms-3">
         <div class=" rounded-4 p-4 bg-light">
-          <span>TỈ lệ tăng trưởng</span>
+          <span>Chi phí</span>
           <div class="d-sm-flex align-items-center justify-content-between mt-3">
-            <h3 class="fw-bold">{{0}} % </h3><small>(Đang phát triển)</small>
+            <h4 class="fw-bold">{{totalCost | currency:'₫ ':'0'}}</h4>
             <!-- <p class="text-danger"><span>-0.5%</span></p> -->
+          </div>
+        </div>
+      </div>
+      <div class="col ms-3">
+        <div class=" rounded-4 p-4 bg-light">
+          <span>Hóa đơn đã xuất</span>
+          <div class="d-sm-flex align-items-center justify-content-between mt-3">
+            <h3 class="fw-bold">{{billsAmount}}</h3>
+            <!-- <p class="text-danger"><span>-0.5%</span></p> -->
+            <a href="/admin/bill-history" class="btn btn-primary rounded-pill"><small>Chi tiết</small></a>
           </div>
         </div>
       </div>

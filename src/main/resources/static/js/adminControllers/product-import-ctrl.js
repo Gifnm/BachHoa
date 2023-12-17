@@ -17,6 +17,11 @@ app.controller("ctrl", function ($scope, $http, $filter) {
         checkingCount: 0,
         completedCount: 0
     };
+    $scope.inventory_filter = 0;
+    $scope.min_inventory = 0;
+    $scope.max_inventory = 0;
+
+
     $scope.account = {} //Account of login employee
     $scope.getAccount = function () {
         let email = document.getElementById('accountEmail').innerText;
@@ -26,6 +31,21 @@ app.controller("ctrl", function ($scope, $http, $filter) {
             console.log("[Product-image-ctrl:getAccount():25]\n> Error: " + error);
         });
     }
+
+
+    //call function get account and init data
+    $scope.getAccount().then(() => {
+        let productUrl = `${host}/products/` + $scope.account.store.storeID;
+        $http.get(productUrl).then(resp => {
+            $scope.products = resp.data;
+            $scope.min_inventory = $scope.getMinInventory();
+            console.log($scope.min_inventory);
+            $scope.max_inventory = $scope.getMaxInventory();
+            console.log($scope.max_inventory);
+        });
+        $scope.getDeliveryNotes();
+        $scope.showRequest();
+    });
 
     // Function to update the selected property in the products array
     function updateSelectedStatus(product, isSelected) {
@@ -76,6 +96,39 @@ app.controller("ctrl", function ($scope, $http, $filter) {
             updateSelectedStatus(removedProduct, false);
         }
     };
+
+    // ... existing code ...
+
+    // Function to return the minimum and maximum inventory
+    $scope.getMinInventory = function () {
+        let minInventory = $scope.products[0].inventory;
+        for (const product of $scope.products) {
+            if (product.inventory < minInventory) {
+                minInventory = product.inventory;
+            }
+            return minInventory;
+        }
+    }
+    $scope.getMaxInventory = function () {
+        let maxInventory = 0;
+        for (const product of $scope.products) {
+            if (product.inventory > maxInventory) {
+                maxInventory = product.inventory;
+            }
+        }
+        return maxInventory;
+    }
+
+    // ... existing code ...
+
+    // Function filter product by inventory and keyword
+    $scope.filterProducts = function (inventory_filter, searchProduct) {
+        let query = searchProduct || '';
+        $scope.filteredProducts = $scope.products.filter(function (product) {
+            return product.inventory <= inventory_filter && product.productName.toLowerCase().includes(query.toLowerCase());
+        });
+    };
+
 
     // Function to create the DeliveryNote with selected products
     $scope.createDeliveryNote = function () {
@@ -450,14 +503,6 @@ app.controller("ctrl", function ($scope, $http, $filter) {
         });
     }
 
-    $scope.getAccount().then(() => {
-        let productUrl = `${host}/products/` + $scope.account.store.storeID;
-        $http.get(productUrl).then(resp => {
-            $scope.products = resp.data;
-        });
-        $scope.getDeliveryNotes();
-        $scope.showRequest();
-    });
 
     $scope.currentView = 'listView';
 
@@ -485,6 +530,12 @@ app.controller("ctrl", function ($scope, $http, $filter) {
 
     $scope.toggleProductSelection = function (product) {
         // Your individual product selection logic here
+    };
+
+    $scope.addAll = function () {
+        $scope.filteredProducts.forEach(function (product) {
+            $scope.addProduct(product);
+        });
     };
 
     //Start: Employee request

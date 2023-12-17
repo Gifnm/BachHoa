@@ -881,6 +881,12 @@ app_pay.controller("pay-ctrl", function ($scope, $http) {
             console.log("Error", error);
         });
     };
+    //Get image by image name
+    $scope.getImage = function (imageName) {
+        const lastIndex = imageName.lastIndexOf("/");
+        const substring = imageName.substring(lastIndex + 1);
+        return "/bachhoaimg/" + substring;
+    }
 
     //------------------------------------------------//
 

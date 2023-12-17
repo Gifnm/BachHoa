@@ -80,9 +80,23 @@
         </div>
         <div class="col d-flex flex-column overflow-auto ">
             <!-- Left Column - Filtered Products Table -->
-            <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+            <div class="p-4 d-flex justify-content-between align-items-center">
                 <h6 class="fw-bolder">Danh sách sản phẩm:</h6>
-                <input type="text" class="form-control w-25" ng-model="searchProduct" placeholder="Tìm sản phẩm">
+                <button class="btn btn-outline-primary" ng-click="addAll()"
+                    title="Thêm tất cả sản phẩm đã được lọc bên dưới">Thêm tất cả</button>
+                <input type="text" class="form-control w-25" ng-model="searchProduct" placeholder="Tìm sản phẩm"
+                    ng-change="filterProducts(inventory_filter,searchProduct)">
+            </div>
+            <div class="d-flex align-items-center border-bottom mx-3 py-2">
+                <label for="customRange2" class="form-label" style="width: 200px;">Tồn kho nhỏ hơn:</label>
+                <input type="number" class="form-control mx-2" ng-model="inventory_filter"
+                    ng-change="filterProducts(inventory_filter, searchProduct)" min="{{min_inventory}}"
+                    max="{{max_inventory}}" style="width: 100px;">
+                <input type="range" class="form-range" ng-model="inventory_filter"
+                    ng-change="filterProducts(inventory_filter, searchProduct)" min="{{min_inventory}}"
+                    max="{{max_inventory}}" id="customRange2">
+
+
             </div>
             <!-- Your table with sticky header using Bootstrap classes -->
             <div class="table-responsive" style="height: 650px;">
@@ -97,10 +111,13 @@
                         </tr>
                     </thead>
                     <tbody class="bg-light h-100">
-                        <tr ng-repeat="product in filteredProducts = (products | filter:searchProduct)">
+                        <tr ng-repeat="product in filteredProducts">
+                            <!-- <tr ng-repeat="product in products"> -->
                             <td class="align-middle">
-                                <button class="btn btn-outline-primary d-flex align-middle"
-                                    ng-click="addProduct(product)"><span class="material-symbols-outlined">
+                                <button
+                                    class="btn btn-{{product.selected?'secondary':'outline-primary'}}  d-flex align-middle {{product.selected?'disabled':''}}"
+                                    ng-click="
+                                    addProduct(product)"><span class="material-symbols-outlined">
                                         keyboard_backspace
                                     </span></button>
                             </td>
@@ -113,8 +130,8 @@
                             <td class="align-middle">{{ product.inventory }}</td>
                             <td class="align-middle">{{ product.importPrice | currency:'₫':'0' }}</td>
                             <td class="align-middle">
-                                <input type="checkbox" ng-model="product.selected"
-                                    ng-change="toggleProductSelection(product)">
+                                <input class="form-check-input" type="checkbox" ng-model="product.selected"
+                                    ng-change="toggleProductSelection(product)" disabled>
                             </td>
                         </tr>
                     </tbody>
@@ -129,9 +146,4 @@
     </div>
 </div>
 
-<script>
-    function showAutoDismissAlert() {
-        $('#autoDismissAlert').fadeIn().delay(3000).fadeOut();
-    }
-</script>
 </div>

@@ -16,14 +16,23 @@
             doanh'}}</label>
     </div>
     <div class="offcanvas-body bg-light p-4 rounded">
-        <form enctype="multipart/form-data">
+        <form enctype="multipart/form-data" name="productForm" novalidate>
             <div class="my-3">
                 <label for="inputEmail4" class="form-label disabled">Mã sản phẩm</label>
-                <input ng-model="form.productID" class="form-control">
+                <input ng-model="form.productID" name="productID" class="form-control" required>
+                <div class="invalid-feedback"
+                    ng-show="productForm.productID.$touched && productForm.productID.$error.required">
+                    Mã sản phẩm không được để trống.
+                </div>
             </div>
+
             <div class="my-3">
                 <label for="inputPassword4" class="form-label">Tên sản phẩm</label>
-                <input ng-model="form.productName" class="form-control">
+                <input ng-model="form.productName" name="productName" class="form-control" required>
+                <div class="invalid-feedback"
+                    ng-show="productForm.productName.$touched && productForm.productName.$error.required">
+                    Tên sản phẩm không được để trống.
+                </div>
             </div>
             <div class="row g-3">
                 <div class="rounded bg-white col-12">
@@ -121,38 +130,59 @@
 
             </div>
             <div class="my-3">
-                <label for="inputAddress2" class="form-label">Đơn giá bán</label>
-                <input ng-model="form.price" type="number" min="0" class="form-control">
+                <label for="inputCity" class="form-label">Đơn giá bán</label>
+                <input ng-model="form.price" name="price" type="number" min="0" class="form-control" required>
+                <div class="invalid-feedback"
+                    ng-show="productForm.price.$touched && (productForm.price.$error.required || !/^\d+$/.test(form.price))">
+                    Đơn giá bán không hợp lệ.
+                </div>
             </div>
             <div class="my-3">
                 <label for="inputCity" class="form-label">Đơn giá nhập hàng</label>
-                <input ng-model="form.importPrice" type="number" min="0" class="form-control">
+                <input ng-model="form.importPrice" type="number" min="0" class="form-control" required>
+                <div class="invalid-feedback"
+                    ng-show="productForm.importPrice.$touched && productForm.importPrice.$error.required">
+                    Đơn giá nhập không được để trống.
+                </div>
             </div>
             <div class="my-3">
                 <label for="inputState" class="form-label">Số lượng tồn kho hiện tại</label>
-                <input ng-model="form.inventory" type="number" min="0" class="form-control">
+                <input ng-model="form.inventory" type="number" min="0" class="form-control" required>
+                <div class="invalid-feedback"
+                    ng-show="productForm.inventory.$touched && productForm.inventory.$error.required">
+                    Số lượng tồn kho không được để trống.
+                </div>
             </div>
             <div class="my-3">
                 <label for="inputZip" class="form-label">VAT</label>
-                <input ng-model="form.vat" type="number" min="0" class="form-control">
+                <input ng-model="form.vat" type="number" min="0" class="form-control" required>
+                <div class="invalid-feedback" ng-show="productForm.vat.$touched && productForm.vat.$error.required">
+                    VAT không được để trống.
+                </div>
             </div>
             <div class="my-3">
                 <label for="inputZip" class="form-label">Ngày hết hạn gần nhất</label>
                 <div class="d-flex align-items-center">
-                    <input ng-model="form.nearestExpDate" class="form-control" type="date">
+                    <input ng-model="form.nearestExpDate" name="nearestExpDate" class="form-control" type="date"
+                        required>
+                    <div class="invalid-feedback"
+                        ng-show="productForm.nearestExpDate.$touched && productForm.nearestExpDate.$error.required">
+                        Ngày hết hạn không được để trống.
+                    </div>
                     <label class="ms-2">{{ calculateDaysRemaining(form.nearestExpDate) }} ngày còn lại</label>
                 </div>
             </div>
             <div class="vstack gap-2 col-md-5 w-100">
-                <button ng-if="feature==='create'" ng-click="create();uploadImage()" class="btn btn-primary rounded-3"
-                    data-bs-dismiss="offcanvas">
+                <button ng-if="feature==='create'" ng-click="create(); inputHasFile('uploadImage') && uploadImage()"
+                    class="btn btn-primary rounded-3" data-bs-dismiss="offcanvas" ng-disabled="!productForm.$valid">
                     <i class="fas fa-plus"></i> Thêm
                 </button>
                 <button ng-if="feature==='update'" ng-click="update()" class="btn btn-primary rounded-3"
-                    data-bs-dismiss="offcanvas">
+                    data-bs-dismiss="offcanvas" ng-disabled="!productForm.$valid">
                     <i class="fas fa-rotate"></i> Lưu
                 </button>
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Đóng</button>
+
             </div>
 
         </form>
