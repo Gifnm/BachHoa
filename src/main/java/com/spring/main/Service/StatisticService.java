@@ -54,9 +54,9 @@ public class StatisticService {
 		// Convert to TreeMap to automatically sort by keys
 		Map<String, Float> sortedRevenueMap = new TreeMap<>(revenueMap);
 		// Print the sorted map
-//        for (Map.Entry<String, Float> entry : sortedRevenueMap.entrySet()) {
-//             System.out.println(entry.getKey() + ": " + entry.getValue());
-//        }
+		// for (Map.Entry<String, Float> entry : sortedRevenueMap.entrySet()) {
+		// System.out.println(entry.getKey() + ": " + entry.getValue());
+		// }
 
 		return sortedRevenueMap;
 	}
@@ -77,15 +77,14 @@ public class StatisticService {
 		}
 		// Tổng chi phí
 		List<Bill> bills = billJpa.findAllByTimeCreateBetween(stDate, enDate, storeId);
-		List<BillDetail> billDetails;
 		Map<String, Float> costMap = new HashMap<>();
 		float totalCost = 0;
 		for (Bill bill : bills) {
 			String mileStone = getMileStone(bill.getTimeCreate(), typeMileStone);
-			billDetails = bill.getBillDetail();
-			for (BillDetail billDetail : billDetails) {
-				// chi phí = giá nhập * số lượng sp bán được
-				totalCost = billDetail.getProduct().getImportPrice() * billDetail.getQuantity();
+			for (BillDetail billDetail : bill.getBillDetail()) {
+				// chi phí = giá nhập * số lượng sp bán được + tiền VAT
+				totalCost = billDetail.getProduct().getImportPrice() * billDetail.getQuantity()
+						+ (billDetail.getProduct().getVat() * billDetail.getProduct().getPrice() / 100);
 			}
 			costMap.merge(mileStone, totalCost, Float::sum);
 		}
@@ -120,14 +119,14 @@ public class StatisticService {
 
 	private String getMileStone(Timestamp timeCreate, String typeMileStone) {
 		switch (typeMileStone) {
-		case "day":
-			return new SimpleDateFormat(dateFormatString).format(timeCreate);
-		case "month":
-			return new SimpleDateFormat("yyyy-MM").format(timeCreate);
-		case "year":
-			return new SimpleDateFormat("yyyy").format(timeCreate);
-		default:
-			throw new IllegalArgumentException("Unsupported typeMileStone: " + typeMileStone);
+			case "day":
+				return new SimpleDateFormat(dateFormatString).format(timeCreate);
+			case "month":
+				return new SimpleDateFormat("yyyy-MM").format(timeCreate);
+			case "year":
+				return new SimpleDateFormat("yyyy").format(timeCreate);
+			default:
+				throw new IllegalArgumentException("Unsupported typeMileStone: " + typeMileStone);
 		}
 	}
 

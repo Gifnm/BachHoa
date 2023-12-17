@@ -16,10 +16,6 @@
         <table class="table table-hover">
             <thead class="table-light sticky">
                 <tr>
-                    <td class="py-4  function-col">
-                        <input type="checkbox" ng-model="selectAll" ng-change="toggleSelectAll()">
-                        <small>Chọn tất cả</small>
-                    </td>
                     <td class="py-4 order-col"><small>#</small></td>
                     <td class="py-4 name-col text-center"> <small>Sản phẩm</small></td>
                     <td class="py-4 "><small>Phân loại</small></td>
@@ -35,9 +31,6 @@
             <tbody class="bg-white">
                 <tr ng-repeat="pro in items | startFrom:currentPage*pageSize | limitTo:pageSize"
                     class="{{pro.status?'':'text-muted bg-light'}}">
-                    <td class="align-middle">
-                        <input type="checkbox" ng-model="pro.selected" ng-change="toggleProductSelection(pro)">
-                    </td>
                     <td class="sticky order-col align-middle" scope="row">{{$index+1+currentPage*pageSize}}
                     </td>
                     <td class="align-middle">

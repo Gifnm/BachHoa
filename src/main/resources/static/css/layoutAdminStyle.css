@@ -78,3 +78,15 @@
 #search-icon {
     border-radius: 20px 0 0 20px;
 }
+
+/* Style to highlight invalid fields */
+.was-validated .form-control:invalid,
+.was-validated .form-select:invalid {
+    border-color: #dc3545;
+}
+
+/* Style to show feedback message for invalid fields */
+.was-validated .form-control:invalid~.invalid-feedback,
+.was-validated .form-select:invalid~.invalid-feedback {
+    display: block;
+}

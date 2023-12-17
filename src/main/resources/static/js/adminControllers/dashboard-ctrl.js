@@ -22,8 +22,18 @@ app.controller("ctrl", function ($scope, $http) {
 	/* Chi phí */
 	$scope.costData = {
 		increaseCost: [],
-		cost: [], labels: [],
-	}
+		cost: [],
+		labels: [],
+	};
+
+	// Calculate profit
+	$scope.profitData = {
+		increaseProfit: [],
+		profit: [],
+		labels: [],
+	};
+
+
 
 	$scope.totalRevenue = $scope.revenueData.increaseRevenue[$scope.revenueData.increaseRevenue.length - 1]
 	$scope.totalCost = $scope.costData.increaseCost[$scope.costData.increaseCost.length - 1]
@@ -49,20 +59,44 @@ app.controller("ctrl", function ($scope, $http) {
 
 	// Chart JS
 	const revenueChart = new Chart(ctx, {
+		type: 'bar', // Set the chart type to 'bar'
 		data: {
 			labels: $scope.revenueData.labels,
-			datasets: [{
-				type: 'line',
-				label: 'Tổng doanh thu',
-				data: $scope.revenueData.increaseRevenue,
-				borderWidth: 1,
-				hidden: true
-			}, {
-				type: 'bar',
-				label: 'Doanh thu trong ' + $scope.translateTypeMileStone(),
-				data: $scope.revenueData.revenue,
-				borderWidth: 1
-			}]
+			datasets: [
+				{
+					label: 'Chi phí trong ' + $scope.translateTypeMileStone(),
+					data: $scope.costData.cost,
+					borderWidth: 1,
+					stack: 'stack', // Set the stack option to 'stack'
+				},
+				{
+					label: 'Lợi nhuận trong ' + $scope.translateTypeMileStone(),
+					data: $scope.profitData.profit,
+					borderWidth: 1,
+					stack: 'stack', // Set the stack option to 'stack'
+				},
+				{
+					label: 'Tổng doanh thu',
+					data: $scope.revenueData.increaseRevenue,
+					borderWidth: 1,
+					hidden: true,
+					type: 'line',
+				},
+				{
+					label: 'Tổng chi phí',
+					data: $scope.costData.increaseCost,
+					borderWidth: 1,
+					hidden: true,
+					type: 'line',
+				},
+				{
+					label: 'Tổng lợi nhuận',
+					data: $scope.profitData.increaseProfit,
+					borderWidth: 1,
+					hidden: true,
+					type: 'line',
+				},
+			],
 		},
 		options: {
 			scales: {
@@ -70,8 +104,9 @@ app.controller("ctrl", function ($scope, $http) {
 					beginAtZero: true,
 					title: {
 						display: true,
-						text: 'Doanh thu',
+						text: 'VND',
 					},
+					stacked: true, // Set the stacked option to true for the y-axis scale
 				},
 				x: {
 					beginAtZero: true,
@@ -79,9 +114,9 @@ app.controller("ctrl", function ($scope, $http) {
 						display: true,
 						text: 'Thời gian',
 					},
-				}
-			}
-		}
+				},
+			},
+		},
 	});
 
 	new Chart(ctx2, {
@@ -167,10 +202,10 @@ app.controller("ctrl", function ($scope, $http) {
 					}
 				}).then(resp => {
 					$scope.revenueData.labels = resp.data;
-					revenueChart.data.labels = $scope.revenueData.labels
-					revenueChart.data.datasets[0].data = $scope.revenueData.increaseRevenue
-					revenueChart.data.datasets[1].data = $scope.revenueData.revenue
-					revenueChart.update();
+					// revenueChart.data.labels = $scope.revenueData.labels
+					// revenueChart.data.datasets[0].data = $scope.revenueData.increaseRevenue
+					// revenueChart.data.datasets[1].data = $scope.revenueData.revenue
+					// revenueChart.update();
 					$scope.totalRevenue = $scope.revenueData.increaseRevenue[$scope.revenueData.increaseRevenue.length - 1]
 					$scope.totalBills();
 					console.log($scope.billsAmount)
@@ -183,6 +218,7 @@ app.controller("ctrl", function ($scope, $http) {
 							'store-id': $scope.account.store.storeID
 						}
 					}).then(resp => {
+						console.log("Done call api increase-cost");
 						$scope.costData.increaseCost = resp.data;
 						$scope.totalCost = $scope.costData.increaseCost[$scope.costData.increaseCost.length - 1]
 						// Tính lợi nhuận
@@ -207,10 +243,23 @@ app.controller("ctrl", function ($scope, $http) {
 								}
 							}).then(resp => {
 								$scope.costData.labels = resp.data;
-								// $scope.totalCost = $scope.costData.increaseCost[$scope.costData.increaseCost.length - 1]
-								// // Tính lợi nhuận
-								// $scope.totalProfit = $scope.totalRevenue - $scope.totalCost;
-								// console.log($scope.totalCost)
+								revenueChart.data.labels = $scope.revenueData.labels
+								revenueChart.data.datasets[2].data = $scope.revenueData.increaseRevenue
+								revenueChart.data.datasets[3].data = $scope.costData.increaseCost
+								revenueChart.update();
+								let increaseProfit = 0;
+								for (let i = 0; i < $scope.revenueData.revenue.length; i++) {
+									const profit = $scope.revenueData.revenue[i] - $scope.costData.cost[i];
+									$scope.profitData.profit.push(profit);
+									increaseProfit += profit;
+									$scope.profitData.increaseProfit.push(increaseProfit);
+									$scope.profitData.labels.push($scope.revenueData.labels[i]);
+									console.log($scope.profitData.profit[i]);
+								}
+								revenueChart.data.datasets[4].data = $scope.profitData.increaseProfit
+								revenueChart.data.datasets[0].data = $scope.costData.cost
+								revenueChart.data.datasets[1].data = $scope.profitData.profit
+								revenueChart.update();
 							});
 						})
 					});
