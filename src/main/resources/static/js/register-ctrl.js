@@ -35,7 +35,6 @@ app.controller("register-ctrl", function ($scope, $http) {
   });
 
   $scope.getAllStores = function () {
-    console.log(current_host);
     // load stores
     $http.get("/bachhoa/api/stores").then((resp) => {
       $scope.stores = resp.data;

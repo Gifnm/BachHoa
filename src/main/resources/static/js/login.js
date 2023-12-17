@@ -1,4 +1,3 @@
-let current_host = window.location.host;
 // Của trang đăng nhập
 $(document).ready(function () {
   $(".message a").click(function () {
