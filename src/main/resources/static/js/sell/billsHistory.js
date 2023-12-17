@@ -419,6 +419,12 @@ app_bill.controller("bill-ctrl", function ($scope, $http) {
 		}
 
 	}
+	//Get image by image name
+    $scope.getImage = function (imageName) {
+        const lastIndex = imageName.lastIndexOf("/");
+        const substring = imageName.substring(lastIndex + 1);
+        return "/bachhoaimg/" + substring;
+    }
 
 	const input = document.getElementById('uploadImage');
 	const image = document.getElementById('img-preview');

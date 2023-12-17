@@ -82,6 +82,8 @@ app_product.controller("product-ctrl", function ($scope, $http) {
     $scope.isActive = 'isProduct';
     // cập nhật hồ sơ và kết ca
 
+
+
     //cập nhật hồ sơ
     $scope.admin = false;
     $scope.dataEmployee = {};
@@ -157,6 +159,13 @@ app_product.controller("product-ctrl", function ($scope, $http) {
             })
         }
 
+    }
+
+    //Get image by image name
+    $scope.getImage = function (imageName) {
+        const lastIndex = imageName.lastIndexOf("/");
+        const substring = imageName.substring(lastIndex + 1);
+        return "/bachhoaimg/" + substring;
     }
 
     const input = document.getElementById('uploadImage');
