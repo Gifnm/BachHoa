@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/pages/sell/layout:: dynamic(~{:: title}, ~{:: #uiSell})}">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BachHoa | Thanh toán</title>
+</head>
+
+<body>
+	<div id="uiSell" ng-controller="pay-ctrl">
+		<!-- Toast Thông báo -->
+		<!-- <div th:classappend="*{Toast}" class="alert flash show" id="alert"
+			role="alert"
+			style="position: fixed; right: 1%; top: 1%; z-index: 999;">
+			<div th:classappend="${Toast_icon}" th:utext="${Toast_show_icon}">
+
+			</div>
+			<div th:classappend="${Toast_title}" th:text="${message}"></div>
+			<div th:classappend="${Toast_close}" type="button" id="alertClose"
+				data-bs-dismiss="alert" aria-label="Close">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20"
+					viewBox="0 0 20 20" height="20">
+					<path fill="#393a37"
+						d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"></path></svg>
+			</div>
+		</div> -->
+
+		<header th:replace="~{/pages/sell/_header}"></header>
+		<main th:replace="~{/pages/sell/pay/_sell}"></main>
+		<!-- js -->
+		<script src="../js/sell/pay.js"></script>
+	</div>
+</body>
+
+</html>
