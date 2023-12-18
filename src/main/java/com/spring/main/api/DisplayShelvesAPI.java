@@ -29,11 +29,6 @@ public class DisplayShelvesAPI {
 		return list;
 	}
 
-	@GetMapping("shelve/{id}")
-	public DisplayShelves getOne(@PathVariable("id") int shelveId) {
-		return diService.findById(shelveId);
-	}
-
 	@PostMapping("insertShelf")
 	private void insert(@RequestBody DisplayShelves diShelves) {
 		System.out.println("ADD platter");

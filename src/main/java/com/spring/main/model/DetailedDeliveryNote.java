@@ -10,11 +10,13 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
-@Getter
+@NoArgsConstructor
 @Entity
 @IdClass(DetailedDeliveryNoteID.class)
 @Table(name = "detailed_delivery_note")
@@ -33,13 +35,33 @@ public class DetailedDeliveryNote {
 	@MapsId("productID")
 	@JoinColumn(name = "productID")
 	private Product product;
-
+	
 	@Column(name = "quantity")
 	private int quantity;
-
-	@Column(name = "`index`")
+	
+	@Column(name = "index")
 	private int index;
-
+	
 	@Column(name = "count")
 	private int count;
+
+	public DetailedDeliveryNote(String id, String productID, int quantity, int index, int count) {
+		this.id = id;
+		this.productID = productID;
+		this.quantity = quantity;
+		this.index = index;
+		this.count = count;
+	}
+
+	public DetailedDeliveryNote(String id, String productID, DeliveryNote deliveryNote, Product product, int quantity,
+			int index, int count) {
+		this.id = id;
+		this.productID = productID;
+		this.deliveryNote = deliveryNote;
+		this.product = product;
+		this.quantity = quantity;
+		this.index = index;
+		this.count = count;
+	}
+	
 }

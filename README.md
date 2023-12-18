@@ -14,6 +14,6 @@
 
 **Script Languages:** JavaScript, AngularJS 
 
-**Mobile App:** Java + Android Studio + Android SDK + XML (Extensible Markup Language) + Gradle
+**Mobile App:** Java + Flutter
 
 **Database:** MySQL

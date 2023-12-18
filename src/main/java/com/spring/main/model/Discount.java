@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "discounts")
 public class Discount {
@@ -14,9 +15,9 @@ public class Discount {
 
 	@Column(name = "discountType")
 	private String discountType;
-	//
-	// @OneToMany(mappedBy = "discount")
-	// private List<DiscountDetails> discountDetails;
+//
+//    @OneToMany(mappedBy = "discount")
+//    private List<DiscountDetails> discountDetails;
 
 	public String getDisID() {
 		return disID;

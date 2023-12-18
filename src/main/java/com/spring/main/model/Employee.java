@@ -53,31 +53,35 @@ public class Employee {
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Id")
 	private List<Authority> authorities;
-
+	
 	@Column(name = "active")
 	private boolean active;
-
+	
 	@Column(name = "email")
 	private String email;
-
+	
 	@Column(name = "password")
 	private String password;
-
+	
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-	@JoinTable(name = "authorities", joinColumns = @JoinColumn(name = "employeeID"), inverseJoinColumns = @JoinColumn(name = "roleID"))
-
+	@JoinTable(
+        name = "authorities",
+        joinColumns = @JoinColumn(name = "employeeID"),
+        inverseJoinColumns = @JoinColumn(name = "roleID")
+        )
+	
 	private Set<Role> roles = new HashSet<>();
 
-	public boolean hasRole(String roleName) {
-		Iterator<Role> iterator = this.roles.iterator();
-		while (iterator.hasNext()) {
-			Role role = iterator.next();
-			if (role.getRoleID().equals(roleName)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    public boolean hasRole(String roleName) {
+        Iterator<Role> iterator = this.roles.iterator();
+        while (iterator.hasNext()) {
+            Role role = iterator.next();
+            if (role.getRoleID().equals(roleName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	public Employee(int employeeID, String employeeName, Date age, String address, String pictureURL, Date firstWork,
 			Store store, List<Authority> authorities, boolean active, String email, String password,
@@ -103,5 +107,5 @@ public class Employee {
 
 		this.employeeID = employeeID;
 	}
-
+    
 }

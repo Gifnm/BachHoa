@@ -18,10 +18,6 @@ public class DisplayShelvesService {
 		return list;
 	}
 
-	public DisplayShelves findById(int id) {
-		return diShelvesJPA.findById(id).get();
-	}
-
 	/**
 	 * Luu moi & cap nhat 1 ke trung bay
 	 * 

@@ -40,16 +40,16 @@ public class Product {
 
 	@Column(name = "productName")
 	private String productName;
-
+	
 	@Column(name = "status")
 	private Boolean status;
-
+	
 	@Column(name = "image")
 	private String image;
-
+	
 	@Column(name = "importPrice")
 	private float importPrice;
-
+	
 	@ManyToOne()
 	@JoinColumn(name = "storeID")
 	private Store store;
@@ -170,16 +170,16 @@ public class Product {
 		this.inventory = inventory;
 	}
 
-	// @OneToMany(mappedBy = "product")
-	// private List<Warehouse> warehouses;
-	//
-	// @OneToMany(mappedBy = "product")
-	// private List<BillDetail> billDetails;
-	//
-	// @OneToMany(mappedBy = "product")
-	// private List<ProductPositioning> productPositionings;
-	//
-	// @OneToMany(mappedBy = "product")
-	// private List<DiscountDetails> discountDetails;
+//    @OneToMany(mappedBy = "product")
+//    private List<Warehouse> warehouses;
+//
+//    @OneToMany(mappedBy = "product")
+//    private List<BillDetail> billDetails;
+//
+//    @OneToMany(mappedBy = "product")
+//    private List<ProductPositioning> productPositionings;
+//
+//    @OneToMany(mappedBy = "product")
+//    private List<DiscountDetails> discountDetails;
 
 }

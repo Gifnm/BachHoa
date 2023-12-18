@@ -22,25 +22,16 @@
     <script src="../js/angular-ui-tab-scroll.js"></script>
     <!-- CSS -->
     <link rel="stylesheet" href="../css/login.css">
-    <link rel="stylesheet" href="../css/toast.css">
     <!-- JS -->
     <script src="../js/login.js"></script>
 </head>
 
 <body class="background-img">
-    <!-- Toast Thông báo -->
-    <div th:classappend="*{Toast}" class="alert flash show" id="alert" role="alert" 
-            style="position: fixed; right: 1%; top: 1%; z-index: 999;">
-        <div th:classappend="${Toast_icon}" th:utext="${Toast_show_icon}">
-
-        </div>
-        <div th:classappend="${Toast_title}" th:text="${message}"></div>
-        <div th:classappend="${Toast_close}" 
-                type="button" id="alertClose" data-bs-dismiss="alert" aria-label="Close">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 20 20" height="20"><path fill="#393a37" d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"></path></svg>
-        </div>
+    <div class="alert bg-info bg-gradient bg-opacity-75 fw-bold fade show d-flex row alert-close flash" role="alert"
+        id="alert" style="position: fixed; right: 1%; top: 1%; width: 25%; display: none; z-index: 999;">
+        <span class="col">[[${message}]]</span>
+        <button type="button" id="alertClose" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    
     <div class="back_home">
         <a th:href="@{/login}" class="text-decoration-none" style="position: fixed; left: 1%; top: 1%; width: 22%; z-index: 999;">
             <button>
@@ -58,19 +49,18 @@
         <div class="d-flex justify-content-center ">
             <div>
                 <div class="logo img-fluid card-img">
-                    <img src="../images/favicon.png" alt="" width="316" 
-                    	height="auto" class="rounded-start shadow-lg">
+                    <img src="../images/favicon.png" alt="" width="275" height="auto" class="rounded-start">
                 </div>
             </div>
             <div class="d-block">
                 <form action="/set-password" class="form" method="post">
                     <div>
-                        <p class="form-title">Thay đổi mật khẩu</p>
+                        <p>Thay đổi mật khẩu</p>
                     </div>
-                    <div class="mt-5 input-container" style="box-shadow: none">
-                        <input type="password" name="new_Password" placeholder="Nhập mật khẩu mới ..." class="border border-2 shadow form-control"
+                    <div class="input-container mt-5">
+                        <input type="password" name="new_Password" placeholder="Nhập mật khẩu mới ..." class="shadow"
                             autofocus required>
-                        <input type="password" name="verify_Password" placeholder="Xác nhận mật khẩu ..." class="border border-2 shadow form-control mt-2" autofocus
+                        <input type="password" name="verify_Password" placeholder="Xác nhận mật khẩu ..." class="shadow" autofocus
                             required>
                     </div>
                     <button type="submit" class="submit mt-5 button" value="Send">

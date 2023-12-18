@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+
 @Service
 public class UploadService {
     @Autowired
@@ -20,8 +21,8 @@ public class UploadService {
             dir.mkdirs();
         }
         // rename the image
-        // String s = System.currentTimeMillis() + file.getOriginalFilename();
-        String name = file.getOriginalFilename();
+        String s = System.currentTimeMillis() + file.getOriginalFilename();
+        String name = Integer.toHexString(s.hashCode()) + s.substring(s.lastIndexOf("."));
         // save file to server
         try {
             File savedFile = new File(dir, name);

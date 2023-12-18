@@ -18,6 +18,7 @@ import com.spring.main.EntityDTO.PriceTag;
 import com.spring.main.Service.DiscountDetailService;
 import com.spring.main.Service.ProductPosionService;
 import com.spring.main.Service.ProductService;
+import com.spring.main.model.DiscountDetails;
 import com.spring.main.model.Product;
 import com.spring.main.model.ProductPositioning;
 
@@ -81,7 +82,7 @@ public class ProductPositionAPI {
 		} else {
 			PriceTag priceTag = new PriceTag();
 			priceTag.setProductPositioning(productPositioning);
-			// priceTag.setDiscountDetails(discountDetailService.findByProductIDAndStoreID(productID, storeID));
+			priceTag.setDiscountDetails(discountDetailService.findByProductIDAndStoreID(productID, storeID));
 			return ResponseEntity.status(HttpStatus.OK).body(priceTag);
 		}
 
@@ -97,7 +98,7 @@ public class ProductPositionAPI {
 		} else {
 			PriceTag priceTag = new PriceTag();
 			priceTag.setProductPositioning(productPositioning);
-			// priceTag.setDiscountDetails(discountDetailService.findByProductIDAndStoreID(productID, storeID));
+			priceTag.setDiscountDetails(discountDetailService.findByProductIDAndStoreID(productID, storeID));
 			return ResponseEntity.status(HttpStatus.OK).body(priceTag);
 		}
 
@@ -141,5 +142,4 @@ public class ProductPositionAPI {
 		} else
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 	}
-	
 }

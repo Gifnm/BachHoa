@@ -1,9 +1,0 @@
-.sticky {
-    position: -webkit-sticky;
-    position: sticky;
-}
-
-thead {
-    top: 0;
-    z-index: 1;
-}

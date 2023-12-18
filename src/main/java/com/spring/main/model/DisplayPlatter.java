@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "display_platters")
 public class DisplayPlatter {
-	//
+//
 	@Id
 	@Column(name = "disPlaID")
 	private int disPlaID;

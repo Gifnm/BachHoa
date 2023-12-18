@@ -6,36 +6,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.spring.main.util.SessionAttr;
 
+
 @Controller
 public class HomeController {
-	// Custom Toast
-	static void callToast(String name) {
-		// Tự gọi icon hiển thị
-		SessionAttr.Toast = name;
-		SessionAttr.Icon = name + "__icon";
-		SessionAttr.Title = name + "__title";
-		SessionAttr.Close = name + "__close";
-	}
-
 	@RequestMapping("/sell")
 	public String home(Model model) {
 		model.addAttribute("message", SessionAttr.CURRENT_MESSAGE);
-		// Toast - Thông báo
-		model.addAttribute("Toast", SessionAttr.Toast);
-		model.addAttribute("Toast_icon", SessionAttr.Icon);
-		model.addAttribute("Toast_show_icon", SessionAttr.Show_Icon);
-		model.addAttribute("Toast_title", SessionAttr.Title);
-		model.addAttribute("Toast_close", SessionAttr.Close);
-		return "pages/sell/pay/index";
+		return "pages/sell/sell";
 	}
 
 	@RequestMapping("/sell/billsHistory")
 	public String bills() {
-		return "pages/sell/bill/index";
+		return "pages/sell/bills_History";
 	}
 
 	@RequestMapping("/sell/productInfomation")
 	public String ktGia() {
-		return "pages/sell/product/index";
+		return "pages/sell/productDetail";
+	}
+	
+	@RequestMapping("/admin/endOfShift")
+	public String endOfShift() {
+		return "pages/admin/pay/pay";
 	}
 }
