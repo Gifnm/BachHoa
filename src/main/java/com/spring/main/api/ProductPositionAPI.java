@@ -1,6 +1,5 @@
 package com.spring.main.api;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +35,6 @@ public class ProductPositionAPI {
 	@GetMapping("{shelfID}/{platterNb}/{storeID}")
 	private List<ProductPositioning> getALL(@PathVariable("shelfID") int shelfID,
 			@PathVariable("platterNb") int platterNb, @PathVariable("storeID") int storeID) {
-		System.out.println(shelfID +" - "+ platterNb +" - "+ storeID);
-		System.out.println("m");
 		List<ProductPositioning> list = productPosionService.getAllPosstion(platterNb, shelfID, storeID);
 		return list;
 	}
@@ -47,14 +44,13 @@ public class ProductPositionAPI {
 	private ProductPositioning insert(@RequestBody ProductPositioning productPositioning) {
 		ProductPositioning productPositioning2 = productPositioning;
 		System.out.println(productPositioning2.getProduct().getProductID() + "bar");
-		ProductPositioning productPositioningOld = productPosionService.getByIDAndStoreID(productPositioning.getProduct().getProductID(),productPositioning.getStore().getStoreID());
-		if(productPositioningOld!= null) {
-			productPosionService.delete(productPositioningOld);
-			
-		}
 		Product product = productService.getByID(productPositioning.getProduct().getProductID());
 		productPositioning2.setProduct(product);
+		// System.out.println(productPositioning.getDisplayPlatter().getDisPlaID()+"
+		// -9");
+		// productPositioning2.setDisplayPlatter(new DisplayPlatter(1));
 		productPosionService.insert(productPositioning);
+		// productPosionService.insert(productPositioning);
 		return productPositioning2;
 	}
 
@@ -62,12 +58,12 @@ public class ProductPositionAPI {
 	@GetMapping("findByID/{id}/{storeID}")
 	private ProductPositioning getByIdAndStoreID(@PathVariable("id") String productID,
 			@PathVariable("storeID") int storeID) {
-		ProductPositioning productPositioning = productPosionService.getByIDAndStoreID(productID, storeID);
-		if (productPositioning == null) {
+		System.out.println("Here");
+		ProductPositioning product = productPosionService.getByIDAndStoreID(productID, storeID);
+		if (product == null) {
 			return null;
 		} else {
-			System.out.println("10d");
-			return productPositioning;
+			return product;
 
 		}
 	}
@@ -86,9 +82,7 @@ public class ProductPositionAPI {
 		}
 
 	}
-
-	// dang hoang thien
-	@GetMapping("getPriceTags/{storeID}/{disSheID}")
+	@GetMapping("getPriceTag/{storeID}/{disSheID}")
 	private ResponseEntity<PriceTag> getPriceTags(@PathVariable("storeID") int storeID,
 			@PathVariable("productID") String productID) {
 		ProductPositioning productPositioning = productPosionService.getByIDAndStoreID(productID, storeID);
@@ -102,44 +96,4 @@ public class ProductPositionAPI {
 		}
 
 	}
-
-	@GetMapping("getPosByStoreAndShelf/{storeID}/{disSheID}")
-	private ResponseEntity<List<PriceTag>> getByShelfAndStore(@PathVariable("storeID") int storeID,
-			@PathVariable("disSheID") int disSheID) {
-		System.out.println("getPosByStoreAndShelf/{storeID}/{disSheID}");
-		List<ProductPositioning> list = productPosionService.getByShelfAndStore(storeID, disSheID);
-		if (list != null) {
-			List<PriceTag> liTags = new ArrayList<>();
-			for (ProductPositioning productPositioning : list) {
-				PriceTag priceTag = new PriceTag();
-				priceTag.setProductPositioning(productPositioning);
-				priceTag.setDiscountDetails(discountDetailService
-						.findByProductIDAndStoreID(productPositioning.getProduct().getProductID(), storeID));
-				liTags.add(priceTag);
-			}
-			return ResponseEntity.status(HttpStatus.OK).body(liTags);
-		} else
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-	}
-
-	@GetMapping("getPricetagByPlatter/{shelfID}/{platterNb}/{storeID}")
-	private ResponseEntity<List<PriceTag>> getPriceTagByTagByPlatter(@PathVariable("shelfID") int shelfID,
-			@PathVariable("platterNb") int platterNb, @PathVariable("storeID") int storeID) {
-		System.out.println(shelfID +" - "+ platterNb +" - "+ storeID);
-		List<ProductPositioning> list = productPosionService.getAllPosstion(platterNb, shelfID, storeID);
-		if (list != null) {
-			List<PriceTag> liTags = new ArrayList<>();
-			for (ProductPositioning productPositioning : list) {
-				PriceTag priceTag = new PriceTag();
-				priceTag.setProductPositioning(productPositioning);
-				priceTag.setDiscountDetails(discountDetailService
-						.findByProductIDAndStoreID(productPositioning.getProduct().getProductID(), storeID));
-				liTags.add(priceTag);
-			}
-			System.out.println(liTags.size() +" - 0");
-			return ResponseEntity.status(HttpStatus.OK).body(liTags);
-		} else
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-	}
-	
 }

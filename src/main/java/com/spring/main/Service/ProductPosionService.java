@@ -27,16 +27,8 @@ public class ProductPosionService {
 	}
 
 	public ProductPositioning getByIDAndStoreID(String productID, int storeID) {
-		ProductPositioning proPositioning = productPositionJPA.findByIDAndStoreID(productID, storeID);
+		ProductPositioning proPositioning = productPositionJPA.findByProductAndStore(new Product(productID),
+			new Store(storeID));
 		return proPositioning;
-	}
-
-	public List<ProductPositioning> getByShelfAndStore(int storeID, int disSheID) {
-		List<ProductPositioning> list = productPositionJPA.getByShelfAndStore(storeID, disSheID);
-		return list;
-
-	}
-	public void delete(ProductPositioning productPositioning) {
-		productPositionJPA.delete(productPositioning);
 	}
 }

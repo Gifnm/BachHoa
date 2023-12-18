@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,9 +50,8 @@ public class DetailedDeliveryNoteAPI {
 
 	}
 
-	@PostMapping("save/{employeeID}") // Đúng tên path variable là employeeID
-	private void save(@RequestBody() List<DetailedDeliveryNote> list, @PathVariable("employeeID") int employeeID) {
-		System.out.println("save");
+	@PostMapping("save")
+	private void save(@RequestPart("list") List<DetailedDeliveryNote> list, @RequestPart("employeeID") int employeeID) {
 		for (DetailedDeliveryNote detailedDeliveryNote : list) {
 			PurchaseHistory purchaseHistory = new PurchaseHistory();
 			purchaseHistory.setId(detailedDeliveryNote.getId());
@@ -72,7 +70,6 @@ public class DetailedDeliveryNoteAPI {
 			deliveryNoteService.delete(detailedDeliveryNote);
 		}
 		deliveService.setFinish(list.get(0).getId());
-		
 
 	}
 }

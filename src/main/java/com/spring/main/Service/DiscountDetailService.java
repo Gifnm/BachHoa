@@ -47,6 +47,4 @@ public class DiscountDetailService {
 	public void update(Date startTime, Date endTime, String productID, Integer storeID) {
 		discountDetaileJPA.update(startTime, endTime, productID, storeID);
 	}
-	public DiscountDetails findByProductIDAndStoreID(String productID, Integer storeID) {
-		return discountDetaileJPA.findByProductIDAndStoreID(productID, storeID);}
 }

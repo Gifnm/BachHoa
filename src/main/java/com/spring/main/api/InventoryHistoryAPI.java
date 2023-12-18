@@ -1,66 +1,34 @@
 package com.spring.main.api;
 
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.protobuf.Timestamp;
 import com.spring.main.Service.InventoryHistoryService;
 import com.spring.main.model.InventoryHistory;
 
 @CrossOrigin("*")
 @RestController()
-@RequestMapping("/bachhoa/api/inventory/")
+@RequestMapping("/bachhoa/api")
 public class InventoryHistoryAPI {
-// Tim doi tuong InventoryHistoryService
 	@Autowired
 	InventoryHistoryService inventoryHistoryService;
 
-	@PostMapping("insert")
-	private ResponseEntity<Boolean> insert(@RequestBody() InventoryHistory inventoryHistory) {
-		System.out.println("insert");
-		long time = System.currentTimeMillis();
-		inventoryHistory.setCountingTime(new java.sql.Timestamp(time));
-		inventoryHistory.setInHisID(String.valueOf(time));
-		if (inventoryHistoryService.insert(inventoryHistory)) {
-
-			return ResponseEntity.status(HttpStatus.OK).body(true);
-		} else {
-			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(false);
-
-		}
-	}
-
-	@GetMapping("getByProductIDAndStoreID/{productID}/{storeID}")
-	private ResponseEntity<List<InventoryHistory>> getByProductIDAndStoreID(@PathVariable("productID") String productID,
-			@PathVariable("storeID") int storeID) {
-		System.out.println("getByProductIDAndStoreID");
-		List<InventoryHistory> list = inventoryHistoryService.getByProductIDAndStoreID(productID, storeID);
-		if (list != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(list);
-		} else {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-		}
-	}
-
-	@GetMapping("getByStoreIDAndDate")
-	private ResponseEntity<List<InventoryHistory>> getByStoreIDAndDate(@PathVariable("storeID") int storeID,
-			@PathVariable("date") Timestamp date) {
-		List<InventoryHistory> list = inventoryHistoryService.getByStoreIDAndDate(storeID, date);
-		if (list != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(list);
-		} else {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-
-		}
+	@GetMapping("inventoryHistory/findByDate/{storeID}/{fromDate}/{toDate}")
+	public Page<InventoryHistory> findByDate(@PathVariable("fromDate") Timestamp fromDate,
+			@PathVariable("toDate") Timestamp toDate, @PathVariable("storeID") Integer storeID,
+			@RequestParam Optional<Integer> index) {
+		Pageable page = PageRequest.of(index.orElse(0), 8);
+		return inventoryHistoryService.findByDate(fromDate, toDate, storeID, page);
 	}
 }
