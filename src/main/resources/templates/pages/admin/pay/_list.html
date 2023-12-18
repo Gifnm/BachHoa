@@ -51,7 +51,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-if="isNull && isPagination">
+            <tr ng-if="isNull && !isPagination">
                 <td colspan="8">Không có dữ liệu</td>
             </tr>
             <tr ng-repeat="item in items" style="cursor: pointer;" data-bs-toggle="modal"

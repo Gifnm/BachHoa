@@ -40,7 +40,10 @@
 
 <body class="bg-dark overflow-hidden">
     <div class="loader">
-        <img src="../images/loading.gif" alt="Loading...">
+        <!-- <img src="../images/loading.gif" alt="Loading..."> -->
+        <div class="spinner-border text-info" role="status">
+			<span class="visually-hidden">Loading...</span>
+		</div>
     </div>
     <p id="accountEmail" class="visually-hidden">[[${#httpServletRequest.remoteUser}]]</p>
     <div class="position-absolute w-100 vh-100 d-flex align-items-center justify-content-center text-white"

@@ -62,8 +62,10 @@ app.controller("ctrl", function ($scope, $http) {
             });
             // Load categories onto form's comboboxes
             url = `${api_host}/${storeId}/categories`;
+            
             $http.get(url).then(resp => {
                 let categories = resp.data;
+                $scope.categories = [];
                 categories.forEach(category => {
                     let categoryItem = { category, editing: false };
                     $scope.categories.push(categoryItem);

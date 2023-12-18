@@ -359,17 +359,24 @@ app_pay.controller("pay-ctrl", function ($scope, $http) {
 
 	// Thêm sản phẩm vào billDetail
 	$scope.addProductToBillDetail = function (productID) {
+		// kiểm tra xem sản phẩm đã có trong bill chưa
 		let item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == $scope.invoiceID);
-		//var billID = $scope.invoiceID;
+		//đã có trong bill
 		if (item) {
+			// nếu có thì chỉ cập nhật số lượng
 			updateBillDetail(productID, $scope.invoiceID);
+			// lưu tạm billDetail vào session storage
 			saveBillDetailToSessionStorage($scope.billDetails);
+			// lấy danh sách billDetail từ session storage
 			loadBillDetailFromSessionStorage();
+			// truyền danh sách vừa lấy vào mảng $scope.billDetails để hiển thị lên màn hình
 			loadToBillDetail($scope.invoiceID);
-			//$scope.productCode = '';
+		// chưa có trong bill	
 		} else {
+			// lấy tất cả ID sản phẩm
 			$http.get(`/product/getProductID`).then(resp => {
 				let products = resp.data;
+				// kiểm tra sản phẩm có tồn tại không
 				let item = products.find(item => item == productID);
 				if (item) {
 					$http.get(`/product/findByID/${productID}`).then(resp => {
@@ -656,7 +663,7 @@ app_pay.controller("pay-ctrl", function ($scope, $http) {
 		} else {
 			// Thông báo - Thành công
 			Swal.fire({
-				title: "Xuất bill thành công !",
+				title: "Xuất hóa đơn thành công !",
 				icon: "success",
 				timer: 1500,
 				timerProgressBar: true,
