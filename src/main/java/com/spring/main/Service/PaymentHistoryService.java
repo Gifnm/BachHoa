@@ -19,10 +19,6 @@ public class PaymentHistoryService {
 	public void save(PaymentHistory paymentHistory) {
 		paymentHistoryJPA.save(paymentHistory);
 	}
-	
-	public List<PaymentHistory> getPayment(Integer storeID) {
-		return paymentHistoryJPA.getPayment(storeID);
-	}
 
 	public Page<PaymentHistory> findByEmployee(Integer employeeID, Pageable page) {
 		return paymentHistoryJPA.findByEmployee(employeeID, page);
@@ -32,8 +28,8 @@ public class PaymentHistoryService {
 		return paymentHistoryJPA.findByDate(fromeDate, toDate, page);
 	}
 
-	public Page<PaymentHistory> getAllPayment(Integer storeID, Pageable page) {
-		return paymentHistoryJPA.getAllPayment(storeID, page);
+	public List<PaymentHistory> getAll() {
+		return paymentHistoryJPA.findAll();
 	}
 
 	public PaymentHistory findByID(Integer id) {

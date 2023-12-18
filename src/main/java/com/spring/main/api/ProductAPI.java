@@ -1,10 +1,8 @@
 package com.spring.main.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+//import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.main.Service.ProductPosionService;
 import com.spring.main.Service.ProductService;
+import com.spring.main.model.DisplayPlatter;
+import com.spring.main.model.DisplayShelves;
 import com.spring.main.model.Product;
 import com.spring.main.model.ProductPositioning;
 
@@ -29,11 +29,8 @@ public class ProductAPI {
 	ProductService productService;
 	@Autowired
 	ProductPosionService posionService;
-	// Specify the directory to save the file
-	@Value("${file.upload.directory}")
-	private String uploadDirectory;
 
-	// Su dung khi tao san pham moi
+// Su dung khi tao san pham moi
 	@PostMapping("/bachhoa/api/upload")
 	public ResponseEntity<String> uploadSanPhamWithImage(@RequestPart("product") Product product,
 			@RequestPart("image") MultipartFile hinhAnh) throws IOException {
@@ -45,6 +42,8 @@ public class ProductAPI {
 			productPositioning.setStore(product.getStore());
 			productPositioning.setProduct((Product) product);
 			productPositioning.setId(0);
+			productPositioning.setDisplayPlatter(new DisplayPlatter(0));
+			productPositioning.setDisplayShelves(new DisplayShelves(0));
 			posionService.insert(productPositioning);
 			return ResponseEntity.ok("Ok");
 		} catch (IOException e) {
@@ -84,14 +83,14 @@ public class ProductAPI {
 		return productService.getProductID();
 	}
 
+	@GetMapping("product/getProductName")
+	public List<String> getProductName() {
+		return productService.getProductName();
+	}
+
 	@GetMapping("product/findByID/{productID}")
 	public Product findByID(@PathVariable("productID") String productID) {
 		return productService.getByID(productID);
-	}
-
-	@GetMapping("product/getProductName")
-	public List<String> getProductName(@RequestParam("storeID") Integer storeID) {
-		return productService.getProductName(storeID);
 	}
 
 	@GetMapping("product/findByIDOrName/{value}")
@@ -99,7 +98,7 @@ public class ProductAPI {
 		return productService.getByIDOrName(value);
 	}
 
-	// Start API admin
+	// Start API thanhdq
 	// Return all product in database
 	@GetMapping("/bachhoa/api/products")
 	public List<Product> getAll() {
@@ -121,49 +120,10 @@ public class ProductAPI {
 		return productService.getByKeyword(keyWord, storeId);
 	}
 
-	// Get product image in server
-	@GetMapping("/bachhoaimg/{imageName}")
-	public ResponseEntity<Resource> serveImage(@PathVariable String imageName) throws IOException {
-		// Get the image path from a customizable parameter
-		String imagePath = getImagePath(imageName);
-
-		// Create a FileSystemResource from the image path
-		try {
-			Resource resource = new FileSystemResource(imagePath);
-			// Set up the response headers
-			return ResponseEntity.ok()
-					.contentType(MediaType.IMAGE_JPEG)
-					.body(resource);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.status(500).body(null);
-		}
-
-	}
-
-	// Helper method to get the image path based on the image name
-	private String getImagePath(String imageName) {
-		// If the image name starts with http, then it's a URL
-		if (imageName.startsWith("http://")) {
-			imageName = imageName.substring(imageName.lastIndexOf("/") + 1);
-		}
-		return uploadDirectory + imageName;
-	}
-
 	// Save new product
 	@PostMapping("/bachhoa/api/products")
 	public Product create(@RequestBody Product product) {
 		return productService.create(product);
-	}
-
-	@PostMapping("/bachhoa/api/image/upload")
-	public ResponseEntity<String> postMethodName(@RequestParam("file") MultipartFile file) {
-		String result = productService.uploadImage(file);
-		if (result.startsWith("Error")) {
-			return ResponseEntity.ok("Image uploaded successfully" + result);
-		} else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
-		}
 	}
 
 	// Update product
@@ -183,6 +143,6 @@ public class ProductAPI {
 		productService.delete(id);
 	}
 
-	// End api admin
+	// End api thanhdq
 
 }

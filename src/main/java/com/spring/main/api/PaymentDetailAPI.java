@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.main.Service.PaymentDetailService;
 import com.spring.main.model.PaymentDetail;
-import com.spring.main.model.PaymentHistory;
 
 @RestController
 @CrossOrigin("*")
@@ -22,24 +21,24 @@ public class PaymentDetailAPI {
 	PaymentDetailService paymentDetailService;
 
 	@GetMapping("paymentDetail/findByPaymentID/{id}")
-	public PaymentHistory getPaymentDetail(@PathVariable("id") Integer id) {
+	public PaymentDetail getPaymentDetail(@PathVariable("id") Integer id) {
 		return paymentDetailService.findByPaymentID(id);
 	}
 	
-//	@GetMapping("paymentDetail/findByID/{id}")
-//	public PaymentDetail findByID(@PathVariable("id") Integer id) {
-//		return paymentDetailService.findByID(id);
-//	}
-//	
-//	@PostMapping("paymentDetail/create")
-//	public PaymentDetail create(@RequestBody PaymentDetail paymentDetail) {
-//		paymentDetailService.save(paymentDetail);
-//		return paymentDetail;
-//	}
-//	
-//	@PutMapping("paymentDetail/update")
-//	public PaymentDetail update(@RequestBody PaymentDetail paymentDetail) {
-//		paymentDetailService.save(paymentDetail);
-//		return paymentDetail;
-//	}
+	@GetMapping("paymentDetail/findByID/{id}")
+	public PaymentDetail findByID(@PathVariable("id") Integer id) {
+		return paymentDetailService.findByID(id);
+	}
+	
+	@PostMapping("paymentDetail/create")
+	public PaymentDetail create(@RequestBody PaymentDetail paymentDetail) {
+		paymentDetailService.save(paymentDetail);
+		return paymentDetail;
+	}
+	
+	@PutMapping("paymentDetail/update")
+	public PaymentDetail update(@RequestBody PaymentDetail paymentDetail) {
+		paymentDetailService.save(paymentDetail);
+		return paymentDetail;
+	}
 }
