@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="161" pageHeight="420" columnWidth="141" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="2cc310d7-28fd-4543-9bad-d0f8f1a53043">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="161" pageHeight="595" columnWidth="161" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="2cc310d7-28fd-4543-9bad-d0f8f1a53043">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="mm"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit." value="mm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="mm"/>
 	<parameter name="billCode" class="java.lang.String"/>
 	<parameter name="createDate" class="java.lang.String"/>
 	<parameter name="amountReceivable" class="java.lang.String"/>
@@ -29,16 +28,9 @@
 	</background>
 	<title>
 		<band height="30" splitType="Stretch">
-			<image>
-				<reportElement x="0" y="0" width="30" height="30" uuid="3322510e-0f0c-4d81-861f-2999e41ec40e">
-					<property name="com.jaspersoft.studio.unit.x" value="px"/>
-				</reportElement>
-				<box leftPadding="0"/>
-				<imageExpression><![CDATA["D:/logo3-removebg.png"]]></imageExpression>
-			</image>
 			<staticText>
-				<reportElement x="30" y="0" width="111" height="30" uuid="ba4acdd2-c404-42eb-a9df-bd690b1f6889">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<reportElement x="0" y="0" width="136" height="30" uuid="ba4acdd2-c404-42eb-a9df-bd690b1f6889">
+					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="8" isBold="true"/>
@@ -50,7 +42,7 @@
 	<pageHeader>
 		<band height="46" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="34" height="20" uuid="b1600bf3-a653-4230-8bed-7c6cccefcb58">
+				<reportElement x="0" y="0" width="30" height="20" uuid="b1600bf3-a653-4230-8bed-7c6cccefcb58">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 				</reportElement>
 				<box leftPadding="0"/>
@@ -60,21 +52,21 @@
 				<text><![CDATA[Mã HD:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="34" y="0" width="107" height="20" uuid="3009b70a-d44a-41da-aeac-09d790b56a9c">
+				<reportElement x="30" y="0" width="106" height="20" uuid="3009b70a-d44a-41da-aeac-09d790b56a9c">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{billCode}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="20" width="141" height="20" uuid="f3ab16a8-ea53-4284-aef2-887dc99fd53d">
+				<reportElement x="0" y="20" width="136" height="20" uuid="f3ab16a8-ea53-4284-aef2-887dc99fd53d">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box leftPadding="0"/>
 				<textFieldExpression><![CDATA[$P{createDate}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="40" width="141" height="1" uuid="f4884bb9-2219-4d21-91db-77a1d83e5546">
+				<reportElement x="0" y="40" width="136" height="1" uuid="f4884bb9-2219-4d21-91db-77a1d83e5546">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 			</line>
@@ -83,14 +75,14 @@
 	<columnHeader>
 		<band height="30" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="20" height="30" uuid="ef2b9707-4f4b-4e33-8764-62edd5838513"/>
+				<reportElement x="0" y="0" width="19" height="30" uuid="ef2b9707-4f4b-4e33-8764-62edd5838513"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="20" y="0" width="60" height="30" uuid="08c9eccd-5bdd-43da-9a06-1ae3eff8a026"/>
+				<reportElement x="19" y="0" width="59" height="30" uuid="08c9eccd-5bdd-43da-9a06-1ae3eff8a026"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="8" isBold="true"/>
 				</textElement>
@@ -98,7 +90,7 @@
 (có VAT)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="80" y="0" width="61" height="30" uuid="33915a61-b01b-48d5-b4fc-aa18ec6dfd48">
+				<reportElement x="78" y="0" width="58" height="30" uuid="33915a61-b01b-48d5-b4fc-aa18ec6dfd48">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box rightPadding="0"/>
@@ -114,9 +106,9 @@
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<frame>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="141" height="48" isPrintWhenDetailOverflows="true" uuid="addb50df-f877-4820-bf90-ce54ad5567be"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="136" height="48" isPrintWhenDetailOverflows="true" uuid="addb50df-f877-4820-bf90-ce54ad5567be"/>
 				<textField>
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="80" y="25" width="61" height="17" uuid="6cc680f7-a455-4b95-b57b-0df6d3ad3b15">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="78" y="25" width="58" height="17" uuid="6cc680f7-a455-4b95-b57b-0df6d3ad3b15">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box rightPadding="5"/>
@@ -124,21 +116,21 @@
 					<textFieldExpression><![CDATA[$F{totalAmount}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="25" y="25" width="55" height="17" uuid="a3b4d973-68f6-475f-9d62-845bde7d9e71">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="19" y="25" width="59" height="17" uuid="a3b4d973-68f6-475f-9d62-845bde7d9e71">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="25" width="25" height="17" uuid="9321375c-557c-40b6-99bc-364a7be505e3">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="25" width="19" height="17" uuid="9321375c-557c-40b6-99bc-364a7be505e3">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box leftPadding="0"/>
 					<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 				</textField>
 				<textField textAdjust="StretchHeight">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="141" height="25" uuid="095f19f7-5168-4af7-98d2-afa1206c4b1c">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="136" height="25" uuid="095f19f7-5168-4af7-98d2-afa1206c4b1c">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.layout.grid.weight.fixed" value="true"/>
 						<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -152,7 +144,7 @@
 					<textFieldExpression><![CDATA[$F{productName}]]></textFieldExpression>
 				</textField>
 				<line>
-					<reportElement positionType="Float" x="0" y="47" width="140" height="1" uuid="536026f7-9bcb-4af2-bd33-936d73972d40">
+					<reportElement positionType="Float" x="0" y="48" width="136" height="1" uuid="536026f7-9bcb-4af2-bd33-936d73972d40">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<graphicElement>
@@ -165,15 +157,15 @@
 	<summary>
 		<band height="150">
 			<staticText>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="10" width="70" height="20" uuid="765dbb9e-3bd0-4ed9-b119-e124dd71a64a"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="10" width="78" height="20" uuid="765dbb9e-3bd0-4ed9-b119-e124dd71a64a"/>
 				<box leftPadding="0"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="DejaVu Sans" size="7" isBold="true"/>
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Phải thanh toán:]]></text>
 			</staticText>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="70" y="10" width="71" height="20" uuid="0145bd5d-31f7-4b12-af48-c1a20403f0ae">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="78" y="10" width="58" height="20" uuid="0145bd5d-31f7-4b12-af48-c1a20403f0ae">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box rightPadding="0"/>
@@ -181,15 +173,16 @@
 				<textFieldExpression><![CDATA[$P{amountReceivable}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="30" width="70" height="20" uuid="e2146d00-6e14-43b7-8c5a-8f52124e663d"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="30" width="78" height="20" uuid="e2146d00-6e14-43b7-8c5a-8f52124e663d"/>
 				<box leftPadding="0"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="DejaVu Sans" size="6"/>
+					<font fontName="DejaVu Sans" size="8"/>
 				</textElement>
-				<text><![CDATA[Tiền mặt: (đã làm tròn)]]></text>
+				<text><![CDATA[Tiền mặt:
+(đã làm tròn)]]></text>
 			</staticText>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="70" y="30" width="71" height="20" uuid="21513cb0-1d7c-4982-bf31-9b4cd1eaa1f4">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="78" y="30" width="58" height="20" uuid="21513cb0-1d7c-4982-bf31-9b4cd1eaa1f4">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box rightPadding="0"/>
@@ -197,7 +190,7 @@
 				<textFieldExpression><![CDATA[$P{cashRound}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="60" width="140" height="1" uuid="230176b7-f1c0-4ac3-827f-7b7091382eb6"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="60" width="136" height="1" uuid="230176b7-f1c0-4ac3-827f-7b7091382eb6"/>
 				<graphicElement>
 					<pen lineWidth="0.5" lineStyle="Dashed"/>
 				</graphicElement>
@@ -211,7 +204,7 @@
 				<text><![CDATA[Tiền khách đưa:]]></text>
 			</staticText>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="70" y="70" width="71" height="20" uuid="0b3e717e-6588-4395-9954-fd3cdfa9679d">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="70" y="70" width="66" height="20" uuid="0b3e717e-6588-4395-9954-fd3cdfa9679d">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box rightPadding="0"/>
@@ -227,7 +220,7 @@
 				<text><![CDATA[Tiền thối lại:]]></text>
 			</staticText>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="70" y="90" width="71" height="20" uuid="0a0c97dd-cbb2-4ef1-bc6d-99e8a4f08ded">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="70" y="90" width="66" height="20" uuid="0a0c97dd-cbb2-4ef1-bc6d-99e8a4f08ded">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box rightPadding="0"/>
@@ -235,13 +228,13 @@
 				<textFieldExpression><![CDATA[$P{change}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="120" width="140" height="1" uuid="39ffcf36-04b1-446e-83b9-a458c7fa74fa"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="122" width="136" height="1" uuid="39ffcf36-04b1-446e-83b9-a458c7fa74fa"/>
 				<graphicElement>
 					<pen lineWidth="0.5" lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="120" width="141" height="30" uuid="8ba19be0-e76b-4dff-ba98-97305f994f27">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="124" width="136" height="19" uuid="8ba19be0-e76b-4dff-ba98-97305f994f27">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">

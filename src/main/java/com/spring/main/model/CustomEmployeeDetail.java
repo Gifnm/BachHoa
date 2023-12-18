@@ -93,4 +93,8 @@ public class CustomEmployeeDetail implements UserDetails {
 			.collect(Collectors.toList()).toArray(new String[0]);
 	}
 	
+	public boolean getActive() {
+		return employee.isActive();
+	}
+	
 }

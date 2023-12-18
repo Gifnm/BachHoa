@@ -31,6 +31,9 @@ public class PurchaseHistory {
 	@JoinColumn(name = "id")
 	private DeliveryNote deliveryNote;
 	@ManyToOne
+	@JoinColumn(name = "storeID")
+	private Store store;
+	@ManyToOne
 	@MapsId("productID")
 	@JoinColumn(name = "productID")
 	private Product product;
@@ -43,4 +46,6 @@ public class PurchaseHistory {
 	private int quantityReceived;
 	@Column(name = "confirmedQuantity")
 	private int confirmedQuantity;
+	@Column(name = "totalAmount")
+	private Float totalAmount;
 }

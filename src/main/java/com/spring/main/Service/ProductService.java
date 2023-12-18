@@ -2,9 +2,12 @@ package com.spring.main.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,20 +18,18 @@ import com.spring.main.model.Product;
 public class ProductService {
 	@Autowired
 	ProductJPA productJPA;
+
+	// Specify the directory to save the file
+	@Value("${file.upload.directory}")
+	private String uploadDirectory;
+
 	private final String FOLDER_PATH = "C:\\bachhoaimg\\";
-	private final String FOLDER_PATH_LINUX = "/home/thanhdq/bachhoaimg/";
 
 	public String uploadProduct(MultipartFile file, Product product) throws IllegalStateException, IOException {
 		String filePath = FOLDER_PATH + file.getOriginalFilename();
 		file.transferTo(new File(filePath));
-		product.setImage("http://192.168.1.30:8083/bachhoaimg//" + file.getOriginalFilename());
+		product.setImage("http://192.168.1.5:8083/bachhoaimg//" + file.getOriginalFilename());
 		productJPA.save(product);
-		return "Succes";
-	}
-
-	public String uploadProduct(MultipartFile file) throws IllegalStateException, IOException {
-		String filePath = FOLDER_PATH_LINUX + file.getOriginalFilename();
-		file.transferTo(new File(filePath));
 		return "Succes";
 
 	}
@@ -50,7 +51,23 @@ public class ProductService {
 
 	}
 
-	// Start service thanhdq
+	public Product getByIDOrName(String value) {
+		Product product = productJPA.getByIDOrName(value);
+		return product;
+
+	}
+
+	public List<String> getProductID() {
+		return productJPA.getProductID();
+
+	}
+
+	public List<String> getProductName(Integer storeID) {
+		return productJPA.getProductName(storeID);
+
+	}
+
+	// Start service admin
 	// Get all product in database
 	public List<Product> getAll() {
 		return productJPA.findAll();
@@ -80,6 +97,29 @@ public class ProductService {
 		return productJPA.save(product);
 	}
 
+	public String uploadImage(MultipartFile file) {
+		// Create the directory if it doesn't exist
+		File dir = new File(uploadDirectory);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		// Save the file to the specified directory
+		// Generate a unique file name to avoid conflicts
+		// String uniqueFileName = System.currentTimeMillis() + "_" +
+		// file.getOriginalFilename();
+		String uniqueFileName = file.getOriginalFilename();
+		// Save the file to the server
+		Path filePath = Paths.get(uploadDirectory, uniqueFileName);
+		System.out.println(filePath);
+		try {
+			file.transferTo(filePath);
+			return filePath.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "Error uploading the file";
+		}
+	}
+
 	// Update product
 	public Product update(Product product) {
 		return productJPA.save(product);
@@ -89,22 +129,6 @@ public class ProductService {
 	public void delete(String id) {
 		productJPA.deleteById(id);
 	}
-	// End service thanhdq
-	
-	// DVNghiep
-	public Product getByIDOrName(String value) {
-		Product product = productJPA.getByIDOrName(value);
-		return product;
-		
-	}
-	
-	public List<String> getProductName() {
-		return productJPA.getProductName();
-		
-	}
-	
-	public List<String> getProductID() {
-		return productJPA.getProductID();
-		
-	}
+	// End service admin
+
 }

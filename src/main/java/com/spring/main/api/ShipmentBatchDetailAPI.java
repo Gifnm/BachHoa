@@ -20,9 +20,7 @@ import com.spring.main.Service.ProductPosionService;
 import com.spring.main.Service.ShipmentBacthDetailService;
 import com.spring.main.Service.ShipmentBacthService;
 import com.spring.main.model.ProductPositioning;
-import com.spring.main.model.ShipmentBatch;
 import com.spring.main.model.ShipmentBatchDetail;
-import com.spring.main.model.Store;
 
 @CrossOrigin("*")
 @RestController
@@ -73,7 +71,7 @@ public class ShipmentBatchDetailAPI {
 			@PathVariable("storeID") int storeID) {
 		System.out.println("checks");
 		ProductPositioning productPositioning = productPosionService.getByIDAndStoreID(productID, storeID);
-		ShipmentBatchDetail shipmentBatchDetail = new ShipmentBatchDetail();
+		// ShipmentBatchDetail shipmentBatchDetail = new ShipmentBatchDetail();
 		if (productPositioning == null) {
 			
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);

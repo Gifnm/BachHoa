@@ -18,9 +18,8 @@ import com.spring.main.Service.DeliveryNoteService;
 import com.spring.main.Service.DetailedDeliveryNoteService;
 import com.spring.main.Service.ProductService;
 import com.spring.main.Service.PurchaseHistoryService;
-import com.spring.main.model.DeliveryNote;
+import com.spring.main.Service.EmployeeService;
 import com.spring.main.model.DetailedDeliveryNote;
-import com.spring.main.model.Employee;
 import com.spring.main.model.Product;
 import com.spring.main.model.PurchaseHistory;
 
@@ -36,6 +35,8 @@ public class DetailedDeliveryNoteAPI {
 	ProductService productService;
 	@Autowired
 	DeliveryNoteService deliveService;
+	@Autowired
+	EmployeeService employeeService;
 
 	@GetMapping("getall/{deliveryNoteId}")
 	private ResponseEntity<List<DetailedDeliveryNote>> getAll(@PathVariable("deliveryNoteId") String id) {
@@ -62,7 +63,7 @@ public class DetailedDeliveryNoteAPI {
 			purchaseHistory.setSysInventory(detailedDeliveryNote.getProduct().getInventory());
 			purchaseHistory.setQuantityReceived(detailedDeliveryNote.getQuantity());
 			purchaseHistory.setConfirmedQuantity(detailedDeliveryNote.getCount());
-			purchaseHistory.setEmployee(new Employee(employeeID));
+			purchaseHistory.setEmployee(employeeService.findByID(employeeID));
 			purchaseHistoryService.save(purchaseHistory);
 			Product product = detailedDeliveryNote.getProduct();
 			product.setInventory(product.getInventory() + detailedDeliveryNote.getCount());

@@ -1,0 +1,118 @@
+<!-- Modal -->
+<div class="modal fade" id="deliveryDetailModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content p-4 bg-white rounded-4">
+            <div class="bg-light rounded-4 p-4 mb-4 d-flex justify-content-between">
+
+                <div class="d-flex align-middle">
+                    <p
+                        class="py-3 me-2 badge rounded-pill text-bg-{{currentDeliveryNote.status=='Chờ nhập'?'warning':(currentDeliveryNote.status=='Đang kiểm'?'primary':'success')}}">
+                        {{currentDeliveryNote.status}}</p>
+                    <div>
+                        <p class="text-muted">Mã phiếu : <br>
+                            <b class="text-black">{{currentDeliveryNote.id}}</b>
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex align-middle">
+                    <span class="material-symbols-outlined text-muted p-2">History</span>
+                    <div>
+                        <p class="text-muted"> Ngày lập : <br>
+                            <b class="text-black">{{currentDeliveryNote.timeCreate| date:'dd/MM/yyyy'}}</b>
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex align-middle">
+                    <span class="material-symbols-outlined text-muted p-2">schedule</span>
+                    <div>
+                        <p class="text-muted">Ngày nhập : <br>
+                            <b class="text-black">{{currentDeliveryNote.timeCompleted==null?'--/--/----':currentDeliveryNote.timeCompleted
+                                | date:'dd/MM/yyyy'}}</b>
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex align-middle">
+                    <span class="material-symbols-outlined text-muted p-2">person</span>
+                    <div>
+                        <p class="text-muted">Người lập phiếu : <br>
+                            <b class="text-black">{{currentDeliveryNote.employeeName}}</b>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4 rounded-4 bg-light p-4">
+                <div id="list-product" class="table-responsive">
+                    <table class="table rounded">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="sticky order-col">STT</th>
+                                <th class="sticky name-col">Tên Sản phẩm</th>
+                                <th class="sticky name-col">Mã số</th>
+                                <th class="sticky">Số lượng nhập</th>
+                                <th class="sticky">Thực nhập</th>
+                                <th class="sticky name-col">Đơn giá nhập</th>
+                                <th class="sticky function-col">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr ng-repeat="row in detailDeliveries">
+                                <td class="sticky order-col">{{row.index}}</td>
+                                <td class="sticky name-col">
+                                    <div class="d-flex">
+                                        <div>
+                                            <h6>{{row.product.productName}}</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h6>{{row.product.productID}}</h6>
+                                </td>
+                                <td>
+                                    <h6>{{row.quantity}}</h6>
+                                </td>
+                                <td>
+                                    <h6>{{row.count}}</h6>
+                                </td>
+                                <td>
+                                    <h6>{{row.product.importPrice | currency:'₫':'0'}}</h6>
+                                </td>
+                                <td>
+                                    <h6>{{row.product.importPrice * row.quantity | currency:'₫':'0'}}</h6>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="bg-light">
+                            <td colspan="6" class="ps-2">
+                                <h4 class="text-danger">Tổng cộng :</h4>
+                            </td>
+                            <td>
+                                <h4 class="text-danger">{{currentDeliveryNote.totalAmount| currency:'₫':'0'}}
+                                </h4>
+                            </td>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button
+                    class="btn btn-outline-dark ms-3 d-flex align-middle {{currentDeliveryNote.status=='Chờ nhập'?'':'visually-hidden'}}"
+                    data-bs-dismiss="modal" ng-click="editDeliveryNote(currentDeliveryNote)"><span
+                        class="material-symbols-outlined">
+                        edit
+                    </span> Chỉnh sửa</button>
+                <button
+                    class="btn btn-outline-danger ms-3 d-flex align-middle {{currentDeliveryNote.status=='Chờ nhập'?'':'visually-hidden'}}"
+                    data-bs-dismiss="modal" ng-click="deleteDeliveryNote(currentDeliveryNote)"><span
+                        class="material-symbols-outlined">
+                        delete
+                    </span> Xóa phiếu</button>
+                <button class="btn btn-outline-dark d-flex align-middle  ms-3 d-flex align-items-center"
+                    ng-click="detailDeliveryNoteDataToExport()"><span class="material-symbols-outlined">
+                        file_save
+                    </span> Xuất Excel</button>
+                <button type="button" class="btn btn-outline-dark ms-3" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>

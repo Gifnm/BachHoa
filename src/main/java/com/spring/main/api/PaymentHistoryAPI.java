@@ -30,18 +30,24 @@ public class PaymentHistoryAPI {
 	
 	@GetMapping("paymentHistory/findByEmployee/{employeeID}")
 	public Page<PaymentHistory> findByEmployee(@PathVariable("employeeID") Integer employeeID, @RequestParam Optional<Integer> index){
-		Pageable page = PageRequest.of(index.orElse(0), 8);
+		Pageable page = PageRequest.of(index.orElse(0), 5);
 		return paymentHistoryService.findByEmployee(employeeID, page);
 	}
 	
 	@GetMapping("paymentHistory/getAll")
-	public List<PaymentHistory> getAll(){
-		return paymentHistoryService.getAll();
+	public Page<PaymentHistory> getAll(@RequestParam("storeID") Integer storeID, @RequestParam("index") Optional<Integer> index){
+		Pageable page = PageRequest.of(index.orElse(0), 5);
+		return paymentHistoryService.getAllPayment(storeID, page);
+	}
+	
+	@GetMapping("paymentHistory/getPayment")
+	public List<PaymentHistory> getPayment(@RequestParam Integer storeID){
+		return paymentHistoryService.getPayment(storeID);
 	}
 	
 	@GetMapping("paymentHistory/findByDate/{fromDate}/{toDate}")
 	public Page<PaymentHistory> findByDate(@PathVariable("fromDate") Timestamp fromDate, @PathVariable("toDate") Timestamp toDate,  @RequestParam Optional<Integer> index){
-		Pageable page = PageRequest.of(index.orElse(0), 8);
+		Pageable page = PageRequest.of(index.orElse(0), 5);
 		return paymentHistoryService.findByDate(fromDate, toDate, page);
 	}
 	
