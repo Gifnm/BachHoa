@@ -1,5 +1,5 @@
 const app_pay = angular.module("app", ["ui.bootstrap", "ui.tab.scroll"]);
-app_pay.controller("pay-ctrl", function($scope, $http) {
+app_pay.controller("pay-ctrl", function ($scope, $http) {
 	// SweetAlert 2
 	var toastMixin = Swal.mixin({
 		toast: true,
@@ -28,7 +28,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 			the text field element and an array of possible autocompleted values:*/
 			let currentFocus;
 			/*execute a function when someone writes in the text field:*/
-			inp.addEventListener("input", function(e) {
+			inp.addEventListener("input", function (e) {
 				let a, b, i, val = this.value;
 				/*close any already open lists of autocompleted values*/
 				closeAllLists();
@@ -52,7 +52,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 						/*insert a input field that will hold the current array item's value:*/
 						b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
 						/*execute a function when someone clicks on the item value (DIV element):*/
-						b.addEventListener("click", function(e) {
+						b.addEventListener("click", function (e) {
 							/*insert the value for the autocomplete text field:*/
 							inp.value = this.getElementsByTagName("input")[0].value;
 							$scope.addProductToBillDetail(inp.value);
@@ -66,7 +66,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 				}
 			});
 			/*execute a function presses a key on the keyboard:*/
-			inp.addEventListener("keydown", function(e) {
+			inp.addEventListener("keydown", function (e) {
 				let x = document.getElementById(this.id + "autocomplete-list");
 				if (x) x = x.getElementsByTagName("div");
 				if (e.keyCode == 40) {
@@ -117,7 +117,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 				}
 			}
 			/*execute a function when someone clicks in the document:*/
-			document.addEventListener("click", function(e) {
+			document.addEventListener("click", function (e) {
 				closeAllLists(e.target);
 			});
 		},
@@ -153,7 +153,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 
 	var stt = 1;
 	// Khởi tạo 1 bill tạm đầu tiên
-	let init = function() {
+	let init = function () {
 
 		let email = document.getElementById('email').innerText;
 		$http.get(`/bachhoa/api/employee/findByEmail/${email}`).then(resp => {
@@ -161,7 +161,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 			$scope.dataEmployee.email = $scope.employee.email;
 			$scope.dataEmployee.address = $scope.employee.address;
 			$scope.dataEmployee.age = $scope.employee.age;
-			angular.forEach($scope.employee.roles, function(item) {
+			angular.forEach($scope.employee.roles, function (item) {
 				if (item.roleID == "qlch") {
 					$scope.admin = true;
 				}
@@ -174,7 +174,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 				addNewBill();
 			} else {
 				loadBillFromSessionStorage();
-				angular.forEach($scope.bills, function(item) { item.bill.employee = $scope.employee });
+				angular.forEach($scope.bills, function (item) { item.bill.employee = $scope.employee });
 				setAllInactive();
 				$scope.invoiceID = $scope.bills[0].bill.billID;
 				stt = $scope.bills[0].stt;
@@ -187,7 +187,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	};
 
 	// tạo bill mới
-	let createBill = function() {
+	let createBill = function () {
 		let bill = {};
 		bill.billID = new Date().getTime().toString();
 		bill.totalAmount = 0;
@@ -198,7 +198,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	};
 
 	// Tải lại dữ liệu bill
-	$scope.selectBill = function(billID) {
+	$scope.selectBill = function (billID) {
 		//alert(billID)
 		loadBillDetailFromSessionStorage();
 		loadToBillDetail(billID);
@@ -208,7 +208,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 
 
 	// lưu bill vào database
-	let saveBillToDatabase = function(dataBill) {
+	let saveBillToDatabase = function (dataBill) {
 		let url = `/bachhoa/api/bill/save`;
 		$http.post(url, dataBill).then(resp => {
 			console.log("Thêm thành công", resp);
@@ -221,7 +221,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	};
 
 	// thêm bill tạm vào mảng bills[]
-	let addNewBill = function() {
+	let addNewBill = function () {
 		let listBill = $scope.bills;
 		let employeeID = $scope.employee.employeeID;
 		$http.get(`/bachhoa/api/store/findByID/${$scope.employee.store.storeID}`).then(resp => {
@@ -259,12 +259,12 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 
 	};
 
-	let saveBillToSessionStorage = function(data) {
+	let saveBillToSessionStorage = function (data) {
 		const text = JSON.stringify(data);
 		sessionStorage.setItem("bills", text);
 	};
 
-	let loadBillFromSessionStorage = function() {
+	let loadBillFromSessionStorage = function () {
 		const obj = sessionStorage.getItem("bills");
 		const list = JSON.parse(obj);
 		//console.log(list);
@@ -274,20 +274,20 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	};
 
 	// chọn tab hoạt động
-	let setAllInactive = function() {
+	let setAllInactive = function () {
 		//console.log($scope.bills);
-		angular.forEach($scope.bills, function(bill) {
+		angular.forEach($scope.bills, function (bill) {
 			bill.active = false;
 		});
 	};
 
 	// xử lý button thêm bill tạm mới
-	$scope.addBill = function() {
+	$scope.addBill = function () {
 		setAllInactive();
 		addNewBill();
 	};
 	// xóa bill tạm
-	$scope.removeTab = function(index) {
+	$scope.removeTab = function (index) {
 		var item = $scope.bills[index];
 		//alert(item.bill.billID)
 		//alert(index)
@@ -325,12 +325,12 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	// Xử lý billDetail
 
 
-	let saveBillDetailToSessionStorage = function(data) {
+	let saveBillDetailToSessionStorage = function (data) {
 		const text = JSON.stringify(data);
 		sessionStorage.setItem("billDetails", text);
 	};
 
-	let loadBillDetailFromSessionStorage = function() {
+	let loadBillDetailFromSessionStorage = function () {
 		const obj = sessionStorage.getItem("billDetails");
 		const list = JSON.parse(obj);
 		if (list == null) {
@@ -342,12 +342,12 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	};
 
 	// tải lại dự liệu trên bảng hóa đơn chi tiết
-	let loadToBillDetail = function(billID) {
+	let loadToBillDetail = function (billID) {
 		if ($scope.billDetails.length == 0) {
 			document.getElementById('print').disabled = true;
 		}
 		$scope.listProduct = [];
-		angular.forEach($scope.billDetails, function(item) {
+		angular.forEach($scope.billDetails, function (item) {
 			if (item.billDetail.billID == billID) {
 				//item.billDetail.totalAmount = Math.round(item.billDetail.totalAmount);
 				$scope.listProduct.push(item);
@@ -358,7 +358,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	};
 
 	// Thêm sản phẩm vào billDetail
-	$scope.addProductToBillDetail = function(productID) {
+	$scope.addProductToBillDetail = function (productID) {
 		let item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == $scope.invoiceID);
 		//var billID = $scope.invoiceID;
 		if (item) {
@@ -440,7 +440,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	};
 
 	//cập nhật billDetail khi tăng số lượng
-	let updateBillDetail = function(productID, billID) {
+	let updateBillDetail = function (productID, billID) {
 		let item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
 		let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
 		item.billDetail.quantity = item.billDetail.quantity + 1;
@@ -482,7 +482,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	};
 
 	// Cập nhật billDetail khi tăng số lượng tại ô input số lượng
-	$scope.updateBillDetailFromInput = function(productID, quantity, billID) {
+	$scope.updateBillDetailFromInput = function (productID, quantity, billID) {
 		let item = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
 		let index = $scope.billDetails.findIndex(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
 		item.billDetail.quantity = quantity;
@@ -534,7 +534,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	};
 
 	// Tăng số lượng sản phẩm lên 1
-	$scope.increase = function(productID, billID) {
+	$scope.increase = function (productID, billID) {
 		updateBillDetail(productID, billID);
 		saveBillDetailToSessionStorage($scope.billDetails);
 		loadBillDetailFromSessionStorage();
@@ -542,18 +542,24 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	}
 
 	// Giảm số lượng sản phẩm xuống 1
-	$scope.reduce = function(productID, quantity, billID) {
+	$scope.reduce = function (productID, quantity, billID) {
 		let sl = quantity - 1;
 		$scope.updateBillDetailFromInput(productID, sl, billID);
 	}
 
 
 	// Xóa sản phẩm trong billDetail
-	$scope.deleteItem = function(index, billID, productID) {
+	$scope.deleteItem = function (index, billID, productID) {
 		if ($scope.billDetails[index].billDetail.product.productName.substr(0, 8) == "Quà tặng") {
 			let billDetail = $scope.billDetails.find(item => item.billDetail.productID == productID && item.billDetail.billID == billID);
 			billDetail.billDetail.quantityGift = 0;
 			$scope.updateBillDetailFromInput(productID, billDetail.billDetail.quantity, billID);
+		} else if ($scope.billDetails[index].billDetail.quantityGift > 0) {
+			let i = $scope.billDetails.findIndex(
+				o => o.billDetail.productID == productID
+					&& o.billDetail.billID == billID
+					&& o.billDetail.product.productName.substr(0, 8) == "Quà tặng");
+			$scope.billDetails.splice(i, 1);
 		}
 		$scope.billDetails.splice(index, 1);
 		saveBillDetailToSessionStorage($scope.billDetails);
@@ -562,7 +568,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	};
 
 	//Tính tổng tiền của bill
-	let total = function(billID) {
+	let total = function (billID) {
 		$scope.totalAmount = 0;
 		$scope.discount = 0;
 		if ($scope.billDetails.length == 0) {
@@ -571,7 +577,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 			$scope.amountReceivable = 0;
 			$scope.roundAmountReceivable = 0;
 		} else {
-			angular.forEach($scope.billDetails, function(item) {
+			angular.forEach($scope.billDetails, function (item) {
 				if (item.billDetail.billID == billID) {
 					$scope.totalAmount += item.totalMoney;
 					$scope.discount += item.discount;
@@ -589,16 +595,16 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	};
 
 	// Tính tiền thối lại
-	$scope.cash = function(cash) {
+	$scope.cash = function (cash) {
 		$scope.change = cash - $scope.roundAmountReceivable;
 		document.getElementById('print').disabled = false;
 	};
 
 	// lưu billDetail vào database
-	let saveBillDetailToDatabse = function(billID) {
+	let saveBillDetailToDatabse = function (billID) {
 		let url = `/bachhoa/api/billDetail/save/`;
 		let isLast = false;
-		angular.forEach($scope.billDetails, function(item) {
+		angular.forEach($scope.billDetails, function (item) {
 			if (item.billDetail.billID == billID && item.billDetail.product.productName.substr(0, 8) != "Quà tặng") {
 				$http.post(url, item.billDetail).then(resp => {
 					console.log("Thêm thành công", resp);
@@ -628,7 +634,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	//------------------------------------------------//
 	$scope.errorAlert = "true";
 
-	$scope.print = function() {
+	$scope.print = function () {
 		let billID = $scope.invoiceID;
 		//alert('thong bao tai in' + billID)
 		let data = $scope.bills.find(item => item.bill.billID == billID);
@@ -663,7 +669,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 
 	}
 
-	$scope.closeModal = function() {
+	$scope.closeModal = function () {
 		document.getElementById('errorAlert').setAttribute("style", "display: none;");
 		document.getElementById('errorAlert').setAttribute("aria-modal", false);
 		$scope.dialog = "";
@@ -683,7 +689,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	$scope.TotalMoneytoPay = 0;
 
 	// Cập nhật thông tin nhân viên
-	$scope.updateEmployee = function() {
+	$scope.updateEmployee = function () {
 		let em = angular.copy($scope.dataEmployee);
 		const AGE = document.getElementById("age").value;
 
@@ -766,7 +772,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 
 	// --------- Kết thúc ca làm ----------- //
 
-	let startDateFormat = function(value) {
+	let startDateFormat = function (value) {
 		let date = new Date(value);
 		const day = date.getDate().toString().padStart(2, '0');
 		const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months start at 0!
@@ -774,7 +780,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 		return `${year}-${month}-${day} ${0}:${0}:${1}`;
 	}
 
-	let endDateFormat = function(value) {
+	let endDateFormat = function (value) {
 		let date = new Date(value);
 		const day = date.getDate().toString().padStart(2, '0');
 		const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months start at 0!
@@ -783,7 +789,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	}
 
 	// Tính tiền nộp (thay đổi dựa trên giá trị các mệnh giá)
-	$scope.updateTotalMoney = function() {
+	$scope.updateTotalMoney = function () {
 		// Lấy số lượng
 		const SL500 = document.getElementById("500").value;
 		const SL200 = document.getElementById("200").value;
@@ -813,7 +819,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 
 	//Tính tổng tiền phải thu
 
-	$scope.tinhTongTienThu = function() {
+	$scope.tinhTongTienThu = function () {
 		let employeeID = $scope.employee.employeeID;
 		let time = new Date();
 		let startDate = startDateFormat(time);
@@ -832,7 +838,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 		$http.get(`/bachhoa/api/bill/findByEmployeeAndDate/${employeeID}/${startDate}/${endDate}`).then((resp) => {
 			let listbill = resp.data;
 			$scope.TotalMoneytoPay = 0;
-			angular.forEach(listbill, function(item) {
+			angular.forEach(listbill, function (item) {
 				let amountReceivable = Math.round((item.totalAmount - item.reduced) / 1000) * 1000;
 				$scope.TotalMoneytoPay += amountReceivable;
 			});
@@ -843,7 +849,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 	}
 
 	// Nút nộp tiền - Bấm là gửi trạng thái qua cho admin duyệt
-	$scope.sendMoney = function() {
+	$scope.sendMoney = function () {
 		if ($scope.TotalMoneytoPay < $scope.totalMoneyYouPay) {
 			toastMixin.fire({
 				title: "Số tiền bạn nộp phải bằng hoặc nhỏ hơn số tiền bạn phải nộp hôm nay!",
@@ -894,7 +900,7 @@ app_pay.controller("pay-ctrl", function($scope, $http) {
 		});
 	};
 	//Get image by image name
-	$scope.getImage = function(imageName) {
+	$scope.getImage = function (imageName) {
 		const lastIndex = imageName.lastIndexOf("/");
 		const substring = imageName.substring(lastIndex + 1);
 		return "/bachhoaimg/" + substring;
