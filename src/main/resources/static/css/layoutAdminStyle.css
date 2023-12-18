@@ -1,4 +1,92 @@
+/* custom scrollbar */
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #a8bbbf;
+}
+
+* {
+    font-family: 'Inter Tight', sans-serif;
+    letter-spacing: 0.5px;
+
+}
+
+.fw-bold-1 {
+    font-weight: 1000;
+}
+
 .logo,
 .topbar {
-    height: 80px;
+    height: 60px;
+}
+
+.topbar {
+    min-height: 60px;
+}
+
+.layout {
+    background-color: #ffffff;
+}
+
+#sidebar {
+    background-color: #d1d1d1;
+    opacity: 1;
+    transition: all 0.3s ease;
+    width: 250px;
+}
+
+/* #sidebar ul a {
+    background-color: #d1d1d1;
+    color: black;
+} */
+
+.menu-collapsed {
+    transition: all 0.3s ease;
+}
+
+/* #sidebar .material-symbols-outlined {
+    width: 70px;
+    text-align: center;
+} */
+
+#sidebar.active {
+    width: 70px;
+}
+
+
+.form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-floating input {
+    border-radius: 0 20px 20px 0;
+}
+
+#search-icon {
+    border-radius: 20px 0 0 20px;
+}
+
+/* Style to highlight invalid fields */
+.was-validated .form-control:invalid,
+.was-validated .form-select:invalid {
+    border-color: #dc3545;
+}
+
+/* Style to show feedback message for invalid fields */
+.was-validated .form-control:invalid~.invalid-feedback,
+.was-validated .form-select:invalid~.invalid-feedback {
+    display: block;
 }

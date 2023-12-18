@@ -1,62 +1,63 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="dynamic(view)">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="dynamic(title,view)">
 
 <head>
     <meta charset="utf-8">
-    <title>Admin - BACHHOA</title>
+    <title th:replace="${title}">Admin - BACHHOA</title>
+    <link rel="shortcut icon" href="../images/logo3-removebg.png" />
     <!-- Bootstrap CSS v5.2.1 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- AngularJS -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.2/dist/sweetalert2.all.min.js"></script>
+
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Angular-UI -->
     <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.0.js"></script>
     <script src="https://kit.fontawesome.com/0932428ed2.js" crossorigin="anonymous"></script>
-    <!-- css -->
-    <link rel="stylesheet" href="../css/templateStyle.css">
-    <link rel="stylesheet" href="../css/adminStyle.css">
-    <link rel="stylesheet" href="../css/layoutAdminStyle.css">
+    <!-- Use to export file in angular JS -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
 
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="../vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="../vendors/ti-icons/css/themify-icons.css">
-    <link rel="stylesheet" href="../vendors/typicons/typicons.css">
-    <link rel="stylesheet" href="../vendors/simple-line-icons/css/simple-line-icons.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- css -->
+    <!-- <link rel="stylesheet" href="../css/templateStyle.css"> -->
+    <link rel="stylesheet" href="../css/loading.css">
+    <link rel="stylesheet" href="../css/layoutAdminStyle.css">
+    <link rel="stylesheet" href="../css/tableAdminStyle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Archivo&family=Inter+Tight&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
 </head>
 
-<body>
-    <div class="overflow-hidden">
-        <div class="row vh-100 overflow-auto">
-            <!-- sidebar -->
-            <div th:replace="~{/partials/_sidebar}"></div>
-            <!-- end sidebar -->
-            <div th:replace="${view}"></div>
-        </div>
+<body class="bg-dark overflow-hidden">
+    <div class="loader">
+        <img src="../images/loading.gif" alt="Loading...">
     </div>
-    <!-- <div class="container-scroller">
-        <nav th:replace="~{/partials/_navbar}"></nav>
+    <p id="accountEmail" class="visually-hidden">[[${#httpServletRequest.remoteUser}]]</p>
+    <div class="position-absolute w-100 vh-100 d-flex align-items-center justify-content-center text-white"
+        style="z-index: -1;">
+        <div class="spinner-border text-light me-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>Đang tải...
+    </div>
+    <div class="d-flex vh-100 layout">
         <div th:replace="~{/partials/_sidebar}"></div>
-        <div class="container-fluid page-body-wrapper">
-            <nav class="sidebar" style="z-index: -3;"></nav>
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div th:replace="${view}"></div>
-                        </div>
-                    </div>
-                </div>
-                <div th:replace="~{/partials/_footer}"></div>
+        <div class="flex-grow-1 d-flex flex-column">
+            <div th:replace="~{/partials/_navbar}"></div>
+            <div class="overflow-auto  flex-grow-1 d-flex flex-column m-3">
+                <div th:replace="${view}"></div>
             </div>
         </div>
-
-    </div> -->
-
-    <!-- inject:js -->
-    <script src="../js/off-canvas.js"></script>
+    </div>
 
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
@@ -66,6 +67,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
         integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
         </script>
+    <!-- Bootstrap's JavaScript and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.min.js"></script>
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>
+    <script>
+        $(window).on("load", function () {
+            const loader = document.querySelector(".loader");
+            loader.className += " hidden";
+        });
+    </script>
 </body>
 
 </html>

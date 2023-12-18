@@ -1,0 +1,138 @@
+<main>
+    <div class="row p-0 m-0">
+        <div class="col-9 p-4">
+            <tabset style="height: 530px;">
+                <tab ng-repeat="invoice in bills track by $index" active=invoice.active
+                    heading="Hóa đơn {{invoice.stt}}" class="nav-item">
+                    <tab-heading ng-click="selectBill(invoice.bill.billID)"
+                        class="tab nav-link {{invoice.active === true ? 'active' : ''}}">
+                        Hóa đơn {{invoice.stt}}
+                        <a ng-click="removeTab($index)" href='' class="ms-2 btn btn-outline-danger" style="outline: none !important;
+                            border: none !important;padding: 0 0.25rem;">
+                            <i class="bi bi-x-octagon"></i>
+                        </a>
+
+                    </tab-heading>
+                    <div>
+                        <!-- Content start -->
+                        <div class="tab-content" id="myTabContent" style="border: none !important; outline: none;">
+                            <div>
+                                <!-- <p ng-bind="invoiceID"></p> -->
+                                <div class="tab-pane fade show table-responsive table border border-info rounded-2 mt-1"
+                                    id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    <table class="table table-responsive text-center align-middle">
+                                        <thead class="bg-info text-white">
+                                            <tr>
+                                                <th scope="col">Mã sản phẩm</th>
+                                                <th scope="col">Tên sản phẩm</th>
+                                                <th scope="col">Số lượng</th>
+                                                <th scope="col">Đơn giá (Có VAT)</th>
+                                                <th scope="col">Khuyến mãi</th>
+                                                <th scope="col">Thành tiền</th>
+                                                <th scope="col">Hủy</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="item in listProduct track by $index">
+                                                <td style="width: 15%;">{{item.billDetail.product.productID}}</td>
+                                                <td style="width: 30%; word-wrap: break-word;">
+                                                    {{item.billDetail.product.productName}}</td>
+                                                <td style="width: 10%;">
+                                                    <div class="number-control">
+                                                        <button class="number-left" ng-disabled="item.billDetail.quantity == 1"
+                                                            ng-click="reduce(item.billDetail.product.productID, item.billDetail.quantity, invoice.bill.billID) ">
+                                                            <i class="bi bi-dash fs-5"></i>
+                                                        </button>
+                                                        <input name="number" class="number-quantity text-center"
+                                                            ng-change="updateBillDetailFromInput(item.billDetail.product.productID, item.billDetail.quantity, invoice.bill.billID)"
+                                                            ng-model="item.billDetail.quantity" type="number" min="1"
+                                                            step="1" id="slsp">
+                                                        <div class="number-right"
+                                                            ng-click="increase(item.billDetail.product.productID, item.billDetail.billID)">
+                                                            <i class="bi bi-plus fs-5"></i>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 10%;">{{item.billDetail.product.price +
+                                                    (item.billDetail.product.price * (item.billDetail.product.vat /
+                                                    100)) | number}}</td>
+                                                <td style="width: 15%;">{{item.discountName}}</td>
+                                                <td style="width: 15%;">{{item.billDetail.totalAmount | number}}
+                                                </td>
+                                                <td style="width: 5%;"><button
+                                                        ng-click="deleteItem($index, item.billDetail.billID, item.billDetail.product.productID)"
+                                                        type="button" class="btn-close" aria-label="Close"></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- <div class="p-2 mt-5 input-group">
+                                    <span class="input-group-text" id="basic-addon1">Ghi chú:</span>
+                                    <input type="text" class="form-control border-3" ng-model="bill.name" />
+                                </div> -->
+                        </div>
+                        <!-- Content end -->
+                    </div>
+                </tab>
+                <tab ng-click="addBill()" style="margin-left: 0.4rem;">
+                    <tab-heading class="btn btn-outline-info">
+                        <i class="bi bi-bag-plus-fill"></i>
+                    </tab-heading>
+                </tab>
+            </tabset>
+        </div>
+        <div class="col-3 border" style="background-color: #F4F5F7; padding: 0px; height: 605px;">
+            <div class="p-3 border-bottom border-3">
+                <label class="mb-2">Nhập mã sản phẩm</label><br>
+                <div class="autocomplete">
+                    <input id="productCode" type="text" class="form-control" ng-model="productCode"
+                        ng-change="addProductToBillDetail(productCode)">
+                </div>
+            </div>
+
+            <div class="p-3 border-bottom border-3">
+                <label class="mb-3">Tổng tiền: <strong id="totalAmount">{{totalAmount | number}}</strong>
+                    VND</label><br>
+                <label class="mb-3">Đã giảm: <strong id="discount">{{discount | number}}</strong> VND</label><br>
+                <label class="mb-3">Phải thu: <strong id="amountReceivable">{{amountReceivable | number}}</strong>
+                    VND</label><br>
+                <label>Phải thu (đã làm tròn): <strong>{{roundAmountReceivable | number}}</strong> VND</label>
+            </div>
+
+            <div class="p-3 border-bottom border-3">
+                <label class="mb-3">Tiền mặt</label>
+                <input id="cash" ng-model="money" ng-change="cash(money)" type="number" class="form-control" min="0">
+                <br>
+                <!-- <button type="button" class="btn btn-outline-primary">MoMo</button> -->
+            </div>
+
+            <div class="border-bottom border-3 p-3">
+                <label>Tiền thối lại: {{change | number}} VND</label>
+            </div>
+
+            <div class="p-3">
+                <button id="print" type="button" class="btn btn-primary" ng-click="print()">Xuất hóa đơn</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade {{dialog}} bg-opacity-75 bg-gradient bg-dark" id="errorAlert" tabindex="-1"
+        aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-opacity-75 bg-warning mb-0">
+                    <h5 class="modal-title" id="errorModalLabel">Thông báo lỗi!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        ng-click="closeModal()"></button>
+                </div>
+                <div class="text-center p-3">
+                    Số tiền khách đưa phải lớn hơn hoặc bằng số tiền phải thu!
+                </div>
+                <!-- <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" ng-click="closeModal()">Đóng</button>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</main>

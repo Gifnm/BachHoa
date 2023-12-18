@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.main.jpa.DetailedDeliveryNoteJPA;
-import com.spring.main.model.DeliveryNote;
 import com.spring.main.model.DetailedDeliveryNote;
 
 @Service

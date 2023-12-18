@@ -23,13 +23,13 @@ public class ProductPositioning {
 	@Id
 	@Column(name = "proPosID")
 	private Integer id;
-@ManyToOne
-	 @JoinColumn(name = "disPlaID")
-	 private DisplayPlatter displayPlatter;
+	@ManyToOne
+	@JoinColumn(name = "disPlaID")
+	private DisplayPlatter displayPlatter;
 
 	@ManyToOne()
 	@JoinColumn(name = "disSheID")
-	private DisplayShelves displayShelves;
+	private DisplayShelves displayShelves = new DisplayShelves();
 
 	@ManyToOne
 	@JoinColumn(name = "productID")
@@ -52,13 +52,13 @@ public class ProductPositioning {
 		this.id = id;
 	}
 
-	 public DisplayPlatter getDisplayPlatter() {
-	 return displayPlatter;
-	 }
-	
-	 public void setDisplayPlatter(DisplayPlatter displayPlatter) {
-	 this.displayPlatter = displayPlatter;
-	 }
+	public DisplayPlatter getDisplayPlatter() {
+		return displayPlatter;
+	}
+
+	public void setDisplayPlatter(DisplayPlatter displayPlatter) {
+		this.displayPlatter = displayPlatter;
+	}
 
 	public DisplayShelves getDisplayShelves() {
 		return displayShelves;

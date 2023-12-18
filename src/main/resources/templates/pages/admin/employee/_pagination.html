@@ -1,0 +1,27 @@
+<nav class="">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link {{index == 0 ? 'disabled':''}} d-flex align-middle" href="#"
+                ng-click="findByDate(fromDate,toDate,index - 1)">
+                <span class="material-symbols-outlined">
+                    chevron_left
+                </span>
+            </a>
+        </li>
+        <div class="overflow-auto w-100 d-flex">
+            <li ng-repeat="item in pages" ng-click="findByDate(fromDate,toDate,item - 1)">
+                <a class="page-link {{index == item - 1? 'active':''}} ">
+                    <b>{{item}}</b>
+                </a>
+            </li>
+        </div>
+        <li class="page-item">
+            <a class="page-link {{index == maxPage - 1 ? 'disabled':''}} d-flex align-middle" href="#"
+                ng-click="findByDate(fromDate,toDate,index + 1)">
+                <span class="material-symbols-outlined">
+                    chevron_right
+                </span>
+            </a>
+        </li>
+    </ul>
+</nav>

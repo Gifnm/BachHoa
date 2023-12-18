@@ -1,13 +1,17 @@
 package com.spring.main.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "bills")
@@ -34,6 +38,10 @@ public class Bill {
 	private float cash;
 	@Column(name = "reduced")
 	private float reduced;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "bill")
+	private List<BillDetail> billDetail;
 
 	public String getBillID() {
 		return billID;
@@ -49,6 +57,14 @@ public class Bill {
 
 	public void setStore(Store store) {
 		this.store = store;
+	}
+
+	public List<BillDetail> getBillDetail() {
+		return billDetail;
+	}
+
+	public void setBillDetail(List<BillDetail> billDetail) {
+		this.billDetail = billDetail;
 	}
 
 	public Employee getEmployee() {

@@ -1,100 +1,127 @@
-<div class="card card-rounded">
-    <div class="card-body">
-        <div class="d-sm-flex justify-content-between align-items-start">
-            <div>
-                <h4 class="card-title card-title-dash">Danh sách sản phẩm</h4>
-                <p class="card-subtitle card-subtitle-dash">Tổng cộng <b>{{items.length}}</b> mặt hàng đã và đang
-                    được bày
-                    bán</p>
-            </div>
-            <div>
-                <button ng-click="reset()" class="btn btn-primary rounded-pill btn-md text-white mb-0 me-0"
-                    data-bs-toggle="modal" data-bs-target="#productModal">Thêm sản phẩm mới</button>
-            </div>
-        </div>
-        <form class="search-form" action="#">
-            <input type="text" ng-model="query" ng-change="search(query)" class="form-control" placeholder="Search Here"
+<div class="p-4">
+    <div class="input-group rounded-4">
+        <span class="input-group-text bg-white border-end-0 pe-0" id="search-icon"><span
+                class="material-symbols-outlined">
+                search
+            </span></span>
+        <div class="form-floating">
+            <input id="floatingInput" type="search" ng-model="query" ng-change="search(query)"
+                class="form-control border-start-0" placeholder="Nhập tên, mã, giá hoặc VAT để tìm sản phẩm"
                 title="Search here">
-        </form>
-        <div id="list-product" class="table-responsive  mt-1">
-            <table class="table select-table">
-                <thead>
-                    <tr>
-                        <th class="sticky order-col bg-white">#</th>
-                        <th class="sticky name-col bg-white">Sản phẩm</th>
-                        <th class="sticky bg-white">Phân loại</th>
-                        <th class="sticky bg-white">Đơn giá bán</th>
-                        <th class="sticky bg-white">Đơn giá nhập</th>
-                        <th class="sticky bg-white">VAT</th>
-                        <th class="sticky bg-white">Số lượng tồn kho</th>
-                        <th class="sticky bg-white">Hạn sử dụng gần nhất</th>
-                        <th class="sticky bg-white">Trạng thái</th>
-                        <th class="sticky function-col bg-white"></th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    <tr ng-repeat="pro in items | startFrom:currentPage*pageSize | limitTo:pageSize">
-                        <td class="sticky order-col bg-white" scope="row">{{$index+1+currentPage*pageSize}}</td>
-                        <td class="sticky name-col bg-white">
-                            <div class="d-flex">
-                                <img src="{{pro.image==null?DEFAULT_PRODUCT_IMAGE:pro.image}}" alt="">
-                                <div>
-                                    <h6>{{pro.productName}}</h6>
-                                    <p>{{pro.productID}}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <h6>{{pro.categories.categoriesName}}</h6>
-                        </td>
-                        <td>
-                            <h6>{{pro.price}} VND</h6>
-                        </td>
-                        <td>
-                            <h6>{{pro.importPrice}} VND</h6>
-                        </td>
-                        <td>
-                            <h6>{{pro.vat}} %</h6>
-                        </td>
-                        <td>
-                            <h6>{{pro.inventory}}</h6>
-                        </td>
-                        <td>
-                            <div>
-                                <!-- <div
-                                    class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                    <p class="text-success">Còn {{pro.nearestExpDate - today}} ngày</p>
-                                </div>
-                                <div class="progress progress-md">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 65%"
-                                        aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div> -->
-                                <p>HSD: {{pro.nearestExpDate| date:'dd/MM/yyyy'}}</p>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="badge badge-opacity-{{pro.status?'success':'warning'}}">{{pro.status?'Đang
-                                bán':'Ngừng kinh doanh'}}</div>
-                        </td>
-                        <td class="sticky function-col bg-white">
-                            <button class="btn" data-bs-toggle="modal" data-bs-target="#productModal"
-                                ng-click="edit(pro)"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button class="btn" ng-click="delete(pro.productID)"><i
-                                    class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <label class="text-muted" for="floatingInput">Lọc theo từ khóa</label>
         </div>
-        <div class="sticky-footer mt-3">
-            <div class="float-start">
-                Trang {{currentPage+1}} trên {{numberOfPages()}} trang
-            </div>
+    </div>
+    <div class="table-responsive rounded" style="max-height: 550px;
+    overflow: auto;">
+        <table class="table table-hover">
+            <thead class="table-light sticky">
+                <tr>
+                    <td class="py-4 order-col"><small>#</small></td>
+                    <td class="py-4 name-col text-center"> <small>Sản phẩm</small></td>
+                    <td class="py-4 "><small>Phân loại</small></td>
+                    <td class="py-4 "><small>Đơn giá bán</small></td>
+                    <td class="py-4 "><small>Đơn giá nhập</small></td>
+                    <td class="py-4 "><small>VAT</small></td>
+                    <td class="py-4 "><small>Số lượng tồn kho</small></td>
+                    <td class="py-4 "><small>Hạn sử dụng gần nhất</small></td>
+                    <td class="py-4 "><small>Trạng thái</small></td>
+                    <td class="py-4"></td>
+                </tr>
+            </thead>
+            <tbody class="bg-white">
+                <tr ng-repeat="pro in items | startFrom:currentPage*pageSize | limitTo:pageSize"
+                    class="{{pro.status?'':'text-muted bg-light'}}">
+                    <td class="sticky order-col align-middle" scope="row">{{$index+1+currentPage*pageSize}}
+                    </td>
+                    <td class="align-middle">
+                        <div class="h-100 d-flex ">
+                            <img class="bg-light border rounded mx-2" style="height: 50px; width: 50px;"
+                                src="{{pro.image==null?DEFAULT_PRODUCT_IMAGE:getImage(pro.image)}}" alt="...">
+                            <span class="d-grid">
+                                <b class="text-truncate" title="{{pro.productName}}">{{pro.productName}}</b>
+                                <span class="text-muted">{{pro.productID}}</span>
+                            </span>
+                        </div>
+                    </td>
+                    <td class="align-middle">
+                        <span>{{pro.categories.categoriesName}}</span>
+                    </td>
+                    <td class="align-middle">
+                        <span>{{pro.price}} VND</span>
+                    </td>
+                    <td class="align-middle">
+                        <span>{{pro.importPrice}} VND</span>
+                    </td>
+                    <td class="align-middle">
+                        <span>{{pro.vat}} %</span>
+                    </td>
+                    <td class="align-middle">
+                        <span>{{pro.inventory}}</span>
+                    </td>
+                    <td class="align-middle">
+                        <div class="d-grid text-center">
+                            <span>{{(pro.nearestExpDate | date:'dd-MM-yyyy')}}</span>
+                            <span
+                                class=" text-{{(
+                                calculateDaysRemaining(pro.nearestExpDate) <= 0 ? 'dark' : calculateDaysRemaining(pro.nearestExpDate) > 30 ? 'success': 'warning')}}">
+                                {{calculateDaysRemaining(pro.nearestExpDate) <= 0 ? 'Đã hết hạn' : "Còn " +
+                                    calculateDaysRemaining(pro.nearestExpDate)+" ngày" }} </span>
+                        </div>
+                    </td>
+                    <td class="align-middle">
+                        <div class="badge rounded-pill text-bg-{{pro.status?'success':'warning'}}">{{pro.status?'Đang
+                            bán':'Ngừng kinh
+                            doanh'}}</div>
+                    </td>
+                    <td class="sticky align-middle">
+                        <div class="btn-group dropstart">
+                            <button class="btn d-flex align-items-center rounded-pill" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <span class="material-symbols-outlined text-primary">
+                                    more_vert
+                                </span>
+                            </button>
+                            <ul class="dropdown-menu rounded-4 bg-light">
+                                <li>
+                                    <a class="btn p-2 d-flex align-middle" data-bs-toggle="offcanvas"
+                                        data-bs-target="#createForm" aria-controls="offcanvasExample"
+                                        ng-click="edit(pro)">
+                                        <span class="material-symbols-outlined text-primary me-2">
+                                            edit
+                                        </span>
+                                        <small>Sửa thông tin</small>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="btn p-2 d-flex align-middle" ng-click="changeStatus(pro)">
+                                        <span class="material-symbols-outlined text-primary me-2">
+                                            {{pro.status?'archive':'unarchive'}}
+                                        </span>
+                                        <small>{{pro.status?'Ngừng kinh doanh':'Bán lại'}}</small>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Display message if no matching products found -->
+                <td colspan="11" ng-if="items.length === 0" class="my-3 text-danger">
+                    Không tìm thấy sản phẩm trùng khớp.
+                </td>
+            </tbody>
+        </table>
 
-            <div class="float-end">
-                <div th:replace="~{/pages/admin/product/_pagination}"></div>
-            </div>
+    </div>
+    <div class="sticky-footer mt-3">
+        <div class="float-start">
+            Trang {{currentPage+1}} trên {{numberOfPages()}} trang
+        </div>
+
+        <div class="float-end">
+            <div th:replace="~{/partials/_pagination}"></div>
         </div>
     </div>
 </div>
