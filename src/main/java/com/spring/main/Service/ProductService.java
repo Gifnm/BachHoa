@@ -21,7 +21,7 @@ public class ProductService {
 	public String uploadProduct(MultipartFile file, Product product) throws IllegalStateException, IOException {
 		String filePath = FOLDER_PATH + file.getOriginalFilename();
 		file.transferTo(new File(filePath));
-		product.setImage("http://192.168.1.5:8083/bachhoaimg//" + file.getOriginalFilename());
+		product.setImage("http://192.168.1.30:8083/bachhoaimg//" + file.getOriginalFilename());
 		productJPA.save(product);
 		return "Succes";
 	}

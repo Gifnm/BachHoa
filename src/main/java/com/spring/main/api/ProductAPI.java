@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.main.Service.ProductPosionService;
 import com.spring.main.Service.ProductService;
+import com.spring.main.model.DisplayPlatter;
 import com.spring.main.model.DisplayShelves;
 import com.spring.main.model.Product;
 import com.spring.main.model.ProductPositioning;
@@ -41,6 +42,8 @@ public class ProductAPI {
 			productPositioning.setStore(product.getStore());
 			productPositioning.setProduct((Product) product);
 			productPositioning.setId(0);
+			productPositioning.setDisplayPlatter(new DisplayPlatter(0));
+			productPositioning.setDisplayShelves(new DisplayShelves(0));
 			posionService.insert(productPositioning);
 			return ResponseEntity.ok("Ok");
 		} catch (IOException e) {

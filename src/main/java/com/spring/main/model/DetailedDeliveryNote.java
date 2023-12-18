@@ -16,6 +16,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Entity
 @IdClass(DetailedDeliveryNoteID.class)
 @Table(name = "detailed_delivery_note")
@@ -43,4 +44,24 @@ public class DetailedDeliveryNote {
 	
 	@Column(name = "count")
 	private int count;
+
+	public DetailedDeliveryNote(String id, String productID, int quantity, int index, int count) {
+		this.id = id;
+		this.productID = productID;
+		this.quantity = quantity;
+		this.index = index;
+		this.count = count;
+	}
+
+	public DetailedDeliveryNote(String id, String productID, DeliveryNote deliveryNote, Product product, int quantity,
+			int index, int count) {
+		this.id = id;
+		this.productID = productID;
+		this.deliveryNote = deliveryNote;
+		this.product = product;
+		this.quantity = quantity;
+		this.index = index;
+		this.count = count;
+	}
+	
 }
